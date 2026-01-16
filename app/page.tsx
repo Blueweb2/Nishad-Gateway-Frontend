@@ -1,7 +1,5 @@
-import React from 'react'
+import UserHomePage from "./(user)/page";
 
-export default function page() {
-  return (
-    <div>page</div>
-  )
+export default function Page() {
+  return <UserHomePage />;
 }

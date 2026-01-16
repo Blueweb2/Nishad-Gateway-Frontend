@@ -14,18 +14,17 @@ export default function HomePage() {
   return (
     <main className="w-full overflow-x-hidden">
       <PreloaderProvider>
-      <HeroSection />
-      <WhySaudi />
-      <BusinessGrowth />
-      <KeyServices />
-      <Cities />
-      <Consultant />
-      <Stats />
-      <CaseStudies />
-      <Insights />
-      <FinalCTA />
+        <HeroSection />
+        <WhySaudi />
+        <BusinessGrowth />
+        <KeyServices />
+        <Cities />
+        <Consultant />
+        <Stats />
+        <CaseStudies />
+        <Insights />
+        <FinalCTA />
       </PreloaderProvider>
-    
     </main>
   );
 }
