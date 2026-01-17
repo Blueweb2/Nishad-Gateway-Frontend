@@ -3,14 +3,22 @@
 import { ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { SERVICES } from "@/lib/services/services.data";
-import { ServiceKey } from "@/lib/services/services.types";
+import toast from "react-hot-toast";
 
-const SERVICE_MAIN_ROUTES: Record<ServiceKey, string> = {
-  companyFormation: "/services/company-formation",
-  internationalMarket: "/services/international-market",
-  advisory: "/services/advisory",
-  corporateSupport: "/services/corporate",
+import { getServicesMenu } from "@/lib/api/services.api"; // ✅ create this function
+
+type SubServiceItem = {
+  _id: string;
+  title: string;
+  slug: string;
+};
+
+type ServiceItem = {
+  _id: string;
+  index: string;
+  title: string;
+  slug: string;
+  subServices: SubServiceItem[];
 };
 
 export default function ServicesPopup({
@@ -22,10 +30,13 @@ export default function ServicesPopup({
 }) {
   const router = useRouter();
 
-  const [expanded, setExpanded] = useState<ServiceKey | null>(null);
+  const [expanded, setExpanded] = useState<string | null>(null);
 
   // controls mount / unmount
   const [render, setRender] = useState(open);
+
+  const [services, setServices] = useState<ServiceItem[]>([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (open) {
@@ -34,6 +45,26 @@ export default function ServicesPopup({
       const t = setTimeout(() => setRender(false), 550);
       return () => clearTimeout(t);
     }
+  }, [open]);
+
+  // ✅ Fetch services menu when popup opens
+  useEffect(() => {
+    if (!open) return;
+
+    const fetchServicesMenu = async () => {
+      try {
+        setLoading(true);
+
+        const res = await getServicesMenu();
+        setServices(res?.data || []);
+      } catch (error) {
+        toast.error("Failed to load services menu");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchServicesMenu();
   }, [open]);
 
   if (!render) return null;
@@ -57,7 +88,7 @@ export default function ServicesPopup({
       <div
         onClick={(e) => e.stopPropagation()}
         className={`
-          fixed top-20 left-1/2
+          fixed top-20 left-1/2 -translate-x-1/2
           w-[430px]
           z-50
           overflow-hidden
@@ -66,82 +97,107 @@ export default function ServicesPopup({
       >
         {/* INNER – CARD */}
         <div className="bg-white rounded-[28px] shadow-2xl p-5">
-          {(Object.keys(SERVICES) as ServiceKey[]).map((key) => {
-            const service = SERVICES[key];
-            const isOpen = expanded === key;
+          {/* LOADING */}
+          {loading && (
+            <div className="py-10 text-center text-gray-500 text-sm">
+              Loading...
+            </div>
+          )}
 
-            return (
-              <div
-                key={key}
-                className="border-b border-gray-200 last:border-b-0"
-              >
-                {/* HEADER ROW */}
-                <div className="w-full flex items-center justify-between py-5">
-                  {/* LEFT SIDE = EXPAND / COLLAPSE */}
-                  <button
-                    onClick={() => setExpanded(isOpen ? null : key)}
-                    className="flex-1 text-left group"
-                  >
-                    <span className="text-xs text-gray-400 block">
-                      {service.index}
-                    </span>
+          {/* EMPTY */}
+          {!loading && services.length === 0 && (
+            <div className="py-10 text-center text-gray-500 text-sm">
+              No services found
+            </div>
+          )}
 
-                    <h2
+          {/* LIST */}
+          {!loading &&
+            services.map((service) => {
+              const isOpen = expanded === service._id;
+
+              return (
+                <div
+                  key={service._id}
+                  className="border-b border-gray-200 last:border-b-0"
+                >
+                  {/* HEADER ROW */}
+                  <div className="w-full flex items-center justify-between py-5">
+                    {/* LEFT SIDE = EXPAND / COLLAPSE */}
+                    <button
+                      onClick={() =>
+                        setExpanded(isOpen ? null : service._id)
+                      }
+                      className="flex-1 text-left group"
+                    >
+                      <span className="text-xs text-gray-400 block">
+                        {service.index}
+                      </span>
+
+                      <h2
+                        className={`
+                          text-[26px] font-semibold
+                          transition-colors pe-6
+                          ${isOpen ? "text-teal-700" : "text-gray-900"}
+                        `}
+                      >
+                        {service.title}
+                      </h2>
+                    </button>
+
+                    {/* RIGHT ARROW = GO TO MAIN SERVICE PAGE */}
+                    <button
+                      onClick={() => {
+                        onClose();
+                        router.push(`/services/${service.slug}`);
+                      }}
                       className={`
-                        text-[26px] font-semibold
-                        transition-colors pe-6
-                        ${isOpen ? "text-teal-700" : "text-gray-900"}
+                        flex items-center justify-center
+                        w-11 h-9
+                        border border-gray-300
+                        rounded-xl
+                        transition-all duration-300
+                        hover:border-gray-400
+                        ${isOpen ? "rotate-90" : ""}
                       `}
                     >
-                      {service.title}
-                    </h2>
-                  </button>
+                      <ArrowRight size={16} className="text-black" />
+                    </button>
+                  </div>
 
-                  {/* RIGHT ARROW = GO TO MAIN PAGE */}
-                  <button
-                    onClick={() => {
-                      onClose();
-                      router.push(SERVICE_MAIN_ROUTES[key]);
-                    }}
-                    className={`
-                      flex items-center justify-center
-                      w-11 h-9
-                      border border-gray-300
-                      rounded-xl
-                      transition-all duration-300
-                      hover:border-gray-400
-                      ${isOpen ? "rotate-90" : ""}
-                    `}
-                  >
-                    <ArrowRight size={16} className="text-black" />
-                  </button>
+                  {/* SUB SERVICES */}
+                  {isOpen && (
+                    <ul className="pb-5 pl-1 space-y-2 text-sm">
+                      {service.subServices?.length > 0 ? (
+                        service.subServices.map((sub) => (
+                          <li
+                            key={sub._id}
+                            onClick={() => {
+                              onClose();
+                              router.push(
+                                `/services/${service.slug}/${sub.slug}`
+                              );
+                            }}
+                            className="
+                              cursor-pointer
+                              text-gray-500
+                              hover:text-teal-700
+                              transition-colors
+                            "
+                          >
+                            {sub.title}
+                          </li>
+                        ))
+                      ) : (
+                        <li className="text-gray-400 text-sm">
+                          No subservices
+                        </li>
+                      )}
+                    </ul>
+                  )}
                 </div>
-
-                {/* SUB CONTENT */}
-                {isOpen && (
-                  <ul className="pb-5 pl-1 space-y-2 text-sm">
-                    {service.items.map((item) => (
-                      <li
-                        key={item.label}
-                        onClick={() => {
-                          onClose();
-                          router.push(item.href);
-                        }}
-                        className="
-                          cursor-pointer
-                          text-gray-500
-                          hover:text-teal-700
-                          transition-colors
-                        "
-                      >
-                        {item.label}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            );
-          })}
+              );
+            })}
         </div>
       </div>
     </>

@@ -1,12 +1,24 @@
 import { api } from "@/lib/axios";
 
-// ✅ GET all subservices under a service
+//  USER (PUBLIC)
+export const getSubServicesByService = async (serviceId: string) => {
+  const res = await api.get(`/services/${serviceId}/subservices`);
+  return res.data;
+};
+
+// USER (PUBLIC) - get service by slug
+export const getServiceBySlug = async (slug: string) => {
+  const res = await api.get(`/services/slug/${slug}`);
+  return res.data;
+};
+
+//  GET all subservices under a service
 export const adminGetSubServices = async (serviceId: string) => {
   const res = await api.get(`/services/${serviceId}/subservices`);
   return res.data;
 };
 
-// ✅ CREATE (with image -> backend converts to WEBP)
+//  CREATE (with image -> backend converts to WEBP)
 export const adminCreateSubService = async (
   serviceId: string,
   formData: FormData

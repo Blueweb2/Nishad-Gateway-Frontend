@@ -5,28 +5,31 @@ import Link from "next/link";
 import { Mail } from "lucide-react";
 import { useEffect, useState } from "react";
 import ServicesPopup from "./ServicesPopup";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [useColoredLogo, setUseColoredLogo] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
-    const whiteSections = document.querySelectorAll('[data-navbar="white"]');
+  const whiteSections = document.querySelectorAll('[data-navbar="white"]');
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const anyWhiteVisible = entries.some((e) => e.isIntersecting);
-        setUseColoredLogo(anyWhiteVisible);
-      },
-      {
-        rootMargin: "-80px 0px 0px 0px",
-        threshold: 0.1,
-      }
-    );
+  const observer = new IntersectionObserver(
+    (entries) => {
+      const anyWhiteVisible = entries.some((e) => e.isIntersecting);
+      setUseColoredLogo(anyWhiteVisible);
+    },
+    {
+      rootMargin: "0px 0px 0px 0px",
+      threshold: 0.01,
+    }
+  );
 
-    whiteSections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
-  }, []);
+  whiteSections.forEach((section) => observer.observe(section));
+  return () => observer.disconnect();
+}, [pathname]);
+
 
   const isLight = useColoredLogo;
 
