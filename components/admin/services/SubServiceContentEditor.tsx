@@ -8,18 +8,40 @@ import {
   adminSaveSubServiceContent,
 } from "@/lib/api/content.api";
 
+import { uploadImage } from "@/lib/api/upload.api";
+import WhySliderEditor, { WhySlide } from "@/components/admin/services/content-editor/WhySliderEditor";
+import EntityTableEditor, { EntityRow } from "@/components/admin/services/content-editor/EntityTableEditor";
+import EntityTypesSliderEditor, { EntityTypeSlide } from "@/components/admin/services/content-editor/EntityTypesSliderEditor";
+
+
+
+import OwnershipSliderEditor, {
+  OwnershipSlide,
+} from "@/components/admin/services/content-editor/OwnershipSliderEditor";
+
+import EntityChooseEditor from "@/components/admin/services/content-editor/EntityChooseEditor";
+import DocumentsRequiredEditor from "@/components/admin/services/content-editor/DocumentsRequiredEditor";
+
+import LocationsSliderEditor, {
+  LocationSlide,
+} from "@/components/admin/services/content-editor/LocationsSliderEditor";
+
+import FaqEditor from "@/components/admin/services/content-editor/FaqEditor";
+
+
 type Section = {
   heading: string;
   text: string;
   image?: string;
 };
 
-type WhySlide = {
-  title: string;
-  description: string;
-  image: string;
-};
 
+
+type EntityChooseQuestion = {
+  question: string;
+  options: { label: string; value: string }[];
+  selectedValue?: string;
+};
 
 type FAQ = {
   q: string;
@@ -33,6 +55,7 @@ type Props = {
 export default function SubServiceContentEditor({ subId }: Props) {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+
   const [form, setForm] = useState({
     heroTitle: "",
     heroSubtitle: "",
@@ -47,6 +70,9 @@ export default function SubServiceContentEditor({ subId }: Props) {
     whyCtaText: "",
     whyCtaLink: "",
 
+    // OWNERSHIP SLIDER
+    ownershipHeading: "",
+    ownershipSlides: [] as OwnershipSlide[],
 
     entityTableHeading: "",
     entityTableRows: [] as {
@@ -59,18 +85,42 @@ export default function SubServiceContentEditor({ subId }: Props) {
       icon?: string;
     }[],
 
+    entityTypesHeading: "",
+    entityTypesDescription: "",
+    entityTypesSlides: [] as EntityTypeSlide[],
+
+    entityChooseHeading: "",
+    entityChooseSubheading: "",
+    entityChooseQuestions: [] as EntityChooseQuestion[],
+
+    // DOCUMENTS REQUIRED
+    documentsHeading: "",
+    documentsSubheading: "",
+    documentEntityTabs: [] as { label: string; value: string }[],
+    documentGroups: [] as {
+      entityValue: string;
+      cards: { title: string; items: string[]; icon?: string }[];
+    }[],
+
+    // LOCATIONS SLIDER
+    locationsHeading: "",
+    locationsSubheading: "",
+    locationsSlides: [] as LocationSlide[],
 
     introHeading: "",
     introText: "",
 
     sections: [] as Section[],
-    faqs: [] as FAQ[],
-  });
 
+    faqHeading: "Frequently Asked Questions",
+    faqs: [] as FAQ[],
+
+  });
 
   const fetchContent = async () => {
     try {
       setLoading(true);
+
       const res = await adminGetSubServiceContent(subId);
 
       if (res.data) {
@@ -87,17 +137,36 @@ export default function SubServiceContentEditor({ subId }: Props) {
           whyCtaText: res.data.whyCtaText || "",
           whyCtaLink: res.data.whyCtaLink || "",
 
+          ownershipHeading: res.data.ownershipHeading || "",
+          ownershipSlides: res.data.ownershipSlides || [],
+
           entityTableHeading: res.data.entityTableHeading || "",
           entityTableRows: res.data.entityTableRows || [],
 
+          entityTypesHeading: res.data.entityTypesHeading || "",
+          entityTypesDescription: res.data.entityTypesDescription || "",
+          entityTypesSlides: res.data.entityTypesSlides || [],
+
+          entityChooseHeading: res.data.entityChooseHeading || "",
+          entityChooseSubheading: res.data.entityChooseSubheading || "",
+          entityChooseQuestions: res.data.entityChooseQuestions || [],
+
+          documentsHeading: res.data.documentsHeading || "",
+          documentsSubheading: res.data.documentsSubheading || "",
+          documentEntityTabs: res.data.documentEntityTabs || [],
+          documentGroups: res.data.documentGroups || [],
+
+          locationsHeading: res.data.locationsHeading || "",
+          locationsSubheading: res.data.locationsSubheading || "",
+          locationsSlides: res.data.locationsSlides || [],
 
           introHeading: res.data.introHeading || "",
           introText: res.data.introText || "",
 
           sections: res.data.sections || [],
+          faqHeading: res.data.faqHeading || "Frequently Asked Questions",
           faqs: res.data.faqs || [],
         });
-
       }
     } catch (err) {
       toast.error("Failed to fetch content");
@@ -114,44 +183,15 @@ export default function SubServiceContentEditor({ subId }: Props) {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const addSection = () => {
-    setForm((prev) => ({
-      ...prev,
-      sections: [...prev.sections, { heading: "", text: "", image: "" }],
-    }));
-  };
-
-  const updateSection = (index: number, key: keyof Section, value: string) => {
-    setForm((prev) => {
-      const updated = [...prev.sections];
-      updated[index] = { ...updated[index], [key]: value };
-      return { ...prev, sections: updated };
-    });
-  };
-
-  const removeSection = (index: number) => {
-    setForm((prev) => ({
-      ...prev,
-      sections: prev.sections.filter((_, i) => i !== index),
-    }));
-  };
-
-  // why slide handlers
+  // WHY SLIDER HANDLERS
   const addWhySlide = () => {
     setForm((prev) => ({
       ...prev,
-      whySlides: [
-        ...prev.whySlides,
-        { title: "", description: "", image: "" },
-      ],
+      whySlides: [...prev.whySlides, { title: "", description: "", image: "" }],
     }));
   };
 
-  const updateWhySlide = (
-    index: number,
-    key: keyof WhySlide,
-    value: string
-  ) => {
+  const updateWhySlide = (index: number, key: keyof WhySlide, value: string) => {
     setForm((prev) => {
       const updated = [...prev.whySlides];
       updated[index] = { ...updated[index], [key]: value };
@@ -166,59 +206,222 @@ export default function SubServiceContentEditor({ subId }: Props) {
     }));
   };
 
+  // ENTITY TABLE HANDLERS
+const addEntityRow = () => {
+  setForm((prev) => ({
+    ...prev,
+    entityTableRows: [
+      ...(prev.entityTableRows || []),
+      {
+        entityType: "",
+        ownership: "",
+        bestFor: "",
+        capital: "",
+        regulatoryBody: "",
+        timeToSetup: "",
+        icon: "",
+      },
+    ],
+  }));
+};
+
+const updateEntityRow = (
+  index: number,
+  key: keyof EntityRow,
+  value: string
+) => {
+  setForm((prev) => {
+    const updated = [...prev.entityTableRows];
+    updated[index] = { ...updated[index], [key]: value };
+    return { ...prev, entityTableRows: updated };
+  });
+};
+
+const removeEntityRow = (index: number) => {
+  setForm((prev) => ({
+    ...prev,
+    entityTableRows: prev.entityTableRows.filter((_, i) => i !== index),
+  }));
+};
 
 
-  type EntityRow = {
-    entityType: string;
-    ownership: string;
-    bestFor: string;
-    capital: string;
-    regulatoryBody: string;
-    timeToSetup: string;
-    icon?: string;
-  };
+// ENTITY TYPES SLIDER HANDLERS
+const addEntityTypeSlide = () => {
+  setForm((prev) => ({
+    ...prev,
+    entityTypesSlides: [
+      ...(prev.entityTypesSlides || []),
+      { title: "", image: "", description: "" },
+    ],
+  }));
+};
 
-  const addEntityRow = () => {
+const updateEntityTypeSlide = (
+  index: number,
+  key: keyof EntityTypeSlide,
+  value: string
+) => {
+  setForm((prev) => {
+    const updated = [...prev.entityTypesSlides];
+    updated[index] = { ...updated[index], [key]: value };
+    return { ...prev, entityTypesSlides: updated };
+  });
+};
+
+const removeEntityTypeSlide = (index: number) => {
+  setForm((prev) => ({
+    ...prev,
+    entityTypesSlides: prev.entityTypesSlides.filter((_, i) => i !== index),
+  }));
+};
+
+
+  // OWNERSHIP SLIDER HANDLERS
+  const addOwnershipSlide = () => {
     setForm((prev) => ({
       ...prev,
-      entityTableRows: [
-        ...(prev as any).entityTableRows,
+      ownershipSlides: [
+        ...(prev.ownershipSlides || []),
+        { title: "", subtitle: "", image: "" },
+      ],
+    }));
+  };
+
+  const updateOwnershipSlide = (
+    index: number,
+    key: keyof OwnershipSlide,
+    value: string
+  ) => {
+    setForm((prev) => {
+      const updated = [...prev.ownershipSlides];
+      updated[index] = { ...updated[index], [key]: value };
+      return { ...prev, ownershipSlides: updated };
+    });
+  };
+
+  const removeOwnershipSlide = (index: number) => {
+    setForm((prev) => ({
+      ...prev,
+      ownershipSlides: prev.ownershipSlides.filter((_, i) => i !== index),
+    }));
+  };
+
+  // ENTITY CHOOSE HANDLERS
+  const addChooseQuestion = () => {
+    setForm((prev) => ({
+      ...prev,
+      entityChooseQuestions: [
+        ...(prev.entityChooseQuestions || []),
         {
-          entityType: "",
-          ownership: "",
-          bestFor: "",
-          capital: "",
-          regulatoryBody: "",
-          timeToSetup: "",
-          icon: "",
+          question: "",
+          options: [
+            { label: "Yes", value: "yes" },
+            { label: "No", value: "no" },
+          ],
+          selectedValue: "yes",
         },
       ],
     }));
   };
 
-  const updateEntityRow = (
+  const updateChooseQuestion = (
     index: number,
-    key: keyof EntityRow,
-    value: string
+    key: keyof EntityChooseQuestion,
+    value: any
   ) => {
     setForm((prev) => {
-      const updated = [...(prev as any).entityTableRows];
+      const updated = [...prev.entityChooseQuestions];
       updated[index] = { ...updated[index], [key]: value };
-      return { ...prev, entityTableRows: updated };
+      return { ...prev, entityChooseQuestions: updated };
     });
   };
 
-  const removeEntityRow = (index: number) => {
+  const removeChooseQuestion = (index: number) => {
     setForm((prev) => ({
       ...prev,
-      entityTableRows: (prev as any).entityTableRows.filter(
-        (_: any, i: number) => i !== index
+      entityChooseQuestions: prev.entityChooseQuestions.filter(
+        (_, i) => i !== index
       ),
+    }));
+  };
+
+  const addChooseOption = (qIndex: number) => {
+    setForm((prev) => {
+      const updated = [...prev.entityChooseQuestions];
+      updated[qIndex].options = [
+        ...(updated[qIndex].options || []),
+        { label: "", value: "" },
+      ];
+      return { ...prev, entityChooseQuestions: updated };
+    });
+  };
+
+  const updateChooseOption = (
+    qIndex: number,
+    optIndex: number,
+    key: "label" | "value",
+    value: string
+  ) => {
+    setForm((prev) => {
+      const updated = [...prev.entityChooseQuestions];
+      const options = [...updated[qIndex].options];
+      options[optIndex] = { ...options[optIndex], [key]: value };
+      updated[qIndex].options = options;
+      return { ...prev, entityChooseQuestions: updated };
+    });
+  };
+
+  const removeChooseOption = (qIndex: number, optIndex: number) => {
+    setForm((prev) => {
+      const updated = [...prev.entityChooseQuestions];
+      updated[qIndex].options = updated[qIndex].options.filter(
+        (_, i) => i !== optIndex
+      );
+      return { ...prev, entityChooseQuestions: updated };
+    });
+  };
+
+  // LOCATIONS SLIDER HANDLERS
+  const addLocationSlide = () => {
+    setForm((prev) => ({
+      ...prev,
+      locationsSlides: [
+        ...(prev.locationsSlides || []),
+        {
+          title: "",
+          description: "",
+          image: "",
+          tag: "ARTICLE",
+          link: "",
+        },
+      ],
+    }));
+  };
+
+  const updateLocationSlide = (
+    index: number,
+    key: keyof LocationSlide,
+    value: string
+  ) => {
+    setForm((prev) => {
+      const updated = [...prev.locationsSlides];
+      updated[index] = { ...updated[index], [key]: value };
+      return { ...prev, locationsSlides: updated };
+    });
+  };
+
+  const removeLocationSlide = (index: number) => {
+    setForm((prev) => ({
+      ...prev,
+      locationsSlides: prev.locationsSlides.filter((_, i) => i !== index),
     }));
   };
 
 
 
+  // ===============================
+  // FAQ HANDLERS
+  // ===============================
   const addFaq = () => {
     setForm((prev) => ({
       ...prev,
@@ -241,6 +444,10 @@ export default function SubServiceContentEditor({ subId }: Props) {
     }));
   };
 
+
+
+
+
   const handleSave = async () => {
     try {
       setSaving(true);
@@ -253,9 +460,7 @@ export default function SubServiceContentEditor({ subId }: Props) {
     }
   };
 
-  if (loading) {
-    return <p className="text-gray-400">Loading content editor...</p>;
-  }
+  if (loading) return <p className="text-gray-400">Loading content editor...</p>;
 
   return (
     <div className="w-full max-w-[950px] bg-[#0b0f0b] border border-green-700/30 rounded-2xl p-8 md:p-10 space-y-10">
@@ -269,7 +474,6 @@ export default function SubServiceContentEditor({ subId }: Props) {
         </p>
       </div>
 
-      {/* HERO */}
       {/* HERO */}
       <div className="space-y-5">
         <h3 className="text-lg font-semibold text-white">Hero Section</h3>
@@ -293,7 +497,7 @@ export default function SubServiceContentEditor({ subId }: Props) {
         <textarea
           value={form.heroDescription}
           onChange={(e) => updateField("heroDescription", e.target.value)}
-          placeholder="Hero Description (small text under subtitle)"
+          placeholder="Hero Description"
           rows={3}
           className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500 resize-none"
         />
@@ -302,371 +506,143 @@ export default function SubServiceContentEditor({ subId }: Props) {
           <input
             value={form.heroButtonText}
             onChange={(e) => updateField("heroButtonText", e.target.value)}
-            placeholder="Hero Button Text (ex: Get Personalized Setup Advice)"
+            placeholder="Hero Button Text"
             className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
           />
 
           <input
             value={form.heroButtonLink}
             onChange={(e) => updateField("heroButtonLink", e.target.value)}
-            placeholder="Hero Button Link (ex: /contact)"
+            placeholder="Hero Button Link"
             className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
           />
         </div>
 
-        <input
-          value={form.heroImage}
-          onChange={(e) => updateField("heroImage", e.target.value)}
-          placeholder="Hero Background Image URL"
-          className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
-        />
-      </div>
+        <div className="space-y-2">
+          <label className="text-sm text-gray-300 font-medium">
+            Upload Hero Image (Cloudinary)
+          </label>
 
+          <input
+            type="file"
+            accept="image/*"
+            onChange={async (e) => {
+              const file = e.target.files?.[0];
+              if (!file) return;
+
+              const toastId = toast.loading("Uploading image...");
+
+              try {
+                const res = await uploadImage(file);
+
+                if (res?.data?.url) {
+                  updateField("heroImage", res.data.url);
+                  toast.success("Uploaded ✅", { id: toastId });
+                } else {
+                  toast.error("Upload failed", { id: toastId });
+                }
+              } catch {
+                toast.error("Upload failed", { id: toastId });
+              }
+            }}
+            className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white"
+          />
+
+          <input
+            value={form.heroImage}
+            onChange={(e) => updateField("heroImage", e.target.value)}
+            placeholder="Hero Background Image URL"
+            className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
+          />
+        </div>
+      </div>
 
       {/* WHY SECTION */}
-      <div className="space-y-5">
-        <div className="flex items-center justify-between gap-4">
-          <h3 className="text-lg font-semibold text-white">
-            Why Section (Slider)
-          </h3>
+<WhySliderEditor
+  whyHeading={form.whyHeading}
+  whySlides={form.whySlides}
+  whyCtaText={form.whyCtaText}
+  whyCtaLink={form.whyCtaLink}
+  updateField={updateField}
+  addWhySlide={addWhySlide}
+  updateWhySlide={updateWhySlide}
+  removeWhySlide={removeWhySlide}
+/>
 
-          <button
-            onClick={addWhySlide}
-            className="px-4 py-2 rounded-lg bg-green-600 hover:bg-green-700 transition text-sm font-semibold"
-          >
-            + Add Slide
-          </button>
-        </div>
+{/* ENTITY TABLE */}
+<EntityTableEditor
+  entityTableHeading={form.entityTableHeading}
+  entityTableRows={form.entityTableRows}
+  updateField={updateField}
+  addEntityRow={addEntityRow}
+  updateEntityRow={updateEntityRow}
+  removeEntityRow={removeEntityRow}
+/>
 
-        <input
-          value={form.whyHeading}
-          onChange={(e) => updateField("whyHeading", e.target.value)}
-          placeholder="Why Heading (ex: Why Entity Type Matters)"
-          className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
-        />
+{/* ENTITY TYPES SLIDER */}
+<EntityTypesSliderEditor
+  entityTypesHeading={form.entityTypesHeading}
+  entityTypesDescription={form.entityTypesDescription}
+  entityTypesSlides={form.entityTypesSlides}
+  updateField={updateField}
+  addEntityTypeSlide={addEntityTypeSlide}
+  updateEntityTypeSlide={updateEntityTypeSlide}
+  removeEntityTypeSlide={removeEntityTypeSlide}
+/>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <input
-            value={form.whyCtaText}
-            onChange={(e) => updateField("whyCtaText", e.target.value)}
-            placeholder="CTA Text (ex: Calculate Your KSA Expansion Cost)"
-            className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
-          />
+      {/* OWNERSHIP SLIDER */}
+      <OwnershipSliderEditor
+        ownershipHeading={form.ownershipHeading}
+        ownershipSlides={form.ownershipSlides}
+        updateField={updateField}
+        addOwnershipSlide={addOwnershipSlide}
+        updateOwnershipSlide={updateOwnershipSlide}
+        removeOwnershipSlide={removeOwnershipSlide}
+      />
 
-          <input
-            value={form.whyCtaLink}
-            onChange={(e) => updateField("whyCtaLink", e.target.value)}
-            placeholder="CTA Link (ex: /calculator)"
-            className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
-          />
-        </div>
+      {/* ENTITY CHOOSE */}
+      <EntityChooseEditor
+        entityChooseHeading={form.entityChooseHeading}
+        entityChooseSubheading={form.entityChooseSubheading}
+        entityChooseQuestions={form.entityChooseQuestions}
+        updateField={updateField}
+        addChooseQuestion={addChooseQuestion}
+        updateChooseQuestion={updateChooseQuestion}
+        removeChooseQuestion={removeChooseQuestion}
+        addChooseOption={addChooseOption}
+        updateChooseOption={updateChooseOption}
+        removeChooseOption={removeChooseOption}
+      />
 
-        {form.whySlides.length === 0 ? (
-          <p className="text-sm text-gray-400">No slides added yet.</p>
-        ) : (
-          <div className="space-y-5">
-            {form.whySlides.map((slide, idx) => (
-              <div
-                key={idx}
-                className="border border-gray-800 rounded-2xl p-5 space-y-4 bg-black/20"
-              >
-                <div className="flex justify-between items-center">
-                  <p className="text-sm font-semibold text-gray-200">
-                    Slide {idx + 1}
-                  </p>
+      {/* DOCUMENTS REQUIRED */}
+      <DocumentsRequiredEditor
+        documentsHeading={form.documentsHeading}
+        documentsSubheading={form.documentsSubheading}
+        documentEntityTabs={form.documentEntityTabs}
+        documentGroups={form.documentGroups}
+        updateField={updateField}
+      />
 
-                  <button
-                    onClick={() => removeWhySlide(idx)}
-                    className="text-xs px-3 py-1 rounded-lg bg-red-800 hover:bg-red-700 transition"
-                  >
-                    Remove
-                  </button>
-                </div>
-
-                <input
-                  value={slide.title}
-                  onChange={(e) => updateWhySlide(idx, "title", e.target.value)}
-                  placeholder="Slide Title (ex: Ownership Rights)"
-                  className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
-                />
-
-                <textarea
-                  value={slide.description}
-                  onChange={(e) =>
-                    updateWhySlide(idx, "description", e.target.value)
-                  }
-                  placeholder="Slide Description"
-                  rows={4}
-                  className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500 resize-none"
-                />
-
-                <input
-                  value={slide.image}
-                  onChange={(e) => updateWhySlide(idx, "image", e.target.value)}
-                  placeholder="Slide Image URL"
-                  className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
-                />
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+      {/* LOCATIONS SLIDER */}
+      <LocationsSliderEditor
+        locationsHeading={form.locationsHeading}
+        locationsSubheading={form.locationsSubheading}
+        locationsSlides={form.locationsSlides}
+        updateField={updateField}
+        addLocationSlide={addLocationSlide}
+        updateLocationSlide={updateLocationSlide}
+        removeLocationSlide={removeLocationSlide}
+      />
+      <FaqEditor
+        faqHeading={form.faqHeading}
+        faqs={form.faqs}
+        updateField={updateField}
+        addFaq={addFaq}
+        updateFaq={updateFaq}
+        removeFaq={removeFaq}
+      />
 
 
-
-      {/* ENTITY TYPES TABLE */}
-      <div className="space-y-5">
-        <div className="flex items-center justify-between gap-4">
-          <h3 className="text-lg font-semibold text-white">
-            Entity Types Table (At a Glance)
-          </h3>
-
-          <button
-            onClick={addEntityRow}
-            className="px-4 py-2 rounded-lg bg-green-600 hover:bg-green-700 transition text-sm font-semibold"
-          >
-            + Add Row
-          </button>
-        </div>
-
-        <input
-          value={(form as any).entityTableHeading || ""}
-          onChange={(e) => updateField("entityTableHeading", e.target.value)}
-          placeholder="Table Heading (ex: All Entity Types at a Glance)"
-          className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
-        />
-
-        {(form as any).entityTableRows?.length === 0 ? (
-          <p className="text-sm text-gray-400">No table rows added yet.</p>
-        ) : (
-          <div className="space-y-5">
-            {(form as any).entityTableRows.map((row: any, idx: number) => (
-              <div
-                key={idx}
-                className="border border-gray-800 rounded-2xl p-5 space-y-4 bg-black/20"
-              >
-                <div className="flex justify-between items-center">
-                  <p className="text-sm font-semibold text-gray-200">
-                    Row {idx + 1}
-                  </p>
-
-                  <button
-                    onClick={() => removeEntityRow(idx)}
-                    className="text-xs px-3 py-1 rounded-lg bg-red-800 hover:bg-red-700 transition"
-                  >
-                    Remove
-                  </button>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <input
-                    value={row.entityType}
-                    onChange={(e) =>
-                      updateEntityRow(idx, "entityType", e.target.value)
-                    }
-                    placeholder="Entity Type (ex: LLC)"
-                    className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
-                  />
-
-                  <input
-                    value={row.ownership}
-                    onChange={(e) =>
-                      updateEntityRow(idx, "ownership", e.target.value)
-                    }
-                    placeholder="Ownership (ex: Up to 100%)"
-                    className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <input
-                    value={row.bestFor}
-                    onChange={(e) => updateEntityRow(idx, "bestFor", e.target.value)}
-                    placeholder="Best For (ex: SMEs, ops)"
-                    className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
-                  />
-
-                  <input
-                    value={row.capital}
-                    onChange={(e) => updateEntityRow(idx, "capital", e.target.value)}
-                    placeholder="Capital (ex: Moderate)"
-                    className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <input
-                    value={row.regulatoryBody}
-                    onChange={(e) =>
-                      updateEntityRow(idx, "regulatoryBody", e.target.value)
-                    }
-                    placeholder="Regulatory Body (ex: MISA / MoC)"
-                    className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
-                  />
-
-                  <input
-                    value={row.timeToSetup}
-                    onChange={(e) =>
-                      updateEntityRow(idx, "timeToSetup", e.target.value)
-                    }
-                    placeholder="Time to Setup (ex: 2–6 weeks)"
-                    className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
-                  />
-                </div>
-
-                <input
-                  value={row.icon || ""}
-                  onChange={(e) => updateEntityRow(idx, "icon", e.target.value)}
-                  placeholder="Icon URL (optional)"
-                  className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
-                />
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-
-
-
-      {/* INTRO */}
-      <div className="space-y-5">
-        <h3 className="text-lg font-semibold text-white">Intro Section</h3>
-
-        <input
-          value={form.introHeading}
-          onChange={(e) => updateField("introHeading", e.target.value)}
-          placeholder="Intro Heading"
-          className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
-        />
-
-        <textarea
-          value={form.introText}
-          onChange={(e) => updateField("introText", e.target.value)}
-          placeholder="Intro Text"
-          rows={4}
-          className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500 resize-none"
-        />
-      </div>
-
-      {/* SECTIONS */}
-      <div className="space-y-5">
-        <div className="flex items-center justify-between gap-4">
-          <h3 className="text-lg font-semibold text-white">Sections</h3>
-
-          <button
-            onClick={addSection}
-            className="px-4 py-2 rounded-lg bg-green-600 hover:bg-green-700 transition text-sm font-semibold"
-          >
-            + Add Section
-          </button>
-        </div>
-
-        {form.sections.length === 0 ? (
-          <p className="text-sm text-gray-400">No sections added yet.</p>
-        ) : (
-          <div className="space-y-5">
-            {form.sections.map((sec, idx) => (
-              <div
-                key={idx}
-                className="border border-gray-800 rounded-2xl p-5 space-y-4 bg-black/20"
-              >
-                <div className="flex justify-between items-center">
-                  <p className="text-sm font-semibold text-gray-200">
-                    Section {idx + 1}
-                  </p>
-
-                  <button
-                    onClick={() => removeSection(idx)}
-                    className="text-xs px-3 py-1 rounded-lg bg-red-800 hover:bg-red-700 transition"
-                  >
-                    Remove
-                  </button>
-                </div>
-
-                <input
-                  value={sec.heading}
-                  onChange={(e) =>
-                    updateSection(idx, "heading", e.target.value)
-                  }
-                  placeholder="Section Heading"
-                  className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
-                />
-
-                <textarea
-                  value={sec.text}
-                  onChange={(e) => updateSection(idx, "text", e.target.value)}
-                  placeholder="Section Text"
-                  rows={4}
-                  className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500 resize-none"
-                />
-
-                <input
-                  value={sec.image || ""}
-                  onChange={(e) => updateSection(idx, "image", e.target.value)}
-                  placeholder="Section Image URL (optional)"
-                  className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
-                />
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* FAQ */}
-      <div className="space-y-5">
-        <div className="flex items-center justify-between gap-4">
-          <h3 className="text-lg font-semibold text-white">FAQs</h3>
-
-          <button
-            onClick={addFaq}
-            className="px-4 py-2 rounded-lg bg-green-600 hover:bg-green-700 transition text-sm font-semibold"
-          >
-            + Add FAQ
-          </button>
-        </div>
-
-        {form.faqs.length === 0 ? (
-          <p className="text-sm text-gray-400">No FAQs added yet.</p>
-        ) : (
-          <div className="space-y-5">
-            {form.faqs.map((faq, idx) => (
-              <div
-                key={idx}
-                className="border border-gray-800 rounded-2xl p-5 space-y-4 bg-black/20"
-              >
-                <div className="flex justify-between items-center">
-                  <p className="text-sm font-semibold text-gray-200">
-                    FAQ {idx + 1}
-                  </p>
-
-                  <button
-                    onClick={() => removeFaq(idx)}
-                    className="text-xs px-3 py-1 rounded-lg bg-red-800 hover:bg-red-700 transition"
-                  >
-                    Remove
-                  </button>
-                </div>
-
-                <input
-                  value={faq.q}
-                  onChange={(e) => updateFaq(idx, "q", e.target.value)}
-                  placeholder="Question"
-                  className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
-                />
-
-                <textarea
-                  value={faq.a}
-                  onChange={(e) => updateFaq(idx, "a", e.target.value)}
-                  placeholder="Answer"
-                  rows={4}
-                  className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500 resize-none"
-                />
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
 
       {/* SAVE */}
       <div className="flex justify-end pt-4 border-t border-gray-800">

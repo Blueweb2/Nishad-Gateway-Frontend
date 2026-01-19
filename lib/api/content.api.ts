@@ -20,3 +20,13 @@ export const adminSaveSubServiceContent = async (
   const res = await api.put(`/subservices/${subId}/content`, payload);
   return res.data;
 };
+
+export const getSubServiceContent = async (subId: string) => {
+  const res = await api.get(`/subservices/${subId}/content`);
+  return res.data; // { success, message, data }
+};
+
+export const getSubServiceContentBySlug = async (slug: string) => {
+  const res = await api.get(`/subservices/slug/${slug}/content`);
+  return res.data; // ✅ returns { success, message, data }
+};

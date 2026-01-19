@@ -4,32 +4,51 @@ import Image from "next/image";
 import Link from "next/link";
 import { Mail } from "lucide-react";
 import { useEffect, useState } from "react";
-import ServicesPopup from "./ServicesPopup";
 import { usePathname } from "next/navigation";
 
+import ServicesPopup from "./ServicesPopup";
+import BlogsPopup from "./BlogsPopup";
+import HamburgerMenu from "./HamburgerMenu";
+import ContactPopup from "./ContactPopup";
+
+
 export default function Navbar() {
-  const [open, setOpen] = useState(false);
-  const [useColoredLogo, setUseColoredLogo] = useState(false);
   const pathname = usePathname();
 
+  // ✅ separate states
+  const [openServices, setOpenServices] = useState(false);
+  const [openBlogs, setOpenBlogs] = useState(false);
+
+  const [useColoredLogo, setUseColoredLogo] = useState(false);
+  const [openMenu, setOpenMenu] = useState(false);
+  const [openContact, setOpenContact] = useState(false);
+
+
+  // ✅ change navbar color based on white sections
   useEffect(() => {
-  const whiteSections = document.querySelectorAll('[data-navbar="white"]');
+    const whiteSections = document.querySelectorAll('[data-navbar="white"]');
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      const anyWhiteVisible = entries.some((e) => e.isIntersecting);
-      setUseColoredLogo(anyWhiteVisible);
-    },
-    {
-      rootMargin: "0px 0px 0px 0px",
-      threshold: 0.01,
-    }
-  );
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const anyWhiteVisible = entries.some((e) => e.isIntersecting);
+        setUseColoredLogo(anyWhiteVisible);
+      },
+      {
+        rootMargin: "0px 0px 0px 0px",
+        threshold: 0.01,
+      }
+    );
 
-  whiteSections.forEach((section) => observer.observe(section));
-  return () => observer.disconnect();
-}, [pathname]);
+    whiteSections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, [pathname]);
 
+  // ✅ close popups on route change
+  useEffect(() => {
+    setOpenServices(false);
+    setOpenBlogs(false);
+    setOpenMenu(false);
+  }, [pathname]);
 
   const isLight = useColoredLogo;
 
@@ -39,7 +58,6 @@ export default function Navbar() {
       <header
         className={`
           fixed top-0 left-0 w-full z-[9999]
-
           ${isLight ? "bg-white" : "bg-transparent"}
         `}
       >
@@ -59,18 +77,20 @@ export default function Navbar() {
 
             {/* CENTER — SERVICES + BLOG */}
             <div className="hidden md:flex items-center gap-5">
-              {/* Services */}
+              {/* ✅ Services Button */}
               <button
-                onClick={() => setOpen((prev) => !prev)}
+                onClick={() => {
+                  setOpenServices((prev) => !prev);
+                  setOpenBlogs(false);
+                }}
                 className={`
                   flex items-center gap-2
                   px-4 py-2 rounded-full
                   text-sm font-medium
                   transition-all
-                  ${
-                    isLight
-                      ? "bg-gray-100 text-black hover:bg-gray-200"
-                      : open
+                  ${isLight
+                    ? "bg-gray-100 text-black hover:bg-gray-200"
+                    : openServices
                       ? "bg-white text-gray-900"
                       : "bg-white/10 text-white hover:bg-white/20"
                   }
@@ -80,29 +100,42 @@ export default function Navbar() {
                 <span
                   className={`
                     text-lg leading-none transition-transform
-                    ${open ? "rotate-45" : ""}
+                    ${openServices ? "rotate-45" : ""}
                   `}
                 >
                   +
                 </span>
               </button>
 
-              {/* Blog */}
-              <Link
-                href="#"
+              {/* ✅ Blog Button */}
+              <button
+                onClick={() => {
+                  setOpenBlogs((prev) => !prev);
+                  setOpenServices(false);
+                }}
                 className={`
+                  flex items-center gap-2
                   px-4 py-2 rounded-full
-                  text-sm
-                  transition
-                  ${
-                    isLight
-                      ? "bg-gray-100 text-black hover:bg-gray-200"
+                  text-sm font-medium
+                  transition-all
+                  ${isLight
+                    ? "bg-gray-100 text-black hover:bg-gray-200"
+                    : openBlogs
+                      ? "bg-white text-gray-900"
                       : "bg-white/10 text-white hover:bg-white/20"
                   }
                 `}
               >
-                Blog +
-              </Link>
+                Blog
+                <span
+                  className={`
+                    text-lg leading-none transition-transform
+                    ${openBlogs ? "rotate-45" : ""}
+                  `}
+                >
+                  +
+                </span>
+              </button>
             </div>
 
             {/* RIGHT — PHONE + CTA + MENU */}
@@ -118,62 +151,79 @@ export default function Navbar() {
               </span>
 
               {/* Contact Us */}
-              <Link
-                href="#"
+              <button
+                onClick={() => {
+                  setOpenContact(true);
+                  setOpenServices(false);
+                  setOpenBlogs(false);
+                  setOpenMenu(false);
+                }}
                 className={`
-                  flex items-center gap-2
-                  text-sm font-medium
-                  px-5 py-2
-                  rounded-full
-                  transition
-                  ${
-                    isLight
-                      ? "bg-gray-100 text-green-700 hover:bg-gray-200"
-                      : "bg-white text-green-600 hover:bg-gray-100"
+    flex items-center gap-2
+    text-sm font-medium
+    px-5 py-2
+    rounded-full
+    transition
+    ${isLight
+                    ? "bg-gray-100 text-green-700 hover:bg-gray-200"
+                    : "bg-white text-green-600 hover:bg-gray-100"
                   }
-                `}
+  `}
               >
                 Contact Us
                 <Mail size={16} />
-              </Link>
+              </button>
+              <ContactPopup open={openContact} onClose={() => setOpenContact(false)} />
+
+
 
               {/* Hamburger */}
+              {/* Hamburger / Close Button */}
               <button
+                onClick={() => {
+                  setOpenMenu((prev) => !prev);
+                  setOpenServices(false);
+                  setOpenBlogs(false);
+                }}
                 className={`
-                  relative
-                  flex items-center justify-center
-                  w-16 h-10
-                  rounded-full
-                  transition-all duration-300
-                  ${
-                    isLight
+    relative flex items-center justify-center
+    w-14 h-10 rounded-full
+    transition-all duration-300
+    ${openMenu
+                    ? "bg-green-700 hover:bg-green-600"
+                    : isLight
                       ? "bg-white border border-gray-300 shadow-sm"
-                      : "bg-black/30 border border-white/70 backdrop-blur-md shadow-[0_0_20px_rgba(255,255,255,0.15)] hover:shadow-[0_0_30px_rgba(255,255,255,0.25)]"
+                      : "bg-black/30 border border-white/70 backdrop-blur-md"
                   }
-                `}
+  `}
               >
-                <div className="flex flex-col gap-1">
-                  <span
-                    className={`
-                      w-5 h-[2px] rounded-full
-                      ${isLight ? "bg-black" : "bg-white"}
-                    `}
-                  />
-                  <span
-                    className={`
-                      w-5 h-[2px] rounded-full
-                      ${isLight ? "bg-black" : "bg-white"}
-                    `}
-                  />
-                </div>
+                {openMenu ? (
+                  <span className="text-white text-xl font-semibold leading-none">×</span>
+                ) : (
+                  <div className="flex flex-col gap-1">
+                    <span
+                      className={`w-5 h-[2px] rounded-full ${isLight ? "bg-black" : "bg-white"
+                        }`}
+                    />
+                    <span
+                      className={`w-5 h-[2px] rounded-full ${isLight ? "bg-black" : "bg-white"
+                        }`}
+                    />
+                  </div>
+                )}
               </button>
+
+              <HamburgerMenu open={openMenu} onClose={() => setOpenMenu(false)} />
             </div>
           </nav>
         </div>
       </header>
 
-      {/* SERVICES POPUP */}
-      <ServicesPopup open={open} onClose={() => setOpen(false)} />
+      {/* ✅ SERVICES POPUP */}
+      <ServicesPopup open={openServices} onClose={() => setOpenServices(false)} />
+
+      {/* ✅ BLOGS POPUP */}
+      <BlogsPopup open={openBlogs} onClose={() => setOpenBlogs(false)} />
     </>
   );
 }

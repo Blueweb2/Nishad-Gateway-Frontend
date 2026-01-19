@@ -90,28 +90,65 @@ xl: 768px   // Fold / Tablet */
 
 
 
-
-.water-ripple {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  transform: translate(-50%, -50%);
-  border-radius: 999px;
-  pointer-events: none;
-
-  border: 2px solid rgba(255, 255, 255, 0.25);
-  box-shadow: 0 0 18px rgba(255, 255, 255, 0.15);
-
-  animation: rippleExpand 0.9s ease-out forwards;
+/* humburger */
+@keyframes menuIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) translateX(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) translateX(0) scale(1);
+  }
 }
 
-@keyframes rippleExpand {
-  0% {
-    opacity: 0.6;
-    transform: translate(-50%, -50%) scale(0.2);
+@keyframes menuOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) translateX(0) scale(1);
   }
-  100% {
+  to {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(6);
+    transform: translateY(-10px) translateX(10px) scale(0.98);
   }
+}
+
+.animate-menuIn {
+  animation: menuIn 0.45s ease forwards;
+}
+
+.animate-menuOut {
+  animation: menuOut 0.45s ease forwards;
+}
+
+
+/* contact us  */
+@keyframes sheetReveal {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes sheetHide {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+  }
+}
+
+.animate-sheetReveal {
+  animation: sheetReveal 0.45s ease forwards;
+}
+
+.animate-sheetHide {
+  animation: sheetHide 0.45s ease forwards;
 }
