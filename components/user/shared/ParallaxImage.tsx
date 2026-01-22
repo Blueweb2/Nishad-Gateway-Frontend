@@ -31,7 +31,7 @@ export default function ParallaxImage({
   return (
     <div ref={ref} className={`relative overflow-hidden ${className}`}>
       <motion.div style={{ y }} className="absolute inset-0">
-        {/* ✅ overscan (extra area so it won’t cut while moving) */}
+        {/*  overscan (extra area so it won’t cut while moving) */}
         <div className="absolute inset-[-120px]">
           <Image
             src={src}

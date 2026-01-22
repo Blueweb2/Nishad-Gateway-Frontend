@@ -259,7 +259,7 @@ export default function DocumentsRequiredEditor({
 
       if (res?.data?.url) {
         updateCardIcon(entityValue, cardIndex, res.data.url);
-        toast.success("Uploaded ✅", { id: toastId });
+        toast.success("Uploaded ", { id: toastId });
       } else {
         toast.error("Upload failed", { id: toastId });
       }

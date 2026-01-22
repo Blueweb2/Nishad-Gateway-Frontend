@@ -25,7 +25,7 @@ export default function ServiceTable({ services, loading, onRefresh }: Props) {
 
     try {
       await adminDeleteService(id);
-      toast.success("Service deleted ✅");
+      toast.success("Service deleted ");
       onRefresh();
     } catch (err) {
       toast.error("Delete failed ❌");

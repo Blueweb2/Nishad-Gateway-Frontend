@@ -29,7 +29,7 @@ export default function SubServiceDynamicPage() {
         return;
       }
 
-      // ✅ actual content is inside res.data
+      //  actual content is inside res.data
       setContent(res.data);
     } catch (err) {
       toast.error("Failed to load subservice content");

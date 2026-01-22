@@ -8,15 +8,18 @@ import {
   Briefcase,
   PlusCircle,
   LogOut,
+  Users
 } from "lucide-react";
 
 const links = [
   { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
   { name: "Blogs", href: "/admin/blogs", icon: FileText },
 
-  // ✅ Services Module
+  //  Services Module
   { name: "Services", href: "/admin/services", icon: Briefcase },
   { name: "Add Service", href: "/admin/services/create", icon: PlusCircle },
+
+   { name: "Leads", href: "/admin/leads", icon: Users },
 ];
 
 export default function AdminSidebar() {

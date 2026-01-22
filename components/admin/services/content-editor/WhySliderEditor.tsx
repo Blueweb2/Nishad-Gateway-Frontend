@@ -2,6 +2,8 @@
 
 import toast from "react-hot-toast";
 import { uploadImage } from "@/lib/api/upload.api";
+import { cloudinaryAutoWebp } from "@/utils/cloudinary";
+
 
 export type WhySlide = {
   title: string;
@@ -33,7 +35,7 @@ export default function WhySliderEditor({
   removeWhySlide,
 }: Props) {
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 py-20">
       <div className="flex items-center justify-between gap-4">
         <h3 className="text-lg font-semibold text-white">
           Why Section (Slider)
@@ -128,8 +130,11 @@ export default function WhySliderEditor({
                       const res = await uploadImage(file);
 
                       if (res?.data?.url) {
-                        updateWhySlide(idx, "image", res.data.url);
-                        toast.success("Uploaded ✅", { id: toastId });
+                        updateWhySlide(idx, "image", cloudinaryAutoWebp(res.data.url));
+
+                        toast.success("Uploaded ", { id: toastId });
+
+                        e.target.value = "";
                       } else {
                         toast.error("Upload failed", { id: toastId });
                       }

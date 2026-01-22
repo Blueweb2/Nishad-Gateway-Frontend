@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Minus } from "lucide-react";
 
 // ✅ Sections
 import HeroSection from "@/components/user/services/SubServiceTemplate/sections/HeroSection";
@@ -12,6 +11,7 @@ import OwnershipSliderSection from "@/components/user/services/SubServiceTemplat
 import EntityChooseSection from "@/components/user/services/SubServiceTemplate/sections/EntityChooseSection";
 import DocumentsRequiredSection from "@/components/user/services/SubServiceTemplate/sections/DocumentsRequiredSection";
 import LocationsSliderSection from "@/components/user/services/SubServiceTemplate/sections/LocationsSliderSection";
+import FaqSection from "./sections/FaqSection";
 
 // ============================
 // TYPES
@@ -42,6 +42,11 @@ type EntityRow = {
   regulatoryBody: string;
   timeToSetup: string;
   icon?: string;
+};
+
+type EntityTableColumn = {
+  key: string;
+  label: string;
 };
 
 type EntityTypeSlide = {
@@ -106,6 +111,7 @@ export type SubServiceContent = {
 
   // ENTITY TABLE
   entityTableHeading: string;
+  entityTableColumns?: EntityTableColumn[]; // ✅ NEW
   entityTableRows: EntityRow[];
 
   // ENTITY TYPES SLIDER
@@ -128,7 +134,7 @@ export type SubServiceContent = {
   documentEntityTabs: DocumentTab[];
   documentGroups: DocumentGroup[];
 
-  // LOCATIONS SLIDER ✅
+  // LOCATIONS SLIDER
   locationsHeading: string;
   locationsSubheading: string;
   locationsSlides: LocationSlide[];
@@ -150,116 +156,107 @@ type Props = {
 export default function SubServiceTemplate({ content }: Props) {
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
 
+  // show only the added sections
+  const hasText = (v?: string) => typeof v === "string" && v.trim().length > 0;
+  const hasArray = (v?: any[]) => Array.isArray(v) && v.length > 0;
+
   return (
     <div className="w-full bg-[#050505] text-white">
       {/* HERO */}
-      <HeroSection
-        heroTitle={content.heroTitle}
-        heroSubtitle={content.heroSubtitle}
-        heroDescription={content.heroDescription}
-        heroButtonText={content.heroButtonText}
-        heroButtonLink={content.heroButtonLink}
-        heroImage={content.heroImage}
-      />
+      {(hasText(content.heroTitle) ||
+        hasText(content.heroSubtitle) ||
+        hasText(content.heroDescription) ||
+        hasText(content.heroButtonText) ||
+        hasText(content.heroButtonLink) ||
+        hasText(content.heroImage)) && (
+        <HeroSection
+          heroTitle={content.heroTitle}
+          heroSubtitle={content.heroSubtitle}
+          heroDescription={content.heroDescription}
+          heroButtonText={content.heroButtonText}
+          heroButtonLink={content.heroButtonLink}
+          heroImage={content.heroImage}
+        />
+      )}
 
       {/* WHY */}
-      <WhySliderSection
-        whyHeading={content.whyHeading}
-        whySlides={content.whySlides}
-        whyCtaText={content.whyCtaText}
-        whyCtaLink={content.whyCtaLink}
-      />
+      {(hasText(content.whyHeading) || hasArray(content.whySlides)) && (
+        <WhySliderSection
+          whyHeading={content.whyHeading}
+          whySlides={content.whySlides}
+          whyCtaText={content.whyCtaText}
+          whyCtaLink={content.whyCtaLink}
+        />
+      )}
 
       {/* ENTITY TABLE */}
-      <EntityTableSection
-        entityTableHeading={content.entityTableHeading}
-        entityTableRows={content.entityTableRows}
-      />
+      {hasArray(content.entityTableRows) && (
+        <EntityTableSection
+          entityTableHeading={content.entityTableHeading}
+          entityTableColumns={content.entityTableColumns} // ✅ works now
+          entityTableRows={content.entityTableRows}
+        />
+      )}
 
       {/* ENTITY TYPES */}
-      <EntityTypesSliderSection
-        entityTypesHeading={content.entityTypesHeading}
-        entityTypesDescription={content.entityTypesDescription}
-        entityTypesSlides={content.entityTypesSlides}
-      />
+      {(hasText(content.entityTypesHeading) ||
+        hasText(content.entityTypesDescription) ||
+        hasArray(content.entityTypesSlides)) && (
+        <EntityTypesSliderSection
+          entityTypesHeading={content.entityTypesHeading}
+          entityTypesDescription={content.entityTypesDescription}
+          entityTypesSlides={content.entityTypesSlides}
+        />
+      )}
 
       {/* OWNERSHIP */}
-      <OwnershipSliderSection
-        ownershipHeading={content.ownershipHeading}
-        ownershipSlides={content.ownershipSlides}
-      />
+      {(hasText(content.ownershipHeading) ||
+        hasArray(content.ownershipSlides)) && (
+        <OwnershipSliderSection
+          ownershipHeading={content.ownershipHeading}
+          ownershipSlides={content.ownershipSlides}
+        />
+      )}
 
       {/* ENTITY CHOOSE */}
-      <EntityChooseSection
-        entityChooseHeading={content.entityChooseHeading}
-        entityChooseSubheading={content.entityChooseSubheading}
-        entityChooseQuestions={content.entityChooseQuestions}
-      />
+      {(hasText(content.entityChooseHeading) ||
+        hasText(content.entityChooseSubheading) ||
+        hasArray(content.entityChooseQuestions)) && (
+        <EntityChooseSection
+          entityChooseHeading={content.entityChooseHeading}
+          entityChooseSubheading={content.entityChooseSubheading}
+          entityChooseQuestions={content.entityChooseQuestions}
+        />
+      )}
 
       {/* DOCUMENTS REQUIRED */}
-      <DocumentsRequiredSection
-        documentsHeading={content.documentsHeading}
-        documentsSubheading={content.documentsSubheading}
-        documentEntityTabs={content.documentEntityTabs}
-        documentGroups={content.documentGroups}
-      />
+      {(hasText(content.documentsHeading) ||
+        hasText(content.documentsSubheading) ||
+        hasArray(content.documentEntityTabs) ||
+        hasArray(content.documentGroups)) && (
+        <DocumentsRequiredSection
+          documentsHeading={content.documentsHeading}
+          documentsSubheading={content.documentsSubheading}
+          documentEntityTabs={content.documentEntityTabs}
+          documentGroups={content.documentGroups}
+        />
+      )}
 
       {/* LOCATIONS SLIDER */}
-      <LocationsSliderSection
-        locationsHeading={content.locationsHeading}
-        locationsSubheading={content.locationsSubheading}
-        locationsSlides={content.locationsSlides}
-      />
+      {(hasText(content.locationsHeading) ||
+        hasText(content.locationsSubheading) ||
+        hasArray(content.locationsSlides)) && (
+        <LocationsSliderSection
+          locationsHeading={content.locationsHeading}
+          locationsSubheading={content.locationsSubheading}
+          locationsSlides={content.locationsSlides}
+        />
+      )}
 
       {/* FAQ */}
-      <section className="w-full py-16 bg-white text-black">
-        <div className="w-full max-w-6xl mx-auto px-6 md:px-10">
-          <h2 className="text-3xl md:text-4xl font-bold">
-            {content.faqHeading || "Frequently Asked Questions"}
-          </h2>
-
-          <div className="mt-10 border-t border-gray-200">
-            {content.faqs?.length === 0 ? (
-              <p className="text-gray-500 mt-6">No FAQs added yet.</p>
-            ) : (
-              content.faqs.map((faq, idx) => {
-                const open = openFaqIndex === idx;
-
-                return (
-                  <div key={idx} className="border-b border-gray-200 py-6">
-                    <button
-                      onClick={() => setOpenFaqIndex(open ? null : idx)}
-                      className="w-full flex items-center justify-between text-left"
-                    >
-                      <p
-                        className={`text-lg font-medium ${
-                          open ? "text-teal-700" : "text-gray-900"
-                        }`}
-                      >
-                        {faq.q}
-                      </p>
-
-                      <span className="ml-4">
-                        {open ? (
-                          <Minus className="w-5 h-5 text-teal-700" />
-                        ) : (
-                          <Plus className="w-5 h-5 text-gray-500" />
-                        )}
-                      </span>
-                    </button>
-
-                    {open && (
-                      <p className="mt-3 text-sm text-gray-600 leading-relaxed max-w-2xl">
-                        {faq.a}
-                      </p>
-                    )}
-                  </div>
-                );
-              })
-            )}
-          </div>
-        </div>
-      </section>
+      {hasArray(content.faqs) && (
+        <FaqSection faqHeading={content.faqHeading} faqs={content.faqs} />
+      )}
     </div>
   );
 }

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
-import { getServicesMenu } from "@/lib/api/services.api"; // ✅ create this function
+import { getServicesMenu } from "@/lib/api/services.api"; //  create this function
 
 type SubServiceItem = {
   _id: string;
@@ -47,7 +47,7 @@ export default function ServicesPopup({
     }
   }, [open]);
 
-  // ✅ Fetch services menu when popup opens
+  //  Fetch services menu when popup opens
   useEffect(() => {
     if (!open) return;
 

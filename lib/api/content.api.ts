@@ -28,5 +28,5 @@ export const getSubServiceContent = async (subId: string) => {
 
 export const getSubServiceContentBySlug = async (slug: string) => {
   const res = await api.get(`/subservices/slug/${slug}/content`);
-  return res.data; // ✅ returns { success, message, data }
+  return res.data; //  returns { success, message, data }
 };

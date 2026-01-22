@@ -7,7 +7,7 @@ export async function uploadToCloudinary(file: File, folder: string) {
   formData.append("upload_preset", uploadPreset);
   formData.append("folder", folder);
 
-  // ✅ Force stored format as WEBP
+  //  Force stored format as WEBP
   formData.append("format", "webp");
 
   const res = await fetch(

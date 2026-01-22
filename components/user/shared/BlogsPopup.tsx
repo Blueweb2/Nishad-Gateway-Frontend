@@ -22,7 +22,7 @@ export default function BlogsPopup({
     open: boolean;
     onClose: () => void;
 }) {
-    // ✅ controls mount / unmount (same as ServicesPopup)
+    //  controls mount / unmount (same as ServicesPopup)
     const [render, setRender] = useState(open);
 
     useEffect(() => {
@@ -34,7 +34,7 @@ export default function BlogsPopup({
         }
     }, [open]);
 
-    // ✅ ESC close
+    //  ESC close
     useEffect(() => {
         const onEsc = (e: KeyboardEvent) => {
             if (e.key === "Escape") onClose();
@@ -43,7 +43,7 @@ export default function BlogsPopup({
         return () => window.removeEventListener("keydown", onEsc);
     }, [onClose]);
 
-    // ✅ Static UI items (no API)
+    //  Static UI items (no API)
     const blogItems: BlogItem[] = useMemo(
         () => [
             {

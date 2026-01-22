@@ -9,7 +9,7 @@ export default function HomePage() {
         {/* Background image */}
         <div className="absolute inset-0 -z-10">
           <Image
-            src="/hero.jpg" // ✅ change this to your hero image
+            src="/hero.jpg" 
             alt="Saudi Arabia"
             fill
             priority

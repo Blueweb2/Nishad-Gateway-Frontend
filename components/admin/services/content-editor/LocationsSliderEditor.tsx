@@ -148,7 +148,7 @@ export default function LocationsSliderEditor({
 
                       if (res?.data?.url) {
                         updateLocationSlide(idx, "image", res.data.url);
-                        toast.success("Uploaded ✅", { id: toastId });
+                        toast.success("Uploaded ", { id: toastId });
                       } else {
                         toast.error("Upload failed", { id: toastId });
                       }

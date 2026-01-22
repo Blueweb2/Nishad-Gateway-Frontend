@@ -11,7 +11,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <AdminTopbar />
         <main className="p-6">{children}</main>
 
-        {/* ✅ Toasts */}
+        {/* Toasts */}
         <Toaster position="top-right" />
       </div>
     </div>

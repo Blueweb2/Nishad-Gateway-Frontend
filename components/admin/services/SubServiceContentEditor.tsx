@@ -2,18 +2,23 @@
 
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { ChevronDown } from "lucide-react";
 
 import {
   adminGetSubServiceContent,
   adminSaveSubServiceContent,
 } from "@/lib/api/content.api";
 
-import { uploadImage } from "@/lib/api/upload.api";
-import WhySliderEditor, { WhySlide } from "@/components/admin/services/content-editor/WhySliderEditor";
-import EntityTableEditor, { EntityRow } from "@/components/admin/services/content-editor/EntityTableEditor";
-import EntityTypesSliderEditor, { EntityTypeSlide } from "@/components/admin/services/content-editor/EntityTypesSliderEditor";
-
-
+import HeroEditor from "@/components/admin/services/content-editor/HeroEditor";
+import WhySliderEditor, {
+  WhySlide,
+} from "@/components/admin/services/content-editor/WhySliderEditor";
+import EntityTableEditor, {
+  EntityRow,
+} from "@/components/admin/services/content-editor/EntityTableEditor";
+import EntityTypesSliderEditor, {
+  EntityTypeSlide,
+} from "@/components/admin/services/content-editor/EntityTypesSliderEditor";
 
 import OwnershipSliderEditor, {
   OwnershipSlide,
@@ -27,15 +32,13 @@ import LocationsSliderEditor, {
 } from "@/components/admin/services/content-editor/LocationsSliderEditor";
 
 import FaqEditor from "@/components/admin/services/content-editor/FaqEditor";
-
+import AdminAccordion from "../ui/AdminAccordion";
 
 type Section = {
   heading: string;
   text: string;
   image?: string;
 };
-
-
 
 type EntityChooseQuestion = {
   question: string;
@@ -52,11 +55,29 @@ type Props = {
   subId: string;
 };
 
+const DEFAULT_SECTION_ORDER = [
+  "hero",
+  "why",
+  "entityTable",
+  "entityTypes",
+  "ownership",
+  "entityChoose",
+  "documents",
+  "locations",
+  "faq",
+] as const;
+
 export default function SubServiceContentEditor({ subId }: Props) {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
+  // ✅ Accordion open state (only one open)
+  const [openSection, setOpenSection] = useState<string>("hero");
+
   const [form, setForm] = useState({
+    sectionOrder: [...DEFAULT_SECTION_ORDER] as string[],
+
+    // HERO
     heroTitle: "",
     heroSubtitle: "",
     heroDescription: "",
@@ -74,21 +95,17 @@ export default function SubServiceContentEditor({ subId }: Props) {
     ownershipHeading: "",
     ownershipSlides: [] as OwnershipSlide[],
 
+    // ENTITY TABLE
     entityTableHeading: "",
-    entityTableRows: [] as {
-      entityType: string;
-      ownership: string;
-      bestFor: string;
-      capital: string;
-      regulatoryBody: string;
-      timeToSetup: string;
-      icon?: string;
-    }[],
+    entityTableRows: [] as EntityRow[],
 
+
+    // ENTITY TYPES SLIDER
     entityTypesHeading: "",
     entityTypesDescription: "",
     entityTypesSlides: [] as EntityTypeSlide[],
 
+    // ENTITY CHOOSE
     entityChooseHeading: "",
     entityChooseSubheading: "",
     entityChooseQuestions: [] as EntityChooseQuestion[],
@@ -107,15 +124,38 @@ export default function SubServiceContentEditor({ subId }: Props) {
     locationsSubheading: "",
     locationsSlides: [] as LocationSlide[],
 
+    // INTRO
     introHeading: "",
     introText: "",
 
+    // SECTIONS
     sections: [] as Section[],
 
+    // FAQ
     faqHeading: "Frequently Asked Questions",
     faqs: [] as FAQ[],
-
   });
+
+  const sectionLabels: Record<string, string> = {
+    hero: "Hero Section",
+    why: "Why Section",
+    entityTable: "Entity Table",
+    entityTypes: "Entity Types Slider",
+    ownership: "Ownership Slider",
+    entityChoose: "Entity Choose",
+    documents: "Documents Required",
+    locations: "Locations Slider",
+    faq: "FAQ Section",
+  };
+
+  const moveSection = (fromIndex: number, toIndex: number) => {
+    setForm((prev) => {
+      const updated = [...prev.sectionOrder];
+      const [moved] = updated.splice(fromIndex, 1);
+      updated.splice(toIndex, 0, moved);
+      return { ...prev, sectionOrder: updated };
+    });
+  };
 
   const fetchContent = async () => {
     try {
@@ -125,6 +165,8 @@ export default function SubServiceContentEditor({ subId }: Props) {
 
       if (res.data) {
         setForm({
+          sectionOrder: res.data.sectionOrder || [...DEFAULT_SECTION_ORDER],
+
           heroTitle: res.data.heroTitle || "",
           heroSubtitle: res.data.heroSubtitle || "",
           heroDescription: res.data.heroDescription || "",
@@ -164,11 +206,12 @@ export default function SubServiceContentEditor({ subId }: Props) {
           introText: res.data.introText || "",
 
           sections: res.data.sections || [],
+
           faqHeading: res.data.faqHeading || "Frequently Asked Questions",
           faqs: res.data.faqs || [],
         });
       }
-    } catch (err) {
+    } catch {
       toast.error("Failed to fetch content");
     } finally {
       setLoading(false);
@@ -179,7 +222,7 @@ export default function SubServiceContentEditor({ subId }: Props) {
     fetchContent();
   }, [subId]);
 
-  const updateField = (name: string, value: string) => {
+  const updateField = (name: string, value: any) => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -207,74 +250,76 @@ export default function SubServiceContentEditor({ subId }: Props) {
   };
 
   // ENTITY TABLE HANDLERS
-const addEntityRow = () => {
-  setForm((prev) => ({
-    ...prev,
-    entityTableRows: [
-      ...(prev.entityTableRows || []),
-      {
-        entityType: "",
-        ownership: "",
-        bestFor: "",
-        capital: "",
-        regulatoryBody: "",
-        timeToSetup: "",
-        icon: "",
-      },
-    ],
-  }));
-};
-
-const updateEntityRow = (
-  index: number,
-  key: keyof EntityRow,
-  value: string
-) => {
-  setForm((prev) => {
-    const updated = [...prev.entityTableRows];
-    updated[index] = { ...updated[index], [key]: value };
-    return { ...prev, entityTableRows: updated };
-  });
-};
-
-const removeEntityRow = (index: number) => {
-  setForm((prev) => ({
-    ...prev,
-    entityTableRows: prev.entityTableRows.filter((_, i) => i !== index),
-  }));
-};
+  const addEntityRow = () => {
+    setForm((prev) => ({
+      ...prev,
+      entityTableRows: [
+        ...(prev.entityTableRows || []),
+        {
+          id: crypto.randomUUID(), // ✅ stable unique key
+          entityType: "",
+          ownership: "",
+          bestFor: "",
+          capital: "",
+          regulatoryBody: "",
+          timeToSetup: "",
+          icon: "",
+        },
+      ],
+    }));
+  };
 
 
-// ENTITY TYPES SLIDER HANDLERS
-const addEntityTypeSlide = () => {
-  setForm((prev) => ({
-    ...prev,
-    entityTypesSlides: [
-      ...(prev.entityTypesSlides || []),
-      { title: "", image: "", description: "" },
-    ],
-  }));
-};
+  const updateEntityRow = (
+    rowId: string,
+    key: keyof EntityRow,
+    value: string
+  ) => {
+    setForm((prev) => ({
+      ...prev,
+      entityTableRows: prev.entityTableRows.map((row) =>
+        row.id === rowId ? { ...row, [key]: value } : row
+      ),
+    }));
+  };
 
-const updateEntityTypeSlide = (
-  index: number,
-  key: keyof EntityTypeSlide,
-  value: string
-) => {
-  setForm((prev) => {
-    const updated = [...prev.entityTypesSlides];
-    updated[index] = { ...updated[index], [key]: value };
-    return { ...prev, entityTypesSlides: updated };
-  });
-};
+  const removeEntityRow = (rowId: string) => {
+    setForm((prev) => ({
+      ...prev,
+      entityTableRows: prev.entityTableRows.filter((row) => row.id !== rowId),
+    }));
+  };
 
-const removeEntityTypeSlide = (index: number) => {
-  setForm((prev) => ({
-    ...prev,
-    entityTypesSlides: prev.entityTypesSlides.filter((_, i) => i !== index),
-  }));
-};
 
+  // ENTITY TYPES SLIDER HANDLERS
+  const addEntityTypeSlide = () => {
+    setForm((prev) => ({
+      ...prev,
+      entityTypesSlides: [
+        ...(prev.entityTypesSlides || []),
+        { title: "", image: "", description: "" },
+      ],
+    }));
+  };
+
+  const updateEntityTypeSlide = (
+    index: number,
+    key: keyof EntityTypeSlide,
+    value: string
+  ) => {
+    setForm((prev) => {
+      const updated = [...prev.entityTypesSlides];
+      updated[index] = { ...updated[index], [key]: value };
+      return { ...prev, entityTypesSlides: updated };
+    });
+  };
+
+  const removeEntityTypeSlide = (index: number) => {
+    setForm((prev) => ({
+      ...prev,
+      entityTypesSlides: prev.entityTypesSlides.filter((_, i) => i !== index),
+    }));
+  };
 
   // OWNERSHIP SLIDER HANDLERS
   const addOwnershipSlide = () => {
@@ -339,9 +384,7 @@ const removeEntityTypeSlide = (index: number) => {
   const removeChooseQuestion = (index: number) => {
     setForm((prev) => ({
       ...prev,
-      entityChooseQuestions: prev.entityChooseQuestions.filter(
-        (_, i) => i !== index
-      ),
+      entityChooseQuestions: prev.entityChooseQuestions.filter((_, i) => i !== index),
     }));
   };
 
@@ -374,9 +417,7 @@ const removeEntityTypeSlide = (index: number) => {
   const removeChooseOption = (qIndex: number, optIndex: number) => {
     setForm((prev) => {
       const updated = [...prev.entityChooseQuestions];
-      updated[qIndex].options = updated[qIndex].options.filter(
-        (_, i) => i !== optIndex
-      );
+      updated[qIndex].options = updated[qIndex].options.filter((_, i) => i !== optIndex);
       return { ...prev, entityChooseQuestions: updated };
     });
   };
@@ -417,11 +458,7 @@ const removeEntityTypeSlide = (index: number) => {
     }));
   };
 
-
-
-  // ===============================
   // FAQ HANDLERS
-  // ===============================
   const addFaq = () => {
     setForm((prev) => ({
       ...prev,
@@ -444,15 +481,11 @@ const removeEntityTypeSlide = (index: number) => {
     }));
   };
 
-
-
-
-
   const handleSave = async () => {
     try {
       setSaving(true);
       await adminSaveSubServiceContent(subId, form);
-      toast.success("Content saved successfully ✅");
+      toast.success("Content saved successfully ");
     } catch (err: any) {
       toast.error(err?.response?.data?.message || "Save failed");
     } finally {
@@ -461,6 +494,44 @@ const removeEntityTypeSlide = (index: number) => {
   };
 
   if (loading) return <p className="text-gray-400">Loading content editor...</p>;
+
+  // ✅ Accordion wrapper UI component
+  const AccordionItem = ({
+    id,
+    title,
+    children,
+  }: {
+    id: string;
+    title: string;
+    children: React.ReactNode;
+  }) => {
+    const open = openSection === id;
+
+    return (
+      <div className="border border-gray-800 rounded-2xl overflow-hidden bg-black/30">
+        <button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            setOpenSection(open ? "" : id);
+          }} className="w-full flex items-center justify-between px-5 py-4 text-left"
+        >
+          <p className="text-white font-semibold">{title}</p>
+
+          <ChevronDown
+            className={`w-5 h-5 text-gray-300 transition ${open ? "rotate-180" : ""
+              }`}
+          />
+        </button>
+
+        {open && (
+          <div className="px-5 pb-6 pt-2 border-t border-gray-800">
+            {children}
+          </div>
+        )}
+      </div>
+    );
+  };
 
   return (
     <div className="w-full max-w-[950px] bg-[#0b0f0b] border border-green-700/30 rounded-2xl p-8 md:p-10 space-y-10">
@@ -474,175 +545,230 @@ const removeEntityTypeSlide = (index: number) => {
         </p>
       </div>
 
-      {/* HERO */}
-      <div className="space-y-5">
-        <h3 className="text-lg font-semibold text-white">Hero Section</h3>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <input
-            value={form.heroTitle}
-            onChange={(e) => updateField("heroTitle", e.target.value)}
-            placeholder="Hero Title"
-            className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
-          />
-
-          <input
-            value={form.heroSubtitle}
-            onChange={(e) => updateField("heroSubtitle", e.target.value)}
-            placeholder="Hero Subtitle"
-            className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
-          />
-        </div>
-
-        <textarea
-          value={form.heroDescription}
-          onChange={(e) => updateField("heroDescription", e.target.value)}
-          placeholder="Hero Description"
-          rows={3}
-          className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500 resize-none"
-        />
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <input
-            value={form.heroButtonText}
-            onChange={(e) => updateField("heroButtonText", e.target.value)}
-            placeholder="Hero Button Text"
-            className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
-          />
-
-          <input
-            value={form.heroButtonLink}
-            onChange={(e) => updateField("heroButtonLink", e.target.value)}
-            placeholder="Hero Button Link"
-            className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
-          />
-        </div>
+      {/* REORDER UI */}
+      <div className="space-y-4 border border-green-700/30 rounded-xl p-5 bg-black">
+        <h3 className="text-lg font-semibold text-white">Reorder Sections</h3>
+        <p className="text-sm text-gray-400">
+          Move sections Up / Down. This order will reflect on the user page.
+        </p>
 
         <div className="space-y-2">
-          <label className="text-sm text-gray-300 font-medium">
-            Upload Hero Image (Cloudinary)
-          </label>
+          {form.sectionOrder.map((key, index) => (
+            <div
+              key={key}
+              className="flex items-center justify-between px-4 py-3 rounded-lg border border-gray-800 bg-[#0b0f0b]"
+            >
+              <p className="text-white text-sm font-medium">
+                {index + 1}. {sectionLabels[key] || key}
+              </p>
 
-          <input
-            type="file"
-            accept="image/*"
-            onChange={async (e) => {
-              const file = e.target.files?.[0];
-              if (!file) return;
+              <div className="flex gap-2">
+                <button
+                  disabled={index === 0}
+                  onClick={() => moveSection(index, index - 1)}
+                  className="px-3 py-1 rounded bg-gray-800 text-white text-xs disabled:opacity-40"
+                >
+                  Up
+                </button>
 
-              const toastId = toast.loading("Uploading image...");
-
-              try {
-                const res = await uploadImage(file);
-
-                if (res?.data?.url) {
-                  updateField("heroImage", res.data.url);
-                  toast.success("Uploaded ✅", { id: toastId });
-                } else {
-                  toast.error("Upload failed", { id: toastId });
-                }
-              } catch {
-                toast.error("Upload failed", { id: toastId });
-              }
-            }}
-            className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white"
-          />
-
-          <input
-            value={form.heroImage}
-            onChange={(e) => updateField("heroImage", e.target.value)}
-            placeholder="Hero Background Image URL"
-            className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
-          />
+                <button
+                  disabled={index === form.sectionOrder.length - 1}
+                  onClick={() => moveSection(index, index + 1)}
+                  className="px-3 py-1 rounded bg-gray-800 text-white text-xs disabled:opacity-40"
+                >
+                  Down
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* WHY SECTION */}
-<WhySliderEditor
-  whyHeading={form.whyHeading}
-  whySlides={form.whySlides}
-  whyCtaText={form.whyCtaText}
-  whyCtaLink={form.whyCtaLink}
-  updateField={updateField}
-  addWhySlide={addWhySlide}
-  updateWhySlide={updateWhySlide}
-  removeWhySlide={removeWhySlide}
-/>
+      {/*  ACCORDION SECTIONS */}
+    <div className="space-y-4">
+  {form.sectionOrder.map((sectionKey) => {
+    const isOpen = openSection === sectionKey;
 
-{/* ENTITY TABLE */}
-<EntityTableEditor
-  entityTableHeading={form.entityTableHeading}
-  entityTableRows={form.entityTableRows}
-  updateField={updateField}
-  addEntityRow={addEntityRow}
-  updateEntityRow={updateEntityRow}
-  removeEntityRow={removeEntityRow}
-/>
+    const toggle = () =>
+      setOpenSection(isOpen ? "" : sectionKey);
 
-{/* ENTITY TYPES SLIDER */}
-<EntityTypesSliderEditor
-  entityTypesHeading={form.entityTypesHeading}
-  entityTypesDescription={form.entityTypesDescription}
-  entityTypesSlides={form.entityTypesSlides}
-  updateField={updateField}
-  addEntityTypeSlide={addEntityTypeSlide}
-  updateEntityTypeSlide={updateEntityTypeSlide}
-  removeEntityTypeSlide={removeEntityTypeSlide}
-/>
+    switch (sectionKey) {
+      case "hero":
+        return (
+          <AdminAccordion
+            key="hero"
+            title="Hero Section"
+            isOpen={isOpen}
+            onToggle={toggle}
+          >
+            <HeroEditor form={form} updateField={updateField} />
+          </AdminAccordion>
+        );
 
-      {/* OWNERSHIP SLIDER */}
-      <OwnershipSliderEditor
-        ownershipHeading={form.ownershipHeading}
-        ownershipSlides={form.ownershipSlides}
-        updateField={updateField}
-        addOwnershipSlide={addOwnershipSlide}
-        updateOwnershipSlide={updateOwnershipSlide}
-        removeOwnershipSlide={removeOwnershipSlide}
-      />
+      case "why":
+        return (
+          <AdminAccordion
+            key="why"
+            title="Why Section (Slider)"
+            isOpen={isOpen}
+            onToggle={toggle}
+          >
+            <WhySliderEditor
+              whyHeading={form.whyHeading}
+              whySlides={form.whySlides}
+              whyCtaText={form.whyCtaText}
+              whyCtaLink={form.whyCtaLink}
+              updateField={updateField}
+              addWhySlide={addWhySlide}
+              updateWhySlide={updateWhySlide}
+              removeWhySlide={removeWhySlide}
+            />
+          </AdminAccordion>
+        );
 
-      {/* ENTITY CHOOSE */}
-      <EntityChooseEditor
-        entityChooseHeading={form.entityChooseHeading}
-        entityChooseSubheading={form.entityChooseSubheading}
-        entityChooseQuestions={form.entityChooseQuestions}
-        updateField={updateField}
-        addChooseQuestion={addChooseQuestion}
-        updateChooseQuestion={updateChooseQuestion}
-        removeChooseQuestion={removeChooseQuestion}
-        addChooseOption={addChooseOption}
-        updateChooseOption={updateChooseOption}
-        removeChooseOption={removeChooseOption}
-      />
+      case "entityTable":
+        return (
+          <AdminAccordion
+            key="entityTable"
+            title="Entity Types Table"
+            isOpen={isOpen}
+            onToggle={toggle}
+          >
+            <EntityTableEditor
+              entityTableHeading={form.entityTableHeading}
+              entityTableRows={form.entityTableRows}
+              updateField={updateField}
+              addEntityRow={addEntityRow}
+              updateEntityRow={updateEntityRow}
+              removeEntityRow={removeEntityRow}
+            />
+          </AdminAccordion>
+        );
 
-      {/* DOCUMENTS REQUIRED */}
-      <DocumentsRequiredEditor
-        documentsHeading={form.documentsHeading}
-        documentsSubheading={form.documentsSubheading}
-        documentEntityTabs={form.documentEntityTabs}
-        documentGroups={form.documentGroups}
-        updateField={updateField}
-      />
+      case "entityTypes":
+        return (
+          <AdminAccordion
+            key="entityTypes"
+            title="Entity Types Slider"
+            isOpen={isOpen}
+            onToggle={toggle}
+          >
+            <EntityTypesSliderEditor
+              entityTypesHeading={form.entityTypesHeading}
+              entityTypesDescription={form.entityTypesDescription}
+              entityTypesSlides={form.entityTypesSlides}
+              updateField={updateField}
+              addEntityTypeSlide={addEntityTypeSlide}
+              updateEntityTypeSlide={updateEntityTypeSlide}
+              removeEntityTypeSlide={removeEntityTypeSlide}
+            />
+          </AdminAccordion>
+        );
 
-      {/* LOCATIONS SLIDER */}
-      <LocationsSliderEditor
-        locationsHeading={form.locationsHeading}
-        locationsSubheading={form.locationsSubheading}
-        locationsSlides={form.locationsSlides}
-        updateField={updateField}
-        addLocationSlide={addLocationSlide}
-        updateLocationSlide={updateLocationSlide}
-        removeLocationSlide={removeLocationSlide}
-      />
-      <FaqEditor
-        faqHeading={form.faqHeading}
-        faqs={form.faqs}
-        updateField={updateField}
-        addFaq={addFaq}
-        updateFaq={updateFaq}
-        removeFaq={removeFaq}
-      />
+      case "ownership":
+        return (
+          <AdminAccordion
+            key="ownership"
+            title="Ownership Slider"
+            isOpen={isOpen}
+            onToggle={toggle}
+          >
+            <OwnershipSliderEditor
+              ownershipHeading={form.ownershipHeading}
+              ownershipSlides={form.ownershipSlides}
+              updateField={updateField}
+              addOwnershipSlide={addOwnershipSlide}
+              updateOwnershipSlide={updateOwnershipSlide}
+              removeOwnershipSlide={removeOwnershipSlide}
+            />
+          </AdminAccordion>
+        );
 
+      case "entityChoose":
+        return (
+          <AdminAccordion
+            key="entityChoose"
+            title="Entity Choose Section"
+            isOpen={isOpen}
+            onToggle={toggle}
+          >
+            <EntityChooseEditor
+              entityChooseHeading={form.entityChooseHeading}
+              entityChooseSubheading={form.entityChooseSubheading}
+              entityChooseQuestions={form.entityChooseQuestions}
+              updateField={updateField}
+              addChooseQuestion={addChooseQuestion}
+              updateChooseQuestion={updateChooseQuestion}
+              removeChooseQuestion={removeChooseQuestion}
+              addChooseOption={addChooseOption}
+              updateChooseOption={updateChooseOption}
+              removeChooseOption={removeChooseOption}
+            />
+          </AdminAccordion>
+        );
 
+      case "documents":
+        return (
+          <AdminAccordion
+            key="documents"
+            title="Documents Required"
+            isOpen={isOpen}
+            onToggle={toggle}
+          >
+            <DocumentsRequiredEditor
+              documentsHeading={form.documentsHeading}
+              documentsSubheading={form.documentsSubheading}
+              documentEntityTabs={form.documentEntityTabs}
+              documentGroups={form.documentGroups}
+              updateField={updateField}
+            />
+          </AdminAccordion>
+        );
+
+      case "locations":
+        return (
+          <AdminAccordion
+            key="locations"
+            title="Locations Slider"
+            isOpen={isOpen}
+            onToggle={toggle}
+          >
+            <LocationsSliderEditor
+              locationsHeading={form.locationsHeading}
+              locationsSubheading={form.locationsSubheading}
+              locationsSlides={form.locationsSlides}
+              updateField={updateField}
+              addLocationSlide={addLocationSlide}
+              updateLocationSlide={updateLocationSlide}
+              removeLocationSlide={removeLocationSlide}
+            />
+          </AdminAccordion>
+        );
+
+      case "faq":
+        return (
+          <AdminAccordion
+            key="faq"
+            title="FAQ Section"
+            isOpen={isOpen}
+            onToggle={toggle}
+          >
+            <FaqEditor
+              faqHeading={form.faqHeading}
+              faqs={form.faqs}
+              updateField={updateField}
+              addFaq={addFaq}
+              updateFaq={updateFaq}
+              removeFaq={removeFaq}
+            />
+          </AdminAccordion>
+        );
+
+      default:
+        return null;
+    }
+  })}
+</div>
 
       {/* SAVE */}
       <div className="flex justify-end pt-4 border-t border-gray-800">

@@ -8,11 +8,11 @@ export default function UserLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-transparent">
       <Navbar />
 
       {/* Navbar is fixed */}
-      <div className="pt-24">{children}</div>
+      <div >{children}</div>
 
       {/* Common footer CTA */}
       <FinalCTA />

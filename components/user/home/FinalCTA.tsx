@@ -2,6 +2,9 @@
 
 import Image from "next/image";
 import { Send, Instagram, Linkedin } from "lucide-react";
+import Link from "next/link";
+
+
 
 export default function FinalCTA() {
   return (
@@ -46,17 +49,20 @@ export default function FinalCTA() {
          </div >
 
             {/* CTA BUTTON */}
-            <button
-              className="
-                bg-green-600 hover:bg-green-700
-                text-white text-sm font-medium
-                px-10 py-3
-                rounded-full
-                transition
-              "
-            >
-              Calculate Your KSA Expansion Cost
-            </button>
+            <Link
+  href="/ksa-expansion-cost-calculator"
+  className="
+    bg-green-600 hover:bg-green-700
+    text-white text-sm font-medium
+    px-10 py-3
+    rounded-full
+    transition
+    inline-block
+  "
+>
+  Calculate Your KSA Expansion Cost
+</Link>
+
           </div>
         </div>
 

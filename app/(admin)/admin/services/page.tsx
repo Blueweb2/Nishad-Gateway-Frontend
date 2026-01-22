@@ -55,7 +55,7 @@ export default function AdminServicesPage() {
           </Link>
         </div>
 
-        {/* ✅ Table Component Here */}
+        {/*  Table Component Here */}
         <ServiceTable
           services={services}
           loading={loading}

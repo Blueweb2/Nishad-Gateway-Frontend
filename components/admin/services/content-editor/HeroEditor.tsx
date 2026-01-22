@@ -2,6 +2,8 @@
 
 import toast from "react-hot-toast";
 import { uploadImage } from "@/lib/api/upload.api";
+import { cloudinaryAutoWebp } from "@/utils/cloudinary";
+
 
 type Props = {
   form: any;
@@ -72,8 +74,11 @@ export default function HeroEditor({ form, updateField }: Props) {
               const res = await uploadImage(file);
 
               if (res?.data?.url) {
-                updateField("heroImage", res.data.url);
-                toast.success("Uploaded ✅", { id: toastId });
+                updateField("heroImage", cloudinaryAutoWebp(res.data.url));
+                toast.success("Uploaded", { id: toastId });
+
+                // ✅ reset input
+                e.target.value = "";
               } else {
                 toast.error("Upload failed", { id: toastId });
               }
@@ -81,6 +86,7 @@ export default function HeroEditor({ form, updateField }: Props) {
               toast.error("Upload failed", { id: toastId });
             }
           }}
+
           className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white"
         />
 

@@ -15,7 +15,7 @@ import ContactPopup from "./ContactPopup";
 export default function Navbar() {
   const pathname = usePathname();
 
-  // ✅ separate states
+  //  separate states
   const [openServices, setOpenServices] = useState(false);
   const [openBlogs, setOpenBlogs] = useState(false);
 
@@ -24,7 +24,7 @@ export default function Navbar() {
   const [openContact, setOpenContact] = useState(false);
 
 
-  // ✅ change navbar color based on white sections
+  //  change navbar color based on white sections
   useEffect(() => {
     const whiteSections = document.querySelectorAll('[data-navbar="white"]');
 
@@ -43,7 +43,7 @@ export default function Navbar() {
     return () => observer.disconnect();
   }, [pathname]);
 
-  // ✅ close popups on route change
+  //  close popups on route change
   useEffect(() => {
     setOpenServices(false);
     setOpenBlogs(false);
@@ -55,12 +55,8 @@ export default function Navbar() {
   return (
     <>
       {/* NAVBAR */}
-      <header
-        className={`
-          fixed top-0 left-0 w-full z-[9999]
-          ${isLight ? "bg-white" : "bg-transparent"}
-        `}
-      >
+      <header className="fixed top-0 left-0 w-full z-[9999] bg-transparent">
+
         <div className="w-full mx-auto px-6 pt-6">
           <nav className="flex items-center justify-between px-1 py-3">
             {/* LEFT — LOGO */}
@@ -77,24 +73,27 @@ export default function Navbar() {
 
             {/* CENTER — SERVICES + BLOG */}
             <div className="hidden md:flex items-center gap-5">
-              {/* ✅ Services Button */}
+              {/*  Services Button */}
               <button
                 onClick={() => {
                   setOpenServices((prev) => !prev);
                   setOpenBlogs(false);
                 }}
                 className={`
-                  flex items-center gap-2
-                  px-4 py-2 rounded-full
-                  text-sm font-medium
-                  transition-all
-                  ${isLight
-                    ? "bg-gray-100 text-black hover:bg-gray-200"
+  flex items-center gap-2
+  px-4 py-2 rounded-full
+  text-sm font-medium
+  transition-all
+  ${isLight
+                    ? openServices
+                      ? "bg-black text-white"
+                      : "bg-white/70 text-black hover:bg-white"
                     : openServices
                       ? "bg-white text-gray-900"
                       : "bg-white/10 text-white hover:bg-white/20"
                   }
-                `}
+`}
+
               >
                 Services
                 <span
@@ -107,24 +106,27 @@ export default function Navbar() {
                 </span>
               </button>
 
-              {/* ✅ Blog Button */}
+              {/*  Blog Button */}
               <button
                 onClick={() => {
                   setOpenBlogs((prev) => !prev);
                   setOpenServices(false);
                 }}
                 className={`
-                  flex items-center gap-2
-                  px-4 py-2 rounded-full
-                  text-sm font-medium
-                  transition-all
-                  ${isLight
-                    ? "bg-gray-100 text-black hover:bg-gray-200"
+  flex items-center gap-2
+  px-4 py-2 rounded-full
+  text-sm font-medium
+  transition-all
+  ${isLight
+                    ? openBlogs
+                      ? "bg-black text-white"
+                      : "bg-white/70 text-black hover:bg-white"
                     : openBlogs
                       ? "bg-white text-gray-900"
                       : "bg-white/10 text-white hover:bg-white/20"
                   }
-                `}
+`}
+
               >
                 Blog
                 <span
@@ -141,14 +143,10 @@ export default function Navbar() {
             {/* RIGHT — PHONE + CTA + MENU */}
             <div className="flex items-center gap-4">
               {/* Phone */}
-              <span
-                className={`
-                  hidden md:block text-sm me-36
-                  ${isLight ? "text-black" : "text-white"}
-                `}
-              >
+              <span className={`hidden md:block text-sm me-36 ${isLight ? "text-black" : "text-white"}`}>
                 +966 55 123 4567
               </span>
+
 
               {/* Contact Us */}
               <button
@@ -158,18 +156,17 @@ export default function Navbar() {
                   setOpenBlogs(false);
                   setOpenMenu(false);
                 }}
-                className={`
-    flex items-center gap-2
-    text-sm font-medium
-    px-5 py-2
-    rounded-full
-    transition
-    ${isLight
-                    ? "bg-gray-100 text-green-700 hover:bg-gray-200"
-                    : "bg-white text-green-600 hover:bg-gray-100"
-                  }
-  `}
-              >
+className={`
+  flex items-center gap-2
+  text-sm font-medium
+  px-5 py-2 rounded-full
+  transition
+  ${isLight
+    ? "bg-black text-white hover:bg-gray-900"
+    : "bg-white text-green-600 hover:bg-gray-100"
+  }
+`}
+       >
                 Contact Us
                 <Mail size={16} />
               </button>
@@ -185,18 +182,18 @@ export default function Navbar() {
                   setOpenServices(false);
                   setOpenBlogs(false);
                 }}
-                className={`
-    relative flex items-center justify-center
-    w-14 h-10 rounded-full
-    transition-all duration-300
-    ${openMenu
-                    ? "bg-green-700 hover:bg-green-600"
-                    : isLight
-                      ? "bg-white border border-gray-300 shadow-sm"
-                      : "bg-black/30 border border-white/70 backdrop-blur-md"
-                  }
-  `}
-              >
+   className={`
+  relative flex items-center justify-center
+  w-14 h-10 rounded-full
+  transition-all duration-300
+  ${openMenu
+    ? "bg-green-700 hover:bg-green-600"
+    : isLight
+      ? "bg-white/70 border border-black/10"
+      : "bg-black/30 border border-white/70 backdrop-blur-md"
+  }
+`}
+      >
                 {openMenu ? (
                   <span className="text-white text-xl font-semibold leading-none">×</span>
                 ) : (
@@ -219,10 +216,10 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* ✅ SERVICES POPUP */}
+      {/* SERVICES POPUP */}
       <ServicesPopup open={openServices} onClose={() => setOpenServices(false)} />
 
-      {/* ✅ BLOGS POPUP */}
+      {/*  BLOGS POPUP */}
       <BlogsPopup open={openBlogs} onClose={() => setOpenBlogs(false)} />
     </>
   );

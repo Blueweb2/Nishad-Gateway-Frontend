@@ -131,7 +131,7 @@ export default function EntityTypesSliderEditor({
 
                       if (res?.data?.url) {
                         updateEntityTypeSlide(idx, "image", res.data.url);
-                        toast.success("Uploaded ✅", { id: toastId });
+                        toast.success("Uploaded ", { id: toastId });
                       } else {
                         toast.error("Upload failed", { id: toastId });
                       }

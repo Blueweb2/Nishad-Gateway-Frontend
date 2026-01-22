@@ -29,7 +29,7 @@ export const adminCreateSubService = async (
   return res.data;
 };
 
-// ✅ UPDATE (optional image -> backend converts to WEBP)
+//  UPDATE (optional image -> backend converts to WEBP)
 export const adminUpdateSubService = async (subId: string, formData: FormData) => {
   const res = await api.put(`/subservices/${subId}`, formData, {
     headers: { "Content-Type": "multipart/form-data" },
@@ -37,7 +37,7 @@ export const adminUpdateSubService = async (subId: string, formData: FormData) =
   return res.data;
 };
 
-// ✅ DELETE subservice
+//  DELETE subservice
 export const adminDeleteSubService = async (subId: string) => {
   const res = await api.delete(`/subservices/${subId}`);
   return res.data;

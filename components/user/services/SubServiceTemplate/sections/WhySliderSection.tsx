@@ -1,10 +1,16 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 
+import OvalArrow from "@/components/user/ui/OvalArrow";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import { EffectFade } from "swiper/modules";
+
+import "swiper/css";
+import "swiper/css/effect-fade";
 
 export type WhySlide = {
   title: string;
@@ -26,115 +32,148 @@ export default function WhySliderSection({
   whyCtaLink,
 }: Props) {
   const slides = useMemo(() => whySlides || [], [whySlides]);
-  const [activeSlide, setActiveSlide] = useState(0);
+
+  const swiperRef = useRef<any>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  // 🔥 wipe animation trigger
+  const [wipeKey, setWipeKey] = useState(0);
 
   const total = slides.length;
-
-  const nextSlide = () => {
-    if (total === 0) return;
-    setActiveSlide((prev) => (prev + 1) % total);
-  };
-
-  const prevSlide = () => {
-    if (total === 0) return;
-    setActiveSlide((prev) => (prev - 1 + total) % total);
-  };
-
-  const current = slides[activeSlide];
+  const current = slides?.[activeIndex];
 
   const formatNumber = (n: number) => String(n).padStart(2, "0");
 
   return (
-    <section className="w-full bg-white text-black py-16">
-      <div className="w-full max-w-6xl mx-auto px-6 md:px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-          {/* ======================
-              LEFT SIDE
-          ====================== */}
-          <div className="lg:col-span-3 space-y-8">
-            <h2 className="text-3xl md:text-4xl font-bold leading-tight">
-              {whyHeading || "Why Entity Type Matters"}
-            </h2>
-
-            {/* Slide counter */}
-            <div className="flex items-center gap-4 text-sm text-gray-500">
-              <span>{formatNumber(total === 0 ? 0 : activeSlide + 1)}</span>
-              <span className="opacity-50">|</span>
+    <section
+      data-navbar="white"
+      className="relative w-full bg-white text-black py-6 overflow-hidden"
+    >
+      {/* ================= FULL WIDTH CONTROLS (TOP) ================= */}
+      <div className="absolute inset-x-0 top-0 h-full pointer-events-none z-20">
+        <div className="w-full h-full flex items-center justify-between px-10">
+          {/* LEFT COUNTER */}
+          <div className="pointer-events-auto">
+            <div className="flex items-center gap-2 text-sm text-gray-400">
+              <span>{formatNumber(total === 0 ? 0 : activeIndex + 1)}</span>
+              <span>|</span>
               <span>{formatNumber(total)}</span>
-            </div>
-
-            {/* Slide title */}
-            <div className="space-y-3">
-              <h3 className="text-xl font-medium text-teal-700 leading-snug">
-                {current?.title || "Slide Title"}
-              </h3>
-
-              {/* line */}
-              <div className="w-full h-[1px] bg-gray-200" />
             </div>
           </div>
 
-          {/* ======================
-              CENTER IMAGE
-          ====================== */}
-          <div className="lg:col-span-5 flex justify-center">
-            <div className="relative w-[320px] h-[420px] md:w-[360px] md:h-[480px] overflow-hidden rounded-[999px] bg-gray-200 shadow-sm">
-              {current?.image ? (
-                <Image
-                  src={current.image}
-                  alt={current.title || "Why slide"}
-                  fill
-                  className="object-cover"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-gray-500 text-sm">
-                  No Image
-                </div>
+          {/* RIGHT ARROWS */}
+          <div className="pointer-events-auto flex items-center gap-6">
+            <OvalArrow
+              direction="left"
+              variant="gray"
+              onClick={() => swiperRef.current?.slidePrev()}
+            />
+            <OvalArrow
+              direction="right"
+              variant="gray"
+              onClick={() => swiperRef.current?.slideNext()}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* ================= CONTENT ================= */}
+      <div className="relative max-w-[1320px] mx-auto px-6 z-10">
+        {/* IMPORTANT: Use 12 column grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 min-h-[560px]">
+          {/* LEFT */}
+          <div className="lg:col-span-3 flex flex-col">
+            <h2 className="text-[38px] md:text-[44px] font-bold leading-tight">
+              {whyHeading || "Why Entity Type Matters"}
+            </h2>
+
+            {/* counter + title row  */}
+            <div className="mt-24 ">
+              <div className="flex items-end gap-10">
+               
+               
+
+                {/* title */}
+                <h3 className="text-xl md:text-2xl font-medium text-teal-700 leading-snug">
+                  {current?.title || "Ownership Rights"}
+                </h3>
+              </div>
+
+              {/* divider */}
+              <div className="mt-16 border-t border-gray-200" />
+            </div>
+          </div>
+
+          {/* CENTER SLIDER */}
+          <div className="lg:col-span-5 flex items-center justify-center">
+            <div className="flex flex-col items-center">
+              <Swiper
+                modules={[EffectFade]}
+                effect="fade"
+                fadeEffect={{ crossFade: true }}
+                speed={900}
+                loop
+                slidesPerView={1}
+                onSwiper={(swiper) => (swiperRef.current = swiper)}
+                onSlideChange={(swiper) => {
+                  setActiveIndex(swiper.realIndex);
+                  setWipeKey((k) => k + 1);
+                }}
+                className="w-[390px] h-[510px]"
+              >
+                {slides.map((slide, index) => (
+                  <SwiperSlide key={index}>
+                    <div className="relative w-[390px] h-[510px] overflow-hidden rounded-[160px] bg-gray-200">
+                      {slide.image ? (
+                        <Image
+                          src={slide.image}
+                          alt={slide.title || "Why slide"}
+                          fill
+                          className="object-cover"
+                          priority={index === 0}
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-gray-500 text-sm">
+                          No Image
+                        </div>
+                      )}
+
+                      {/* wipe */}
+                      <div
+                        key={wipeKey}
+                        className="absolute inset-0 z-20 bg-white origin-left animate-wipeReveal pointer-events-none"
+                      />
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+
+              {/* CTA BELOW IMAGE */}
+              {whyCtaText && whyCtaLink && (
+                <Link
+                  href={whyCtaLink}
+                  className="mt-6 text-sm text-green-600 underline underline-offset-4"
+                >
+                  {whyCtaText}
+                </Link>
               )}
             </div>
           </div>
 
-          {/* ======================
-              RIGHT SIDE
-          ====================== */}
-          <div className="lg:col-span-4 space-y-6">
-            <p className="text-sm md:text-base text-gray-500 leading-relaxed max-w-sm">
+          {/* RIGHT */}
+          <div className="lg:col-span-4 flex flex-col justify-start mt-26">
+            <p className="text-sm md:text-base text-gray-500 leading-relaxed max-w-sm mt-24">
               {current?.description ||
                 "Slide description will appear here from backend."}
             </p>
 
-            {/* Controls */}
-            <div className="flex items-center gap-3">
-              <button
-                onClick={prevSlide}
-                className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition"
-              >
-                <ChevronLeft size={18} />
-              </button>
+            {/* arrows in right side */}
+           
 
-              <button
-                onClick={nextSlide}
-                className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition"
-              >
-                <ChevronRight size={18} />
-              </button>
-            </div>
+            {/* divider */}
+            <div className="mt-10 border-t border-gray-200" />
           </div>
         </div>
-
-        {/* ======================
-            CTA
-        ====================== */}
-        {whyCtaText && whyCtaLink && (
-          <div className="mt-10 flex justify-center">
-            <Link
-              href={whyCtaLink}
-              className="text-sm font-medium text-green-700 underline underline-offset-4 hover:text-green-800 transition"
-            >
-              {whyCtaText}
-            </Link>
-          </div>
-        )}
       </div>
     </section>
   );

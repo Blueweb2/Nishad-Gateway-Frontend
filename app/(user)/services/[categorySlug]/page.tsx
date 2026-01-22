@@ -75,8 +75,8 @@ export default function CategoryPage() {
   if (!service) return null;
 
   return (
-    <div className="min-h-screen bg-white">
-<div data-navbar="white" className="h-[2px] w-full" />
+    <div className="min-h-screen bg-white" data-navbar="white">
+<div  className="h-[2px] w-full" />
 
 <div className="max-w-7xl mx-auto px-6 pt-28 pb-8">
         {/* Back Button */}

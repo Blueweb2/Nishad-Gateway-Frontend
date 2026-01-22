@@ -37,7 +37,7 @@ export default function ServiceTemplate() {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white" data-navbar="white">
       {/* Header */}
       <div className="max-w-7xl mx-auto px-6 py-8">
         <button className="flex items-center text-gray-600 hover:text-gray-900 mb-8">

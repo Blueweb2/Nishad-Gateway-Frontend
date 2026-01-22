@@ -115,7 +115,7 @@ export default function OwnershipSliderEditor({
 
                       if (res?.data?.url) {
                         updateOwnershipSlide(idx, "image", res.data.url);
-                        toast.success("Uploaded ✅", { id: toastId });
+                        toast.success("Uploaded ", { id: toastId });
                       } else {
                         toast.error("Upload failed", { id: toastId });
                       }

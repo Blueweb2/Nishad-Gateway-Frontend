@@ -34,7 +34,7 @@ export default function SubServiceTable({
 
     try {
       await adminDeleteSubService(subId);
-      toast.success("Subservice deleted ✅");
+      toast.success("Subservice deleted ");
       onRefresh();
     } catch (err) {
       toast.error("Delete failed ❌");

@@ -44,7 +44,7 @@ export default function SubServiceForm({
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // ✅ Prefill in edit mode
+  // Prefill in edit mode
   useEffect(() => {
     if (mode === "edit" && defaultValues) {
       setForm({
@@ -58,7 +58,7 @@ export default function SubServiceForm({
     }
   }, [mode, defaultValues]);
 
-  // ✅ Auto slug generator (only create mode)
+  //  Auto slug generator (only create mode)
   useEffect(() => {
     if (mode === "create") {
       setForm((prev) => ({
@@ -90,7 +90,7 @@ export default function SubServiceForm({
     }));
   };
 
-  // ✅ Preview URL (avoid memory leak)
+  //  Preview URL (avoid memory leak)
   const previewUrl = useMemo(() => {
     if (!thumbnailFile) return "";
     return URL.createObjectURL(thumbnailFile);
@@ -102,7 +102,7 @@ export default function SubServiceForm({
     };
   }, [previewUrl]);
 
-  // ✅ Backend URL for edit mode image preview
+  //  Backend URL for edit mode image preview
   const BACKEND_URL =
     process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
 
@@ -117,13 +117,13 @@ export default function SubServiceForm({
   const handleThumbnailSelect = (file: File | null) => {
     if (!file) return;
 
-    // ✅ Validate type
+    // Validate type
     if (!file.type.startsWith("image/")) {
       toast.error("Please select a valid image file");
       return;
     }
 
-    // ✅ Validate size (5MB)
+    // Validate size (5MB)
     const maxSize = 5 * 1024 * 1024;
     if (file.size > maxSize) {
       toast.error("Image too large. Max size is 5MB");
@@ -131,7 +131,7 @@ export default function SubServiceForm({
     }
 
     setThumbnailFile(file);
-    toast.success("Image selected ✅ (will upload on submit)");
+    toast.success("Image selected  (will upload on submit)");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -148,7 +148,7 @@ export default function SubServiceForm({
     try {
       setLoading(true);
 
-      // ✅ ONE REQUEST: send form data + file
+      //  ONE REQUEST: send form data + file
       const formData = new FormData();
       formData.append("title", form.title.trim());
       formData.append("slug", form.slug.trim());
@@ -156,18 +156,18 @@ export default function SubServiceForm({
       formData.append("order", String(form.order));
       formData.append("isActive", String(form.isActive));
 
-      // ✅ file fieldname must match backend: "thumbnail"
+      //  file fieldname must match backend: "thumbnail"
       if (thumbnailFile) {
         formData.append("thumbnail", thumbnailFile);
       }
 
       if (mode === "create") {
         await adminCreateSubService(serviceId, formData);
-        toast.success("Subservice created successfully ✅");
+        toast.success("Subservice created successfully ");
       } else {
         if (!subId) return toast.error("Missing subservice id");
         await adminUpdateSubService(subId, formData);
-        toast.success("Subservice updated successfully ✅");
+        toast.success("Subservice updated successfully ");
       }
 
       router.push(`/admin/services/${serviceId}/subservices`);
