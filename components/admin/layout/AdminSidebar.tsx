@@ -2,34 +2,58 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 import {
   LayoutDashboard,
   FileText,
   Briefcase,
   PlusCircle,
   LogOut,
-  Users
+  Users,
 } from "lucide-react";
 
 const links = [
   { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
   { name: "Blogs", href: "/admin/blogs", icon: FileText },
-
-  //  Services Module
   { name: "Services", href: "/admin/services", icon: Briefcase },
   { name: "Add Service", href: "/admin/services/create", icon: PlusCircle },
-
-   { name: "Leads", href: "/admin/leads", icon: Users },
+  { name: "Leads", href: "/admin/leads", icon: Users },
 ];
 
 export default function AdminSidebar() {
   const pathname = usePathname();
   const router = useRouter();
 
-  const handleLogout = () => {
-    document.cookie = "admin_token=; path=/; max-age=0";
-    router.push("/admin/login");
-  };
+  const API_URL = process.env.NEXT_PUBLIC_API_URL; 
+
+
+const handleLogout = async () => {
+  try {
+    if (!API_URL) {
+      toast.error("API URL missing ");
+      return;
+    }
+
+    const res = await fetch(`${API_URL}/admin/logout`, {
+      method: "POST",
+      credentials: "include",
+    });
+
+    const data = await res.json().catch(() => null);
+
+    if (!res.ok || !data?.success) {
+      toast.error(data?.message || "Logout failed");
+      return;
+    }
+
+    toast.success("Logout success");
+    router.replace("/admin/login");
+  } catch (err) {
+    toast.error("Logout failed");
+  }
+};
+
+
 
   return (
     <aside className="w-[260px] bg-[#0b0f0b] border-r border-green-700/30 p-6 flex flex-col">

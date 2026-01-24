@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { Phone, Calendar, ArrowRight } from "lucide-react";
 
@@ -19,55 +20,83 @@ type Lead = {
   };
 };
 
-export default function AdminDashboardPage() {
-  const [loading, setLoading] = useState(true);
+type LeadsResponse = {
+  success: boolean;
+  message?: string;
+  leads?: Lead[];
+};
 
+export default function AdminDashboardPage() {
+  const router = useRouter();
+
+  const API_URL = process.env.NEXT_PUBLIC_API_URL; 
+
+  const [loading, setLoading] = useState(true);
   const [totalLeads, setTotalLeads] = useState(0);
   const [todayLeads, setTodayLeads] = useState(0);
   const [recentLeads, setRecentLeads] = useState<Lead[]>([]);
 
-  async function fetchLeadStats() {
+  const fetchLeadStats = useCallback(async () => {
     try {
       setLoading(true);
 
-      // ✅ get all leads (simple method)
-      const res = await fetch("http://localhost:5000/api/leads", {
+      if (!API_URL) {
+        toast.error("Missing NEXT_PUBLIC_API_URL in .env.local");
+        return;
+      }
+
+      const res = await fetch(`${API_URL}/leads`, {
         method: "GET",
         credentials: "include",
+        cache: "no-store",
       });
 
-      const data = await res.json();
+      //  if session invalid -> redirect to login
+      if (res.status === 401 || res.status === 403) {
+        toast.error("Session expired. Please login again.");
+        router.replace("/admin/login");
+        return;
+      }
+
+      const data: LeadsResponse = await res.json();
 
       if (!data?.success) {
         toast.error(data?.message || "Failed to load leads");
         return;
       }
 
-      const leads: Lead[] = data.leads || [];
+      const leads = data.leads || [];
 
-      // Total Leads
+      // total
       setTotalLeads(leads.length);
 
-      // Today Leads
-      const today = new Date().toDateString();
+      // today
+      const todayStr = new Date().toDateString();
       const todayCount = leads.filter(
-        (l) => new Date(l.createdAt).toDateString() === today
+        (l) => new Date(l.createdAt).toDateString() === todayStr
       ).length;
       setTodayLeads(todayCount);
 
-      // Recent 5
-      setRecentLeads(leads.slice(0, 5));
+      // recent 5 (latest first)
+      const sorted = [...leads].sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+
+      setRecentLeads(sorted.slice(0, 5));
     } catch (err) {
       console.log(err);
       toast.error("Failed to load lead stats");
     } finally {
       setLoading(false);
     }
-  }
+  }, [API_URL, router]);
 
   useEffect(() => {
     fetchLeadStats();
-  }, []);
+  }, [fetchLeadStats]);
+
+  
 
   return (
     <div>
@@ -76,9 +105,10 @@ export default function AdminDashboardPage() {
 
         <button
           onClick={fetchLeadStats}
-          className="px-4 py-2 rounded-lg border border-green-700/30 text-green-200 hover:bg-green-600/10 transition"
+          disabled={loading}
+          className="px-4 py-2 rounded-lg border border-green-700/30 text-green-200 hover:bg-green-600/10 transition disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Refresh
+          {loading ? "Refreshing..." : "Refresh"}
         </button>
       </div>
 
@@ -99,7 +129,6 @@ export default function AdminDashboardPage() {
           <h3 className="text-3xl font-bold text-green-400 mt-2">0</h3>
         </div>
 
-        {/* ✅ Leads Card */}
         <div className="bg-[#0b0f0b] border border-green-700/30 rounded-xl p-6 md:col-span-1">
           <p className="text-gray-300 text-sm">Total Leads</p>
           <h3 className="text-3xl font-bold text-green-400 mt-2">
@@ -107,7 +136,6 @@ export default function AdminDashboardPage() {
           </h3>
         </div>
 
-        {/* ✅ Today Leads Card */}
         <div className="bg-[#0b0f0b] border border-green-700/30 rounded-xl p-6 md:col-span-1">
           <p className="text-gray-300 text-sm">Leads Today</p>
           <h3 className="text-3xl font-bold text-green-400 mt-2">
@@ -163,45 +191,53 @@ export default function AdminDashboardPage() {
                   </td>
                 </tr>
               ) : (
-                recentLeads.map((lead) => (
-                  <tr
-                    key={lead._id}
-                    className="border-b border-green-700/10 hover:bg-green-600/5 transition"
-                  >
-                    <td className="px-6 py-4 font-semibold text-green-200">
-                      {lead.fullName}
-                    </td>
+                recentLeads.map((lead) => {
+                  const waNumber = lead.mobile?.replace(/\D/g, "") || "";
 
-                    <td className="px-6 py-4">{lead.city}</td>
+                  return (
+                    <tr
+                      key={lead._id}
+                      className="border-b border-green-700/10 hover:bg-green-600/5 transition"
+                    >
+                      <td className="px-6 py-4 font-semibold text-green-200">
+                        {lead.fullName}
+                      </td>
 
-                    <td className="px-6 py-4">{lead.activity}</td>
+                      <td className="px-6 py-4">{lead.city}</td>
 
-                    <td className="px-6 py-4 text-green-300 font-semibold">
-                      SAR{" "}
-                      {lead.estimate?.min?.toLocaleString?.() || "-"} –{" "}
-                      {lead.estimate?.max?.toLocaleString?.() || "-"}
-                    </td>
+                      <td className="px-6 py-4">{lead.activity}</td>
 
-                    <td className="px-6 py-4 text-gray-400">
-                      <span className="flex items-center gap-2">
-                        <Calendar size={14} className="text-gray-500" />
-                        {new Date(lead.createdAt).toLocaleDateString()}
-                      </span>
-                    </td>
+                      <td className="px-6 py-4 text-green-300 font-semibold">
+                        SAR{" "}
+                        {lead.estimate?.min?.toLocaleString?.() || "-"} –{" "}
+                        {lead.estimate?.max?.toLocaleString?.() || "-"}
+                      </td>
 
-                    <td className="px-6 py-4">
-                      <a
-                        href={`https://wa.me/${lead.mobile.replace(/\D/g, "")}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-green-700 text-white hover:bg-green-800 transition"
-                      >
-                        <Phone size={16} />
-                        WhatsApp
-                      </a>
-                    </td>
-                  </tr>
-                ))
+                      <td className="px-6 py-4 text-gray-400">
+                        <span className="flex items-center gap-2">
+                          <Calendar size={14} className="text-gray-500" />
+                          {new Date(lead.createdAt).toLocaleDateString()}
+                        </span>
+                      </td>
+
+                      <td className="px-6 py-4">
+                        {waNumber ? (
+                          <a
+                            href={`https://wa.me/${waNumber}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-green-700 text-white hover:bg-green-800 transition"
+                          >
+                            <Phone size={16} />
+                            WhatsApp
+                          </a>
+                        ) : (
+                          <span className="text-gray-500">No number</span>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })
               )}
             </tbody>
           </table>

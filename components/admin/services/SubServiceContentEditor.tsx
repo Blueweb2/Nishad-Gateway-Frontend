@@ -71,7 +71,7 @@ export default function SubServiceContentEditor({ subId }: Props) {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  // ✅ Accordion open state (only one open)
+  // Accordion open state (only one open)
   const [openSection, setOpenSection] = useState<string>("hero");
 
   const [form, setForm] = useState({
@@ -92,8 +92,12 @@ export default function SubServiceContentEditor({ subId }: Props) {
     whyCtaLink: "",
 
     // OWNERSHIP SLIDER
+    // OWNERSHIP SLIDER
     ownershipHeading: "",
+    ownershipTabOneLabel: "",   // ✅ NEW
+    ownershipTabTwoLabel: "",   // ✅ NEW
     ownershipSlides: [] as OwnershipSlide[],
+
 
     // ENTITY TABLE
     entityTableHeading: "",
@@ -180,14 +184,34 @@ export default function SubServiceContentEditor({ subId }: Props) {
           whyCtaLink: res.data.whyCtaLink || "",
 
           ownershipHeading: res.data.ownershipHeading || "",
-          ownershipSlides: res.data.ownershipSlides || [],
+          ownershipTabOneLabel: res.data.ownershipTabOneLabel || "",
+          ownershipTabTwoLabel: res.data.ownershipTabTwoLabel || "",
+          ownershipSlides: (res.data.ownershipSlides || []).map((s: any) => ({
+            title: s.title || "",
+
+            // ✅ NEW fields
+            leftText: s.leftText || "",
+            rightText: s.rightText || s.subtitle || "", // fallback for old saved data
+
+            image: s.image || "",
+          })),
+
+
 
           entityTableHeading: res.data.entityTableHeading || "",
           entityTableRows: res.data.entityTableRows || [],
 
           entityTypesHeading: res.data.entityTypesHeading || "",
           entityTypesDescription: res.data.entityTypesDescription || "",
-          entityTypesSlides: res.data.entityTypesSlides || [],
+          entityTypesSlides: (res.data.entityTypesSlides || []).map((s: any) => ({
+            title: s.title || "",
+            description: s.description || "",
+
+            // ✅ new fields
+            mainImage: s.mainImage || s.image || "",
+            subImage: s.subImage || "",
+          })),
+
 
           entityChooseHeading: res.data.entityChooseHeading || "",
           entityChooseSubheading: res.data.entityChooseSubheading || "",
@@ -197,6 +221,7 @@ export default function SubServiceContentEditor({ subId }: Props) {
           documentsSubheading: res.data.documentsSubheading || "",
           documentEntityTabs: res.data.documentEntityTabs || [],
           documentGroups: res.data.documentGroups || [],
+
 
           locationsHeading: res.data.locationsHeading || "",
           locationsSubheading: res.data.locationsSubheading || "",
@@ -297,7 +322,7 @@ export default function SubServiceContentEditor({ subId }: Props) {
       ...prev,
       entityTypesSlides: [
         ...(prev.entityTypesSlides || []),
-        { title: "", image: "", description: "" },
+        { title: "", mainImage: "", subImage: "", description: "" }
       ],
     }));
   };
@@ -327,7 +352,8 @@ export default function SubServiceContentEditor({ subId }: Props) {
       ...prev,
       ownershipSlides: [
         ...(prev.ownershipSlides || []),
-        { title: "", subtitle: "", image: "" },
+       { title: "", leftText: "", rightText: "", image: "" },
+
       ],
     }));
   };
@@ -585,190 +611,192 @@ export default function SubServiceContentEditor({ subId }: Props) {
       </div>
 
       {/*  ACCORDION SECTIONS */}
-    <div className="space-y-4">
-  {form.sectionOrder.map((sectionKey) => {
-    const isOpen = openSection === sectionKey;
+      <div className="space-y-4">
+        {form.sectionOrder.map((sectionKey) => {
+          const isOpen = openSection === sectionKey;
 
-    const toggle = () =>
-      setOpenSection(isOpen ? "" : sectionKey);
+          const toggle = () =>
+            setOpenSection(isOpen ? "" : sectionKey);
 
-    switch (sectionKey) {
-      case "hero":
-        return (
-          <AdminAccordion
-            key="hero"
-            title="Hero Section"
-            isOpen={isOpen}
-            onToggle={toggle}
-          >
-            <HeroEditor form={form} updateField={updateField} />
-          </AdminAccordion>
-        );
+          switch (sectionKey) {
+            case "hero":
+              return (
+                <AdminAccordion
+                  key="hero"
+                  title="Hero Section"
+                  isOpen={isOpen}
+                  onToggle={toggle}
+                >
+                  <HeroEditor form={form} updateField={updateField} />
+                </AdminAccordion>
+              );
 
-      case "why":
-        return (
-          <AdminAccordion
-            key="why"
-            title="Why Section (Slider)"
-            isOpen={isOpen}
-            onToggle={toggle}
-          >
-            <WhySliderEditor
-              whyHeading={form.whyHeading}
-              whySlides={form.whySlides}
-              whyCtaText={form.whyCtaText}
-              whyCtaLink={form.whyCtaLink}
-              updateField={updateField}
-              addWhySlide={addWhySlide}
-              updateWhySlide={updateWhySlide}
-              removeWhySlide={removeWhySlide}
-            />
-          </AdminAccordion>
-        );
+            case "why":
+              return (
+                <AdminAccordion
+                  key="why"
+                  title="Why Section (Slider)"
+                  isOpen={isOpen}
+                  onToggle={toggle}
+                >
+                  <WhySliderEditor
+                    whyHeading={form.whyHeading}
+                    whySlides={form.whySlides}
+                    whyCtaText={form.whyCtaText}
+                    whyCtaLink={form.whyCtaLink}
+                    updateField={updateField}
+                    addWhySlide={addWhySlide}
+                    updateWhySlide={updateWhySlide}
+                    removeWhySlide={removeWhySlide}
+                  />
+                </AdminAccordion>
+              );
 
-      case "entityTable":
-        return (
-          <AdminAccordion
-            key="entityTable"
-            title="Entity Types Table"
-            isOpen={isOpen}
-            onToggle={toggle}
-          >
-            <EntityTableEditor
-              entityTableHeading={form.entityTableHeading}
-              entityTableRows={form.entityTableRows}
-              updateField={updateField}
-              addEntityRow={addEntityRow}
-              updateEntityRow={updateEntityRow}
-              removeEntityRow={removeEntityRow}
-            />
-          </AdminAccordion>
-        );
+            case "entityTable":
+              return (
+                <AdminAccordion
+                  key="entityTable"
+                  title="Entity Types Table"
+                  isOpen={isOpen}
+                  onToggle={toggle}
+                >
+                  <EntityTableEditor
+                    entityTableHeading={form.entityTableHeading}
+                    entityTableRows={form.entityTableRows}
+                    updateField={updateField}
+                    addEntityRow={addEntityRow}
+                    updateEntityRow={updateEntityRow}
+                    removeEntityRow={removeEntityRow}
+                  />
+                </AdminAccordion>
+              );
 
-      case "entityTypes":
-        return (
-          <AdminAccordion
-            key="entityTypes"
-            title="Entity Types Slider"
-            isOpen={isOpen}
-            onToggle={toggle}
-          >
-            <EntityTypesSliderEditor
-              entityTypesHeading={form.entityTypesHeading}
-              entityTypesDescription={form.entityTypesDescription}
-              entityTypesSlides={form.entityTypesSlides}
-              updateField={updateField}
-              addEntityTypeSlide={addEntityTypeSlide}
-              updateEntityTypeSlide={updateEntityTypeSlide}
-              removeEntityTypeSlide={removeEntityTypeSlide}
-            />
-          </AdminAccordion>
-        );
+            case "entityTypes":
+              return (
+                <AdminAccordion
+                  key="entityTypes"
+                  title="Entity Types Slider"
+                  isOpen={isOpen}
+                  onToggle={toggle}
+                >
+                  <EntityTypesSliderEditor
+                    entityTypesHeading={form.entityTypesHeading}
+                    entityTypesDescription={form.entityTypesDescription}
+                    entityTypesSlides={form.entityTypesSlides}
+                    updateField={updateField}
+                    addEntityTypeSlide={addEntityTypeSlide}
+                    updateEntityTypeSlide={updateEntityTypeSlide}
+                    removeEntityTypeSlide={removeEntityTypeSlide}
+                  />
+                </AdminAccordion>
+              );
 
-      case "ownership":
-        return (
-          <AdminAccordion
-            key="ownership"
-            title="Ownership Slider"
-            isOpen={isOpen}
-            onToggle={toggle}
-          >
-            <OwnershipSliderEditor
-              ownershipHeading={form.ownershipHeading}
-              ownershipSlides={form.ownershipSlides}
-              updateField={updateField}
-              addOwnershipSlide={addOwnershipSlide}
-              updateOwnershipSlide={updateOwnershipSlide}
-              removeOwnershipSlide={removeOwnershipSlide}
-            />
-          </AdminAccordion>
-        );
+            case "ownership":
+              return (
+                <AdminAccordion
+                  key="ownership"
+                  title="Ownership Slider"
+                  isOpen={isOpen}
+                  onToggle={toggle}
+                >
+                  <OwnershipSliderEditor
+                    ownershipHeading={form.ownershipHeading}
+                    ownershipSlides={form.ownershipSlides}
+                    ownershipTabOneLabel={form.ownershipTabOneLabel}   // ✅ NEW
+                    ownershipTabTwoLabel={form.ownershipTabTwoLabel}
+                    updateField={updateField}
+                    addOwnershipSlide={addOwnershipSlide}
+                    updateOwnershipSlide={updateOwnershipSlide}
+                    removeOwnershipSlide={removeOwnershipSlide}
+                  />
+                </AdminAccordion>
+              );
 
-      case "entityChoose":
-        return (
-          <AdminAccordion
-            key="entityChoose"
-            title="Entity Choose Section"
-            isOpen={isOpen}
-            onToggle={toggle}
-          >
-            <EntityChooseEditor
-              entityChooseHeading={form.entityChooseHeading}
-              entityChooseSubheading={form.entityChooseSubheading}
-              entityChooseQuestions={form.entityChooseQuestions}
-              updateField={updateField}
-              addChooseQuestion={addChooseQuestion}
-              updateChooseQuestion={updateChooseQuestion}
-              removeChooseQuestion={removeChooseQuestion}
-              addChooseOption={addChooseOption}
-              updateChooseOption={updateChooseOption}
-              removeChooseOption={removeChooseOption}
-            />
-          </AdminAccordion>
-        );
+            case "entityChoose":
+              return (
+                <AdminAccordion
+                  key="entityChoose"
+                  title="Entity Choose Section"
+                  isOpen={isOpen}
+                  onToggle={toggle}
+                >
+                  <EntityChooseEditor
+                    entityChooseHeading={form.entityChooseHeading}
+                    entityChooseSubheading={form.entityChooseSubheading}
+                    entityChooseQuestions={form.entityChooseQuestions}
+                    updateField={updateField}
+                    addChooseQuestion={addChooseQuestion}
+                    updateChooseQuestion={updateChooseQuestion}
+                    removeChooseQuestion={removeChooseQuestion}
+                    addChooseOption={addChooseOption}
+                    updateChooseOption={updateChooseOption}
+                    removeChooseOption={removeChooseOption}
+                  />
+                </AdminAccordion>
+              );
 
-      case "documents":
-        return (
-          <AdminAccordion
-            key="documents"
-            title="Documents Required"
-            isOpen={isOpen}
-            onToggle={toggle}
-          >
-            <DocumentsRequiredEditor
-              documentsHeading={form.documentsHeading}
-              documentsSubheading={form.documentsSubheading}
-              documentEntityTabs={form.documentEntityTabs}
-              documentGroups={form.documentGroups}
-              updateField={updateField}
-            />
-          </AdminAccordion>
-        );
+            case "documents":
+              return (
+                <AdminAccordion
+                  key="documents"
+                  title="Documents Required"
+                  isOpen={isOpen}
+                  onToggle={toggle}
+                >
+                  <DocumentsRequiredEditor
+                    documentsHeading={form.documentsHeading}
+                    documentsSubheading={form.documentsSubheading}
+                    documentEntityTabs={form.documentEntityTabs}
+                    documentGroups={form.documentGroups}
+                    updateField={updateField}
+                  />
+                </AdminAccordion>
+              );
 
-      case "locations":
-        return (
-          <AdminAccordion
-            key="locations"
-            title="Locations Slider"
-            isOpen={isOpen}
-            onToggle={toggle}
-          >
-            <LocationsSliderEditor
-              locationsHeading={form.locationsHeading}
-              locationsSubheading={form.locationsSubheading}
-              locationsSlides={form.locationsSlides}
-              updateField={updateField}
-              addLocationSlide={addLocationSlide}
-              updateLocationSlide={updateLocationSlide}
-              removeLocationSlide={removeLocationSlide}
-            />
-          </AdminAccordion>
-        );
+            case "locations":
+              return (
+                <AdminAccordion
+                  key="locations"
+                  title="Locations Slider"
+                  isOpen={isOpen}
+                  onToggle={toggle}
+                >
+                  <LocationsSliderEditor
+                    locationsHeading={form.locationsHeading}
+                    locationsSubheading={form.locationsSubheading}
+                    locationsSlides={form.locationsSlides}
+                    updateField={updateField}
+                    addLocationSlide={addLocationSlide}
+                    updateLocationSlide={updateLocationSlide}
+                    removeLocationSlide={removeLocationSlide}
+                  />
+                </AdminAccordion>
+              );
 
-      case "faq":
-        return (
-          <AdminAccordion
-            key="faq"
-            title="FAQ Section"
-            isOpen={isOpen}
-            onToggle={toggle}
-          >
-            <FaqEditor
-              faqHeading={form.faqHeading}
-              faqs={form.faqs}
-              updateField={updateField}
-              addFaq={addFaq}
-              updateFaq={updateFaq}
-              removeFaq={removeFaq}
-            />
-          </AdminAccordion>
-        );
+            case "faq":
+              return (
+                <AdminAccordion
+                  key="faq"
+                  title="FAQ Section"
+                  isOpen={isOpen}
+                  onToggle={toggle}
+                >
+                  <FaqEditor
+                    faqHeading={form.faqHeading}
+                    faqs={form.faqs}
+                    updateField={updateField}
+                    addFaq={addFaq}
+                    updateFaq={updateFaq}
+                    removeFaq={removeFaq}
+                  />
+                </AdminAccordion>
+              );
 
-      default:
-        return null;
-    }
-  })}
-</div>
+            default:
+              return null;
+          }
+        })}
+      </div>
 
       {/* SAVE */}
       <div className="flex justify-end pt-4 border-t border-gray-800">

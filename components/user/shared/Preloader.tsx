@@ -87,8 +87,8 @@ export default function Preloader({ onFinish }: { onFinish: () => void }) {
         {/* Text (hide during zoom) */}
         {!zoomOut && (
           <>
-            <div className="absolute top-8 w-full text-center text-gray-700 text-sm tracking-wide">
-              Opening new opportunities
+            <div className="absolute top-8 w-full text-white text-center  text-xl tracking-wide">
+              Gateway to <br /> Saudi Arabia
             </div>
 
             <div className="absolute bottom-10 w-full text-center text-white text-5xl font-semibold">

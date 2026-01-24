@@ -1,7 +1,7 @@
 "use client";
 
 import toast from "react-hot-toast";
-import { uploadImage } from "@/lib/api/upload.api";
+import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
 
 export type DocumentEntityTab = {
   label: string; // LLC
@@ -247,26 +247,29 @@ export default function DocumentsRequiredEditor({
   // -------------------------
   // Upload icon helper
   // -------------------------
-  const uploadCardIcon = async (
-    entityValue: string,
-    cardIndex: number,
-    file: File
-  ) => {
-    const toastId = toast.loading("Uploading icon...");
+const uploadCardIcon = async (
+  entityValue: string,
+  cardIndex: number,
+  file: File
+) => {
+  const toastId = toast.loading("Uploading icon...");
 
-    try {
-      const res = await uploadImage(file);
+  try {
+    // choose folder for this feature
+    const folder = "nishad-gateway/subservices";
 
-      if (res?.data?.url) {
-        updateCardIcon(entityValue, cardIndex, res.data.url);
-        toast.success("Uploaded ", { id: toastId });
-      } else {
-        toast.error("Upload failed", { id: toastId });
-      }
-    } catch {
+    const uploaded = await uploadToCloudinarySigned(file, folder);
+
+    if (uploaded?.secure_url) {
+      updateCardIcon(entityValue, cardIndex, uploaded.secure_url);
+      toast.success("Uploaded", { id: toastId });
+    } else {
       toast.error("Upload failed", { id: toastId });
     }
-  };
+  } catch (err: any) {
+    toast.error(err?.message || "Upload failed", { id: toastId });
+  }
+};
 
   // -------------------------
   // UI

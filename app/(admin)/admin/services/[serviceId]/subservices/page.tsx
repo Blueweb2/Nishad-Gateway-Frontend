@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
-import { adminGetSubServices } from "@/lib/api/subservices.api";
+import { adminGetSubServices } from "@/lib/api";
 import SubServiceTable from "@/components/admin/services/SubServiceTable";
 
 type SubService = {

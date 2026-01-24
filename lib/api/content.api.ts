@@ -1,32 +1,18 @@
-import { api } from "@/lib/axios";
+import { getData, putData } from "./request";
 
-export const adminGetSubServiceContent = async (subId: string) => {
-  const res = await api.get(`/subservices/${subId}/content`);
-  return res.data;
+// same endpoint (admin + user)
+export const adminGetSubServiceContent = (subId: string) => {
+  return getData(`/subservices/${subId}/content`);
 };
 
-export const adminSaveSubServiceContent = async (
-  subId: string,
-  payload: {
-    heroTitle?: string;
-    heroSubtitle?: string;
-    heroImage?: string;
-    introHeading?: string;
-    introText?: string;
-    sections?: { heading: string; text: string; image?: string }[];
-    faqs?: { q: string; a: string }[];
-  }
-) => {
-  const res = await api.put(`/subservices/${subId}/content`, payload);
-  return res.data;
+export const adminSaveSubServiceContent = (subId: string, payload: any) => {
+  return putData(`/subservices/${subId}/content`, payload);
 };
 
-export const getSubServiceContent = async (subId: string) => {
-  const res = await api.get(`/subservices/${subId}/content`);
-  return res.data; // { success, message, data }
+export const getSubServiceContent = (subId: string) => {
+  return getData(`/subservices/${subId}/content`);
 };
 
-export const getSubServiceContentBySlug = async (slug: string) => {
-  const res = await api.get(`/subservices/slug/${slug}/content`);
-  return res.data; //  returns { success, message, data }
+export const getSubServiceContentBySlug = (slug: string) => {
+  return getData(`/subservices/slug/${slug}/content`);
 };

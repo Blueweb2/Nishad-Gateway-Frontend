@@ -1,7 +1,8 @@
 "use client";
 
 import toast from "react-hot-toast";
-import { uploadImage } from "@/lib/api/upload.api";
+import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
+import { cloudinaryAutoWebp } from "@/utils/cloudinary";
 
 export type LocationSlide = {
   title: string;
@@ -36,6 +37,8 @@ export default function LocationsSliderEditor({
   updateLocationSlide,
   removeLocationSlide,
 }: Props) {
+  const folder = "nishad-gateway/subservices"; // must match backend allowedFolders
+
   return (
     <div className="space-y-5 border border-gray-800 rounded-2xl p-6 bg-black/20">
       <div className="flex items-center justify-between gap-4">
@@ -121,9 +124,7 @@ export default function LocationsSliderEditor({
 
               <input
                 value={slide.link || ""}
-                onChange={(e) =>
-                  updateLocationSlide(idx, "link", e.target.value)
-                }
+                onChange={(e) => updateLocationSlide(idx, "link", e.target.value)}
                 placeholder="Optional Link (ex: /blogs/riyadh)"
                 className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
               />
@@ -131,7 +132,7 @@ export default function LocationsSliderEditor({
               {/* Image Upload */}
               <div className="space-y-2">
                 <label className="text-xs text-gray-400">
-                  City Image (Cloudinary)
+                  City Image (Cloudinary Signed)
                 </label>
 
                 <input
@@ -144,16 +145,27 @@ export default function LocationsSliderEditor({
                     const toastId = toast.loading("Uploading city image...");
 
                     try {
-                      const res = await uploadImage(file);
+                      const uploaded = await uploadToCloudinarySigned(
+                        file,
+                        folder
+                      );
 
-                      if (res?.data?.url) {
-                        updateLocationSlide(idx, "image", res.data.url);
-                        toast.success("Uploaded ", { id: toastId });
+                      if (uploaded?.secure_url) {
+                        updateLocationSlide(
+                          idx,
+                          "image",
+                          cloudinaryAutoWebp(uploaded.secure_url)
+                        );
+
+                        toast.success("Uploaded", { id: toastId });
+                        e.target.value = "";
                       } else {
                         toast.error("Upload failed", { id: toastId });
                       }
-                    } catch {
-                      toast.error("Upload failed", { id: toastId });
+                    } catch (err: any) {
+                      toast.error(err?.message || "Upload failed", {
+                        id: toastId,
+                      });
                     }
                   }}
                   className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white"

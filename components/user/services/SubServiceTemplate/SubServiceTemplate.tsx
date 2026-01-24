@@ -29,8 +29,9 @@ type WhySlide = {
 };
 
 type OwnershipSlide = {
-  title: string;
-  subtitle: string;
+  title: string; // capsule title
+  leftText?: string; // left side text
+  rightText?: string; // right side text
   image: string;
 };
 
@@ -51,7 +52,8 @@ type EntityTableColumn = {
 
 type EntityTypeSlide = {
   title: string;
-  image: string;
+  mainImage: string;
+  subImage: string;
   description?: string;
 };
 
@@ -95,6 +97,9 @@ type LocationSlide = {
 // MAIN CONTENT TYPE
 // ============================
 export type SubServiceContent = {
+  // ✅ SECTION ORDER (ADMIN REPOSITION SUPPORT)
+  sectionOrder?: string[];
+
   // HERO
   heroTitle: string;
   heroSubtitle: string;
@@ -111,7 +116,7 @@ export type SubServiceContent = {
 
   // ENTITY TABLE
   entityTableHeading: string;
-  entityTableColumns?: EntityTableColumn[]; // ✅ NEW
+  entityTableColumns?: EntityTableColumn[];
   entityTableRows: EntityRow[];
 
   // ENTITY TYPES SLIDER
@@ -121,6 +126,8 @@ export type SubServiceContent = {
 
   // OWNERSHIP SLIDER
   ownershipHeading: string;
+  ownershipTabOneLabel?: string; // Foreign Ownership
+  ownershipTabTwoLabel?: string; // Capital Reality
   ownershipSlides: OwnershipSlide[];
 
   // ENTITY CHOOSE
@@ -156,107 +163,184 @@ type Props = {
 export default function SubServiceTemplate({ content }: Props) {
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
 
-  // show only the added sections
+  // ✅ Helpers
   const hasText = (v?: string) => typeof v === "string" && v.trim().length > 0;
   const hasArray = (v?: any[]) => Array.isArray(v) && v.length > 0;
 
+  // ✅ Default order (if admin order not provided)
+  const defaultOrder = [
+    "hero",
+    "why",
+    "entityTable",
+    "entityTypes",
+    "ownership",
+    "entityChoose",
+    "documents",
+    "locations",
+    "faq",
+  ];
+
+  // ✅ Use admin order if exists
+  const order =
+    Array.isArray(content.sectionOrder) && content.sectionOrder.length > 0
+      ? content.sectionOrder
+      : defaultOrder;
+
+  // ✅ Render section by key
+  const renderSection = (key: string) => {
+    switch (key) {
+      // ============================
+      // HERO
+      // ============================
+      case "hero":
+        return (
+          (hasText(content.heroTitle) ||
+            hasText(content.heroSubtitle) ||
+            hasText(content.heroDescription) ||
+            hasText(content.heroButtonText) ||
+            hasText(content.heroButtonLink) ||
+            hasText(content.heroImage)) && (
+            <HeroSection
+              heroTitle={content.heroTitle}
+              heroSubtitle={content.heroSubtitle}
+              heroDescription={content.heroDescription}
+              heroButtonText={content.heroButtonText}
+              heroButtonLink={content.heroButtonLink}
+              heroImage={content.heroImage}
+            />
+          )
+        );
+
+      // ============================
+      // WHY
+      // ============================
+      case "why":
+        return (
+          (hasText(content.whyHeading) || hasArray(content.whySlides)) && (
+            <WhySliderSection
+              whyHeading={content.whyHeading}
+              whySlides={content.whySlides}
+              whyCtaText={content.whyCtaText}
+              whyCtaLink={content.whyCtaLink}
+            />
+          )
+        );
+
+      // ============================
+      // ENTITY TABLE
+      // ============================
+      case "entityTable":
+        return (
+          hasArray(content.entityTableRows) && (
+            <EntityTableSection
+              entityTableHeading={content.entityTableHeading}
+              entityTableColumns={content.entityTableColumns}
+              entityTableRows={content.entityTableRows}
+            />
+          )
+        );
+
+      // ============================
+      // ENTITY TYPES
+      // ============================
+      case "entityTypes":
+        return (
+          (hasText(content.entityTypesHeading) ||
+            hasText(content.entityTypesDescription) ||
+            hasArray(content.entityTypesSlides)) && (
+            <EntityTypesSliderSection
+              entityTypesHeading={content.entityTypesHeading}
+              entityTypesDescription={content.entityTypesDescription}
+              entityTypesSlides={content.entityTypesSlides}
+            />
+          )
+        );
+
+      // ============================
+      // OWNERSHIP
+      // ============================
+      case "ownership":
+        return (
+          (hasText(content.ownershipHeading) ||
+            hasArray(content.ownershipSlides)) && (
+            <OwnershipSliderSection
+              ownershipHeading={content.ownershipHeading}
+              ownershipSlides={content.ownershipSlides}
+              ownershipTabOneLabel={content.ownershipTabOneLabel}
+              ownershipTabTwoLabel={content.ownershipTabTwoLabel}
+            />
+
+          )
+        );
+
+      // ============================
+      // ENTITY CHOOSE
+      // ============================
+      case "entityChoose":
+        return (
+          (hasText(content.entityChooseHeading) ||
+            hasText(content.entityChooseSubheading) ||
+            hasArray(content.entityChooseQuestions)) && (
+            <EntityChooseSection
+              entityChooseHeading={content.entityChooseHeading}
+              entityChooseSubheading={content.entityChooseSubheading}
+              entityChooseQuestions={content.entityChooseQuestions}
+            />
+          )
+        );
+
+      // ============================
+      // DOCUMENTS REQUIRED
+      // ============================
+      case "documents":
+        return (
+          (hasText(content.documentsHeading) ||
+            hasText(content.documentsSubheading) ||
+            hasArray(content.documentEntityTabs) ||
+            hasArray(content.documentGroups)) && (
+            <DocumentsRequiredSection
+              documentsHeading={content.documentsHeading}
+              documentsSubheading={content.documentsSubheading}
+              documentEntityTabs={content.documentEntityTabs}
+              documentGroups={content.documentGroups}
+            />
+          )
+        );
+
+      // ============================
+      // LOCATIONS SLIDER
+      // ============================
+      case "locations":
+        return (
+          (hasText(content.locationsHeading) ||
+            hasText(content.locationsSubheading) ||
+            hasArray(content.locationsSlides)) && (
+            <LocationsSliderSection
+              locationsHeading={content.locationsHeading}
+              locationsSubheading={content.locationsSubheading}
+              locationsSlides={content.locationsSlides}
+            />
+          )
+        );
+
+      // ============================
+      // FAQ
+      // ============================
+      case "faq":
+        return hasArray(content.faqs) ? (
+          <FaqSection faqHeading={content.faqHeading} faqs={content.faqs} />
+        ) : null;
+
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="w-full bg-[#050505] text-white">
-      {/* HERO */}
-      {(hasText(content.heroTitle) ||
-        hasText(content.heroSubtitle) ||
-        hasText(content.heroDescription) ||
-        hasText(content.heroButtonText) ||
-        hasText(content.heroButtonLink) ||
-        hasText(content.heroImage)) && (
-        <HeroSection
-          heroTitle={content.heroTitle}
-          heroSubtitle={content.heroSubtitle}
-          heroDescription={content.heroDescription}
-          heroButtonText={content.heroButtonText}
-          heroButtonLink={content.heroButtonLink}
-          heroImage={content.heroImage}
-        />
-      )}
-
-      {/* WHY */}
-      {(hasText(content.whyHeading) || hasArray(content.whySlides)) && (
-        <WhySliderSection
-          whyHeading={content.whyHeading}
-          whySlides={content.whySlides}
-          whyCtaText={content.whyCtaText}
-          whyCtaLink={content.whyCtaLink}
-        />
-      )}
-
-      {/* ENTITY TABLE */}
-      {hasArray(content.entityTableRows) && (
-        <EntityTableSection
-          entityTableHeading={content.entityTableHeading}
-          entityTableColumns={content.entityTableColumns} // ✅ works now
-          entityTableRows={content.entityTableRows}
-        />
-      )}
-
-      {/* ENTITY TYPES */}
-      {(hasText(content.entityTypesHeading) ||
-        hasText(content.entityTypesDescription) ||
-        hasArray(content.entityTypesSlides)) && (
-        <EntityTypesSliderSection
-          entityTypesHeading={content.entityTypesHeading}
-          entityTypesDescription={content.entityTypesDescription}
-          entityTypesSlides={content.entityTypesSlides}
-        />
-      )}
-
-      {/* OWNERSHIP */}
-      {(hasText(content.ownershipHeading) ||
-        hasArray(content.ownershipSlides)) && (
-        <OwnershipSliderSection
-          ownershipHeading={content.ownershipHeading}
-          ownershipSlides={content.ownershipSlides}
-        />
-      )}
-
-      {/* ENTITY CHOOSE */}
-      {(hasText(content.entityChooseHeading) ||
-        hasText(content.entityChooseSubheading) ||
-        hasArray(content.entityChooseQuestions)) && (
-        <EntityChooseSection
-          entityChooseHeading={content.entityChooseHeading}
-          entityChooseSubheading={content.entityChooseSubheading}
-          entityChooseQuestions={content.entityChooseQuestions}
-        />
-      )}
-
-      {/* DOCUMENTS REQUIRED */}
-      {(hasText(content.documentsHeading) ||
-        hasText(content.documentsSubheading) ||
-        hasArray(content.documentEntityTabs) ||
-        hasArray(content.documentGroups)) && (
-        <DocumentsRequiredSection
-          documentsHeading={content.documentsHeading}
-          documentsSubheading={content.documentsSubheading}
-          documentEntityTabs={content.documentEntityTabs}
-          documentGroups={content.documentGroups}
-        />
-      )}
-
-      {/* LOCATIONS SLIDER */}
-      {(hasText(content.locationsHeading) ||
-        hasText(content.locationsSubheading) ||
-        hasArray(content.locationsSlides)) && (
-        <LocationsSliderSection
-          locationsHeading={content.locationsHeading}
-          locationsSubheading={content.locationsSubheading}
-          locationsSlides={content.locationsSlides}
-        />
-      )}
-
-      {/* FAQ */}
-      {hasArray(content.faqs) && (
-        <FaqSection faqHeading={content.faqHeading} faqs={content.faqs} />
-      )}
+      {order.map((key) => (
+        <div key={key}>{renderSection(key)}</div>
+      ))}
     </div>
   );
 }

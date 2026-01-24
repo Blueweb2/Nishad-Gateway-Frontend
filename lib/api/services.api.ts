@@ -1,36 +1,24 @@
-import { api } from "@/lib/axios";
+import { getData, postData, putData, deleteData } from "./request";
 
-
-// ======================
-// USER (PUBLIC)
-// ======================
-export const getServicesMenu = async () => {
-  const res = await api.get("/services/menu");
-  return res.data;
+export const getServicesMenu = () => {
+  return getData("/services/menu");
 };
 
-
-// ======================
-// ADMIN
-// ======================
-
-export const adminGetServices = async () => {
-  const res = await api.get("/services");
-  return res.data;
+// admin
+export const adminGetServices = () => {
+  return getData("/services");
 };
 
-export const adminCreateService = async (payload: {
+export const adminCreateService = (payload: {
   index: string;
   title: string;
   slug: string;
   isActive?: boolean;
 }) => {
-  const res = await api.post("/services", payload);
-  return res.data;
+  return postData("/services", payload);
 };
 
-
-export const adminUpdateService = async (
+export const adminUpdateService = (
   id: string,
   payload: Partial<{
     index: string;
@@ -39,11 +27,9 @@ export const adminUpdateService = async (
     isActive: boolean;
   }>
 ) => {
-  const res = await api.put(`/services/${id}`, payload);
-  return res.data;
+  return putData(`/services/${id}`, payload);
 };
 
-export const adminDeleteService = async (id: string) => {
-  const res = await api.delete(`/services/${id}`);
-  return res.data;
+export const adminDeleteService = (id: string) => {
+  return deleteData(`/services/${id}`);
 };

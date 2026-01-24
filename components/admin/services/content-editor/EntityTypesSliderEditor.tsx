@@ -1,11 +1,16 @@
 "use client";
 
 import toast from "react-hot-toast";
-import { uploadImage } from "@/lib/api/upload.api";
+import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
+import { cloudinaryAutoWebp } from "@/utils/cloudinary";
 
 export type EntityTypeSlide = {
   title: string;
-  image: string;
+
+  // new fields
+  mainImage: string; // big image
+  subImage: string; // small image
+
   description?: string;
 };
 
@@ -34,6 +39,9 @@ export default function EntityTypesSliderEditor({
   updateEntityTypeSlide,
   removeEntityTypeSlide,
 }: Props) {
+  // allowed folder (must match backend allowedFolders)
+  const folder = "nishad-gateway/subservices";
+
   return (
     <div className="space-y-5 border border-gray-800 rounded-2xl p-6 bg-black/20">
       <div className="flex items-center justify-between gap-4">
@@ -111,10 +119,10 @@ export default function EntityTypesSliderEditor({
                 className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500 resize-none"
               />
 
-              {/* Image Upload */}
+              {/* MAIN IMAGE Upload */}
               <div className="space-y-2">
                 <label className="text-xs text-gray-400">
-                  Card Image (Cloudinary)
+                  Main Image (Big Image - Cloudinary Signed)
                 </label>
 
                 <input
@@ -124,30 +132,85 @@ export default function EntityTypesSliderEditor({
                     const file = e.target.files?.[0];
                     if (!file) return;
 
-                    const toastId = toast.loading("Uploading image...");
+                    const toastId = toast.loading("Uploading main image...");
 
                     try {
-                      const res = await uploadImage(file);
+                      const uploaded = await uploadToCloudinarySigned(
+                        file,
+                        folder
+                      );
 
-                      if (res?.data?.url) {
-                        updateEntityTypeSlide(idx, "image", res.data.url);
-                        toast.success("Uploaded ", { id: toastId });
-                      } else {
-                        toast.error("Upload failed", { id: toastId });
-                      }
-                    } catch {
-                      toast.error("Upload failed", { id: toastId });
+                      const webpUrl = cloudinaryAutoWebp(uploaded.secure_url);
+
+                      updateEntityTypeSlide(idx, "mainImage", webpUrl);
+                      toast.success("Main image uploaded", { id: toastId });
+                    } catch (err: any) {
+                      toast.error(err?.message || "Upload failed", {
+                        id: toastId,
+                      });
                     }
                   }}
                   className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white"
                 />
 
                 <input
-                  value={slide.image}
+                  value={slide.mainImage}
                   onChange={(e) =>
-                    updateEntityTypeSlide(idx, "image", e.target.value)
+                    updateEntityTypeSlide(
+                      idx,
+                      "mainImage",
+                      cloudinaryAutoWebp(e.target.value)
+                    )
                   }
-                  placeholder="Image URL"
+                  placeholder="Main Image URL"
+                  className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
+                />
+              </div>
+
+              {/* SUB IMAGE Upload */}
+              <div className="space-y-2">
+                <label className="text-xs text-gray-400">
+                  Sub Image (Small Image - Cloudinary Signed)
+                </label>
+
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+
+                    const toastId = toast.loading("Uploading sub image...");
+
+                    try {
+                      const uploaded = await uploadToCloudinarySigned(
+                        file,
+                        folder
+                      );
+
+                      const webpUrl = cloudinaryAutoWebp(uploaded.secure_url);
+
+                      updateEntityTypeSlide(idx, "subImage", webpUrl);
+                      toast.success("Sub image uploaded", { id: toastId });
+                    } catch (err: any) {
+                      toast.error(err?.message || "Upload failed", {
+                        id: toastId,
+                      });
+                    }
+                  }}
+                  className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white"
+                />
+
+                <input
+                  value={slide.subImage}
+                  onChange={(e) =>
+                    updateEntityTypeSlide(
+                      idx,
+                      "subImage",
+                      cloudinaryAutoWebp(e.target.value)
+                    )
+                  }
+                  placeholder="Sub Image URL"
                   className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
                 />
               </div>

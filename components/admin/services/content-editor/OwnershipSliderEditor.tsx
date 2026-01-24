@@ -1,16 +1,23 @@
 "use client";
 
 import toast from "react-hot-toast";
-import { uploadImage } from "@/lib/api/upload.api";
+import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
+import { cloudinaryAutoWebp } from "@/utils/cloudinary";
 
 export type OwnershipSlide = {
-  title: string; // ex: Restricted activities
-  subtitle: string; // ex: Sector exceptions
+  title: string; // Capsule text (Main title inside)
+  leftText?: string; // Left side text
+  rightText?: string; // Right side text
   image: string; // background image url
 };
 
 type Props = {
   ownershipHeading: string;
+
+  // Admin editable tab labels
+  ownershipTabOneLabel?: string;
+  ownershipTabTwoLabel?: string;
+
   ownershipSlides: OwnershipSlide[];
 
   updateField: (name: string, value: string) => void;
@@ -26,12 +33,17 @@ type Props = {
 
 export default function OwnershipSliderEditor({
   ownershipHeading,
+  ownershipTabOneLabel,
+  ownershipTabTwoLabel,
   ownershipSlides,
   updateField,
   addOwnershipSlide,
   updateOwnershipSlide,
   removeOwnershipSlide,
 }: Props) {
+  // ✅ must match backend allowedFolders
+  const folder = "nishad-gateway/subservices";
+
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between gap-4">
@@ -47,6 +59,7 @@ export default function OwnershipSliderEditor({
         </button>
       </div>
 
+      {/* Heading */}
       <input
         value={ownershipHeading}
         onChange={(e) => updateField("ownershipHeading", e.target.value)}
@@ -54,6 +67,24 @@ export default function OwnershipSliderEditor({
         className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
       />
 
+      {/* Tab Labels */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <input
+          value={ownershipTabOneLabel || ""}
+          onChange={(e) => updateField("ownershipTabOneLabel", e.target.value)}
+          placeholder="Tab 1 Label (ex: Foreign Ownership)"
+          className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
+        />
+
+        <input
+          value={ownershipTabTwoLabel || ""}
+          onChange={(e) => updateField("ownershipTabTwoLabel", e.target.value)}
+          placeholder="Tab 2 Label (ex: Capital Reality)"
+          className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
+        />
+      </div>
+
+      {/* Slides */}
       {ownershipSlides.length === 0 ? (
         <p className="text-sm text-gray-400">No slides added yet.</p>
       ) : (
@@ -76,29 +107,43 @@ export default function OwnershipSliderEditor({
                 </button>
               </div>
 
+              {/* Capsule title */}
+              <input
+                value={slide.title}
+                onChange={(e) =>
+                  updateOwnershipSlide(idx, "title", e.target.value)
+                }
+                placeholder="Capsule Title (ex: Restricted activities)"
+                className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
+              />
+
+              {/* Left & Right texts */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input
-                  value={slide.title}
+                <textarea
+                  value={slide.leftText || ""}
                   onChange={(e) =>
-                    updateOwnershipSlide(idx, "title", e.target.value)
+                    updateOwnershipSlide(idx, "leftText", e.target.value)
                   }
-                  placeholder="Title (ex: Restricted activities)"
-                  className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
+                  placeholder="Left Text (ex: Universal 100% rules)"
+                  rows={3}
+                  className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500 resize-none"
                 />
 
-                <input
-                  value={slide.subtitle}
+                <textarea
+                  value={slide.rightText || ""}
                   onChange={(e) =>
-                    updateOwnershipSlide(idx, "subtitle", e.target.value)
+                    updateOwnershipSlide(idx, "rightText", e.target.value)
                   }
-                  placeholder="Subtitle (ex: Sector exceptions)"
-                  className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
+                  placeholder="Right Text (ex: Sector exceptions)"
+                  rows={3}
+                  className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500 resize-none"
                 />
               </div>
 
+              {/* Background Image */}
               <div className="space-y-2">
                 <label className="text-xs text-gray-400">
-                  Background Image (Cloudinary)
+                  Background Image (Cloudinary Signed)
                 </label>
 
                 <input
@@ -111,16 +156,27 @@ export default function OwnershipSliderEditor({
                     const toastId = toast.loading("Uploading image...");
 
                     try {
-                      const res = await uploadImage(file);
+                      const uploaded = await uploadToCloudinarySigned(
+                        file,
+                        folder
+                      );
 
-                      if (res?.data?.url) {
-                        updateOwnershipSlide(idx, "image", res.data.url);
-                        toast.success("Uploaded ", { id: toastId });
+                      if (uploaded?.secure_url) {
+                        updateOwnershipSlide(
+                          idx,
+                          "image",
+                          cloudinaryAutoWebp(uploaded.secure_url)
+                        );
+
+                        toast.success("Uploaded", { id: toastId });
+                        e.target.value = "";
                       } else {
                         toast.error("Upload failed", { id: toastId });
                       }
-                    } catch {
-                      toast.error("Upload failed", { id: toastId });
+                    } catch (err: any) {
+                      toast.error(err?.message || "Upload failed", {
+                        id: toastId,
+                      });
                     }
                   }}
                   className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white"

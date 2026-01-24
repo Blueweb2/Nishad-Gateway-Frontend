@@ -1,44 +1,31 @@
-import { api } from "@/lib/axios";
+import { getData, postData, putData, deleteData } from "./request";
 
-//  USER (PUBLIC)
-export const getSubServicesByService = async (serviceId: string) => {
-  const res = await api.get(`/services/${serviceId}/subservices`);
-  return res.data;
+export const getSubServicesByService = (serviceId: string) => {
+  return getData(`/services/${serviceId}/subservices`);
 };
 
-// USER (PUBLIC) - get service by slug
-export const getServiceBySlug = async (slug: string) => {
-  const res = await api.get(`/services/slug/${slug}`);
-  return res.data;
+export const getServiceBySlug = (slug: string) => {
+  return getData(`/services/slug/${slug}`);
 };
 
-//  GET all subservices under a service
-export const adminGetSubServices = async (serviceId: string) => {
-  const res = await api.get(`/services/${serviceId}/subservices`);
-  return res.data;
-};
-
-//  CREATE (with image -> backend converts to WEBP)
-export const adminCreateSubService = async (
-  serviceId: string,
-  formData: FormData
-) => {
-  const res = await api.post(`/services/${serviceId}/subservices`, formData, {
+// admin create/update/delete only
+export const adminCreateSubService = (serviceId: string, formData: FormData) => {
+  return postData(`/services/${serviceId}/subservices`, formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
-  return res.data;
 };
 
-//  UPDATE (optional image -> backend converts to WEBP)
-export const adminUpdateSubService = async (subId: string, formData: FormData) => {
-  const res = await api.put(`/subservices/${subId}`, formData, {
+export const adminUpdateSubService = (subId: string, formData: FormData) => {
+  return putData(`/subservices/${subId}`, formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
-  return res.data;
 };
 
-//  DELETE subservice
-export const adminDeleteSubService = async (subId: string) => {
-  const res = await api.delete(`/subservices/${subId}`);
-  return res.data;
+export const adminDeleteSubService = (subId: string) => {
+  return deleteData(`/subservices/${subId}`);
+};
+
+// admin get all subservices under a service
+export const adminGetSubServices = (serviceId: string) => {
+  return getData(`/services/${serviceId}/subservices`);
 };

@@ -1,9 +1,8 @@
 "use client";
 
 import toast from "react-hot-toast";
-import { uploadImage } from "@/lib/api/upload.api";
+import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
 import { cloudinaryAutoWebp } from "@/utils/cloudinary";
-
 
 export type WhySlide = {
   title: string;
@@ -34,6 +33,9 @@ export default function WhySliderEditor({
   updateWhySlide,
   removeWhySlide,
 }: Props) {
+  // ✅ must match backend allowedFolders
+  const folder = "nishad-gateway/subservices";
+
   return (
     <div className="space-y-5 py-20">
       <div className="flex items-center justify-between gap-4">
@@ -114,7 +116,7 @@ export default function WhySliderEditor({
               {/* Upload Slide Image */}
               <div className="space-y-2">
                 <label className="text-xs text-gray-400">
-                  Slide Image (Cloudinary)
+                  Slide Image (Cloudinary Signed)
                 </label>
 
                 <input
@@ -127,19 +129,27 @@ export default function WhySliderEditor({
                     const toastId = toast.loading("Uploading slide image...");
 
                     try {
-                      const res = await uploadImage(file);
+                      const uploaded = await uploadToCloudinarySigned(
+                        file,
+                        folder
+                      );
 
-                      if (res?.data?.url) {
-                        updateWhySlide(idx, "image", cloudinaryAutoWebp(res.data.url));
+                      if (uploaded?.secure_url) {
+                        updateWhySlide(
+                          idx,
+                          "image",
+                          cloudinaryAutoWebp(uploaded.secure_url)
+                        );
 
-                        toast.success("Uploaded ", { id: toastId });
-
+                        toast.success("Uploaded", { id: toastId });
                         e.target.value = "";
                       } else {
                         toast.error("Upload failed", { id: toastId });
                       }
-                    } catch {
-                      toast.error("Upload failed", { id: toastId });
+                    } catch (err: any) {
+                      toast.error(err?.message || "Upload failed", {
+                        id: toastId,
+                      });
                     }
                   }}
                   className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white"
