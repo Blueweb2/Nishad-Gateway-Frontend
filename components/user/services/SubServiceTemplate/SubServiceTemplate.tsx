@@ -68,7 +68,7 @@ type FAQ = {
   a: string;
 };
 
-// Documents Required Types
+// documents required types
 type DocumentTab = {
   label: string;
   value: string;

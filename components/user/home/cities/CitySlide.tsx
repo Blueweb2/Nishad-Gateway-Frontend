@@ -1,26 +1,32 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, ArrowRight } from "lucide-react";
 import OvalArrow from "@/components/user/ui/OvalArrow";
-import ParallaxImage from "../shared/ParallaxImage";
+import ParallaxImage from "@/components/user/shared/ParallaxImage";
 
-type City = {
+export type City = {
   cityName: string;
   citySlug: string;
+  cityImage?: string;
   bestSuitedFor?: string;
   focus?: string;
 };
 
-export default function Cities({ city }: { city: City }) {
+type Props = {
+  city?: City;
+};
+
+export default function CitySlide({ city }: Props) {
+  if (!city) return null;
+
   return (
     <section className="relative w-full h-[110vh] text-white overflow-hidden">
       {/* BACKGROUND */}
       <div className="absolute inset-0 z-0">
         <ParallaxImage
-          src="/citiesbg.webp"
-          alt="City view"
-          className="w-full h-full"
+          src={city.cityImage || "/citiesbg.webp"}
+          alt={city.cityName}
+          className="w-full h-full object-cover"
           priority
           speed={160}
         />
@@ -32,12 +38,12 @@ export default function Cities({ city }: { city: City }) {
       {/* CONTENT */}
       <div className="relative z-20 max-w-[1320px] mx-auto px-6 h-full flex flex-col justify-between py-20">
         {/* TITLE */}
-        <h2 className="text-center text-[40px] font-semibold mb-20">
+        <h2 className="text-center text-[40px] font-semibold">
           Where You Operate Matters
         </h2>
 
         {/* INFO */}
-        <div className="mb-16">
+        <div className="mt-20">
           <div className="flex items-start gap-24">
             <div>
               <p className="text-xs uppercase text-white/70 mb-2">
@@ -61,7 +67,7 @@ export default function Cities({ city }: { city: City }) {
           <div className="mt-10 w-full h-px bg-white/30" />
         </div>
 
-        {/* CITY NAME + LINK */}
+        {/* CITY NAME */}
         <div>
           <div className="flex items-center gap-4 mb-10">
             <h3 className="text-[82px] font-bold leading-none">
@@ -82,15 +88,14 @@ export default function Cities({ city }: { city: City }) {
         </div>
 
         {/* CTA */}
-      
 
-<div className="flex justify-center">
-  <Link href="/ksa-expansion-cost-calculator">
-    <button className="bg-green-600 hover:bg-green-700 text-white px-10 py-3 rounded-full transition">
-      Calculate Your KSA Expansion Cost
-    </button>
-  </Link>
-</div>
+        <div className="flex justify-center">
+          <Link href="/ksa-expansion-cost-calculator">
+            <button className="bg-green-600 hover:bg-green-700 text-white px-10 py-3 rounded-full transition">
+              Calculate Your KSA Expansion Cost
+            </button>
+          </Link>
+        </div>
       </div>
     </section>
   );

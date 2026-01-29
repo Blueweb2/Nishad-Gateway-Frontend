@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+
 import toast from "react-hot-toast";
 import {
   LayoutDashboard,
@@ -10,14 +11,16 @@ import {
   PlusCircle,
   LogOut,
   Users,
+  MapPin
 } from "lucide-react";
 
 const links = [
-  { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
-  { name: "Blogs", href: "/admin/blogs", icon: FileText },
-  { name: "Services", href: "/admin/services", icon: Briefcase },
-  { name: "Add Service", href: "/admin/services/create", icon: PlusCircle },
-  { name: "Leads", href: "/admin/leads", icon: Users },
+ { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
+{ name: "Blogs", href: "/admin/blogs", icon: FileText },
+{ name: "Cities", href: "/admin/cities", icon: MapPin }, // ✅ NEW
+{ name: "Services", href: "/admin/services", icon: Briefcase },
+{ name: "Add Service", href: "/admin/services/create", icon: PlusCircle },
+{ name: "Leads", href: "/admin/leads", icon: Users },
 ];
 
 export default function AdminSidebar() {

@@ -460,7 +460,7 @@ doc.text("KSA Expansion Cost Estimate", 14, 35);
   
 
   return (
-    <section className="w-full" data-navbar="white">
+    <section className="w-full mt-20" data-navbar="white">
       {/* HERO */}
      <div className="bg-gradient-to-b from-[#f7faf7] to-white border-b border-neutral-200">
 

@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { api } from "@/lib/axios";
+import { adminAxios } from "@/lib/http/adminAxios";
+import { log } from "console";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -21,10 +22,14 @@ export default function AdminLoginPage() {
     setLoading(true);
 
     try {
-      const res = await api.post("/admin/login", formData);
+
+      console.log("login clicked");
+
+      const res = await adminAxios.post("/admin/login", formData);
 
       if (res.data.success) {
-        router.push("/admin/dashboard");
+       
+        router.replace("/admin/dashboard");
       }
     } catch (err: any) {
       setError(err?.response?.data?.message || "Login failed");

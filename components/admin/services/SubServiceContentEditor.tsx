@@ -39,11 +39,10 @@ type Section = {
   text: string;
   image?: string;
 };
-
 type EntityChooseQuestion = {
   question: string;
-  options: { label: string; value: string }[];
-  selectedValue?: string;
+  knowMoreLabel?: string;
+  knowMoreUrl?: string;
 };
 
 type FAQ = {
@@ -352,7 +351,7 @@ export default function SubServiceContentEditor({ subId }: Props) {
       ...prev,
       ownershipSlides: [
         ...(prev.ownershipSlides || []),
-       { title: "", leftText: "", rightText: "", image: "" },
+        { title: "", leftText: "", rightText: "", image: "" },
 
       ],
     }));
@@ -377,77 +376,42 @@ export default function SubServiceContentEditor({ subId }: Props) {
     }));
   };
 
-  // ENTITY CHOOSE HANDLERS
-  const addChooseQuestion = () => {
-    setForm((prev) => ({
-      ...prev,
-      entityChooseQuestions: [
-        ...(prev.entityChooseQuestions || []),
-        {
-          question: "",
-          options: [
-            { label: "Yes", value: "yes" },
-            { label: "No", value: "no" },
-          ],
-          selectedValue: "yes",
-        },
-      ],
-    }));
-  };
+//  ENTITY CHOOSE HANDLERS 
 
-  const updateChooseQuestion = (
-    index: number,
-    key: keyof EntityChooseQuestion,
-    value: any
-  ) => {
-    setForm((prev) => {
-      const updated = [...prev.entityChooseQuestions];
-      updated[index] = { ...updated[index], [key]: value };
-      return { ...prev, entityChooseQuestions: updated };
-    });
-  };
+const addChooseQuestion = () => {
+  setForm((prev) => ({
+    ...prev,
+    entityChooseQuestions: [
+      ...(prev.entityChooseQuestions || []),
+      {
+        question: "",
+        knowMoreLabel: "Know more",
+        knowMoreUrl: "",
+      },
+    ],
+  }));
+};
 
-  const removeChooseQuestion = (index: number) => {
-    setForm((prev) => ({
-      ...prev,
-      entityChooseQuestions: prev.entityChooseQuestions.filter((_, i) => i !== index),
-    }));
-  };
+const updateChooseQuestion = (
+  index: number,
+  key: keyof EntityChooseQuestion,
+  value: string
+) => {
+  setForm((prev) => {
+    const updated = [...prev.entityChooseQuestions];
+    updated[index] = { ...updated[index], [key]: value };
+    return { ...prev, entityChooseQuestions: updated };
+  });
+};
 
-  const addChooseOption = (qIndex: number) => {
-    setForm((prev) => {
-      const updated = [...prev.entityChooseQuestions];
-      updated[qIndex].options = [
-        ...(updated[qIndex].options || []),
-        { label: "", value: "" },
-      ];
-      return { ...prev, entityChooseQuestions: updated };
-    });
-  };
-
-  const updateChooseOption = (
-    qIndex: number,
-    optIndex: number,
-    key: "label" | "value",
-    value: string
-  ) => {
-    setForm((prev) => {
-      const updated = [...prev.entityChooseQuestions];
-      const options = [...updated[qIndex].options];
-      options[optIndex] = { ...options[optIndex], [key]: value };
-      updated[qIndex].options = options;
-      return { ...prev, entityChooseQuestions: updated };
-    });
-  };
-
-  const removeChooseOption = (qIndex: number, optIndex: number) => {
-    setForm((prev) => {
-      const updated = [...prev.entityChooseQuestions];
-      updated[qIndex].options = updated[qIndex].options.filter((_, i) => i !== optIndex);
-      return { ...prev, entityChooseQuestions: updated };
-    });
-  };
-
+const removeChooseQuestion = (index: number) => {
+  setForm((prev) => ({
+    ...prev,
+    entityChooseQuestions: prev.entityChooseQuestions.filter(
+      (_, i) => i !== index
+    ),
+  }));
+};
   // LOCATIONS SLIDER HANDLERS
   const addLocationSlide = () => {
     setForm((prev) => ({
@@ -728,9 +692,6 @@ export default function SubServiceContentEditor({ subId }: Props) {
                     addChooseQuestion={addChooseQuestion}
                     updateChooseQuestion={updateChooseQuestion}
                     removeChooseQuestion={removeChooseQuestion}
-                    addChooseOption={addChooseOption}
-                    updateChooseOption={updateChooseOption}
-                    removeChooseOption={removeChooseOption}
                   />
                 </AdminAccordion>
               );

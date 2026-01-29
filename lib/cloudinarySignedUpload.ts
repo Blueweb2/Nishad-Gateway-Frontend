@@ -1,8 +1,11 @@
-import { api } from "@/lib/axios";
+import { adminAxios } from "@/lib/http/adminAxios";
 
-export const uploadToCloudinarySigned = async (file: File, folder: string) => {
-  // 1) get signed params from backend
-  const signedRes = await api.get(`/upload/signed`, {
+export const uploadToCloudinarySigned = async (
+  file: File,
+  folder: string
+) => {
+  // 1️⃣ Get signed params from backend (ADMIN)
+  const signedRes = await adminAxios.get("/upload/signed", {
     params: { folder },
   });
 
@@ -12,6 +15,7 @@ export const uploadToCloudinarySigned = async (file: File, folder: string) => {
     throw new Error("Failed to get signed upload params");
   }
 
+  // 2️⃣ Build form data for Cloudinary
   const formData = new FormData();
   formData.append("file", file);
   formData.append("api_key", signed.apiKey);
@@ -19,10 +23,10 @@ export const uploadToCloudinarySigned = async (file: File, folder: string) => {
   formData.append("folder", signed.folder);
   formData.append("signature", signed.signature);
 
-  // optional: force format
-  formData.append("format", "webp");
+  // optional
+  // formData.append("format", "webp");
 
-  // 2) upload directly to cloudinary
+  // 3️ Upload directly to Cloudinary (NO AXIOS)
   const cloudinaryRes = await fetch(
     `https://api.cloudinary.com/v1_1/${signed.cloudName}/image/upload`,
     {

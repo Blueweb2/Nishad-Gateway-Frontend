@@ -1,16 +1,13 @@
 import axios from "axios";
-import toast from "react-hot-toast";
 
-export const api = axios.create({
+export const adminAxios = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   withCredentials: true,
 });
 
-//  RESPONSE INTERCEPTOR (GLOBAL)
-let isRefreshing = false;
-
-api.interceptors.response.use(
-  (res) => res,
+// 🔁 RESPONSE INTERCEPTOR (ADMIN ONLY)
+adminAxios.interceptors.response.use(
+  (response) => response,
   async (error) => {
     const originalRequest = error.config;
     const status = error?.response?.status;
@@ -19,6 +16,7 @@ api.interceptors.response.use(
     // ❌ never refresh on auth routes
     if (
       url.includes("/admin/login") ||
+      url.includes("/admin/refresh") ||
       url.includes("/admin/me")
     ) {
       return Promise.reject(error);
@@ -28,10 +26,13 @@ api.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        await api.post("/admin/refresh");
-        return api(originalRequest);
+        await adminAxios.post("/admin/refresh");
+        return adminAxios(originalRequest);
       } catch {
-        window.location.href = "/admin/login";
+        // 🔐 session expired
+        if (typeof window !== "undefined") {
+          window.location.href = "/admin/login";
+        }
       }
     }
 

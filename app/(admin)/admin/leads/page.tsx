@@ -39,13 +39,13 @@ export default function AdminLeadsPage() {
     const [loading, setLoading] = useState(true);
     const [leads, setLeads] = useState<Lead[]>([]);
     const [q, setQ] = useState("");
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
     async function fetchLeads() {
         try {
             setLoading(true);
 
-            // 🔥 change base url if needed (use your API base)
-            const res = await fetch("http://localhost:5000/api/leads", {
+            const res = await fetch(`${API_URL}/leads`, {
                 method: "GET",
                 credentials: "include",
             });
@@ -87,7 +87,7 @@ export default function AdminLeadsPage() {
 
     async function updateStatus(id: string, status: "new" | "contacted" | "converted") {
         try {
-            const res = await fetch(`http://localhost:5000/api/leads/${id}/status`, {
+            const res = await fetch(`${API_URL}/leads/${id}/status`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",
@@ -101,7 +101,7 @@ export default function AdminLeadsPage() {
                 return;
             }
 
-            toast.success("Status updated ✅", {
+            toast.success("Status updated ", {
                 style: {
                     backgroundColor: "#0f5132",
                     color: "#d1e7dd",

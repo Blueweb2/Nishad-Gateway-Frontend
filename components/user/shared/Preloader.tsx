@@ -84,6 +84,8 @@ export default function Preloader({ onFinish }: { onFinish: () => void }) {
           `}
         />
 
+        <div className="absolute inset-0 bg-black/25 pointer-events-none" />
+
         {/* Text (hide during zoom) */}
         {!zoomOut && (
           <>

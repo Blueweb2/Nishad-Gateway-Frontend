@@ -1,0 +1,310 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+
+import {
+  uploadToCloudinarySigned,
+} from "@/lib/cloudinarySignedUpload";
+import { cloudinaryAutoWebp, } from "@/utils/cloudinary";
+
+
+/* ---------- slug helper ---------- */
+const slugify = (text: string) =>
+  text
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+
+export default function CreateCityPage() {
+  const router = useRouter();
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+  const [isSlugEdited, setIsSlugEdited] = useState(false);
+  const [uploading, setUploading] = useState(false);
+
+  const [form, setForm] = useState({
+    cityName: "",
+    citySlug: "",
+    cityImage: "",
+    bestSuitedFor: "",
+    focus: "",
+    tag: "ARTICLE",
+    order: 0,
+    isActive: true,
+  });
+
+  const handleChange = (key: string, value: any) => {
+    setForm((prev) => {
+      const updated = { ...prev, [key]: value };
+
+      if (key === "cityName" && !isSlugEdited) {
+        updated.citySlug = slugify(value);
+      }
+
+      return updated;
+    });
+  };
+
+  /* ---------- image upload ---------- */
+  const handleImageUpload = async (file?: File) => {
+    if (!file) return;
+
+    try {
+      setUploading(true);
+
+    const uploaded = await uploadToCloudinarySigned(
+        file,
+        "nishad-gateway/cities"
+      );
+
+      const optimizedUrl = cloudinaryAutoWebp(
+        uploaded.secure_url
+      );
+
+      handleChange("cityImage", optimizedUrl);
+
+      toast.success("Image uploaded");
+    } catch (err: any) {
+      toast.error(err.message || "Image upload failed");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  /* ---------- submit ---------- */
+  const handleSubmit = async () => {
+    try {
+      if (!API_URL) return toast.error("API URL missing");
+
+      if (!form.cityName.trim())
+        return toast.error("City name required");
+      if (!form.citySlug.trim())
+        return toast.error("City slug required");
+      if (!form.cityImage)
+        return toast.error("City image required");
+
+      const res = await fetch(`${API_URL}/cities`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json().catch(() => null);
+
+      if (!res.ok) {
+        toast.error(data?.message || "Failed to create city");
+        return;
+      }
+
+      toast.success("City created successfully");
+      router.push("/admin/cities");
+    } catch {
+      toast.error("Failed to create city");
+    }
+  };
+
+  return (
+    <main className="min-h-screen">
+      <div className="max-w-3xl mx-auto px-6 pt-10 pb-16">
+        <h1 className="text-3xl font-semibold text-white">
+          Add City
+        </h1>
+        <p className="text-sm text-white/60 mt-2">
+          This city will be used in Home page and Service blog
+          city sections.
+        </p>
+
+        <div className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-6 space-y-5">
+          {/* City Name */}
+          <Input
+            label="City Name"
+            value={form.cityName}
+            onChange={(v) => handleChange("cityName", v)}
+            placeholder="Jeddah"
+          />
+
+          {/* City Slug */}
+          <div>
+            <Input
+              label="City Slug"
+              value={form.citySlug}
+              onChange={(v) => {
+                setIsSlugEdited(true);
+                handleChange("citySlug", v);
+              }}
+              placeholder="jeddah"
+              disabled={!form.cityName}
+            />
+            <p className="text-xs text-white/50 mt-1">
+              Auto-generated from city name
+            </p>
+          </div>
+
+          {/* City Image Upload */}
+          {/* City Image Upload */}
+          <div>
+            <p className="text-sm text-white/70 mb-2">City Image</p>
+
+            {form.cityImage && (
+              <img
+                src={form.cityImage}
+                alt="City preview"
+                className="mb-3 w-full h-48 object-cover rounded-lg border border-white/10"
+              />
+            )}
+
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => handleImageUpload(e.target.files?.[0])}
+              disabled={uploading}
+              className="block w-full text-sm text-white/70
+      file:mr-4 file:py-2 file:px-4
+      file:rounded-lg file:border-0
+      file:text-sm file:font-semibold
+      file:bg-emerald-500 file:text-black
+      hover:file:bg-emerald-400"
+            />
+
+            {uploading && (
+              <p className="text-xs text-white/50 mt-2">
+                Uploading image...
+              </p>
+            )}
+
+            {/* ✅ Auto-filled Cloudinary URL */}
+            <Input
+              label="City Image URL"
+              value={form.cityImage}
+              onChange={(v) => handleChange("cityImage", v)}
+              placeholder="Cloudinary image URL"
+            />
+          </div>
+          {/* Best suited for */}
+          <Textarea
+            label="Best Suited For"
+            value={form.bestSuitedFor}
+            onChange={(v) =>
+              handleChange("bestSuitedFor", v)
+            }
+            placeholder="Trading, logistics, tourism"
+          />
+
+          {/* Focus */}
+          <Textarea
+            label="Focus"
+            value={form.focus}
+            onChange={(v) => handleChange("focus", v)}
+            placeholder="Gateway to Red Sea trade routes"
+          />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Input
+              label="Tag"
+              value={form.tag}
+              onChange={(v) => handleChange("tag", v)}
+              placeholder="ARTICLE"
+            />
+
+            <Input
+              label="Order"
+              value={String(form.order)}
+              onChange={(v) =>
+                handleChange("order", Number(v))
+              }
+              placeholder="0"
+              type="number"
+            />
+          </div>
+
+          <div className="flex items-center justify-between gap-4">
+            <label className="text-sm text-white/70">
+              <input
+                type="checkbox"
+                checked={form.isActive}
+                onChange={(e) =>
+                  handleChange("isActive", e.target.checked)
+                }
+                className="mr-2"
+              />
+              Active (visible on website)
+            </label>
+
+            <button
+              onClick={handleSubmit}
+              disabled={uploading}
+              className="px-5 py-2 rounded-lg bg-emerald-500 text-black text-sm font-semibold hover:bg-emerald-400 transition disabled:opacity-50"
+            >
+              Save City
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  );
+}
+
+/* ---------- small inputs ---------- */
+
+function Input({
+  label,
+  value,
+  onChange,
+  placeholder,
+  type = "text",
+  disabled = false,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  placeholder?: string;
+  type?: string;
+  disabled?: boolean;
+}) {
+  return (
+    <div>
+      <p className="text-sm text-white/70 mb-2">{label}</p>
+      <input
+        value={value}
+        type={type}
+        disabled={disabled}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        className={`w-full px-4 py-2 rounded-lg border border-white/10 text-white text-sm outline-none focus:ring-2 focus:ring-emerald-500/20 ${disabled
+            ? "bg-white/10 cursor-not-allowed"
+            : "bg-white/5"
+          }`}
+      />
+    </div>
+  );
+}
+
+function Textarea({
+  label,
+  value,
+  onChange,
+  placeholder,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  placeholder?: string;
+}) {
+  return (
+    <div>
+      <p className="text-sm text-white/70 mb-2">{label}</p>
+      <textarea
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        rows={4}
+        className="w-full px-4 py-2 rounded-lg border border-white/10 bg-white/5 text-white text-sm outline-none focus:ring-2 focus:ring-emerald-500/20"
+      />
+    </div>
+  );
+}

@@ -55,8 +55,13 @@ export default function Navbar() {
   return (
     <>
       {/* NAVBAR */}
-      <header className="fixed top-0 left-0 w-full z-[9999] bg-transparent">
-
+      <header
+        className={`
+fixed top-0 left-0 w-full z-[9999]
+transition-all duration-300
+${isLight ? "bg-white shadow-sm" : "bg-transparent"}
+`}
+      >
         <div className="w-full mx-auto px-6 pt-6">
           <nav className="flex items-center justify-between px-1 py-3">
             {/* LEFT — LOGO */}
@@ -156,17 +161,17 @@ export default function Navbar() {
                   setOpenBlogs(false);
                   setOpenMenu(false);
                 }}
-className={`
+                className={`
   flex items-center gap-2
   text-sm font-medium
   px-5 py-2 rounded-full
   transition
   ${isLight
-    ? "bg-black text-white hover:bg-gray-900"
-    : "bg-white text-green-600 hover:bg-gray-100"
-  }
+                    ? "bg-black text-white hover:bg-gray-900"
+                    : "bg-white text-green-600 hover:bg-gray-100"
+                  }
 `}
-       >
+              >
                 Contact Us
                 <Mail size={16} />
               </button>
@@ -182,18 +187,18 @@ className={`
                   setOpenServices(false);
                   setOpenBlogs(false);
                 }}
-   className={`
+                className={`
   relative flex items-center justify-center
   w-14 h-10 rounded-full
   transition-all duration-300
   ${openMenu
-    ? "bg-green-700 hover:bg-green-600"
-    : isLight
-      ? "bg-white/70 border border-black/10"
-      : "bg-black/30 border border-white/70 backdrop-blur-md"
-  }
+                    ? "bg-green-700 hover:bg-green-600"
+                    : isLight
+                      ? "bg-white/70 border border-black/10"
+                      : "bg-black/30 border border-white/70 backdrop-blur-md"
+                  }
 `}
-      >
+              >
                 {openMenu ? (
                   <span className="text-white text-xl font-semibold leading-none">×</span>
                 ) : (

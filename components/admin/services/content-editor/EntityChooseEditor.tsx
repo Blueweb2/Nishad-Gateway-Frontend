@@ -2,8 +2,8 @@
 
 type EntityChooseQuestion = {
   question: string;
-  options: { label: string; value: string }[];
-  selectedValue?: string;
+  knowMoreLabel?: string;
+  knowMoreUrl?: string;
 };
 
 type Props = {
@@ -17,18 +17,9 @@ type Props = {
   updateChooseQuestion: (
     index: number,
     key: keyof EntityChooseQuestion,
-    value: any
-  ) => void;
-  removeChooseQuestion: (index: number) => void;
-
-  addChooseOption: (qIndex: number) => void;
-  updateChooseOption: (
-    qIndex: number,
-    optIndex: number,
-    key: "label" | "value",
     value: string
   ) => void;
-  removeChooseOption: (qIndex: number, optIndex: number) => void;
+  removeChooseQuestion: (index: number) => void;
 };
 
 export default function EntityChooseEditor({
@@ -39,25 +30,24 @@ export default function EntityChooseEditor({
   addChooseQuestion,
   updateChooseQuestion,
   removeChooseQuestion,
-  addChooseOption,
-  updateChooseOption,
-  removeChooseOption,
 }: Props) {
   return (
     <div className="space-y-5 border border-gray-800 rounded-2xl p-6 bg-black/20">
+      {/* Header */}
       <div className="flex items-center justify-between gap-4">
         <h3 className="text-lg font-semibold text-white">
-          Entity Type Chooser (Questions)
+          Entity Type Chooser (Cards)
         </h3>
 
         <button
           onClick={addChooseQuestion}
           className="px-4 py-2 rounded-lg bg-green-600 hover:bg-green-700 transition text-sm font-semibold"
         >
-          + Add Question
+          + Add Card
         </button>
       </div>
 
+      {/* Heading */}
       <input
         value={entityChooseHeading}
         onChange={(e) => updateField("entityChooseHeading", e.target.value)}
@@ -65,6 +55,7 @@ export default function EntityChooseEditor({
         className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
       />
 
+      {/* Subheading */}
       <input
         value={entityChooseSubheading}
         onChange={(e) => updateField("entityChooseSubheading", e.target.value)}
@@ -72,95 +63,62 @@ export default function EntityChooseEditor({
         className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
       />
 
+      {/* Questions */}
       {entityChooseQuestions.length === 0 ? (
-        <p className="text-sm text-gray-400">No questions added yet.</p>
+        <p className="text-sm text-gray-400">No cards added yet.</p>
       ) : (
         <div className="space-y-5">
-          {entityChooseQuestions.map((q, qIndex) => (
+          {entityChooseQuestions.map((q, index) => (
             <div
-              key={qIndex}
+              key={index}
               className="border border-gray-800 rounded-2xl p-5 space-y-4 bg-black/30"
             >
               <div className="flex items-center justify-between">
                 <p className="text-sm font-semibold text-gray-200">
-                  Question {qIndex + 1}
+                  Card {index + 1}
                 </p>
 
                 <button
-                  onClick={() => removeChooseQuestion(qIndex)}
+                  onClick={() => removeChooseQuestion(index)}
                   className="text-xs px-3 py-1 rounded-lg bg-red-800 hover:bg-red-700 transition"
                 >
                   Remove
                 </button>
               </div>
 
+              {/* Question */}
               <input
                 value={q.question}
                 onChange={(e) =>
-                  updateChooseQuestion(qIndex, "question", e.target.value)
+                  updateChooseQuestion(index, "question", e.target.value)
                 }
-                placeholder="Question text"
+                placeholder="Question text (ex: Do you want 100% ownership?)"
                 className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
               />
 
-              <div className="flex items-center justify-between">
-                <p className="text-xs text-gray-400 font-medium">Options</p>
+              {/* Know More Label */}
+              <input
+                value={q.knowMoreLabel || ""}
+                onChange={(e) =>
+                  updateChooseQuestion(
+                    index,
+                    "knowMoreLabel",
+                    e.target.value
+                  )
+                }
+                placeholder='Link Label (ex: "Know more")'
+                className="w-full px-4 py-2 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
+              />
 
-                <button
-                  onClick={() => addChooseOption(qIndex)}
-                  className="text-xs px-3 py-1 rounded-lg bg-green-700 hover:bg-green-800 transition"
-                >
-                  + Add Option
-                </button>
-              </div>
-
-              {q.options?.length === 0 ? (
-                <p className="text-xs text-gray-500">No options added.</p>
-              ) : (
-                <div className="space-y-3">
-                  {q.options.map((opt, optIndex) => (
-                    <div
-                      key={optIndex}
-                      className="grid grid-cols-1 md:grid-cols-3 gap-3 items-center"
-                    >
-                      <input
-                        value={opt.label}
-                        onChange={(e) =>
-                          updateChooseOption(
-                            qIndex,
-                            optIndex,
-                            "label",
-                            e.target.value
-                          )
-                        }
-                        placeholder="Label (ex: Yes)"
-                        className="w-full px-4 py-2 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
-                      />
-
-                      <input
-                        value={opt.value}
-                        onChange={(e) =>
-                          updateChooseOption(
-                            qIndex,
-                            optIndex,
-                            "value",
-                            e.target.value
-                          )
-                        }
-                        placeholder="Value (ex: yes)"
-                        className="w-full px-4 py-2 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
-                      />
-
-                      <button
-                        onClick={() => removeChooseOption(qIndex, optIndex)}
-                        className="px-3 py-2 rounded-lg bg-red-800 hover:bg-red-700 transition text-xs font-semibold"
-                      >
-                        Remove Option
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
+              {/* Know More URL */}
+              <input
+                value={q.knowMoreUrl || ""}
+                onChange={(e) =>
+                  updateChooseQuestion(index, "knowMoreUrl", e.target.value)
+                }
+                placeholder="Link URL (ex: /services/entity-types)"
+                className="w-full px-4 py-2 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
+              />
             </div>
           ))}
         </div>
