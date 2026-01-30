@@ -4,11 +4,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
-import {
-  uploadToCloudinarySigned,
-} from "@/lib/cloudinarySignedUpload";
-import { cloudinaryAutoWebp, } from "@/utils/cloudinary";
-
+import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
+import { cloudinaryAutoWebp } from "@/utils/cloudinary";
+import { CityTag, CITY_TAGS, CityForm } from "@/lib/types/city";
 
 /* ---------- slug helper ---------- */
 const slugify = (text: string) =>
@@ -25,8 +23,9 @@ export default function CreateCityPage() {
 
   const [isSlugEdited, setIsSlugEdited] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<CityForm>({
     cityName: "",
     citySlug: "",
     cityImage: "",
@@ -37,12 +36,16 @@ export default function CreateCityPage() {
     isActive: true,
   });
 
-  const handleChange = (key: string, value: any) => {
+  /* ---------- handle change ---------- */
+  const handleChange = <K extends keyof CityForm>(
+    key: K,
+    value: CityForm[K]
+  ) => {
     setForm((prev) => {
       const updated = { ...prev, [key]: value };
 
       if (key === "cityName" && !isSlugEdited) {
-        updated.citySlug = slugify(value);
+        updated.citySlug = slugify(value as string);
       }
 
       return updated;
@@ -56,20 +59,18 @@ export default function CreateCityPage() {
     try {
       setUploading(true);
 
-    const uploaded = await uploadToCloudinarySigned(
+      const uploaded = await uploadToCloudinarySigned(
         file,
         "nishad-gateway/cities"
       );
 
-      const optimizedUrl = cloudinaryAutoWebp(
-        uploaded.secure_url
-      );
+      const optimizedUrl = cloudinaryAutoWebp(uploaded.secure_url);
 
       handleChange("cityImage", optimizedUrl);
 
       toast.success("Image uploaded");
     } catch (err: any) {
-      toast.error(err.message || "Image upload failed");
+      toast.error(err?.message || "Image upload failed");
     } finally {
       setUploading(false);
     }
@@ -78,14 +79,21 @@ export default function CreateCityPage() {
   /* ---------- submit ---------- */
   const handleSubmit = async () => {
     try {
-      if (!API_URL) return toast.error("API URL missing");
+      if (!API_URL) {
+        toast.error("API URL missing");
+        return;
+      }
 
       if (!form.cityName.trim())
         return toast.error("City name required");
+
       if (!form.citySlug.trim())
         return toast.error("City slug required");
+
       if (!form.cityImage)
         return toast.error("City image required");
+
+      setSubmitting(true);
 
       const res = await fetch(`${API_URL}/cities`, {
         method: "POST",
@@ -94,7 +102,10 @@ export default function CreateCityPage() {
         body: JSON.stringify(form),
       });
 
-      const data = await res.json().catch(() => null);
+      let data: any = null;
+      try {
+        data = await res.json();
+      } catch {}
 
       if (!res.ok) {
         toast.error(data?.message || "Failed to create city");
@@ -102,9 +113,11 @@ export default function CreateCityPage() {
       }
 
       toast.success("City created successfully");
-      router.push("/admin/cities");
+      router.push(`/admin/cities/${data.city._id}`);
     } catch {
       toast.error("Failed to create city");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -115,12 +128,11 @@ export default function CreateCityPage() {
           Add City
         </h1>
         <p className="text-sm text-white/60 mt-2">
-          This city will be used in Home page and Service blog
-          city sections.
+          Create a new city to manage its blog, categories, and content.
         </p>
 
         <div className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-6 space-y-5">
-          {/* City Name */}
+
           <Input
             label="City Name"
             value={form.cityName}
@@ -128,27 +140,28 @@ export default function CreateCityPage() {
             placeholder="Jeddah"
           />
 
-          {/* City Slug */}
           <div>
             <Input
               label="City Slug"
               value={form.citySlug}
               onChange={(v) => {
                 setIsSlugEdited(true);
-                handleChange("citySlug", v);
+                handleChange("citySlug", slugify(v));
               }}
               placeholder="jeddah"
               disabled={!form.cityName}
             />
             <p className="text-xs text-white/50 mt-1">
-              Auto-generated from city name
+              {isSlugEdited
+                ? "Manually edited"
+                : "Auto-generated from city name"}
             </p>
           </div>
 
-          {/* City Image Upload */}
-          {/* City Image Upload */}
           <div>
-            <p className="text-sm text-white/70 mb-2">City Image</p>
+            <p className="text-sm text-white/70 mb-2">
+              City Image
+            </p>
 
             {form.cityImage && (
               <img
@@ -161,14 +174,16 @@ export default function CreateCityPage() {
             <input
               type="file"
               accept="image/*"
-              onChange={(e) => handleImageUpload(e.target.files?.[0])}
+              onChange={(e) =>
+                handleImageUpload(e.target.files?.[0])
+              }
               disabled={uploading}
               className="block w-full text-sm text-white/70
-      file:mr-4 file:py-2 file:px-4
-      file:rounded-lg file:border-0
-      file:text-sm file:font-semibold
-      file:bg-emerald-500 file:text-black
-      hover:file:bg-emerald-400"
+              file:mr-4 file:py-2 file:px-4
+              file:rounded-lg file:border-0
+              file:text-sm file:font-semibold
+              file:bg-emerald-500 file:text-black
+              hover:file:bg-emerald-400"
             />
 
             {uploading && (
@@ -177,15 +192,16 @@ export default function CreateCityPage() {
               </p>
             )}
 
-            {/* ✅ Auto-filled Cloudinary URL */}
             <Input
               label="City Image URL"
               value={form.cityImage}
-              onChange={(v) => handleChange("cityImage", v)}
+              onChange={(v) =>
+                handleChange("cityImage", v)
+              }
               placeholder="Cloudinary image URL"
             />
           </div>
-          {/* Best suited for */}
+
           <Textarea
             label="Best Suited For"
             value={form.bestSuitedFor}
@@ -195,21 +211,37 @@ export default function CreateCityPage() {
             placeholder="Trading, logistics, tourism"
           />
 
-          {/* Focus */}
           <Textarea
             label="Focus"
             value={form.focus}
-            onChange={(v) => handleChange("focus", v)}
+            onChange={(v) =>
+              handleChange("focus", v)
+            }
             placeholder="Gateway to Red Sea trade routes"
           />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Input
-              label="Tag"
-              value={form.tag}
-              onChange={(v) => handleChange("tag", v)}
-              placeholder="ARTICLE"
-            />
+            <div>
+              <p className="text-sm text-white/70 mb-2">
+                Tag
+              </p>
+              <select
+                value={form.tag}
+                onChange={(e) =>
+                  handleChange(
+                    "tag",
+                    e.target.value as CityTag
+                  )
+                }
+                className="w-full px-4 py-2 rounded-lg border border-white/10 bg-white/5 text-white text-sm"
+              >
+                {CITY_TAGS.map((tag) => (
+                  <option key={tag} value={tag}>
+                    {tag}
+                  </option>
+                ))}
+              </select>
+            </div>
 
             <Input
               label="Order"
@@ -228,7 +260,10 @@ export default function CreateCityPage() {
                 type="checkbox"
                 checked={form.isActive}
                 onChange={(e) =>
-                  handleChange("isActive", e.target.checked)
+                  handleChange(
+                    "isActive",
+                    e.target.checked
+                  )
                 }
                 className="mr-2"
               />
@@ -237,10 +272,10 @@ export default function CreateCityPage() {
 
             <button
               onClick={handleSubmit}
-              disabled={uploading}
+              disabled={uploading || submitting}
               className="px-5 py-2 rounded-lg bg-emerald-500 text-black text-sm font-semibold hover:bg-emerald-400 transition disabled:opacity-50"
             >
-              Save City
+              {submitting ? "Saving..." : "Save City"}
             </button>
           </div>
         </div>
@@ -275,10 +310,11 @@ function Input({
         disabled={disabled}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className={`w-full px-4 py-2 rounded-lg border border-white/10 text-white text-sm outline-none focus:ring-2 focus:ring-emerald-500/20 ${disabled
+        className={`w-full px-4 py-2 rounded-lg border border-white/10 text-white text-sm outline-none focus:ring-2 focus:ring-emerald-500/20 ${
+          disabled
             ? "bg-white/10 cursor-not-allowed"
             : "bg-white/5"
-          }`}
+        }`}
       />
     </div>
   );

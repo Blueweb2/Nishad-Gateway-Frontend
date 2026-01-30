@@ -2,11 +2,14 @@
 
 import React from "react";
 import { Trash2 } from "lucide-react";
+
 import HeroSectionEditor from "./HeroSectionEditor";
+import CategoriesSectionEditor from "./CategoriesSectionEditor";
 
 import type {
   CityBlogSection,
   HeroSectionContent,
+  CategoriesSectionContent,
 } from "@/lib/types/city-blog";
 
 type Props = {
@@ -22,6 +25,17 @@ export default function SectionsList({ sections, setSections }: Props) {
       prev
         .filter((_, i) => i !== index)
         .map((s, i) => ({ ...s, order: i + 1 }))
+    );
+  };
+
+  const updateSectionContent = (
+    index: number,
+    content: any
+  ) => {
+    setSections((prev) =>
+      prev.map((s, i) =>
+        i === index ? { ...s, content } : s
+      )
     );
   };
 
@@ -42,7 +56,9 @@ export default function SectionsList({ sections, setSections }: Props) {
               {/* Header */}
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <p className="text-xs text-white/50">{section.type}</p>
+                  <p className="text-xs text-white/50">
+                    {section.type}
+                  </p>
                   <p className="text-white font-medium">
                     {section.title || "Untitled section"}
                   </p>
@@ -57,23 +73,29 @@ export default function SectionsList({ sections, setSections }: Props) {
                 </button>
               </div>
 
-              {/* Editor */}
+              {/* ==========================
+                  SECTION EDITORS
+              ========================== */}
+
               {section.type === "HERO" && (
                 <HeroSectionEditor
                   content={section.content as HeroSectionContent}
                   onChange={(content: HeroSectionContent) =>
-                    setSections((prev) =>
-                      prev.map((s, i) =>
-                        i === index
-                          ? { ...s, content }
-                          : s
-                      )
-                    )
+                    updateSectionContent(index, content)
                   }
                 />
               )}
 
-              
+              {section.type === "CATEGORIES" && (
+                <CategoriesSectionEditor
+                  content={
+                    section.content as CategoriesSectionContent
+                  }
+                  onChange={(content: CategoriesSectionContent) =>
+                    updateSectionContent(index, content)
+                  }
+                />
+              )}
             </div>
           ))
       )}
