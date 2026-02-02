@@ -42,6 +42,12 @@ type EntityChooseQuestion = {
   knowMoreUrl?: string;
 };
 
+type EntityTableColumn = {
+  key: string;
+  label: string;
+};
+
+
 type FAQ = {
   q: string;
   a: string;
@@ -61,6 +67,16 @@ const DEFAULT_SECTION_ORDER = [
   "documents",
   "faq",
 ] as const;
+
+  const DEFAULT_ENTITY_COLUMNS: EntityTableColumn[] = [
+    { key: "entityType", label: "Entity Type" },
+    { key: "ownership", label: "Ownership" },
+    { key: "bestFor", label: "Best For" },
+    { key: "capital", label: "Capital" },
+    { key: "regulatoryBody", label: "Regulatory Body" },
+    { key: "timeToSetup", label: "Time to Setup" },
+  ];
+
 
 export default function SubServiceContentEditor({ subId }: Props) {
   const [loading, setLoading] = useState(true);
@@ -94,9 +110,13 @@ export default function SubServiceContentEditor({ subId }: Props) {
     ownershipSlides: [] as OwnershipSlide[],
 
 
+  
+
     // ENTITY TABLE
     entityTableHeading: "",
+    entityTableColumns: DEFAULT_ENTITY_COLUMNS,
     entityTableRows: [] as EntityRow[],
+
 
 
     // ENTITY TYPES SLIDER
@@ -193,8 +213,17 @@ export default function SubServiceContentEditor({ subId }: Props) {
 
 
 
+
           entityTableHeading: res.data.entityTableHeading || "",
+          entityTableColumns:
+            res.data.entityTableColumns &&
+              res.data.entityTableColumns.length > 0
+              ? res.data.entityTableColumns
+              : DEFAULT_ENTITY_COLUMNS,
           entityTableRows: res.data.entityTableRows || [],
+
+
+
 
           entityTypesHeading: res.data.entityTypesHeading || "",
           entityTypesDescription: res.data.entityTypesDescription || "",
@@ -270,6 +299,18 @@ export default function SubServiceContentEditor({ subId }: Props) {
     }));
   };
 
+
+  const updateColumnLabel = (key: string, value: string) => {
+    setForm((prev) => ({
+      ...prev,
+      entityTableColumns: prev.entityTableColumns.map((col) =>
+        col.key === key ? { ...col, label: value } : col
+      ),
+    }));
+  };
+
+
+
   // ENTITY TABLE HANDLERS
   const addEntityRow = () => {
     setForm((prev) => ({
@@ -310,6 +351,8 @@ export default function SubServiceContentEditor({ subId }: Props) {
       entityTableRows: prev.entityTableRows.filter((row) => row.id !== rowId),
     }));
   };
+
+
 
 
   // ENTITY TYPES SLIDER HANDLERS
@@ -590,12 +633,16 @@ export default function SubServiceContentEditor({ subId }: Props) {
                 >
                   <EntityTableEditor
                     entityTableHeading={form.entityTableHeading}
+                    entityTableColumns={form.entityTableColumns}
                     entityTableRows={form.entityTableRows}
                     updateField={updateField}
                     addEntityRow={addEntityRow}
                     updateEntityRow={updateEntityRow}
                     removeEntityRow={removeEntityRow}
+                    updateColumnLabel={updateColumnLabel}
                   />
+
+
                 </AdminAccordion>
               );
 
@@ -688,16 +735,16 @@ export default function SubServiceContentEditor({ subId }: Props) {
                   isOpen={isOpen}
                   onToggle={toggle}
                 >
-               <FaqEditor
-  faqHeading={form.faqHeading}
-  faqImage={form.faqImage}
-  faqCtaText={form.faqCtaText}
-  faqs={form.faqs}
-  updateField={updateField}
-  addFaq={addFaq}
-  updateFaq={updateFaq}
-  removeFaq={removeFaq}
-/>
+                  <FaqEditor
+                    faqHeading={form.faqHeading}
+                    faqImage={form.faqImage}
+                    faqCtaText={form.faqCtaText}
+                    faqs={form.faqs}
+                    updateField={updateField}
+                    addFaq={addFaq}
+                    updateFaq={updateFaq}
+                    removeFaq={removeFaq}
+                  />
 
 
                 </AdminAccordion>

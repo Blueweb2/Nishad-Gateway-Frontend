@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-// ✅ Sections
+// Sections
 import HeroSection from "@/components/user/services/SubServiceTemplate/sections/HeroSection";
 import WhySliderSection from "@/components/user/services/SubServiceTemplate/sections/WhySliderSection";
 import EntityTableSection from "@/components/user/services/SubServiceTemplate/sections/EntityTableSection";
@@ -13,9 +13,10 @@ import DocumentsRequiredSection from "@/components/user/services/SubServiceTempl
 import LocationsSliderSection from "@/components/user/services/SubServiceTemplate/sections/LocationsSliderSection";
 import FaqSection from "./sections/FaqSection";
 
-// ============================
-// TYPES
-// ============================
+/* ============================
+   TYPES
+============================ */
+
 type Section = {
   heading: string;
   text: string;
@@ -29,9 +30,9 @@ type WhySlide = {
 };
 
 type OwnershipSlide = {
-  title: string; // capsule title
-  leftText?: string; // left side text
-  rightText?: string; // right side text
+  title: string;
+  leftText?: string;
+  rightText?: string;
   image: string;
 };
 
@@ -68,7 +69,6 @@ type FAQ = {
   a: string;
 };
 
-// documents required types
 type DocumentTab = {
   label: string;
   value: string;
@@ -94,12 +94,11 @@ type City = {
   tag?: "ARTICLE" | "FEATURED" | "TRENDING";
 };
 
+/* ============================
+   MAIN CONTENT TYPE
+============================ */
 
-// ============================
-// MAIN CONTENT TYPE
-// ============================
 export type SubServiceContent = {
-  // ✅ SECTION ORDER (ADMIN REPOSITION SUPPORT)
   sectionOrder?: string[];
 
   // HERO
@@ -110,26 +109,26 @@ export type SubServiceContent = {
   heroButtonLink: string;
   heroImage: string;
 
-  // WHY SECTION
+  // WHY
   whyHeading: string;
   whySlides: WhySlide[];
   whyCtaText: string;
   whyCtaLink: string;
 
-  // ENTITY TABLE
+  // ENTITY TABLE (Dynamic columns supported)
   entityTableHeading: string;
   entityTableColumns?: EntityTableColumn[];
   entityTableRows: EntityRow[];
 
-  // ENTITY TYPES SLIDER
+  // ENTITY TYPES
   entityTypesHeading: string;
   entityTypesDescription: string;
   entityTypesSlides: EntityTypeSlide[];
 
-  // OWNERSHIP SLIDER
+  // OWNERSHIP
   ownershipHeading: string;
-  ownershipTabOneLabel?: string; // Foreign Ownership
-  ownershipTabTwoLabel?: string; // Capital Reality
+  ownershipTabOneLabel?: string;
+  ownershipTabTwoLabel?: string;
   ownershipSlides: OwnershipSlide[];
 
   // ENTITY CHOOSE
@@ -137,29 +136,26 @@ export type SubServiceContent = {
   entityChooseSubheading: string;
   entityChooseQuestions: EntityChooseQuestion[];
 
-  // DOCUMENTS REQUIRED
+  // DOCUMENTS
   documentsHeading: string;
   documentsSubheading: string;
   documentEntityTabs: DocumentTab[];
   documentGroups: DocumentGroup[];
 
-  // LOCATIONS SLIDER
+  // LOCATIONS
   locationsHeading: string;
   locationsSubheading: string;
 
-
-  // INTRO / EXTRA SECTIONS
+  // EXTRA
   introHeading: string;
   introText: string;
   sections: Section[];
 
   // FAQ
- // FAQ
-faqHeading?: string;
-faqs: FAQ[];
-faqImage?: string;
-faqCtaText?: string;
-
+  faqHeading?: string;
+  faqs: FAQ[];
+  faqImage?: string;
+  faqCtaText?: string;
 };
 
 type Props = {
@@ -167,17 +163,23 @@ type Props = {
   cities: City[];
 };
 
-export default function SubServiceTemplate({
-  content,
-  cities,
-}: Props) {
-  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+export default function SubServiceTemplate({ content, cities }: Props) {
+  const [openFaqIndex] = useState<number | null>(0);
 
-  //  Helpers
-  const hasText = (v?: string) => typeof v === "string" && v.trim().length > 0;
-  const hasArray = (v?: any[]) => Array.isArray(v) && v.length > 0;
+  /* ============================
+     HELPERS
+  ============================ */
 
-  //  Default order (if admin order not provided)
+  const hasText = (v?: string) =>
+    typeof v === "string" && v.trim().length > 0;
+
+  const hasArray = (v?: any[]) =>
+    Array.isArray(v) && v.length > 0;
+
+  /* ============================
+     SECTION ORDER
+  ============================ */
+
   const defaultOrder = [
     "hero",
     "why",
@@ -190,164 +192,112 @@ export default function SubServiceTemplate({
     "faq",
   ];
 
-  //  Use admin order if exists
   let order =
-    Array.isArray(content.sectionOrder) && content.sectionOrder.length > 0
+    Array.isArray(content.sectionOrder) &&
+    content.sectionOrder.length > 0
       ? content.sectionOrder
       : defaultOrder;
 
-  // Ensure locations always exists
   if (!order.includes("locations")) {
     order = [...order, "locations"];
   }
 
+  /* ============================
+     RENDER SECTION
+  ============================ */
 
-
-  console.log("Section order:", content.sectionOrder);
-
-  console.log("Cities in template:", cities);
-
-  console.log("TEMPLATE FAQ IMAGE:", content.faqImage);
-
-
-
-
-  //  Render section by key
   const renderSection = (key: string) => {
     switch (key) {
-      // ============================
-      // HERO
-      // ============================
       case "hero":
-        return (
-          (hasText(content.heroTitle) ||
-            hasText(content.heroSubtitle) ||
-            hasText(content.heroDescription) ||
-            hasText(content.heroButtonText) ||
-            hasText(content.heroButtonLink) ||
-            hasText(content.heroImage)) && (
-            <HeroSection
-              heroTitle={content.heroTitle}
-              heroSubtitle={content.heroSubtitle}
-              heroDescription={content.heroDescription}
-              heroButtonText={content.heroButtonText}
-              heroButtonLink={content.heroButtonLink}
-              heroImage={content.heroImage}
-            />
-          )
-        );
+        if (
+          hasText(content.heroTitle) ||
+          hasText(content.heroSubtitle) ||
+          hasText(content.heroDescription)
+        ) {
+          return <HeroSection {...content} />;
+        }
+        return null;
 
-      // ============================
-      // WHY
-      // ============================
       case "why":
-        return (
-          (hasText(content.whyHeading) || hasArray(content.whySlides)) && (
+        if (hasText(content.whyHeading) || hasArray(content.whySlides)) {
+          return (
             <WhySliderSection
               whyHeading={content.whyHeading}
               whySlides={content.whySlides}
               whyCtaText={content.whyCtaText}
               whyCtaLink={content.whyCtaLink}
             />
-          )
-        );
+          );
+        }
+        return null;
 
-      // ============================
-      // ENTITY TABLE
-      // ============================
       case "entityTable":
-        return (
-          hasArray(content.entityTableRows) && (
+        if (hasArray(content.entityTableRows)) {
+          return (
             <EntityTableSection
               entityTableHeading={content.entityTableHeading}
               entityTableColumns={content.entityTableColumns}
               entityTableRows={content.entityTableRows}
             />
-          )
-        );
+          );
+        }
+        return null;
 
-      // ============================
-      // ENTITY TYPES
-      // ============================
       case "entityTypes":
-        return (
-          (hasText(content.entityTypesHeading) ||
-            hasText(content.entityTypesDescription) ||
-            hasArray(content.entityTypesSlides)) && (
+        if (
+          hasText(content.entityTypesHeading) ||
+          hasArray(content.entityTypesSlides)
+        ) {
+          return (
             <EntityTypesSliderSection
               entityTypesHeading={content.entityTypesHeading}
               entityTypesDescription={content.entityTypesDescription}
               entityTypesSlides={content.entityTypesSlides}
             />
-          )
-        );
+          );
+        }
+        return null;
 
-      // ============================
-      // OWNERSHIP
-      // ============================
       case "ownership":
-        return (
-          (hasText(content.ownershipHeading) ||
-            hasArray(content.ownershipSlides)) && (
+        if (hasArray(content.ownershipSlides)) {
+          return (
             <OwnershipSliderSection
               ownershipHeading={content.ownershipHeading}
               ownershipSlides={content.ownershipSlides}
               ownershipTabOneLabel={content.ownershipTabOneLabel}
               ownershipTabTwoLabel={content.ownershipTabTwoLabel}
             />
+          );
+        }
+        return null;
 
-          )
-        );
-
-      // ============================
-      // ENTITY CHOOSE
-      // ============================
       case "entityChoose":
-        return (
-          (hasText(content.entityChooseHeading) ||
-            hasText(content.entityChooseSubheading) ||
-            hasArray(content.entityChooseQuestions)) && (
+        if (hasArray(content.entityChooseQuestions)) {
+          return (
             <EntityChooseSection
               entityChooseHeading={content.entityChooseHeading}
               entityChooseSubheading={content.entityChooseSubheading}
               entityChooseQuestions={content.entityChooseQuestions}
             />
-          )
-        );
+          );
+        }
+        return null;
 
-      // ============================
-      // DOCUMENTS REQUIRED
-      // ============================
       case "documents":
-        return (
-          (hasText(content.documentsHeading) ||
-            hasText(content.documentsSubheading) ||
-            hasArray(content.documentEntityTabs) ||
-            hasArray(content.documentGroups)) && (
+        if (hasArray(content.documentGroups)) {
+          return (
             <DocumentsRequiredSection
               documentsHeading={content.documentsHeading}
               documentsSubheading={content.documentsSubheading}
               documentEntityTabs={content.documentEntityTabs}
               documentGroups={content.documentGroups}
             />
-          )
-        );
-
-      // ============================
-      // LOCATIONS SLIDER
-      // ============================
+          );
+        }
+        return null;
 
       case "locations":
-        console.log("Rendering locations section", cities);
-        console.log("Cities length:", cities.length);
-        console.log("Type of cities:", typeof cities);
-        console.log("Is array?", Array.isArray(cities));
-        console.log("Actual cities:", cities);
-
-        if (!Array.isArray(cities) || cities.length === 0) {
-          return null;
-        }
-
+        if (!Array.isArray(cities) || cities.length === 0) return null;
         return (
           <LocationsSliderSection
             locationsHeading={content.locationsHeading}
@@ -356,26 +306,24 @@ export default function SubServiceTemplate({
           />
         );
 
+      case "faq":
+        return (
+          <FaqSection
+            faqHeading={content.faqHeading}
+            faqs={content.faqs || []}
+            faqImage={content.faqImage}
+            faqCtaText={content.faqCtaText}
+          />
+        );
 
-
-
-
-      // ============================
-      // FAQ
-      // ============================
- case "faq":
-  return (
-    <FaqSection
-      faqHeading={content.faqHeading}
-      faqs={content.faqs || []}
-      faqImage={content.faqImage}
-      faqCtaText={content.faqCtaText}
-    />
-  );
-
-
+      default:
+        return null;
     }
   };
+
+  /* ============================
+     RETURN
+  ============================ */
 
   return (
     <div className="w-full bg-[#050505] text-white">
