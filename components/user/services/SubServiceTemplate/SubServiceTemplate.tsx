@@ -85,13 +85,15 @@ type DocumentGroup = {
   cards: DocumentCard[];
 };
 
-type LocationSlide = {
-  title: string;
-  description: string;
-  image: string;
-  tag?: string;
-  link?: string;
+type City = {
+  _id: string;
+  cityName: string;
+  citySlug: string;
+  cityImage?: string;
+  bestSuitedFor?: string;
+  tag?: "ARTICLE" | "FEATURED" | "TRENDING";
 };
+
 
 // ============================
 // MAIN CONTENT TYPE
@@ -144,7 +146,7 @@ export type SubServiceContent = {
   // LOCATIONS SLIDER
   locationsHeading: string;
   locationsSubheading: string;
-  locationsSlides: LocationSlide[];
+
 
   // INTRO / EXTRA SECTIONS
   introHeading: string;
@@ -152,22 +154,30 @@ export type SubServiceContent = {
   sections: Section[];
 
   // FAQ
-  faqHeading?: string;
-  faqs: FAQ[];
+ // FAQ
+faqHeading?: string;
+faqs: FAQ[];
+faqImage?: string;
+faqCtaText?: string;
+
 };
 
 type Props = {
   content: SubServiceContent;
+  cities: City[];
 };
 
-export default function SubServiceTemplate({ content }: Props) {
+export default function SubServiceTemplate({
+  content,
+  cities,
+}: Props) {
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
 
-  // ✅ Helpers
+  //  Helpers
   const hasText = (v?: string) => typeof v === "string" && v.trim().length > 0;
   const hasArray = (v?: any[]) => Array.isArray(v) && v.length > 0;
 
-  // ✅ Default order (if admin order not provided)
+  //  Default order (if admin order not provided)
   const defaultOrder = [
     "hero",
     "why",
@@ -180,13 +190,29 @@ export default function SubServiceTemplate({ content }: Props) {
     "faq",
   ];
 
-  // ✅ Use admin order if exists
-  const order =
+  //  Use admin order if exists
+  let order =
     Array.isArray(content.sectionOrder) && content.sectionOrder.length > 0
       ? content.sectionOrder
       : defaultOrder;
 
-  // ✅ Render section by key
+  // Ensure locations always exists
+  if (!order.includes("locations")) {
+    order = [...order, "locations"];
+  }
+
+
+
+  console.log("Section order:", content.sectionOrder);
+
+  console.log("Cities in template:", cities);
+
+  console.log("TEMPLATE FAQ IMAGE:", content.faqImage);
+
+
+
+
+  //  Render section by key
   const renderSection = (key: string) => {
     switch (key) {
       // ============================
@@ -310,29 +336,44 @@ export default function SubServiceTemplate({ content }: Props) {
       // ============================
       // LOCATIONS SLIDER
       // ============================
+
       case "locations":
+        console.log("Rendering locations section", cities);
+        console.log("Cities length:", cities.length);
+        console.log("Type of cities:", typeof cities);
+        console.log("Is array?", Array.isArray(cities));
+        console.log("Actual cities:", cities);
+
+        if (!Array.isArray(cities) || cities.length === 0) {
+          return null;
+        }
+
         return (
-          (hasText(content.locationsHeading) ||
-            hasText(content.locationsSubheading) ||
-            hasArray(content.locationsSlides)) && (
-            <LocationsSliderSection
-              locationsHeading={content.locationsHeading}
-              locationsSubheading={content.locationsSubheading}
-              locationsSlides={content.locationsSlides}
-            />
-          )
+          <LocationsSliderSection
+            locationsHeading={content.locationsHeading}
+            locationsSubheading={content.locationsSubheading}
+            cities={cities}
+          />
         );
+
+
+
+
 
       // ============================
       // FAQ
       // ============================
-      case "faq":
-        return hasArray(content.faqs) ? (
-          <FaqSection faqHeading={content.faqHeading} faqs={content.faqs} />
-        ) : null;
+ case "faq":
+  return (
+    <FaqSection
+      faqHeading={content.faqHeading}
+      faqs={content.faqs || []}
+      faqImage={content.faqImage}
+      faqCtaText={content.faqCtaText}
+    />
+  );
 
-      default:
-        return null;
+
     }
   };
 

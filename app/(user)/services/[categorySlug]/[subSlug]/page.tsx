@@ -9,6 +9,8 @@ import SubServiceTemplate, {
 } from "@/components/user/services/SubServiceTemplate/SubServiceTemplate";
 
 import { getSubServiceContentBySlug } from "@/lib/api/content.api";
+import { getCities } from "@/lib/api/public/city.api";
+import { City } from "@/lib/types/city";
 
 export default function SubServiceDynamicPage() {
   const params = useParams();
@@ -16,21 +18,34 @@ export default function SubServiceDynamicPage() {
 
   const [loading, setLoading] = useState(true);
   const [content, setContent] = useState<SubServiceContent | null>(null);
+  const [cities, setCities] = useState<City[]>([]);
 
-  const fetchContent = async () => {
+  const fetchData = async () => {
     try {
       setLoading(true);
 
-      const res = await getSubServiceContentBySlug(subSlug);
+      const [contentRes, citiesRes] = await Promise.all([
+        getSubServiceContentBySlug(subSlug),
+        getCities(),
+      ]);
 
-      if (!res?.data) {
+      // ✅ correct
+
+
+      if (!contentRes?.data) {
         toast.error("No content found for this subservice");
         setContent(null);
         return;
       }
 
-      //  actual content is inside res.data
-      setContent(res.data);
+      setContent(contentRes.data);
+      setCities(citiesRes);
+
+
+      console.log("CITIES RAW:", citiesRes); // important
+      console.log("content response:", contentRes.data);
+      
+
     } catch (err) {
       toast.error("Failed to load subservice content");
     } finally {
@@ -39,7 +54,7 @@ export default function SubServiceDynamicPage() {
   };
 
   useEffect(() => {
-    if (subSlug) fetchContent();
+    if (subSlug) fetchData();
   }, [subSlug]);
 
   if (loading) {
@@ -58,5 +73,5 @@ export default function SubServiceDynamicPage() {
     );
   }
 
-  return <SubServiceTemplate content={content} />;
+  return <SubServiceTemplate content={content} cities={cities} />;
 }

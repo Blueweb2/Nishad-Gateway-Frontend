@@ -27,9 +27,6 @@ import OwnershipSliderEditor, {
 import EntityChooseEditor from "@/components/admin/services/content-editor/EntityChooseEditor";
 import DocumentsRequiredEditor from "@/components/admin/services/content-editor/DocumentsRequiredEditor";
 
-import LocationsSliderEditor, {
-  LocationSlide,
-} from "@/components/admin/services/content-editor/LocationsSliderEditor";
 
 import FaqEditor from "@/components/admin/services/content-editor/FaqEditor";
 import AdminAccordion from "../ui/AdminAccordion";
@@ -62,7 +59,6 @@ const DEFAULT_SECTION_ORDER = [
   "ownership",
   "entityChoose",
   "documents",
-  "locations",
   "faq",
 ] as const;
 
@@ -122,10 +118,7 @@ export default function SubServiceContentEditor({ subId }: Props) {
       cards: { title: string; items: string[]; icon?: string }[];
     }[],
 
-    // LOCATIONS SLIDER
-    locationsHeading: "",
-    locationsSubheading: "",
-    locationsSlides: [] as LocationSlide[],
+
 
     // INTRO
     introHeading: "",
@@ -136,7 +129,10 @@ export default function SubServiceContentEditor({ subId }: Props) {
 
     // FAQ
     faqHeading: "Frequently Asked Questions",
+    faqImage: "",
+    faqCtaText: "",
     faqs: [] as FAQ[],
+
   });
 
   const sectionLabels: Record<string, string> = {
@@ -222,9 +218,7 @@ export default function SubServiceContentEditor({ subId }: Props) {
           documentGroups: res.data.documentGroups || [],
 
 
-          locationsHeading: res.data.locationsHeading || "",
-          locationsSubheading: res.data.locationsSubheading || "",
-          locationsSlides: res.data.locationsSlides || [],
+
 
           introHeading: res.data.introHeading || "",
           introText: res.data.introText || "",
@@ -232,7 +226,10 @@ export default function SubServiceContentEditor({ subId }: Props) {
           sections: res.data.sections || [],
 
           faqHeading: res.data.faqHeading || "Frequently Asked Questions",
+          faqImage: res.data.faqImage || "",
+          faqCtaText: res.data.faqCtaText || "",
           faqs: res.data.faqs || [],
+
         });
       }
     } catch {
@@ -376,77 +373,44 @@ export default function SubServiceContentEditor({ subId }: Props) {
     }));
   };
 
-//  ENTITY CHOOSE HANDLERS 
+  //  ENTITY CHOOSE HANDLERS 
 
-const addChooseQuestion = () => {
-  setForm((prev) => ({
-    ...prev,
-    entityChooseQuestions: [
-      ...(prev.entityChooseQuestions || []),
-      {
-        question: "",
-        knowMoreLabel: "Know more",
-        knowMoreUrl: "",
-      },
-    ],
-  }));
-};
-
-const updateChooseQuestion = (
-  index: number,
-  key: keyof EntityChooseQuestion,
-  value: string
-) => {
-  setForm((prev) => {
-    const updated = [...prev.entityChooseQuestions];
-    updated[index] = { ...updated[index], [key]: value };
-    return { ...prev, entityChooseQuestions: updated };
-  });
-};
-
-const removeChooseQuestion = (index: number) => {
-  setForm((prev) => ({
-    ...prev,
-    entityChooseQuestions: prev.entityChooseQuestions.filter(
-      (_, i) => i !== index
-    ),
-  }));
-};
-  // LOCATIONS SLIDER HANDLERS
-  const addLocationSlide = () => {
+  const addChooseQuestion = () => {
     setForm((prev) => ({
       ...prev,
-      locationsSlides: [
-        ...(prev.locationsSlides || []),
+      entityChooseQuestions: [
+        ...(prev.entityChooseQuestions || []),
         {
-          title: "",
-          description: "",
-          image: "",
-          tag: "ARTICLE",
-          link: "",
+          question: "",
+          knowMoreLabel: "Know more",
+          knowMoreUrl: "",
         },
       ],
     }));
   };
 
-  const updateLocationSlide = (
+  const updateChooseQuestion = (
     index: number,
-    key: keyof LocationSlide,
+    key: keyof EntityChooseQuestion,
     value: string
   ) => {
     setForm((prev) => {
-      const updated = [...prev.locationsSlides];
+      const updated = [...prev.entityChooseQuestions];
       updated[index] = { ...updated[index], [key]: value };
-      return { ...prev, locationsSlides: updated };
+      return { ...prev, entityChooseQuestions: updated };
     });
   };
 
-  const removeLocationSlide = (index: number) => {
+  const removeChooseQuestion = (index: number) => {
     setForm((prev) => ({
       ...prev,
-      locationsSlides: prev.locationsSlides.filter((_, i) => i !== index),
+      entityChooseQuestions: prev.entityChooseQuestions.filter(
+        (_, i) => i !== index
+      ),
     }));
   };
+
+
 
   // FAQ HANDLERS
   const addFaq = () => {
@@ -714,25 +678,7 @@ const removeChooseQuestion = (index: number) => {
                 </AdminAccordion>
               );
 
-            case "locations":
-              return (
-                <AdminAccordion
-                  key="locations"
-                  title="Locations Slider"
-                  isOpen={isOpen}
-                  onToggle={toggle}
-                >
-                  <LocationsSliderEditor
-                    locationsHeading={form.locationsHeading}
-                    locationsSubheading={form.locationsSubheading}
-                    locationsSlides={form.locationsSlides}
-                    updateField={updateField}
-                    addLocationSlide={addLocationSlide}
-                    updateLocationSlide={updateLocationSlide}
-                    removeLocationSlide={removeLocationSlide}
-                  />
-                </AdminAccordion>
-              );
+
 
             case "faq":
               return (
@@ -742,14 +688,18 @@ const removeChooseQuestion = (index: number) => {
                   isOpen={isOpen}
                   onToggle={toggle}
                 >
-                  <FaqEditor
-                    faqHeading={form.faqHeading}
-                    faqs={form.faqs}
-                    updateField={updateField}
-                    addFaq={addFaq}
-                    updateFaq={updateFaq}
-                    removeFaq={removeFaq}
-                  />
+               <FaqEditor
+  faqHeading={form.faqHeading}
+  faqImage={form.faqImage}
+  faqCtaText={form.faqCtaText}
+  faqs={form.faqs}
+  updateField={updateField}
+  addFaq={addFaq}
+  updateFaq={updateFaq}
+  removeFaq={removeFaq}
+/>
+
+
                 </AdminAccordion>
               );
 

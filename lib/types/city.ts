@@ -6,6 +6,7 @@ export const CITY_TAGS: CityTag[] = [
   "TRENDING",
 ];
 
+// Used for ADMIN FORM
 export interface CityForm {
   cityName: string;
   citySlug: string;
@@ -15,4 +16,20 @@ export interface CityForm {
   tag: CityTag;
   order: number;
   isActive: boolean;
+}
+
+
+//  Used for PUBLIC API / UI
+export interface City {
+  _id: string;
+  cityName: string;
+  citySlug: string;
+  cityImage?: string;
+  bestSuitedFor?: string;
+  focus?: string;
+  tag: CityTag;
+  order: number;
+  isActive: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }

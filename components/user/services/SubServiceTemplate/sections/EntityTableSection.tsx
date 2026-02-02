@@ -40,13 +40,13 @@ export default function EntityTableSection({
 }: Props) {
   const rows = entityTableRows || [];
 
-  // ✅ use backend columns if available else default
+  //  use backend columns if available else default
   const cols =
     entityTableColumns && entityTableColumns.length > 0
       ? entityTableColumns
       : DEFAULT_COLUMNS;
 
-  // ✅ helper to get label by key
+  //  helper to get label by key
   const getColLabel = (key: string) =>
     cols.find((c) => c.key === key)?.label || key;
 

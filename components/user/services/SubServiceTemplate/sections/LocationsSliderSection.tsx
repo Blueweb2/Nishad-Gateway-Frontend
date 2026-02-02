@@ -5,30 +5,32 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 
-export type LocationSlide = {
-  title: string;
-  description: string;
-  image: string;
-  tag?: string; // ex: ARTICLE
-  link?: string; // ex: /blog/riyadh
+export type City = {
+  _id: string;
+  cityName: string;
+  citySlug: string;
+  cityImage?: string;
+  bestSuitedFor?: string;
+  tag?: "ARTICLE" | "FEATURED" | "TRENDING";
 };
 
 type Props = {
-  locationsHeading: string;
-  locationsSubheading: string;
-  locationsSlides: LocationSlide[];
+  locationsHeading?: string;
+  locationsSubheading?: string;
+  cities: City[];
 };
 
 export default function LocationsSliderSection({
   locationsHeading,
   locationsSubheading,
-  locationsSlides,
+  cities,
 }: Props) {
-  const slides = useMemo(() => locationsSlides || [], [locationsSlides]);
+  const slides = useMemo(() => cities || [], [cities]);
 
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const visibleCount = 3; // desktop cards
+  const visibleCount = 3;
+  const cardWidth = 420; // exact card width including gap
   const maxIndex = Math.max(0, slides.length - visibleCount);
 
   const handlePrev = () => {
@@ -39,15 +41,16 @@ export default function LocationsSliderSection({
     setActiveIndex((prev) => Math.min(maxIndex, prev + 1));
   };
 
-  const translateX = activeIndex * 380; // card width + gap (adjusted)
+  const translateX = activeIndex * cardWidth;
 
   return (
-    <section className="w-full bg-[#0b6b67] text-white py-14 overflow-hidden">
+    <section className="w-full bg-[#0b6b67] text-white py-16 overflow-hidden">
       <div className="w-full max-w-7xl mx-auto px-6 md:px-10">
-        {/* Top Heading Row */}
+        {/* Header */}
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
-          <h2 className="text-3xl md:text-4xl font-semibold leading-tight max-w-xl">
-            {locationsHeading || "Start Your Business Anywhere in Saudi Arabia"}
+          <h2 className="text-3xl md:text-4xl font-semibold max-w-xl leading-tight">
+            {locationsHeading ||
+              "Start Your Business Anywhere in Saudi Arabia"}
           </h2>
 
           <div className="flex items-start justify-between md:justify-end gap-6 w-full md:w-auto">
@@ -61,7 +64,7 @@ export default function LocationsSliderSection({
               <button
                 onClick={handlePrev}
                 disabled={activeIndex === 0}
-                className="w-10 h-10 rounded-full border border-white/40 flex items-center justify-center hover:bg-white/10 transition disabled:opacity-40"
+                className="w-11 h-11 rounded-full border border-white/40 flex items-center justify-center hover:bg-white/10 transition disabled:opacity-40"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
@@ -69,7 +72,7 @@ export default function LocationsSliderSection({
               <button
                 onClick={handleNext}
                 disabled={activeIndex === maxIndex}
-                className="w-10 h-10 rounded-full border border-white/40 flex items-center justify-center hover:bg-white/10 transition disabled:opacity-40"
+                className="w-11 h-11 rounded-full border border-white/40 flex items-center justify-center hover:bg-white/10 transition disabled:opacity-40"
               >
                 <ChevronRight className="w-5 h-5" />
               </button>
@@ -78,71 +81,59 @@ export default function LocationsSliderSection({
         </div>
 
         {/* Slider */}
-        <div className="mt-10 relative">
-          {/* Track */}
+        <div className="mt-12 relative">
           <div
-            className="flex gap-6 transition-transform duration-500 ease-in-out"
+            className="flex gap-8 transition-transform duration-500 ease-in-out"
             style={{
               transform: `translateX(-${translateX}px)`,
             }}
           >
-            {slides.length === 0 ? (
-              <div className="text-white/70 text-sm">
-                No locations slides added yet.
-              </div>
-            ) : (
-              slides.map((slide, idx) => (
-                <div
-                  key={idx}
-                  className="min-w-[360px] max-w-[360px] bg-white rounded-2xl overflow-hidden shadow-lg flex"
-                >
-                  {/* Left Image */}
-                  <div className="relative w-[120px] h-[150px] shrink-0">
-                    <Image
-                      src={slide.image || "/images/placeholder.jpg"}
-                      alt={slide.title}
-                      fill
-                      className="object-cover"
-                    />
+            {slides.map((city) => (
+              <div
+                key={city._id}
+                className="min-w-[400px] max-w-[400px] bg-white rounded-3xl overflow-hidden shadow-lg flex"
+              >
+                {/* Left Image */}
+                <div className="relative w-[140px] h-[200px] shrink-0 m-4 rounded-2xl overflow-hidden">
+                  <Image
+                    src={city.cityImage || "/images/placeholder.jpg"}
+                    alt={city.cityName}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+
+                {/* Right Content */}
+                <div className="flex-1 px-4 py-6 flex flex-col justify-between">
+                  <div>
+                    <h3 className="text-xl font-semibold text-black">
+                      {city.cityName}
+                    </h3>
+
+                    <p className="mt-2 text-sm text-gray-600 leading-snug">
+                      {city.bestSuitedFor ||
+                        "Headquarters, government access, and corporate ecosystem."}
+                    </p>
                   </div>
 
-                  {/* Right Content */}
-                  <div className="flex-1 px-5 py-4 flex flex-col justify-between">
-                    <div>
-                      <h3 className="text-lg font-semibold text-black">
-                        {slide.title}
-                      </h3>
+                  <div className="mt-6 flex items-center justify-between">
+                    <span className="text-[12px] font-medium tracking-wide text-gray-500 uppercase">
+                      {city.tag || "ARTICLE"}
+                    </span>
 
-                      <p className="mt-1 text-sm text-gray-600 leading-snug line-clamp-2">
-                        {slide.description}
-                      </p>
-                    </div>
-
-                    <div className="mt-4 flex items-center justify-between">
-                      <span className="text-[11px] font-medium tracking-wide text-gray-500 uppercase">
-                        {slide.tag || "ARTICLE"}
-                      </span>
-
-                      {slide.link ? (
-                        <Link
-                          href={slide.link}
-                          className="w-9 h-9 rounded-full bg-green-600 flex items-center justify-center hover:bg-green-700 transition"
-                        >
-                          <ArrowRight className="w-4 h-4 text-white" />
-                        </Link>
-                      ) : (
-                        <button className="w-9 h-9 rounded-full bg-green-600 flex items-center justify-center opacity-70 cursor-not-allowed">
-                          <ArrowRight className="w-4 h-4 text-white" />
-                        </button>
-                      )}
-                    </div>
+                    <Link
+                      href={`/cities/${city.citySlug}`}
+                      className="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center hover:bg-green-700 transition"
+                    >
+                      <ArrowRight className="w-4 h-4 text-white" />
+                    </Link>
                   </div>
                 </div>
-              ))
-            )}
+              </div>
+            ))}
           </div>
 
-          {/* Mobile scroll hint (optional) */}
+          {/* Mobile hint */}
           <div className="mt-4 text-xs text-white/70 md:hidden">
             Swipe horizontally to explore →
           </div>

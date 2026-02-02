@@ -9,18 +9,19 @@ export default function CitiesSection() {
   const [cities, setCities] = useState<City[]>([]);
   const [index, setIndex] = useState(0);
 
-  useEffect(() => {
-    const fetchCities = async () => {
-      try {
-        const { cities } = await getCities(); // ✅ works
-        setCities(cities);
-      } catch (error) {
-        console.error("Failed to load cities", error);
-      }
-    };
+useEffect(() => {
+  const fetchCities = async () => {
+    try {
+      const cities = await getCities(); // ✅ fixed
+      setCities(cities);
+    } catch (error) {
+      console.error("Failed to load cities", error);
+    }
+  };
 
-    fetchCities();
-  }, []);
+  fetchCities();
+}, []);
+
 
   if (cities.length === 0) return null;
 
