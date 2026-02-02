@@ -114,6 +114,17 @@ export default function HeroSectionEditor({ content, onChange }: Props) {
         }
         className="w-full px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white"
       />
+
+      {/* CTA Link */}
+<input
+  placeholder="CTA link (e.g. /ksa-expansion-cost-calculator or https://example.com)"
+  value={content.ctaLink || ""}
+  onChange={(e) =>
+    onChange({ ...content, ctaLink: e.target.value })
+  }
+  className="w-full px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white"
+/>
+
     </div>
   );
 }

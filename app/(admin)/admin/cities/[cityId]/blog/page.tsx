@@ -17,7 +17,7 @@ type City = {
 
 
 export default function AdminCityBlogPage() {
-    const { id } = useParams<{ id: string }>();
+    const { cityId } = useParams<{ cityId: string }>();
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
     const [city, setCity] = useState<City | null>(null);
@@ -28,7 +28,7 @@ export default function AdminCityBlogPage() {
         try {
             if (!API_URL) return toast.error("API URL missing");
 
-            const res = await fetch(`${API_URL}/cities/id/${id}/blog`, {
+            const res = await fetch(`${API_URL}/cities/${cityId}/blog`, {
                 credentials: "include",
             });
 
@@ -50,7 +50,7 @@ export default function AdminCityBlogPage() {
 
     useEffect(() => {
         fetchBlog();
-    }, [id]);
+    }, [cityId]);
 
     const addHeroSection = () => {
         setSections((prev) => [
@@ -63,6 +63,7 @@ export default function AdminCityBlogPage() {
                     subheading: "",
                     backgroundImage: "",
                     ctaText: "",
+                     ctaLink: "", 
                 },
                 order: prev.length + 1,
                 isActive: true,
@@ -91,7 +92,7 @@ export default function AdminCityBlogPage() {
             if (!API_URL) return toast.error("API URL missing");
 
             const res = await fetch(
-                `${API_URL}/cities/id/${id}/blog`,
+                `${API_URL}/cities/${cityId}/blog`,
                 {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },

@@ -1,21 +1,31 @@
-// lib/api/cityBlog.server.ts
+// lib/api/public/cityBlog.server.ts
 
 export async function getCityBlogBySlugServer(slug: string) {
-  if (!slug) {
-    throw new Error("City slug is required");
+  if (!slug) return null;
+
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+  if (!API_URL) {
+    console.error("NEXT_PUBLIC_API_URL is not defined");
+    return null;
   }
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/cities/slug/${slug}/blog`,
-    {
-      cache: "no-store", // change to 'force-cache' or revalidate later if needed
-      credentials: "include",
+  try {
+    const res = await fetch(
+      `${API_URL}/cities/slug/${slug}/blog`,
+      {
+        cache: "no-store",
+      }
+    );
+
+    if (!res.ok) {
+      console.error("Fetch failed:", res.status);
+      return null;
     }
-  );
 
-  if (!res.ok) {
-    throw new Error(`Failed to fetch city blog: ${res.status}`);
+    return res.json();
+  } catch (error) {
+    console.error("Fetch error:", error);
+    return null;
   }
-
-  return res.json();
 }

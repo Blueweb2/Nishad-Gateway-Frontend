@@ -1,13 +1,21 @@
-import { api } from "@/lib/axios";
+import { adminAxios } from "@/lib/http/adminAxios";
 
-export const getCityByIdClient = (id: string) =>
-  api.get(`/cities/id/${id}`).then((r) => r.data);
+export const getCityByIdClient = async (id: string) => {
+  const res = await adminAxios.get(`/cities/${id}`);
+  return res.data;
+};
 
-export const getCitiesClient = () =>
-  api.get(`/cities`).then((r) => r.data);
+export const getCitiesClient = async () => {
+  const res = await adminAxios.get(`/cities`);
+  return res.data;
+};
 
-export const updateCityClient = (id: string, payload: any) =>
-  api.put(`/cities/id/${id}`, payload).then((r) => r.data);
+export const updateCityClient = async (id: string, payload: any) => {
+  const res = await adminAxios.put(`/cities/${id}`, payload);
+  return res.data;
+};
 
-export const deleteCityClient = (id: string) =>
-  api.delete(`/cities/${id}`).then((r) => r.data);
+export const deleteCityClient = async (id: string) => {
+  const res = await adminAxios.delete(`/cities/${id}`);
+  return res.data;
+};

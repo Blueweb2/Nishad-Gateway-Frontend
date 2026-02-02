@@ -63,7 +63,7 @@ export default function AdminCitiesPage() {
     if (!confirm("Delete this city?")) return;
 
     try {
-      const res = await fetch(`${API_URL}/cities/id/${id}`, {
+      const res = await fetch(`${API_URL}/cities/${id}`, {
         method: "DELETE",
         credentials: "include",
       });

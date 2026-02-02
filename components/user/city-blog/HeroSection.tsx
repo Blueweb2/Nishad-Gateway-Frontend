@@ -1,6 +1,9 @@
+import Link from "next/link";
 import Image from "next/image";
 
 export default function HeroSection({ content }: any) {
+  const isExternal = content.ctaLink?.startsWith("http");
+
   return (
     <section className="relative h-[90vh] text-white">
       <Image
@@ -17,14 +20,29 @@ export default function HeroSection({ content }: any) {
         <h1 className="text-5xl font-bold mb-4">
           {content.heading}
         </h1>
+
         <p className="text-lg max-w-xl">
           {content.subheading}
         </p>
 
-        {content.ctaText && (
-          <button className="mt-8 bg-green-600 px-6 py-3 rounded-full">
-            {content.ctaText}
-          </button>
+        {content.ctaText && content.ctaLink && (
+          isExternal ? (
+            <a
+              href={content.ctaLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-8 inline-block bg-green-600 px-6 py-3 rounded-full hover:bg-green-500 transition"
+            >
+              {content.ctaText}
+            </a>
+          ) : (
+            <Link
+              href={content.ctaLink}
+              className="mt-8 inline-block bg-green-600 px-6 py-3 rounded-full hover:bg-green-500 transition"
+            >
+              {content.ctaText}
+            </Link>
+          )
         )}
       </div>
     </section>

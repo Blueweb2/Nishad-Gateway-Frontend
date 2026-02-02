@@ -28,7 +28,7 @@ export default function CityCategoriesPage() {
     const fetchCategories = async () => {
       try {
         const res = await fetch(
-          `${API_URL}/cities/id/${cityId}/categories`,
+          `${API_URL}/cities/${cityId}/categories`,
           { credentials: "include" }
         );
 

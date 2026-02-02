@@ -34,7 +34,7 @@ export default function CategoryBlogPage() {
 
         // 1️⃣ Fetch category info
         const catRes = await fetch(
-          `${API_URL}/cities/id/${cityId}/categories/${categoryId}`,
+          `${API_URL}/cities/${cityId}/categories/${categoryId}`,
           { credentials: "include" }
         );
 
@@ -49,7 +49,7 @@ export default function CategoryBlogPage() {
 
         // 2️⃣ Fetch category blog
         const blogRes = await fetch(
-          `${API_URL}/cities/id/${cityId}/categories/${categoryId}/blog`,
+          `${API_URL}/cities/${cityId}/categories/${categoryId}/blog`,
           { credentials: "include" }
         );
 
@@ -74,7 +74,7 @@ export default function CategoryBlogPage() {
   const handleSave = async () => {
     try {
       const res = await fetch(
-        `${API_URL}/cities/id/${cityId}/categories/${categoryId}/blog`,
+        `${API_URL}/cities/${cityId}/categories/${categoryId}/blog`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

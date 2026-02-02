@@ -32,7 +32,7 @@ export default function CityDashboardPage() {
 
         // Fetch City
         const cityRes = await fetch(
-          `${API_URL}/cities/id/${cityId}`,
+          `${API_URL}/cities/${cityId}`,
           { credentials: "include" }
         );
 
@@ -43,7 +43,7 @@ export default function CityDashboardPage() {
 
         // Fetch Blog
         const blogRes = await fetch(
-          `${API_URL}/cities/id/${cityId}/blog`,
+          `${API_URL}/cities/${cityId}/blog`,
           { credentials: "include" }
         );
 

@@ -11,10 +11,6 @@ type City = {
   isActive: boolean;
 };
 
-type Blog = {
-  status: "DRAFT" | "PUBLISHED";
-};
-
 export default function CitySettingsPage() {
   const { cityId } = useParams<{ cityId: string }>();
   const router = useRouter();
@@ -31,62 +27,97 @@ export default function CitySettingsPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        if (!API_URL || !cityId) return;
+
+        // Fetch city
         const cityRes = await fetch(
-          `${API_URL}/cities/id/${cityId}`,
+          `${API_URL}/cities/${cityId}`,
           { credentials: "include" }
         );
+
         const cityData = await cityRes.json();
+        if (!cityRes.ok) {
+          toast.error(cityData?.message || "Failed to load city");
+          return;
+        }
 
+        setCity(cityData.city);
+
+        // Fetch blog
         const blogRes = await fetch(
-          `${API_URL}/cities/id/${cityId}/blog`,
+          `${API_URL}/cities/${cityId}/blog`,
           { credentials: "include" }
         );
-        const blogData = await blogRes.json();
 
-        if (cityRes.ok) setCity(cityData.city);
-        if (blogRes.ok) setBlogStatus(blogData.status || "DRAFT");
-      } catch {
+        const blogData = await blogRes.json();
+        if (blogRes.ok) {
+          setBlogStatus(blogData.status || "DRAFT");
+        }
+
+      } catch (err) {
         toast.error("Failed to load settings");
       } finally {
         setLoading(false);
       }
     };
 
-    if (cityId) fetchData();
-  }, [cityId]);
+    fetchData();
+  }, [cityId, API_URL]);
 
   /* =========================
      SAVE SETTINGS
   ========================= */
   const handleSave = async () => {
-    if (!city) return;
+    if (!city || !API_URL || !cityId) return;
 
     try {
       setSaving(true);
 
-      // Update City Active State
-      await fetch(`${API_URL}/cities/id/${cityId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({
-          isActive: city.isActive,
-        }),
-      });
+      /* ======================
+         1️⃣ Update City
+      ====================== */
+      const cityRes = await fetch(
+        `${API_URL}/cities/${cityId}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({
+            isActive: city.isActive,
+          }),
+        }
+      );
 
-      // Update Blog Status
-      await fetch(`${API_URL}/cities/id/${cityId}/blog`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({
-          sections: [], // your backend expects sections, so handle carefully
-          status: blogStatus,
-        }),
-      });
+      const cityData = await cityRes.json();
+      if (!cityRes.ok) {
+        toast.error(cityData?.message || "Failed to update city");
+        return;
+      }
 
-      toast.success("Settings updated");
-    } catch {
+      /* ======================
+         2️⃣ Update Blog Status ONLY
+      ====================== */
+      const blogRes = await fetch(
+        `${API_URL}/cities/${cityId}/blog`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({
+            status: blogStatus,
+          }),
+        }
+      );
+
+      const blogData = await blogRes.json();
+      if (!blogRes.ok) {
+        toast.error(blogData?.message || "Failed to update blog status");
+        return;
+      }
+
+      toast.success("Settings updated successfully");
+
+    } catch (err) {
       toast.error("Failed to save settings");
     } finally {
       setSaving(false);
@@ -97,26 +128,43 @@ export default function CitySettingsPage() {
      DELETE CITY
   ========================= */
   const handleDelete = async () => {
+    if (!API_URL || !cityId) return;
     if (!confirm("Delete this city permanently?")) return;
 
     try {
-      await fetch(`${API_URL}/cities/id/${cityId}`, {
-        method: "DELETE",
-        credentials: "include",
-      });
+      const res = await fetch(
+        `${API_URL}/cities/${cityId}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
 
-      toast.success("City deleted");
+      if (!res.ok) {
+        const data = await res.json();
+        toast.error(data?.message || "Failed to delete city");
+        return;
+      }
+
+      toast.success("City deleted successfully");
       router.push("/admin/cities");
-    } catch {
+
+    } catch (err) {
       toast.error("Failed to delete city");
     }
   };
 
-  if (loading) return <div className="text-white/60">Loading...</div>;
-  if (!city) return <div className="text-red-400">City not found</div>;
+  if (loading) {
+    return <div className="text-white/60">Loading...</div>;
+  }
+
+  if (!city) {
+    return <div className="text-red-400">City not found</div>;
+  }
 
   return (
     <div className="space-y-10">
+      {/* Header */}
       <div>
         <h1 className="text-3xl font-semibold text-white">
           Settings
@@ -149,7 +197,7 @@ export default function CitySettingsPage() {
         <select
           value={blogStatus}
           onChange={(e) =>
-            setBlogStatus(e.target.value as any)
+            setBlogStatus(e.target.value as "DRAFT" | "PUBLISHED")
           }
           className="px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white text-sm"
         >
@@ -158,11 +206,11 @@ export default function CitySettingsPage() {
         </select>
       </div>
 
-      {/* Save */}
+      {/* Save Button */}
       <button
         onClick={handleSave}
         disabled={saving}
-        className="px-5 py-2 rounded-lg bg-emerald-500 text-black font-semibold flex items-center gap-2"
+        className="px-5 py-2 rounded-lg bg-emerald-500 text-black font-semibold flex items-center gap-2 disabled:opacity-50"
       >
         <Save className="w-4 h-4" />
         {saving ? "Saving..." : "Save Settings"}

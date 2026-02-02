@@ -30,7 +30,9 @@ export type HeroSectionContent = {
   subheading: string;
   backgroundImage: string;
   ctaText?: string;
+  ctaLink?: string;
 };
+
 
 /* ---------- CATEGORIES ---------- */
 
