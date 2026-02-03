@@ -37,12 +37,10 @@ export type HeroSectionContent = {
 /* ---------- CATEGORIES ---------- */
 
 export type CategoriesSectionContent = {
-  categories: {
-    label: string;
-    link: string; // must match backend validation
-  }[];
+  heading: string;
   introText: string;
 };
+
 
 /* ---------- INTRO TEXT ---------- */
 

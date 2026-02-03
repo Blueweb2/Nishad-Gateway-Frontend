@@ -2,26 +2,24 @@ import { notFound } from "next/navigation";
 import CityBlogRenderer from "@/components/user/city-blog/CityBlogRenderer";
 import { getCityBlogBySlugServer } from "@/lib/api/public/cityBlog.server";
 
-type PageProps = {
-  params: {
-    citySlug: string;
-  };
-};
-
-export default async function CityPage({ params }: PageProps) {
-  const { citySlug } = params;
-
-  if (!citySlug) notFound();
+export default async function CityPage({
+  params,
+}: {
+  params: Promise<{ citySlug: string }>;
+}) {
+  const { citySlug } = await params;
 
   const data = await getCityBlogBySlugServer(citySlug);
 
-  if (!data || !data.city) {
-    notFound();
-  }
+  if (!data) return notFound();
 
   return (
-    <main className="min-h-screen">
-      <CityBlogRenderer sections={data.sections || []} />
+    <main>
+      <CityBlogRenderer
+        citySlug={citySlug}
+        sections={data.sections}
+        categories={data.categories || []}
+      />
     </main>
   );
 }

@@ -70,9 +70,11 @@ export default function Cities({ city }: { city: City }) {
 
             <Link
               href={`/cities/${city.citySlug}`}
-              aria-label={`View ${city.cityName} city guide`}
+              aria-label={`Explore ${city.cityName} city guide and categories`}
+              prefetch
               className="group"
             >
+
               <OvalArrow
                 direction="right"
                 className="w-[62px] h-[102px] transition-transform group-hover:translate-x-1"
@@ -82,15 +84,15 @@ export default function Cities({ city }: { city: City }) {
         </div>
 
         {/* CTA */}
-      
 
-<div className="flex justify-center">
-  <Link href="/ksa-expansion-cost-calculator">
-    <button className="bg-green-600 hover:bg-green-700 text-white px-10 py-3 rounded-full transition">
-      Calculate Your KSA Expansion Cost
-    </button>
-  </Link>
-</div>
+
+        <div className="flex justify-center">
+          <Link href="/ksa-expansion-cost-calculator">
+            <button className="bg-green-600 hover:bg-green-700 text-white px-10 py-3 rounded-full transition">
+              Calculate Your KSA Expansion Cost
+            </button>
+          </Link>
+        </div>
       </div>
     </section>
   );

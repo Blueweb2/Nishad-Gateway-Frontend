@@ -17,11 +17,19 @@ type Props = {
 };
 
 export default function CitySlide({ city }: Props) {
-  if (!city) return null;
+  console.log("🎯 CitySlide received city:", city);
+
+  if (!city) {
+    console.log("❌ CitySlide received undefined city");
+    return (
+      <div className="bg-red-500 text-white p-10 text-center">
+        City is undefined
+      </div>
+    );
+  }
 
   return (
     <section className="relative w-full h-[110vh] text-white overflow-hidden">
-      {/* BACKGROUND */}
       <div className="absolute inset-0 z-0">
         <ParallaxImage
           src={city.cityImage || "/citiesbg.webp"}
@@ -32,17 +40,13 @@ export default function CitySlide({ city }: Props) {
         />
       </div>
 
-      {/* OVERLAY */}
       <div className="absolute inset-0 z-10 bg-black/50" />
 
-      {/* CONTENT */}
       <div className="relative z-20 max-w-[1320px] mx-auto px-6 h-full flex flex-col justify-between py-20">
-        {/* TITLE */}
         <h2 className="text-center text-[40px] font-semibold">
           Where You Operate Matters
         </h2>
 
-        {/* INFO */}
         <div className="mt-20">
           <div className="flex items-start gap-24">
             <div>
@@ -67,7 +71,6 @@ export default function CitySlide({ city }: Props) {
           <div className="mt-10 w-full h-px bg-white/30" />
         </div>
 
-        {/* CITY NAME */}
         <div>
           <div className="flex items-center gap-4 mb-10">
             <h3 className="text-[82px] font-bold leading-none">
@@ -76,7 +79,6 @@ export default function CitySlide({ city }: Props) {
 
             <Link
               href={`/cities/${city.citySlug}`}
-              aria-label={`View ${city.cityName} city guide`}
               className="group"
             >
               <OvalArrow
@@ -86,8 +88,6 @@ export default function CitySlide({ city }: Props) {
             </Link>
           </div>
         </div>
-
-        {/* CTA */}
 
         <div className="flex justify-center">
           <Link href="/ksa-expansion-cost-calculator">

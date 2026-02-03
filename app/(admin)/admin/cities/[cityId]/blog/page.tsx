@@ -63,7 +63,7 @@ export default function AdminCityBlogPage() {
                     subheading: "",
                     backgroundImage: "",
                     ctaText: "",
-                     ctaLink: "", 
+                    ctaLink: "",
                 },
                 order: prev.length + 1,
                 isActive: true,
@@ -86,6 +86,25 @@ export default function AdminCityBlogPage() {
             </main>
         );
     }
+
+
+    const addCategoriesSection = () => {
+        setSections((prev) => [
+            ...prev,
+            {
+                type: "CATEGORIES",
+                title: "Categories Section",
+                content: {
+                    heading: "",
+                    introText: "",
+                },
+                order: prev.length + 1,
+                isActive: true,
+            },
+        ]);
+    };
+
+
 
     const handleSaveBlog = async () => {
         try {
@@ -143,6 +162,13 @@ export default function AdminCityBlogPage() {
                     >
                         + Add HERO Section
                     </button>
+                    <button
+                        onClick={addCategoriesSection}
+                        className="px-4 py-2 rounded-lg bg-white/10 text-white text-sm font-semibold hover:bg-white/20"
+                    >
+                        + Add CATEGORIES Section
+                    </button>
+
                     <button
                         onClick={handleSaveBlog}
                         className="px-5 py-2 rounded-lg bg-emerald-500 text-black text-sm font-semibold hover:bg-emerald-400"
