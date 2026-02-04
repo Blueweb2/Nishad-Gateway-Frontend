@@ -7,11 +7,11 @@ export default function WhySaudi() {
   return (
     <section
       data-navbar="white"
-      className="relative w-full bg-white text-black py-6 overflow-hidden"
+      className="relative w-full bg-white text-black px-6 py-26 overflow-hidden"
     >
 
       {/* ================= FULL-WIDTH PAGINATION ================= */}
-      <div className="absolute inset-x-0 top-0 h-full pointer-events-none">
+      <div className="absolute inset-x-0 top-0 h-full pointer-events-none pt-10">
         <div className="w-full h-full flex items-start justify-end px-10 pt-10">
           <div className="pointer-events-auto flex items-center gap-4">
             <span className="text-sm text-gray-600">

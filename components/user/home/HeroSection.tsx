@@ -32,7 +32,7 @@ export default function HeroSection() {
   w-full
   text-white 
   font-extrabold 
-  text-[17vw] 
+  text-[16vw] 
   leading-[0.85]
   text-center
   whitespace-nowrap
