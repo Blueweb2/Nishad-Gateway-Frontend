@@ -5,8 +5,8 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
-import { getServiceBySlug } from "@/lib/api/subservices.api";
-import { getSubServicesByService } from "@/lib/api/subservices.api";
+import { getServiceBySlug } from "@/lib/api/public/subservices.api";
+import { getSubServicesByService } from "@/lib/api/public/subservices.api";
 
 type ServiceItem = {
   _id: string;

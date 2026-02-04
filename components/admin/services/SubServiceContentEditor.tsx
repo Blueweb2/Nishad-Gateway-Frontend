@@ -7,7 +7,7 @@ import { ChevronDown } from "lucide-react";
 import {
   adminGetSubServiceContent,
   adminSaveSubServiceContent,
-} from "@/lib/api/content.api";
+} from "@/lib/api/admin/subserviceContent.api";
 
 import HeroEditor from "@/components/admin/services/content-editor/HeroEditor";
 import WhySliderEditor, {

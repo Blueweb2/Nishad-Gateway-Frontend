@@ -152,3 +152,39 @@ xl: 768px   // Fold / Tablet */
 .animate-sheetHide {
   animation: sheetHide 0.45s ease forwards;
 }
+
+
+
+/* Rich text animated underline */
+.rich-text a {
+  position: relative;
+  color: #16a34a !important; /* green-600 */
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+/* Create animated underline */
+.rich-text a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 100%;
+  height: 2px;
+  background-color: #16a34a;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s cubic-bezier(.22,1,.36,1);
+}
+
+/* Hover effect */
+.rich-text a:hover {
+  color: #15803d !important; /* green-700 */
+}
+
+.rich-text a:hover::after {
+  transform: scaleX(1);
+}
+
+

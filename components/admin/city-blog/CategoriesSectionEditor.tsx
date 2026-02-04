@@ -1,6 +1,7 @@
 "use client";
 
 import { CategoriesSectionContent } from "@/lib/types/city-blog";
+import RichTextEditor from "@/components/admin/common/RichTextEditor";
 
 type Props = {
   content: CategoriesSectionContent;
@@ -24,15 +25,12 @@ export default function CategoriesSectionEditor({
         className="w-full px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white"
       />
 
-      {/* Right Side Intro Text */}
-      <textarea
-        placeholder="Right side detailed content"
+      {/* ✅ Rich Text Editor Instead of Textarea */}
+      <RichTextEditor
         value={content.introText}
-        onChange={(e) =>
-          onChange({ ...content, introText: e.target.value })
+        onChange={(value) =>
+          onChange({ ...content, introText: value })
         }
-        rows={5}
-        className="w-full px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white"
       />
 
       <p className="text-xs text-white/50">

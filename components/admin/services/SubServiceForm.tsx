@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import {
   adminCreateSubService,
   adminUpdateSubService,
-} from "@/lib/api/subservices.api";
+} from "@/lib/api/admin/subservices.api";
 
 type SubServiceFormProps = {
   mode: "create" | "edit";
@@ -59,18 +59,21 @@ export default function SubServiceForm({
   }, [mode, defaultValues]);
 
   //  Auto slug generator (only create mode)
-  useEffect(() => {
-    if (mode === "create") {
-      setForm((prev) => ({
-        ...prev,
-        slug: prev.title
-          .toLowerCase()
-          .trim()
-          .replace(/[^a-z0-9\s-]/g, "")
-          .replace(/\s+/g, "-"),
-      }));
-    }
-  }, [form.title, mode]);
+useEffect(() => {
+  if (mode !== "create") return;
+
+  const generatedSlug = form.title
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-");
+
+  setForm((prev) => ({
+    ...prev,
+    slug: generatedSlug,
+  }));
+}, [form.title, mode]);
+
 
   const handleChange = (
     e: React.ChangeEvent<

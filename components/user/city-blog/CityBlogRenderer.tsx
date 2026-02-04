@@ -2,10 +2,12 @@ import type {
   CityBlogSection,
   CategoriesSectionContent,
   HeroSectionContent,
+  VisionSectionContent
 } from "@/lib/types/city-blog";
 
 import HeroSection from "./HeroSection";
 import CategoriesSection from "./CategoriesSection";
+import VisionSection from "./VisionSection";
 
 type Props = {
   citySlug: string;
@@ -30,19 +32,11 @@ export default function CityBlogRenderer({
           switch (section.type) {
             case "HERO": {
               const content = section.content as HeroSectionContent;
-
-              return (
-                <HeroSection
-                  key={`hero-${index}`}
-                  content={content}
-                />
-              );
+              return <HeroSection key={`hero-${index}`} content={content} />;
             }
 
             case "CATEGORIES": {
-              const content =
-                section.content as CategoriesSectionContent;
-
+              const content = section.content as CategoriesSectionContent;
               return (
                 <CategoriesSection
                   key={`categories-${index}`}
@@ -54,9 +48,22 @@ export default function CityBlogRenderer({
               );
             }
 
+            case "VISION": {
+              const content = section.content as VisionSectionContent;
+              return (
+                <VisionSection
+                  key={`vision-${index}`}
+                  heading={content.heading}
+                  content={content.content}
+                  imageUrl={content.imageUrl}
+                />
+              );
+            }
+
             default:
               return null;
           }
+
         })}
     </>
   );

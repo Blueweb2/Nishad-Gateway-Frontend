@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import toast from "react-hot-toast";
 
 import SubServiceForm from "@/components/admin/services/SubServiceForm";
-import { adminGetSubServices } from "@/lib/api/subservices.api";
+import { adminGetSubServices } from "@/lib/api/admin/subservices.api";
 
 type SubService = {
   _id: string;
@@ -30,8 +30,10 @@ export default function EditSubServicePage() {
     try {
       setLoading(true);
 
-      const res = await adminGetSubServices(serviceId);
-      const list: SubService[] = res.data || [];
+     const list: SubService[] = await adminGetSubServices(serviceId);
+     console.log("list of subservices", list);
+     
+
 
       const found = list.find((s) => s._id === subId);
 

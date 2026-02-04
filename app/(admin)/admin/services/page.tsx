@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import toast from "react-hot-toast";
 
-import { adminGetServices } from "@/lib/api/services.api";
+import { adminGetServices } from "@/lib/api/admin/services.api";
 import ServiceTable from "@/components/admin/services/ServiceTable";
 
 type Service = {

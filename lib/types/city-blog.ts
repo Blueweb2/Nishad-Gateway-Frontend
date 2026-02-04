@@ -7,6 +7,7 @@
 export type CityBlogSectionType =
   | "HERO"
   | "CATEGORIES"
+  | "VISION"
   | "INTRO_TEXT"
   | "FEATURE_CARDS"
   | "STATS"
@@ -39,6 +40,13 @@ export type HeroSectionContent = {
 export type CategoriesSectionContent = {
   heading: string;
   introText: string;
+};
+
+
+export type VisionSectionContent = {
+  heading: string;
+  content: string;
+  imageUrl: string;
 };
 
 
@@ -141,6 +149,8 @@ export type CTASectionContent = {
 export type CityBlogSectionContentMap = {
   HERO: HeroSectionContent;
   CATEGORIES: CategoriesSectionContent;
+  VISION: VisionSectionContent;
+  
   INTRO_TEXT: IntroTextSectionContent;
   FEATURE_CARDS: FeatureCardsSectionContent;
   STATS: StatsSectionContent;
@@ -161,6 +171,7 @@ export type CityBlogSectionContentMap = {
 export type CityBlogSection<
   T extends CityBlogSectionType = CityBlogSectionType
 > = {
+  id: string;
   type: T;
   title?: string;
   content: CityBlogSectionContentMap[T];

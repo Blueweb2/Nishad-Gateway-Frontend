@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
-import { adminGetSubServices } from "@/lib/api";
+import { adminGetSubServices } from "@/lib/api/admin/subservices.api";
 import SubServiceTable from "@/components/admin/services/SubServiceTable";
 
 type SubService = {
@@ -32,7 +32,8 @@ export default function AdminSubServicesPage() {
     try {
       setLoading(true);
       const res = await adminGetSubServices(serviceId);
-      setSubservices(res.data || []);
+      setSubservices(res || []);
+
     } catch (err) {
       toast.error("Failed to fetch subservices");
     } finally {

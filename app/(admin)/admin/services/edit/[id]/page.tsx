@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import toast from "react-hot-toast";
 
 import ServiceForm from "@/components/admin/services/ServiceForm";
-import { adminGetServices } from "@/lib/api/services.api";
+import { adminGetServices } from "@/lib/api/admin/services.api";
 
 type Service = {
   _id: string;

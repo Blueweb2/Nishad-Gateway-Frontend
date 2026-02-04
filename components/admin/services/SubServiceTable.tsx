@@ -3,7 +3,7 @@
 import Link from "next/link";
 import toast from "react-hot-toast";
 
-import { adminDeleteSubService } from "@/lib/api/subservices.api";
+import { adminDeleteSubService } from "@/lib/api/admin/subservices.api";
 
 type SubService = {
   _id: string;

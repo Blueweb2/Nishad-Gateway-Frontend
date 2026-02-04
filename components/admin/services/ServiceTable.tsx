@@ -3,7 +3,7 @@
 import Link from "next/link";
 import toast from "react-hot-toast";
 
-import { adminDeleteService } from "@/lib/api/services.api";
+import { adminDeleteService } from "@/lib/api/admin/services.api";
 
 type Service = {
   _id: string;

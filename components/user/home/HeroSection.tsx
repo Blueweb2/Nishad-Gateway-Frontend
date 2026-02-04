@@ -28,9 +28,19 @@ export default function HeroSection() {
             Your Gateway to
           </p>
 
-          <h1 className="text-white font-extrabold text-[67px] md:text-[150px] lg:text-[240px] leading-none">
-            Saudi Arabia
-          </h1>
+<h2 className="
+  w-full
+  text-white 
+  font-extrabold 
+  text-[17vw] 
+  leading-[0.85]
+  text-center
+  whitespace-nowrap
+">
+  Saudi Arabia
+</h2>
+
+
         </div>
       </div>
     </section>

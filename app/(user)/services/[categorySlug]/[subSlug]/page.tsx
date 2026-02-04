@@ -8,7 +8,7 @@ import SubServiceTemplate, {
   SubServiceContent,
 } from "@/components/user/services/SubServiceTemplate/SubServiceTemplate";
 
-import { getSubServiceContentBySlug } from "@/lib/api/content.api";
+import { getSubServiceContentBySlug } from "@/lib/api/public/subserviceContent.api";
 import { getCities } from "@/lib/api/public/city.api";
 import { City } from "@/lib/types/city";
 

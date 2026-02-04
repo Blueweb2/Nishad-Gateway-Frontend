@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import {
   adminCreateService,
   adminUpdateService,
-} from "@/lib/api/services.api";
+} from "@/lib/api/admin/services.api";
 
 type ServiceFormProps = {
   mode: "create" | "edit";

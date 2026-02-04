@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
-import { getServicesMenu } from "@/lib/api/services.api"; //  create this function
+import { getServicesMenu } from "@/lib/api/public/services.api";
 
 type SubServiceItem = {
   _id: string;
