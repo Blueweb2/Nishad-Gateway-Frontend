@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Trash2, GripVertical, Copy } from "lucide-react";
 
 import HeroSectionEditor from "./HeroSectionEditor";
@@ -30,24 +30,55 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { v4 as uuid } from "uuid";
 
+/* =========================================================
+   ✅ MOVE SORTABLE ITEM OUTSIDE COMPONENT
+   (Prevents remounting + focus loss)
+========================================================= */
+function SortableItem({
+  id,
+  children,
+}: {
+  id: string;
+  children: (
+    attributes: any,
+    listeners: any
+  ) => React.ReactNode;
+}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+  } = useSortable({ id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style}>
+      {children(attributes, listeners)}
+    </div>
+  );
+}
+
+/* =========================================================
+   MAIN COMPONENT
+========================================================= */
 type Props = {
   sections: CityBlogSection[];
   setSections: React.Dispatch<React.SetStateAction<CityBlogSection[]>>;
 };
 
-export default function SectionsList({ sections, setSections }: Props) {
+export default function SectionsList({
+  sections,
+  setSections,
+}: Props) {
   const [collapsed, setCollapsed] = useState<string[]>([]);
 
-  /* =========================================
-     ALWAYS SORT A COPY (NEVER MUTATE STATE)
-  ========================================= */
-  const sortedSections = React.useMemo(() => {
-    return [...sections].sort((a, b) => a.order - b.order);
-  }, [sections]);
-
-  /* =========================================
-     REMOVE
-  ========================================= */
+  /* ================= REMOVE ================= */
   const removeSection = (id: string) => {
     if (!confirm("Remove this section?")) return;
 
@@ -58,9 +89,7 @@ export default function SectionsList({ sections, setSections }: Props) {
     );
   };
 
-  /* =========================================
-     DUPLICATE
-  ========================================= */
+  /* ================= DUPLICATE ================= */
   const duplicateSection = (id: string) => {
     setSections((prev) => {
       const sectionToCopy = prev.find((s) => s.id === id);
@@ -68,7 +97,7 @@ export default function SectionsList({ sections, setSections }: Props) {
 
       const duplicated: CityBlogSection = {
         ...sectionToCopy,
-        id: uuid(),
+        id: uuid(), // new stable id
         order: prev.length + 1,
         title: `${sectionToCopy.title || sectionToCopy.type} (Copy)`,
       };
@@ -77,9 +106,7 @@ export default function SectionsList({ sections, setSections }: Props) {
     });
   };
 
-  /* =========================================
-     UPDATE CONTENT (STABLE)
-  ========================================= */
+  /* ================= UPDATE CONTENT ================= */
   const updateSectionContent = (id: string, content: any) => {
     setSections((prev) =>
       prev.map((s) =>
@@ -88,70 +115,35 @@ export default function SectionsList({ sections, setSections }: Props) {
     );
   };
 
-  /* =========================================
-     SORTABLE ITEM
-  ========================================= */
-  function SortableItem({
-    id,
-    children,
-  }: {
-    id: string;
-    children: (
-      attributes: any,
-      listeners: any
-    ) => React.ReactNode;
-  }) {
-    const {
-      attributes,
-      listeners,
-      setNodeRef,
-      transform,
-      transition,
-    } = useSortable({ id });
-
-    const style = {
-      transform: CSS.Transform.toString(transform),
-      transition,
-    };
-
-    return (
-      <div ref={setNodeRef} style={style}>
-        {children(attributes, listeners)}
-      </div>
-    );
-  }
-
-  /* =========================================
-     DRAG END (FIXED)
-     Uses sortedSections instead of raw sections
-  ========================================= */
+  /* ================= DRAG END ================= */
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     if (!over || active.id === over.id) return;
 
-    const oldIndex = sortedSections.findIndex(
-      (s) => s.id === active.id
-    );
+    setSections((prev) => {
+      const oldIndex = prev.findIndex(
+        (s) => s.id === active.id
+      );
+      const newIndex = prev.findIndex(
+        (s) => s.id === over.id
+      );
 
-    const newIndex = sortedSections.findIndex(
-      (s) => s.id === over.id
-    );
+      const reordered = arrayMove(prev, oldIndex, newIndex);
 
-    const reordered = arrayMove(
-      sortedSections,
-      oldIndex,
-      newIndex
-    ).map((s, i) => ({
-      ...s,
-      order: i + 1,
-    }));
-
-    setSections(reordered);
+      return reordered.map((s, i) => ({
+        ...s,
+        order: i + 1,
+      }));
+    });
   };
 
-  /* =========================================
-     RENDER
-  ========================================= */
+  /* ================= SORT ONCE (STABLE) ================= */
+  const sortedSections = useMemo(
+    () => [...sections].sort((a, b) => a.order - b.order),
+    [sections]
+  );
+
+  /* ================= RENDER ================= */
   return (
     <div className="mt-10 space-y-4">
       {sortedSections.length === 0 ? (
@@ -181,10 +173,9 @@ export default function SectionsList({ sections, setSections }: Props) {
                       {/* HEADER */}
                       <div className="flex items-center justify-between mb-4">
 
-                        {/* LEFT SIDE */}
+                        {/* LEFT */}
                         <div className="flex items-center gap-3">
 
-                          {/* DRAG HANDLE ONLY */}
                           <div
                             {...attributes}
                             {...listeners}
@@ -203,7 +194,7 @@ export default function SectionsList({ sections, setSections }: Props) {
                           </div>
                         </div>
 
-                        {/* RIGHT BUTTONS */}
+                        {/* RIGHT */}
                         <div className="flex items-center gap-3">
 
                           <button
@@ -222,7 +213,6 @@ export default function SectionsList({ sections, setSections }: Props) {
                           <button
                             onClick={() => duplicateSection(section.id)}
                             className="text-white/40 hover:text-white"
-                            title="Duplicate"
                           >
                             <Copy className="w-4 h-4" />
                           </button>
@@ -230,7 +220,6 @@ export default function SectionsList({ sections, setSections }: Props) {
                           <button
                             onClick={() => removeSection(section.id)}
                             className="text-red-400 hover:text-red-300"
-                            title="Delete"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>

@@ -54,7 +54,8 @@ export default function SubServiceTable({
 
       {loading ? (
         <div className="p-6 text-gray-400">Loading...</div>
-      ) : subservices.length === 0 ? (
+      ) : !subservices || subservices.length === 0
+ ? (
         <div className="p-6 text-gray-400">No subservices found.</div>
       ) : (
         subservices.map((s) => (

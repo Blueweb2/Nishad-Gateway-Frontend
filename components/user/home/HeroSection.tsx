@@ -8,7 +8,7 @@ export default function HeroSection() {
     <section className="relative w-full h-screen overflow-hidden">
       {/* Background Image */}
       <Image
-        src="/herobg.webp"
+        src="/riyadhhero.webp"
         alt="Saudi Arabia Landscape"
         fill
         priority
@@ -28,7 +28,7 @@ export default function HeroSection() {
             Your Gateway to
           </p>
 
-<h2 className="
+          <h2 className="
   w-full
   text-white 
   font-extrabold 
@@ -37,8 +37,8 @@ export default function HeroSection() {
   text-center
   whitespace-nowrap
 ">
-  Saudi Arabia
-</h2>
+            Saudi Arabia
+          </h2>
 
 
         </div>

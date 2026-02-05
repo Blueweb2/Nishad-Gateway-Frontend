@@ -23,23 +23,30 @@ export default function AdminSubServicesPage() {
   const params = useParams();
   const router = useRouter();
 
-  const serviceId = params?.serviceId as string;
+const serviceId =
+  typeof params?.serviceId === "string" ? params.serviceId : "";
 
   const [subservices, setSubservices] = useState<SubService[]>([]);
   const [loading, setLoading] = useState(true);
+const fetchSubServices = async () => {
+  if (!serviceId) return;
 
-  const fetchSubServices = async () => {
-    try {
-      setLoading(true);
-      const res = await adminGetSubServices(serviceId);
-      setSubservices(res || []);
+  try {
+    setLoading(true);
+    const res = await adminGetSubServices(serviceId);
+    setSubservices(res.data ?? []);
+    console.log("API RESPONSE:", res);
+    console.log("res.data:", res.data);
+    
 
-    } catch (err) {
-      toast.error("Failed to fetch subservices");
-    } finally {
-      setLoading(false);
-    }
-  };
+  } catch (err) {
+    console.error(err);
+    toast.error("Failed to fetch subservices");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   useEffect(() => {
     if (serviceId) fetchSubServices();
