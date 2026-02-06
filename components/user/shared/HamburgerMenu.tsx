@@ -88,18 +88,20 @@ export default function HamburgerMenu({ open, onClose }: Props) {
       `}
     >
       {/* GLASS PANEL */}
-      <div
-        className="
-  relative
-  rounded-[36px]
-  border border-white/25
-  bg-gradient-to-b from-white/40 to-white/25
-  backdrop-blur-3xl
-  shadow-[0_30px_90px_rgba(0,0,0,0.35)]
-  overflow-hidden
-"
+ <div
+  className="
+    relative
+    rounded-[36px]
+    border border-white/25
+    bg-gradient-to-b from-white/40 to-white/25
+    backdrop-blur-3xl
+    shadow-[0_30px_90px_rgba(0,0,0,0.35)]
+    overflow-hidden
+    will-change-transform
+    isolate
+  "
+>
 
-      >
 
 
 

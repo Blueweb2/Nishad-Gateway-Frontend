@@ -90,37 +90,6 @@ xl: 768px   // Fold / Tablet */
 
 
 
-/* humburger */
-@keyframes menuIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px) translateX(10px) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) translateX(0) scale(1);
-  }
-}
-
-@keyframes menuOut {
-  from {
-    opacity: 1;
-    transform: translateY(0) translateX(0) scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-10px) translateX(10px) scale(0.98);
-  }
-}
-
-.animate-menuIn {
-  animation: menuIn 0.45s ease forwards;
-}
-
-.animate-menuOut {
-  animation: menuOut 0.45s ease forwards;
-}
-
 
 /* contact us  */
 @keyframes sheetReveal {
@@ -189,7 +158,6 @@ xl: 768px   // Fold / Tablet */
 
 
 /* Swiper customizations  of humburger of navbar */
-
 @keyframes menuIn {
   from {
     opacity: 0;
@@ -212,10 +180,3 @@ xl: 768px   // Fold / Tablet */
   }
 }
 
-.animate-menuIn {
-  animation: menuIn 0.35s ease forwards;
-}
-
-.animate-menuOut {
-  animation: menuOut 0.35s ease forwards;
-}
