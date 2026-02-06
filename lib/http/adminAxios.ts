@@ -4,6 +4,8 @@ export const adminAxios = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   withCredentials: true,
 });
+console.log("BASE URL:", process.env.NEXT_PUBLIC_API_URL);
+
 
 // 🔁 RESPONSE INTERCEPTOR (ADMIN ONLY)
 adminAxios.interceptors.response.use(

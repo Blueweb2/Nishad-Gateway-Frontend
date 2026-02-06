@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import {
   LayoutDashboard,
@@ -11,58 +11,107 @@ import {
   PlusCircle,
   LogOut,
   Users,
-  MapPin
+  MapPin,
+  Shield,
 } from "lucide-react";
-
-const links = [
- { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
-{ name: "Blogs", href: "/admin/blogs", icon: FileText },
-{ name: "Cities", href: "/admin/cities", icon: MapPin }, // ✅ NEW
-{ name: "Services", href: "/admin/services", icon: Briefcase },
-{ name: "Add Service", href: "/admin/services/create", icon: PlusCircle },
-{ name: "Leads", href: "/admin/leads", icon: Users },
-];
 
 export default function AdminSidebar() {
   const pathname = usePathname();
   const router = useRouter();
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL; 
+  const [role, setRole] = useState<string | null>(null);
 
+  // 🔥 Fetch logged-in admin role
+  useEffect(() => {
+    const fetchAdmin = async () => {
+      try {
+        if (!API_URL) return;
 
-const handleLogout = async () => {
-  try {
-    if (!API_URL) {
-      toast.error("API URL missing ");
-      return;
+        const res = await fetch(`${API_URL}/admin/me`, {
+          credentials: "include",
+        });
+
+        const data = await res.json();
+
+        if (res.ok && data?.success) {
+          setRole(data.data.role);
+        }
+      } catch (err) {
+        console.log("Failed to fetch admin role");
+      }
+    };
+
+    fetchAdmin();
+  }, [API_URL]);
+
+  // 🔥 Base Links
+  const baseLinks = [
+    { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
+    { name: "Blogs", href: "/admin/blogs", icon: FileText },
+    { name: "Cities", href: "/admin/cities", icon: MapPin },
+    { name: "Services", href: "/admin/services", icon: Briefcase },
+    { name: "Add Service", href: "/admin/services/create", icon: PlusCircle },
+    { name: "Leads", href: "/admin/leads", icon: Users },
+  ];
+
+  // 👑 If superadmin → add Manage Admins after Dashboard
+  const links =
+    role === "superadmin"
+      ? [
+          baseLinks[0],
+          {
+            name: "Manage Admins",
+            href: "/admin/manage-admins",
+            icon: Shield,
+          },
+          ...baseLinks.slice(1),
+        ]
+      : baseLinks;
+
+  const handleLogout = async () => {
+    try {
+      if (!API_URL) {
+        toast.error("API URL missing");
+        return;
+      }
+
+      const res = await fetch(`${API_URL}/admin/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+
+      const data = await res.json().catch(() => null);
+
+      if (!res.ok || !data?.success) {
+        toast.error(data?.message || "Logout failed");
+        return;
+      }
+
+      toast.success("Logout success");
+      router.replace("/admin/login");
+    } catch (err) {
+      toast.error("Logout failed");
     }
-
-    const res = await fetch(`${API_URL}/admin/logout`, {
-      method: "POST",
-      credentials: "include",
-    });
-
-    const data = await res.json().catch(() => null);
-
-    if (!res.ok || !data?.success) {
-      toast.error(data?.message || "Logout failed");
-      return;
-    }
-
-    toast.success("Logout success");
-    router.replace("/admin/login");
-  } catch (err) {
-    toast.error("Logout failed");
-  }
-};
-
-
+  };
 
   return (
     <aside className="w-[260px] bg-[#0b0f0b] border-r border-green-700/30 p-6 flex flex-col">
-      <h2 className="text-xl font-bold text-green-400 mb-10">Nishad Admin</h2>
+      
+      {/* Title */}
+      <div className="mb-8">
+        <h2 className="text-xl font-bold text-green-400">
+          Nishad Admin
+        </h2>
 
-      {/* Links */}
+        {role && (
+          <p className="text-xs text-green-500 mt-1">
+            {role === "superadmin" ? "Super Admin" : "Admin"}
+          </p>
+        )}
+      </div>
+
+      {/* Navigation */}
       <nav className="flex flex-col gap-3 flex-1">
         {links.map((item) => {
           const Icon = item.icon;
@@ -86,7 +135,7 @@ const handleLogout = async () => {
         })}
       </nav>
 
-      {/* Logout Button */}
+      {/* Logout */}
       <button
         onClick={handleLogout}
         className="mt-6 flex items-center gap-3 px-4 py-3 rounded-lg border border-red-600/40 text-red-300 hover:bg-red-600/10 transition"
