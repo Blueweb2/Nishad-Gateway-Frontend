@@ -188,3 +188,34 @@ xl: 768px   // Fold / Tablet */
 }
 
 
+/* Swiper customizations  of humburger of navbar */
+
+@keyframes menuIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes menuOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.97);
+  }
+}
+
+.animate-menuIn {
+  animation: menuIn 0.35s ease forwards;
+}
+
+.animate-menuOut {
+  animation: menuOut 0.35s ease forwards;
+}

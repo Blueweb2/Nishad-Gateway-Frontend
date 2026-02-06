@@ -6,7 +6,7 @@ import OvalArrow from "@/components/user/ui/OvalArrow";
 export default function WhySaudi() {
   return (
     <section
-      data-navbar="white"
+      data-navbar="white" data-menu="dark-text"
       className="relative w-full bg-white text-black px-6 py-26 overflow-hidden"
     >
 

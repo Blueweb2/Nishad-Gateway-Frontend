@@ -29,7 +29,7 @@ export default function CaseStudies() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <section data-navbar="white"
+    <section data-navbar="white" data-menu="dark-text"
  className="relative w-full bg-[#F5F5F5] text-black py-28 overflow-hidden">
 
       {/* ================= FULL-WIDTH CONTROLS ================= */}
