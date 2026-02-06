@@ -65,13 +65,13 @@ export default function BusinessGrowth() {
         <div className="grid grid-cols-3 gap-12 min-h-[560px]">
           {/* LEFT */}
           <div className="flex flex-col">
-            <h2 className="text-[36px] font-bold leading-[1.25] mb-10">
+            <h2 className="text-[36px] font-bold leading-[1.25] mb-26">
               How Business <br />
               Works in <br />
               Saudi Arabia
             </h2>
 
-            <p className="text-[15px] font-medium text-[#287F7F] mb-3">
+            <p className="text-[15px] font-medium text-[#287F7F] mb-3 mt-6">
               Company Setup Options
             </p>
 
@@ -124,7 +124,7 @@ export default function BusinessGrowth() {
 
           {/* RIGHT */}
           <div className="flex flex-col items-end">
-            <p className="text-gray-500 leading-relaxed max-w-sm text-left mb-10 mt-20">
+            <p className="text-gray-500 leading-relaxed max-w-sm text-left mb-10 mt-46">
               Understand the main business structures available to{" "}
               <Link
                 href="/foreign-investors"

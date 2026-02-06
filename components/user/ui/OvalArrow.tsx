@@ -28,7 +28,7 @@ export default function OvalArrow({
         w-[30px]
         h-[42px]
         rounded-full
-        border-2
+        border-1
         flex items-center justify-center
         transition
         ${
@@ -40,7 +40,7 @@ export default function OvalArrow({
       `}
     >
       <Icon
-        size={22}
+        size={12}
         className={`
           transition-transform duration-300
           ${

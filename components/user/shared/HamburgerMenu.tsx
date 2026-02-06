@@ -54,16 +54,8 @@ export default function HamburgerMenu({ open, onClose }: Props) {
   }, []);
 
   const menu: MenuItem[] = [
-    {
-      title: "Business Setup",
-      children: [
-        { label: "Company Formation", href: "/services/company-formation" },
-        { label: "International Market Entry", href: "/services/market-entry" },
-        { label: "Saudi Business Advisory", href: "/services/advisory" },
-        { label: "Corporate Support", href: "/services/corporate-support" },
-      ],
-    },
-    { title: "Why Saudi Arabia", href: "/why-saudi-arabia" },
+   
+    { title: "About us", href: "/about-us" },
     { title: "Investment Sectors", href: "/investment-sectors" },
     { title: "Cities & Economic Zones", href: "/cities-economic-zones" },
     { title: "Life in Saudi Arabia", href: "/life-in-saudi-arabia" },
@@ -82,7 +74,7 @@ export default function HamburgerMenu({ open, onClose }: Props) {
     <div
       className={`
         fixed top-24 right-10 z-[9999]
-        w-[340px] sm:w-[380px]
+        w-[260px] sm:w-[300px]
         transition-all duration-400
         ${open ? "animate-menuIn" : "animate-menuOut"}
       `}

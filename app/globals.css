@@ -180,3 +180,21 @@ xl: 768px   // Fold / Tablet */
   }
 }
 
+
+/* fadeup */
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-up-animate {
+  animation: fadeUp 0.8s cubic-bezier(.22,1,.36,1) forwards;
+}
+
+
