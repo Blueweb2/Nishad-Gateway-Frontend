@@ -50,11 +50,11 @@ export default function WhySaudi() {
     <section
       data-navbar="white"
       data-menu="dark-text"
-      className="relative w-full bg-white text-black py-[6vw] px-[0vw] overflow-hidden"
+      className="relative w-full bg-white text-black py-[4vw] px-[0vw] overflow-hidden"
     >
       {/* PAGINATION */}
       <div className="absolute inset-x-0 top-0">
-        <div className="w-full flex justify-end px-[2vw] pt-[3vw]">
+        <div className="w-full flex justify-end px-[2vw] pt-[4vw]">
           <div className="flex items-center gap-6">
             <span className="text-sm text-gray-600">
               {index + 1} / <span className="text-black">6</span>
@@ -79,7 +79,7 @@ export default function WhySaudi() {
           {/* LEFT STATIC TITLE */}
           <div>
             <p className="text-[2vw] font-semibold">Why</p>
-            <h2 className="text-[4vw] font-bold leading-tight">
+            <h2 className="text-[3vw] font-bold leading-tight">
               Saudi Arabia
             </h2>
           </div>
@@ -91,19 +91,19 @@ export default function WhySaudi() {
             <Image
               src="/vision.svg"
               alt="Vision 2030"
-              width={80}
-              height={80}
+              width={120}
+              height={120}
               className="fade-up-animate"
             />
 
-            <div className="mt-[12vw] max-w-[30vw]">
+            <div className="mt-[12vw] max-w-[20vw]">
 
-              <h3 className="text-[1.5vw] font-medium mb-[1vw] fade-up-animate">
+              <h3 className="text-[1.5vw] font-medium  fade-up-animate">
                 {slides[index].title}
               </h3>
 
               <p
-                className="text-gray-500 leading-relaxed text-[1.1vw] fade-up-animate"
+                className="text-gray-500 leading-tight text-[1.1vw] fade-up-animate"
                 style={{ animationDelay: "0.15s" }}
               >
                 {slides[index].content}
@@ -118,7 +118,7 @@ export default function WhySaudi() {
         </div>
 
         {/* DIVIDER */}
-        <div className="mt-[4vw] border-t border-gray-200" />
+        <div className="mt-[2vw] border-t border-gray-200" />
       </div>
     </section>
   );
