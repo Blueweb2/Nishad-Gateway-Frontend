@@ -4,6 +4,7 @@ import Image from "next/image";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import OvalArrow from "@/components/user/ui/OvalArrow";
 import ParallaxImage from "../shared/ParallaxImage";
+import FadeUp from "../ui/FadeUp";
 
 
 export default function Consultant() {
@@ -59,11 +60,13 @@ export default function Consultant() {
         <div className="grid grid-cols-3 h-full items-center">
           {/* LEFT */}
           <div className="flex flex-col justify-center">
-            <h2 className="text-[32px] font-semibold leading-tight mb-10">
-              Confidence <br />
-              Beyond the <br />
-              Investment
-            </h2>
+           <FadeUp delay={0.1}>
+              <h2 className="text-[32px] font-semibold leading-tight mb-10">
+                Confidence <br />
+                Beyond the <br />
+                Investment
+              </h2>
+           </FadeUp >
 
             <p className="text-white/40">Living & Housing</p>
 
@@ -80,23 +83,27 @@ export default function Consultant() {
 
           {/* RIGHT */}
           <div className="flex flex-col justify-center items-start">
-            <div className="flex items-center gap-6 text-sm mb-8">
-              <button className="text-green-400 underline underline-offset-4">
-                For Americans & Europeans
-              </button>
-              <button className="text-white/50 hover:text-white transition">
-                For Asians
-              </button>
-            </div>
-
-            <p className="text-white/70 leading-relaxed max-w-sm mb-6">
-              Understand the main business structures available to{" "}
-              <span className="text-green-400 underline underline-offset-2">
-                foreign investors
-              </span>
-              , from wholly owned entities to partnerships and regional
-              headquarters.
-            </p>
+           <FadeUp delay={0.15}>
+              <div className="flex items-center gap-6 text-sm mb-8">
+                <button className="text-green-400 underline underline-offset-4">
+                  For Americans & Europeans
+                </button>
+                <button className="text-white/50 hover:text-white transition">
+                  For Asians
+                </button>
+              </div>
+           </FadeUp >
+<FadeUp delay={0.2}>
+  
+              <p className="text-white/70 leading-relaxed max-w-sm mb-6">
+                Understand the main business structures available to{" "}
+                <span className="text-green-400 underline underline-offset-2">
+                  foreign investors
+                </span>
+                , from wholly owned entities to partnerships and regional
+                headquarters.
+              </p>
+</FadeUp >
 
             <button className="text-sm underline underline-offset-4 mb-10">
               Read More

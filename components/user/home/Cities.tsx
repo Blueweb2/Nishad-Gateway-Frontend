@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import OvalArrow from "@/components/user/ui/OvalArrow";
 import ParallaxImage from "../shared/ParallaxImage";
+import FadeUp from "../ui/FadeUp";
 
 type City = {
   cityName: string;
@@ -32,9 +33,11 @@ export default function Cities({ city }: { city: City }) {
       {/* CONTENT */}
       <div className="relative z-20 max-w-[1320px] mx-auto px-6 h-full flex flex-col justify-between py-20">
         {/* TITLE */}
-        <h2 className="text-center text-[40px] font-semibold mb-20">
-          Where You Operate Matters
-        </h2>
+        <FadeUp delay={0.1}>
+          <h2 className="text-center text-[40px] font-semibold mb-20">
+            Where You Operate Matters
+          </h2>
+        </FadeUp>
 
         {/* INFO */}
         <div className="mb-16">

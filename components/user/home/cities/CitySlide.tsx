@@ -3,6 +3,7 @@
 import Link from "next/link";
 import OvalArrow from "@/components/user/ui/OvalArrow";
 import ParallaxImage from "@/components/user/shared/ParallaxImage";
+import FadeUp from "../../ui/FadeUp";
 
 export type City = {
   cityName: string;
@@ -43,28 +44,38 @@ export default function CitySlide({ city }: Props) {
       <div className="absolute inset-0 z-10 bg-black/50" />
 
       <div className="relative z-20 max-w-[1320px] mx-auto px-6 h-full flex flex-col justify-between py-20">
-        <h2 className="text-center text-[40px] font-semibold">
-          Where You Operate Matters
-        </h2>
+       <FadeUp delay={0.1}>
+          <h2 className="text-center text-[40px] font-semibold">
+            Where You Operate Matters
+          </h2>
+       </FadeUp >
 
         <div className="mt-20">
           <div className="flex items-start gap-24">
             <div>
-              <p className="text-xs uppercase text-white/70 mb-2">
-                Best suited for
-              </p>
-              <p className="text-sm text-white/90 max-w-xs">
-                {city.bestSuitedFor || "—"}
-              </p>
+              <FadeUp delay={0.2}>
+                <p className="text-xs uppercase text-white/70 mb-2">
+                  Best suited for
+                </p>
+              </FadeUp>
+            <FadeUp delay={0.2}>
+                <p className="text-sm text-white/90 max-w-xs">
+                  {city.bestSuitedFor || "—"}
+                </p>
+            </FadeUp>
             </div>
 
             <div>
-              <p className="text-xs uppercase text-white/70 mb-2">
-                Focus
-              </p>
-              <p className="text-sm text-white/90 max-w-xs">
-                {city.focus || "—"}
-              </p>
+             <FadeUp delay={0.2}>
+                <p className="text-xs uppercase text-white/70 mb-2">
+                  Focus
+                </p>
+             </FadeUp >
+             <FadeUp delay={0.2}>
+                <p className="text-sm text-white/90 max-w-xs">
+                  {city.focus || "—"}
+                </p>
+             </FadeUp >
             </div>
           </div>
 
@@ -73,10 +84,11 @@ export default function CitySlide({ city }: Props) {
 
         <div>
           <div className="flex items-center gap-4 mb-10">
-            <h3 className="text-[82px] font-bold leading-none">
-              {city.cityName}
-            </h3>
-
+          <FadeUp delay={0.2}>
+              <h3 className="text-[82px] font-bold leading-none">
+                {city.cityName}
+              </h3>
+          </FadeUp>
             <Link
               href={`/cities/${city.citySlug}`}
               className="group"

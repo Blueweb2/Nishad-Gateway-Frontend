@@ -1,6 +1,7 @@
 "use client";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
+import FadeUp from "../ui/FadeUp";
 
 
 export default function KeyServices() {
@@ -10,9 +11,11 @@ export default function KeyServices() {
 
         {/* HEADER */}
         <div className="flex items-center justify-between mb-16">
-          <h2 className="text-2xl font-semibold">
-            Key Sectors Driving Growth
-          </h2>
+         <FadeUp delay={0.1}>
+            <h2 className="text-2xl font-semibold">
+              Key Sectors Driving Growth
+            </h2>
+         </FadeUp>
 
           <button className="text-sm text-white/80 hover:text-white underline">
             Explore Investment Sectors

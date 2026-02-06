@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
+import FadeUp from "../ui/FadeUp";
 
 export default function Stats() {
   return (
@@ -10,14 +11,18 @@ export default function Stats() {
 
         {/* HEADER */}
         <div className="text-center mb-20">
-          <h2 className="text-2xl font-semibold mb-3">
-            Ministries & Authorities
-          </h2>
+          <FadeUp delay={0.1}>
+            <h2 className="text-2xl font-semibold mb-3">
+              Ministries & Authorities
+            </h2>
+          </FadeUp >
 
-          <p className="text-sm text-white/60 max-w-xl mx-auto leading-relaxed">
-            Clear decisions rely on understanding the institutions that shape policy,
-            regulation, and execution in Saudi Arabia.
-          </p>
+         <FadeUp delay={0.2}>
+            <p className="text-sm text-white/60 max-w-xl mx-auto leading-relaxed">
+              Clear decisions rely on understanding the institutions that shape policy,
+              regulation, and execution in Saudi Arabia.
+            </p>
+         </FadeUp>
         </div>
 
         {/* CARDS */}

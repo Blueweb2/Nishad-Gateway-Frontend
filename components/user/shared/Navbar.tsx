@@ -63,21 +63,21 @@ ${isLight ? "bg-white shadow-sm" : "bg-transparent"}
 `}
       >
         <div className="w-full mx-auto px-6 pt-6">
-          <nav className="flex items-center justify-between px-1 py-3">
+          <nav className="flex items-center justify-between px-1 py-3 relative">
             {/* LEFT — LOGO */}
             <Link href="/" aria-label="Go to Home">
               <Image
                 src={isLight ? "/coloredlogo.svg" : "/logowhite.svg"}
                 alt="Nishad Gateway"
-                width={190}
-                height={60}
+                width={220}
+                height={80}
                 priority
                 className="cursor-pointer transition-opacity duration-300"
               />
             </Link>
 
             {/* CENTER — SERVICES + BLOG */}
-            <div className="hidden md:flex items-center gap-5">
+            <div className="hidden md:flex items-center gap-5 absolute left-1/2 -translate-x-1/2">
               {/*  Services Button */}
               <button
                 onClick={() => {
@@ -146,9 +146,9 @@ ${isLight ? "bg-white shadow-sm" : "bg-transparent"}
             </div>
 
             {/* RIGHT — PHONE + CTA + MENU */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-10">
               {/* Phone */}
-              <span className={`hidden md:block text-sm me-36 ${isLight ? "text-black" : "text-white"}`}>
+              <span className={`hidden md:block text-sm ${isLight ? "text-black" : "text-white"}`}>
                 +966 55 123 4567
               </span>
 

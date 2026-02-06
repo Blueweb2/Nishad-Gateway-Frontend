@@ -8,6 +8,7 @@ import OvalArrow from "@/components/user/ui/OvalArrow";
 
 import "swiper/css";
 import "swiper/css/parallax";
+import FadeUp from "../ui/FadeUp";
 
 const slides = [
   {
@@ -76,11 +77,13 @@ export default function CaseStudies() {
           {/* LEFT COLUMN */}
           <div className="flex flex-col justify-between">
             <div>
-              <h2 className="text-[36px] font-bold leading-tight mb-16">
-                Real-World <br />
-                Investment <br />
-                Scenarios
-              </h2>
+           <FadeUp delay={0.1}>
+                <h2 className="text-[36px] font-bold leading-tight mb-16">
+                  Real-World <br />
+                  Investment <br />
+                  Scenarios
+                </h2>
+           </FadeUp >
 
               <div className="lg:mt-32 ms-26">
                 <Image
