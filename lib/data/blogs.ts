@@ -20,7 +20,7 @@ export const BLOGS = [
     image: "/Olaya.webp",
     tags: ["Lifestyle", "Expat Living"],
     title:
-      "Investor Life in Saudi Arabia – Culture, Costs & Family-Friendly Insights for Expats",
+      "Investor Lifein Saudi Arabia – Culture, Costs & Family-Friendly Insights for Expats",
   },
 
   // add more blogs for main blog page

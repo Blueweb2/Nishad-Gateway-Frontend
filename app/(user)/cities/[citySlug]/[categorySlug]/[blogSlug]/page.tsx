@@ -2,12 +2,14 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import BlogImageCollage from "@/components/user/blog/BlogImageCollage";
 
+/* ================= TYPES ================= */
+
 type Props = {
-  params: {
+  params: Promise<{
     citySlug: string;
     categorySlug: string;
     blogSlug: string;
-  };
+  }>;
 };
 
 /* ================= FETCH BLOG ================= */
@@ -29,11 +31,9 @@ async function getBlog(
 /* ================= SEO ================= */
 
 export async function generateMetadata({ params }: Props) {
-  const data = await getBlog(
-    params.citySlug,
-    params.categorySlug,
-    params.blogSlug
-  );
+  const { citySlug, categorySlug, blogSlug } = await params;
+
+  const data = await getBlog(citySlug, categorySlug, blogSlug);
 
   if (!data?.blog) return {};
 
@@ -57,17 +57,14 @@ export async function generateMetadata({ params }: Props) {
 /* ================= PAGE ================= */
 
 export default async function BlogDetailPage({ params }: Props) {
-  const data = await getBlog(
-    params.citySlug,
-    params.categorySlug,
-    params.blogSlug
-  );
+  const { citySlug, categorySlug, blogSlug } = await params;
+
+  const data = await getBlog(citySlug, categorySlug, blogSlug);
 
   if (!data?.blog) return notFound();
 
   const blog = data.blog;
 
-  // Prepare images safely
   const images =
     blog.gallery?.length > 0
       ? blog.gallery
@@ -79,40 +76,35 @@ export default async function BlogDetailPage({ params }: Props) {
     <main className="min-h-screen bg-white">
       <div className="max-w-4xl mx-auto px-6 py-16">
 
-        {/* Breadcrumb */}
         <div className="text-sm text-gray-500 mb-6 capitalize">
           <Link
-            href={`/cities/${params.citySlug}`}
+            href={`/cities/${citySlug}`}
             className="hover:text-black transition"
           >
-            {params.citySlug}
+            {citySlug}
           </Link>{" "}
           /{" "}
           <Link
-            href={`/cities/${params.citySlug}/${params.categorySlug}`}
+            href={`/cities/${citySlug}/${categorySlug}`}
             className="hover:text-black transition"
           >
-            {params.categorySlug}
+            {categorySlug}
           </Link>{" "}
           / {blog.title}
         </div>
 
-        {/* Title */}
         <h1 className="text-4xl md:text-5xl font-bold mb-10">
           {blog.title}
         </h1>
 
-        {/* Image Collage */}
         {images.length > 0 && (
           <BlogImageCollage images={images} />
         )}
 
-        {/* Article Content */}
         <article
           className="prose prose-lg max-w-none mt-12"
           dangerouslySetInnerHTML={{ __html: blog.content }}
         />
-
       </div>
     </main>
   );

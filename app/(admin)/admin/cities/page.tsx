@@ -11,8 +11,9 @@ type City = {
   cityName: string;
   citySlug: string;
   cityImage: string;
-  bestSuitedFor: string;
-  focus: string;
+  heading: string;
+  description: string;
+  tag: "ARTICLE" | "FEATURED" | "TRENDING";
   order: number;
   isActive: boolean;
 };
@@ -24,9 +25,10 @@ export default function AdminCitiesPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
+  /* ================= FILTER ================= */
   const filtered = useMemo(() => {
     return cities.filter((c) =>
-      `${c.cityName} ${c.citySlug}`
+      `${c.cityName} ${c.citySlug} ${c.heading}`
         .toLowerCase()
         .includes(search.toLowerCase())
     );
@@ -137,6 +139,7 @@ export default function AdminCitiesPage() {
                 {/* LEFT */}
                 <div className="flex items-center gap-4">
 
+                  {/* Image */}
                   <div className="relative w-20 h-14 rounded-lg overflow-hidden border border-white/10">
                     {city.cityImage && (
                       <Image
@@ -148,30 +151,45 @@ export default function AdminCitiesPage() {
                     )}
                   </div>
 
+                  {/* Details */}
                   <div>
                     <p className="text-white font-medium">
                       {city.cityName}
                     </p>
+
                     <p className="text-xs text-white/50">
                       /{city.citySlug}
                     </p>
 
-                    <span
-                      className={`inline-block mt-2 text-xs px-3 py-1 rounded-full ${
-                        city.isActive
-                          ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-                          : "bg-white/10 text-white/60 border border-white/10"
-                      }`}
-                    >
-                      {city.isActive ? "Active" : "Hidden"}
-                    </span>
+                    {/* Heading */}
+                    <p className="text-xs text-white/60 mt-1 max-w-md line-clamp-1">
+                      {city.heading}
+                    </p>
+
+                    {/* Status */}
+                    <div className="flex items-center gap-2 mt-2">
+                      <span
+                        className={`text-xs px-3 py-1 rounded-full ${
+                          city.isActive
+                            ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                            : "bg-white/10 text-white/60 border border-white/10"
+                        }`}
+                      >
+                        {city.isActive ? "Active" : "Hidden"}
+                      </span>
+
+                      {/* Tag */}
+                      <span className="text-xs px-3 py-1 rounded-full bg-white/10 text-white/70 border border-white/10">
+                        {city.tag}
+                      </span>
+                    </div>
                   </div>
                 </div>
 
                 {/* RIGHT */}
                 <div className="flex items-center gap-6">
 
-                  {/* Manage Button */}
+                  {/* Manage */}
                   <Link
                     href={`/admin/cities/${city._id}`}
                     className="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white text-sm font-medium"

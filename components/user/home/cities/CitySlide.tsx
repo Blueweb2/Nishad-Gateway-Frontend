@@ -9,8 +9,8 @@ export type City = {
   cityName: string;
   citySlug: string;
   cityImage?: string;
-  bestSuitedFor?: string;
-  focus?: string;
+  heading: string;
+  description: string;
 };
 
 type Props = {
@@ -18,10 +18,7 @@ type Props = {
 };
 
 export default function CitySlide({ city }: Props) {
-  console.log("🎯 CitySlide received city:", city);
-
   if (!city) {
-    console.log("❌ CitySlide received undefined city");
     return (
       <div className="bg-red-500 text-white p-10 text-center">
         City is undefined
@@ -31,6 +28,7 @@ export default function CitySlide({ city }: Props) {
 
   return (
     <section className="relative w-full h-[110vh] text-white overflow-hidden">
+      {/* Background */}
       <div className="absolute inset-0 z-0">
         <ParallaxImage
           src={city.cityImage || "/citiesbg.webp"}
@@ -41,51 +39,37 @@ export default function CitySlide({ city }: Props) {
         />
       </div>
 
-      <div className="absolute inset-0 z-10 bg-black/40" />
+      {/* Overlay */}
+      <div className="absolute inset-0 z-10 bg-black/50" />
 
       <div className="relative z-20 max-w-[1320px] mx-auto px-6 h-full flex flex-col py-16">
-        {/* Title */}
+
+        {/* Section Title */}
         <FadeUpScroll delay={0.1}>
           <h2 className="text-center text-[42px] font-semibold mb-24">
             Where You Operate Matters
           </h2>
         </FadeUpScroll>
 
-        {/* Best Suited For & Focus Section */}
-        <div className="mb-auto">
-          <div className="flex items-start gap-32">
-            <div>
-              <FadeUpScroll delay={0.2}>
-                <p className="text-sm font-bold uppercase text-white mb-3 tracking-wide">
-                  BEST SUITED FOR:
-                </p>
-              </FadeUpScroll>
-              <FadeUpScroll delay={0.3}>
-                <p className="text-base text-white/90 max-w-xs leading-relaxed">
-                  {city.bestSuitedFor || "—"}
-                </p>
-              </FadeUpScroll>
-            </div>
+        {/* Heading + Description */}
+        <div className="mb-auto max-w-3xl">
+          <FadeUpScroll delay={0.2}>
+            <h4 className="text-lg uppercase tracking-wide font-semibold mb-4">
+              {city.heading}
+            </h4>
+          </FadeUpScroll>
 
-            <div>
-              <FadeUpScroll delay={0.2}>
-                <p className="text-sm font-bold uppercase text-white mb-3 tracking-wide">
-                  FOCUS:
-                </p>
-              </FadeUpScroll>
-              <FadeUpScroll delay={0.3}>
-                <p className="text-base text-white/90 max-w-md leading-relaxed">
-                  {city.focus || "—"}
-                </p>
-              </FadeUpScroll>
-            </div>
-          </div>
+          <FadeUpScroll delay={0.3}>
+            <p className="text-white/90 text-base leading-relaxed">
+              {city.description}
+            </p>
+          </FadeUpScroll>
         </div>
 
         {/* Divider */}
         <div className="w-full h-px bg-white/20 mb-12" />
 
-        {/* City Name with Arrow */}
+        {/* City Name + Arrow */}
         <div className="mb-16">
           <div className="flex items-center gap-6">
             <FadeUpScroll delay={0.2}>
@@ -93,6 +77,7 @@ export default function CitySlide({ city }: Props) {
                 {city.cityName}
               </h3>
             </FadeUpScroll>
+
             <Link href={`/cities/${city.citySlug}`} className="group mt-4">
               <OvalArrow
                 direction="right"
@@ -102,7 +87,7 @@ export default function CitySlide({ city }: Props) {
           </div>
         </div>
 
-        {/* CTA Button */}
+        {/* CTA */}
         <div className="flex justify-center">
           <FadeUpScroll delay={0.4}>
             <Link href="/ksa-expansion-cost-calculator">

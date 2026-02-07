@@ -6,27 +6,32 @@ export const CITY_TAGS: CityTag[] = [
   "TRENDING",
 ];
 
-// Used for ADMIN FORM
+/* ======================================================
+   Used for ADMIN FORM (Create / Edit)
+====================================================== */
+
 export interface CityForm {
   cityName: string;
   citySlug: string;
   cityImage: string;
-  bestSuitedFor: string;
-  focus: string;
+  heading: string;
+  description: string;
   tag: CityTag;
   order: number;
   isActive: boolean;
 }
 
+/* ======================================================
+   Used for PUBLIC API / UI
+====================================================== */
 
-//  Used for PUBLIC API / UI
 export interface City {
   _id: string;
   cityName: string;
   citySlug: string;
   cityImage?: string;
-  bestSuitedFor?: string;
-  focus?: string;
+  heading: string;
+  description: string;
   tag: CityTag;
   order: number;
   isActive: boolean;

@@ -10,33 +10,40 @@ const slides = [
     title: "Vision 2030–Driven Growth",
     content:
       "Massive government investment is transforming the economy and opening new industries.",
+    image: "/vision.svg",
   },
   {
     title: "Strategic Global Location",
     content:
       "Saudi Arabia connects Asia, Europe, and Africa, making it a gateway for regional expansion.",
+    image: "/icons/Strategic-Global-Location.svg",
   },
   {
     title: "100% Foreign Ownership Options",
     content:
       "Many sectors allow full foreign ownership with strong investor protections.",
+    image: "/icons/Foreign-Ownership-Options.svg",
   },
   {
     title: "Business-Friendly Reforms",
     content:
       "Fast company setup, digital government portals, and transparent regulations.",
+    image: "/icons/Business-Friendly-Reforms.svg",
   },
   {
     title: "High-Growth Sectors",
     content:
       "Opportunities across healthcare, logistics, manufacturing, fintech, tourism, and energy.",
+    image: "/icons/High-Growth-Sectors.svg",
   },
   {
     title: "Strong Economy & Stability",
     content:
       "The largest economy in the Middle East with stable currency and government-backed growth.",
+    image: "/icons/Strong-Economy&Stability.svg",
   },
 ];
+
 
 export default function WhySaudi() {
   const [index, setIndex] = useState(0);
@@ -56,7 +63,8 @@ export default function WhySaudi() {
         <div className="w-full flex justify-end px-[2vw] pt-[8vw]">
           <div className="flex items-center gap-6">
             <span className="text-sm text-gray-600">
-              {index + 1} / <span className="text-black">6</span>
+              {index + 1} / <span className="text-black">{slides.length}</span>
+
             </span>
 
             <OvalArrow
@@ -113,11 +121,13 @@ export default function WhySaudi() {
                   transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <Image
-                    src="/vision.svg"
-                    alt="Vision 2030"
+                    src={slides[index].image}
+                    alt={slides[index].title}
                     width={120}
                     height={120}
+                    className="object-contain"
                   />
+
                 </motion.div>
 
                 {/* Text */}

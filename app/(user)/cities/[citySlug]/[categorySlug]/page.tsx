@@ -14,12 +14,11 @@ async function getCategoryBlogs(citySlug: string, categorySlug: string) {
 export default async function CategoryPage({
   params,
 }: {
-  params: { citySlug: string; categorySlug: string };
+  params: Promise<{ citySlug: string; categorySlug: string }>;
 }) {
-  const data = await getCategoryBlogs(
-    params.citySlug,
-    params.categorySlug
-  );
+  const { citySlug, categorySlug } = await params;
+
+  const data = await getCategoryBlogs(citySlug, categorySlug);
 
   if (!data) return notFound();
 
@@ -27,7 +26,7 @@ export default async function CategoryPage({
     <main className="min-h-screen bg-white">
       <div className="max-w-6xl mx-auto px-6 py-16">
         <h1 className="text-4xl font-bold mb-12 capitalize">
-          {params.categorySlug.replace(/-/g, " ")}
+          {categorySlug.replace(/-/g, " ")}
         </h1>
 
         <BlogCardsGrid blogs={data.blogs} />
@@ -35,3 +34,4 @@ export default async function CategoryPage({
     </main>
   );
 }
+

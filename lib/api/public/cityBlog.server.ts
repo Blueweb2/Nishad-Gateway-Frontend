@@ -5,17 +5,10 @@ export async function getCityBlogBySlugServer(slug: string) {
 
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-  if (!API_URL) {
-    console.error("NEXT_PUBLIC_API_URL is not defined");
-    return null;
-  }
-
   try {
     const res = await fetch(
       `${API_URL}/cities/slug/${slug}/blog`,
-      {
-        cache: "no-store",
-      }
+      { cache: "no-store" }
     );
 
     if (!res.ok) {
@@ -23,7 +16,11 @@ export async function getCityBlogBySlugServer(slug: string) {
       return null;
     }
 
-    return res.json();
+    const data = await res.json();
+
+    console.log("City blog data:", data); // 👈 ADD THIS
+
+    return data;
   } catch (error) {
     console.error("Fetch error:", error);
     return null;

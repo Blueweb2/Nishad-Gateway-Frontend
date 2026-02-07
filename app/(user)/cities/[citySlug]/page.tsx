@@ -2,12 +2,14 @@ import { notFound } from "next/navigation";
 import CityBlogRenderer from "@/components/user/city-blog/CityBlogRenderer";
 import { getCityBlogBySlugServer } from "@/lib/api/public/cityBlog.server";
 
+
+
 export default async function CityPage({
   params,
 }: {
   params: Promise<{ citySlug: string }>;
 }) {
-  const { citySlug } = await params;
+  const { citySlug } = await params; // ✅ MUST await in Next 15
 
   const data = await getCityBlogBySlugServer(citySlug);
 
@@ -23,3 +25,4 @@ export default async function CityPage({
     </main>
   );
 }
+

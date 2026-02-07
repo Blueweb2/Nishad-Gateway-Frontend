@@ -29,8 +29,8 @@ export default function CreateCityPage() {
     cityName: "",
     citySlug: "",
     cityImage: "",
-    bestSuitedFor: "",
-    focus: "",
+    heading: "",
+    description: "",
     tag: "ARTICLE",
     order: 0,
     isActive: true,
@@ -90,6 +90,9 @@ export default function CreateCityPage() {
       if (!form.citySlug.trim())
         return toast.error("City slug required");
 
+      if (!form.heading.trim())
+        return toast.error("Heading required");
+
       if (!form.cityImage)
         return toast.error("City image required");
 
@@ -133,6 +136,7 @@ export default function CreateCityPage() {
 
         <div className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-6 space-y-5">
 
+          {/* City Name */}
           <Input
             label="City Name"
             value={form.cityName}
@@ -140,6 +144,7 @@ export default function CreateCityPage() {
             placeholder="Jeddah"
           />
 
+          {/* Slug */}
           <div>
             <Input
               label="City Slug"
@@ -158,6 +163,7 @@ export default function CreateCityPage() {
             </p>
           </div>
 
+          {/* Image Upload */}
           <div>
             <p className="text-sm text-white/70 mb-2">
               City Image
@@ -202,24 +208,27 @@ export default function CreateCityPage() {
             />
           </div>
 
-          <Textarea
-            label="Best Suited For"
-            value={form.bestSuitedFor}
+          {/* Heading */}
+          <Input
+            label="Heading"
+            value={form.heading}
             onChange={(v) =>
-              handleChange("bestSuitedFor", v)
+              handleChange("heading", v)
             }
-            placeholder="Trading, logistics, tourism"
+            placeholder="Business Hub of the Red Sea"
           />
 
+          {/* Description */}
           <Textarea
-            label="Focus"
-            value={form.focus}
+            label="Description"
+            value={form.description}
             onChange={(v) =>
-              handleChange("focus", v)
+              handleChange("description", v)
             }
-            placeholder="Gateway to Red Sea trade routes"
+            placeholder="Jeddah is a major commercial center and gateway city..."
           />
 
+          {/* Tag & Order */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <p className="text-sm text-white/70 mb-2">
@@ -254,6 +263,7 @@ export default function CreateCityPage() {
             />
           </div>
 
+          {/* Active + Submit */}
           <div className="flex items-center justify-between gap-4">
             <label className="text-sm text-white/70">
               <input
