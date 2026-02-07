@@ -44,8 +44,8 @@ export default function CitiesSection() {
       <div className="absolute right-16 top-1/2 -translate-y-1/2 z-40 flex flex-col items-center gap-8">
 
         {/* Counter */}
-        <div className="text-white flex items-start gap-0.5">
-          <span className="text-[32px] font-bold leading-none">
+        <div className="text-white flex items-start gap-0.5 mt-5">
+          <span className="text-[28px] font-bold leading-none">
             {current}
           </span>
           <span className="text-white/60 text-lg leading-none pt-1">

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 const steps = [
   { percent: 0, image: "/Olaya.webp" },
-  { percent: 45, image: "/buisnessgrowth/buisnessslide3.webp" },
+  { percent: 45, image: "/Olaya.webp" },
   { percent: 99, image: "/riyadhhero.webp" },
 ];
 

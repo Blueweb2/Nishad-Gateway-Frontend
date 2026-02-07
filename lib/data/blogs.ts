@@ -3,14 +3,14 @@ export const BLOGS = [
   {
 
     id: "1",
-    image: "/buisnessgrowth/buisnessslide3.webp",
+    image: "/Olaya.webp",
     tags: ["Market Entry", "Investor Guide"],
     title:
       "Saudi Arabia Market Entry Guide 2025 – A Smart Roadmap for Foreign Investors",
   },
   {
     id: "2",
-    image: "/buisnessgrowth/businessslide2.webp",
+    image: "/Olaya.webp",
     tags: ["Government Platforms", "Investor Guide"],
     title:
       "Top Saudi Government Platforms Every Investor Should Know Before Starting a Business",
@@ -26,7 +26,7 @@ export const BLOGS = [
   // add more blogs for main blog page
   {
     id: "4",
-    image: "/buisnessgrowth/businessslide2.webp",
+    image: "/Olaya.webp",
     tags: ["Government Platforms", "Investor Guide"],
     title:
       "Top Saudi Government Platforms Every Investor Should Know Before Starting a Business",

@@ -19,7 +19,11 @@ const slugify = (text: string) =>
 
 export default function CreateCityPage() {
   const router = useRouter();
+
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  if (!API_URL) {
+    throw new Error("NEXT_PUBLIC_API_URL is not defined");
+  }
 
   const [isSlugEdited, setIsSlugEdited] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -78,12 +82,9 @@ export default function CreateCityPage() {
 
   /* ---------- submit ---------- */
   const handleSubmit = async () => {
-    try {
-      if (!API_URL) {
-        toast.error("API URL missing");
-        return;
-      }
+    if (submitting) return;
 
+    try {
       if (!form.cityName.trim())
         return toast.error("City name required");
 
@@ -102,13 +103,13 @@ export default function CreateCityPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          ...form,
+          order: Number(form.order) || 0,
+        }),
       });
 
-      let data: any = null;
-      try {
-        data = await res.json();
-      } catch {}
+      const data = await res.json().catch(() => null);
 
       if (!res.ok) {
         toast.error(data?.message || "Failed to create city");
@@ -117,7 +118,8 @@ export default function CreateCityPage() {
 
       toast.success("City created successfully");
       router.push(`/admin/cities/${data.city._id}`);
-    } catch {
+    } catch (error) {
+      console.error(error);
       toast.error("Failed to create city");
     } finally {
       setSubmitting(false);
@@ -130,6 +132,7 @@ export default function CreateCityPage() {
         <h1 className="text-3xl font-semibold text-white">
           Add City
         </h1>
+
         <p className="text-sm text-white/60 mt-2">
           Create a new city to manage its blog, categories, and content.
         </p>
@@ -163,7 +166,7 @@ export default function CreateCityPage() {
             </p>
           </div>
 
-          {/* Image Upload */}
+          {/* Image */}
           <div>
             <p className="text-sm text-white/70 mb-2">
               City Image
@@ -201,9 +204,7 @@ export default function CreateCityPage() {
             <Input
               label="City Image URL"
               value={form.cityImage}
-              onChange={(v) =>
-                handleChange("cityImage", v)
-              }
+              onChange={(v) => handleChange("cityImage", v)}
               placeholder="Cloudinary image URL"
             />
           </div>
@@ -212,9 +213,7 @@ export default function CreateCityPage() {
           <Input
             label="Heading"
             value={form.heading}
-            onChange={(v) =>
-              handleChange("heading", v)
-            }
+            onChange={(v) => handleChange("heading", v)}
             placeholder="Business Hub of the Red Sea"
           />
 
@@ -228,7 +227,7 @@ export default function CreateCityPage() {
             placeholder="Jeddah is a major commercial center and gateway city..."
           />
 
-          {/* Tag & Order */}
+          {/* Tag + Order */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <p className="text-sm text-white/70 mb-2">
@@ -237,10 +236,7 @@ export default function CreateCityPage() {
               <select
                 value={form.tag}
                 onChange={(e) =>
-                  handleChange(
-                    "tag",
-                    e.target.value as CityTag
-                  )
+                  handleChange("tag", e.target.value as CityTag)
                 }
                 className="w-full px-4 py-2 rounded-lg border border-white/10 bg-white/5 text-white text-sm"
               >
@@ -270,10 +266,7 @@ export default function CreateCityPage() {
                 type="checkbox"
                 checked={form.isActive}
                 onChange={(e) =>
-                  handleChange(
-                    "isActive",
-                    e.target.checked
-                  )
+                  handleChange("isActive", e.target.checked)
                 }
                 className="mr-2"
               />
@@ -294,7 +287,7 @@ export default function CreateCityPage() {
   );
 }
 
-/* ---------- small inputs ---------- */
+/* ---------- small components ---------- */
 
 function Input({
   label,

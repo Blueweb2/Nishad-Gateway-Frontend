@@ -18,8 +18,8 @@ type CityForm = {
   cityName: string;
   citySlug: string;
   cityImage: string;
-  bestSuitedFor: string;
-  focus: string;
+  heading: string;
+  description: string;
   tag: string;
   order: number;
   isActive: boolean;
@@ -37,8 +37,8 @@ export default function CityMetaPage() {
     cityName: "",
     citySlug: "",
     cityImage: "",
-    bestSuitedFor: "",
-    focus: "",
+    heading: "",
+    description: "",
     tag: "ARTICLE",
     order: 0,
     isActive: true,
@@ -48,9 +48,7 @@ export default function CityMetaPage() {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
 
-  /* =========================
-     FETCH CITY
-  ========================= */
+  /* ========================= FETCH CITY ========================= */
   useEffect(() => {
     const fetchCity = async () => {
       try {
@@ -62,8 +60,8 @@ export default function CityMetaPage() {
           cityName: data.city?.cityName || "",
           citySlug: data.city?.citySlug || "",
           cityImage: data.city?.cityImage || "",
-          bestSuitedFor: data.city?.bestSuitedFor || "",
-          focus: data.city?.focus || "",
+          heading: data.city?.heading || "",
+          description: data.city?.description || "",
           tag: data.city?.tag || "ARTICLE",
           order: data.city?.order ?? 0,
           isActive: data.city?.isActive ?? true,
@@ -78,9 +76,7 @@ export default function CityMetaPage() {
     fetchCity();
   }, [cityId]);
 
-  /* =========================
-     IMAGE UPLOAD
-  ========================= */
+  /* ========================= IMAGE UPLOAD ========================= */
   const handleUploadImage = async (file: File) => {
     try {
       setUploading(true);
@@ -103,21 +99,23 @@ export default function CityMetaPage() {
     }
   };
 
-  /* =========================
-     UPDATE CITY
-  ========================= */
+  /* ========================= UPDATE CITY ========================= */
   const handleUpdate = async () => {
     try {
       if (!cityId) return toast.error("City ID missing");
       if (!form.cityName.trim()) return toast.error("City name required");
       if (!form.citySlug.trim()) return toast.error("City slug required");
+      if (!form.heading.trim()) return toast.error("Heading required");
 
       setSaving(true);
-      await updateCityClient(cityId, form);
+
+      await updateCityClient(cityId, {
+        ...form,
+        order: Number(form.order) || 0,
+      });
 
       toast.success("City updated");
 
-      // 🔥 redirect back to city dashboard
       router.push(`/admin/cities/${cityId}`);
     } catch (err: any) {
       toast.error(err?.response?.data?.message || "Update failed");
@@ -126,9 +124,7 @@ export default function CityMetaPage() {
     }
   };
 
-  /* =========================
-     DELETE CITY
-  ========================= */
+  /* ========================= DELETE CITY ========================= */
   const handleDelete = async () => {
     if (!confirm("Delete this city permanently?")) return;
 
@@ -136,6 +132,7 @@ export default function CityMetaPage() {
       if (!cityId) return toast.error("City ID missing");
 
       await deleteCityClient(cityId);
+
       toast.success("City deleted");
       router.push("/admin/cities");
     } catch (err: any) {
@@ -172,8 +169,17 @@ export default function CityMetaPage() {
       {/* Form */}
       <div className="rounded-2xl border border-white/10 bg-white/5 p-6 space-y-5">
 
-        <Input label="City Name" value={form.cityName} onChange={(v: string) => handleChange("cityName", v)} />
-        <Input label="City Slug" value={form.citySlug} onChange={(v: string) => handleChange("citySlug", v)} />
+        <Input
+          label="City Name"
+          value={form.cityName}
+          onChange={(v: string) => handleChange("cityName", v)}
+        />
+
+        <Input
+          label="City Slug"
+          value={form.citySlug}
+          onChange={(v: string) => handleChange("citySlug", v)}
+        />
 
         {/* Image */}
         <div>
@@ -213,9 +219,20 @@ export default function CityMetaPage() {
           </div>
         </div>
 
-        <Textarea label="Best Suited For" value={form.bestSuitedFor} onChange={(v: string) => handleChange("bestSuitedFor", v)} />
-        <Textarea label="Focus" value={form.focus} onChange={(v: string) => handleChange("focus", v)} />
+        {/* NEW FIELDS */}
+        <Textarea
+          label="Heading"
+          value={form.heading}
+          onChange={(v: string) => handleChange("heading", v)}
+        />
 
+        <Textarea
+          label="Description"
+          value={form.description}
+          onChange={(v: string) => handleChange("description", v)}
+        />
+
+        {/* Active Toggle */}
         <div className="flex items-center justify-between">
           <label className="flex items-center gap-2 text-sm text-white/70">
             <input
@@ -229,7 +246,7 @@ export default function CityMetaPage() {
           <button
             onClick={handleUpdate}
             disabled={saving}
-            className="px-5 py-2 rounded-lg bg-emerald-500 text-black font-semibold"
+            className="px-5 py-2 rounded-lg bg-emerald-500 text-black font-semibold disabled:opacity-50"
           >
             {saving ? "Updating..." : "Update City"}
           </button>

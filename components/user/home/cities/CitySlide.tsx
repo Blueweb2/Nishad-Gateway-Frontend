@@ -20,7 +20,7 @@ type Props = {
 export default function CitySlide({ city }: Props) {
   if (!city) {
     return (
-      <div className="bg-red-500 text-white p-10 text-center">
+      <div className="bg-red-500 text-white p-[2vw] text-center">
         City is undefined
       </div>
     );
@@ -28,6 +28,7 @@ export default function CitySlide({ city }: Props) {
 
   return (
     <section className="relative w-full h-[110vh] text-white overflow-hidden">
+
       {/* Background */}
       <div className="absolute inset-0 z-0">
         <ParallaxImage
@@ -42,46 +43,55 @@ export default function CitySlide({ city }: Props) {
       {/* Overlay */}
       <div className="absolute inset-0 z-10 bg-black/50" />
 
-      <div className="relative z-20 max-w-[1320px] mx-auto px-6 h-full flex flex-col py-16">
+      <div className="relative z-20 max-w-[91.6vw] mx-auto px-[4vw] h-full flex flex-col py-[4vw]">
 
         {/* Section Title */}
         <FadeUpScroll delay={0.1}>
-          <h2 className="text-center text-[42px] font-semibold mb-24">
-            Where You Operate Matters
+          <h2 className="text-center text-[2.9vw] font-semibold mb-[6vw] mt-[3vw]">
+            Cities & Zones in Saudi Arabia
           </h2>
         </FadeUpScroll>
 
-        {/* Heading + Description */}
-        <div className="mb-auto max-w-3xl">
+        {/* Heading + Description (Same Row) */}
+        <div className="grid grid-cols-3 items-start mb-[1.5vw]">
+
+          {/* Heading - Left */}
           <FadeUpScroll delay={0.2}>
-            <h4 className="text-lg uppercase tracking-wide font-semibold mb-4">
+            <h4 className="text-[1.8vw]  leading-[1.8vw] tracking-wide  max-w-[18vw]  text-[#00A63E]">
               {city.heading}
             </h4>
           </FadeUpScroll>
 
+          {/* Empty middle column for balance */}
+          {/* <div /> */}
+
+          {/* Description - Centered column */}
           <FadeUpScroll delay={0.3}>
-            <p className="text-white/90 text-base leading-relaxed">
-              {city.description}
-            </p>
+            <div className="flex justify-center">
+              <p className="text-white/90 text-[1vw] leading-[1.2vw] max-w-[20vw] text-left">
+                {city.description}
+              </p>
+            </div>
           </FadeUpScroll>
+
         </div>
 
         {/* Divider */}
-        <div className="w-full h-px bg-white/20 mb-12" />
+        <div className="w-full h-px bg-white/20 mb-[10vw]" />
 
         {/* City Name + Arrow */}
-        <div className="mb-16">
-          <div className="flex items-center gap-6">
+        <div className="mb-[4vw]">
+          <div className="flex items-center gap-[2vw]">
             <FadeUpScroll delay={0.2}>
-              <h3 className="text-[90px] font-bold leading-none tracking-tight">
+              <h3 className="text-[6.25vw] font-bold leading-none tracking-tight">
                 {city.cityName}
               </h3>
             </FadeUpScroll>
 
-            <Link href={`/cities/${city.citySlug}`} className="group mt-4">
+            <Link href={`/cities/${city.citySlug}`} className="group mt-[1vw]">
               <OvalArrow
                 direction="right"
-                className="w-[62px] h-[102px] transition-transform group-hover:translate-x-2"
+                className="w-[4.3vw] h-[7vw] transition-transform group-hover:translate-x-[0.5vw]"
               />
             </Link>
           </div>
@@ -91,12 +101,13 @@ export default function CitySlide({ city }: Props) {
         <div className="flex justify-center">
           <FadeUpScroll delay={0.4}>
             <Link href="/ksa-expansion-cost-calculator">
-              <button className="bg-green-600 hover:bg-green-700 text-white text-base font-medium px-12 py-4 rounded-full transition-all duration-300 hover:shadow-lg">
+              <button className="bg-green-600 hover:bg-green-700 text-white text-[1vw] font-medium px-[2vw] py-[0.8vw] rounded-full transition-all duration-300 hover:shadow-lg">
                 Calculate Your KSA Expansion Cost
               </button>
             </Link>
           </FadeUpScroll>
         </div>
+
       </div>
     </section>
   );
