@@ -77,13 +77,13 @@ export default function CitySlide({ city }: Props) {
         </div>
 
         {/* Divider */}
-        <div className="w-full h-px bg-white/20 mb-[10vw]" />
+        <div className="w-full h-px bg-white/20 mb-[12vw]" />
 
         {/* City Name + Arrow */}
         <div className="mb-[4vw]">
           <div className="flex items-center gap-[2vw]">
             <FadeUpScroll delay={0.2}>
-              <h3 className="text-[6.25vw] font-bold leading-none tracking-tight">
+              <h3 className="text-[5.6vw] font-bold leading-none tracking-tight">
                 {city.cityName}
               </h3>
             </FadeUpScroll>

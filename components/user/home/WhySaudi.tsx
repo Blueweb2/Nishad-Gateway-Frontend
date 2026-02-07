@@ -44,7 +44,6 @@ const slides = [
   },
 ];
 
-
 export default function WhySaudi() {
   const [index, setIndex] = useState(0);
 
@@ -56,15 +55,21 @@ export default function WhySaudi() {
     <section
       data-navbar="white"
       data-menu="dark-text"
-      className="relative w-full bg-white text-black py-[4vw] overflow-hidden pt-[8vw]"
+      className="relative w-full bg-white text-black py-[4vw] pt-[8vw] overflow-hidden"
     >
-      {/* PAGINATION */}
+      {/* ===== Background SVG Layer ===== */}
+      <div
+        className="absolute inset-0 -z-10 bg-no-repeat bg-right-top bg-[length:55vw] opacity-10"
+        style={{ backgroundImage: "url('/bg-why-saudi.svg')" }}
+      />
+
+      {/* ===== Pagination Top Right ===== */}
       <div className="absolute inset-x-0 top-0">
-        <div className="w-full flex justify-end px-[2vw] pt-[8vw]">
+        <div className="w-full flex justify-end px-[4vw] pt-[6vw]">
           <div className="flex items-center gap-6">
             <span className="text-sm text-gray-600">
-              {index + 1} / <span className="text-black">{slides.length}</span>
-
+              {index + 1} /{" "}
+              <span className="text-black">{slides.length}</span>
             </span>
 
             <OvalArrow
@@ -73,12 +78,11 @@ export default function WhySaudi() {
               onClick={nextSlide}
               className="w-[2.2vw] h-[3vw]"
             />
-
           </div>
         </div>
       </div>
 
-      {/* CONTENT */}
+      {/* ===== Main Content ===== */}
       <div className="relative max-w-[85vw] mx-auto">
         <div className="grid grid-cols-3 gap-[6vw] items-start">
 
@@ -127,11 +131,10 @@ export default function WhySaudi() {
                     height={120}
                     className="object-contain"
                   />
-
                 </motion.div>
 
                 {/* Text */}
-                <div className="mt-[12vw] max-w-[20vw]">
+                <div className="mt-[4vw] max-w-[22vw]">
                   <motion.h3
                     className="text-[1.5vw] font-medium"
                     variants={{
@@ -139,7 +142,7 @@ export default function WhySaudi() {
                       visible: { opacity: 1, y: 0 },
                       exit: { opacity: 0, y: -40 },
                     }}
-                    transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                    transition={{ duration: 0.6 }}
                   >
                     {slides[index].title}
                   </motion.h3>
@@ -151,7 +154,7 @@ export default function WhySaudi() {
                       visible: { opacity: 1, y: 0 },
                       exit: { opacity: 0, y: -40 },
                     }}
-                    transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                    transition={{ duration: 0.6 }}
                   >
                     {slides[index].content}
                   </motion.p>
@@ -164,8 +167,8 @@ export default function WhySaudi() {
           <div />
         </div>
 
-        {/* DIVIDER */}
-        <div className="mt-[2vw] border-t border-gray-200" />
+        {/* Divider */}
+        <div className="mt-[3vw] border-t border-gray-200" />
       </div>
     </section>
   );
