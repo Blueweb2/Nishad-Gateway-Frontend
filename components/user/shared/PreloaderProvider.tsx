@@ -10,17 +10,9 @@ export default function PreloaderProvider({
 }) {
   const [loading, setLoading] = useState(true);
 
-  return (
-    <>
-      {loading && <Preloader onFinish={() => setLoading(false)} />}
+  if (loading) {
+    return <Preloader onFinish={() => setLoading(false)} />;
+  }
 
-      <div
-        className={`transition-opacity duration-1000 ${
-          loading ? "opacity-0" : "opacity-100"
-        }`}
-      >
-        {children}
-      </div>
-    </>
-  );
+  return <>{children}</>;
 }

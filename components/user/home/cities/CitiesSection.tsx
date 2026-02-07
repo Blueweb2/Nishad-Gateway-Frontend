@@ -42,30 +42,40 @@ export default function CitiesSection() {
   const total = cities.length;
   const current = index + 1;
 
-  const prev = () =>
-    setIndex((i) => (i === 0 ? total - 1 : i - 1));
+  const prev = () => setIndex((i) => (i === 0 ? total - 1 : i - 1));
 
-  const next = () =>
-    setIndex((i) => (i === total - 1 ? 0 : i + 1));
+  const next = () => setIndex((i) => (i === total - 1 ? 0 : i + 1));
 
   return (
     <section className="relative">
       <CitySlide city={cities[index]} />
 
-      <div className="absolute right-12 top-1/2 -translate-y-1/2 z-40 flex flex-col items-center gap-6">
-        <div className="text-white flex items-baseline gap-1">
-          <span className="text-[22px] font-semibold leading-none">
+      {/* Navigation Controls - Right Side */}
+      <div className="absolute right-16 top-1/2 -translate-y-1/2 z-40 flex flex-col items-center gap-8">
+        {/* Counter */}
+        <div className="text-white flex items-start gap-0.5">
+          <span className="text-[32px] font-bold leading-none">
             {current}
           </span>
-          <span className="text-white/70 text-sm leading-none">
-            / {total}
+          <span className="text-white/60 text-lg leading-none pt-1">
+            /{total}
           </span>
         </div>
 
-        <div className="flex items-center gap-4">
-          <OvalArrow direction="left" onClick={prev} className="w-[48px] h-[64px]" />
-          <OvalArrow direction="right" onClick={next} className="w-[48px] h-[64px]" />
-        </div>
+        {/* Navigation Arrows */}
+   <div className="flex flex-col items-center gap-4">
+  <OvalArrow
+    direction="left"
+    onClick={prev}
+    className="w-[32px] h-[48px] transition-transform hover:scale-110 active:scale-95"
+  />
+  <OvalArrow
+    direction="right"
+    onClick={next}
+    className="w-[32px] h-[48px] transition-transform hover:scale-110 active:scale-95"
+  />
+</div>
+
       </div>
     </section>
   );

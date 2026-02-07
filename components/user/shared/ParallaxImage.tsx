@@ -21,6 +21,12 @@ export default function ParallaxImage({
 }: ParallaxImageProps) {
   const ref = useRef<HTMLDivElement | null>(null);
 
+  // 🛑 Safety guard
+  if (!src) {
+    console.error("ParallaxImage: invalid src →", src);
+    return null;
+  }
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
@@ -31,13 +37,14 @@ export default function ParallaxImage({
   return (
     <div ref={ref} className={`relative overflow-hidden ${className}`}>
       <motion.div style={{ y }} className="absolute inset-0">
-        {/*  overscan (extra area so it won’t cut while moving) */}
+        {/* Overscan so image doesn't cut during movement */}
         <div className="absolute inset-[-120px]">
           <Image
             src={src}
             alt={alt}
             fill
             priority={priority}
+            sizes="100vw"
             className="object-cover"
           />
         </div>

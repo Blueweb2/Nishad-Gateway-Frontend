@@ -3,7 +3,7 @@
 import Link from "next/link";
 import OvalArrow from "@/components/user/ui/OvalArrow";
 import ParallaxImage from "@/components/user/shared/ParallaxImage";
-import FadeUp from "../../ui/FadeUp";
+import FadeUpScroll from "../../ui/FadeUpScroll";
 
 export type City = {
   cityName: string;
@@ -41,72 +41,76 @@ export default function CitySlide({ city }: Props) {
         />
       </div>
 
-      <div className="absolute inset-0 z-10 bg-black/50" />
+      <div className="absolute inset-0 z-10 bg-black/40" />
 
-      <div className="relative z-20 max-w-[1320px] mx-auto px-6 h-full flex flex-col justify-between py-20">
-       <FadeUp delay={0.1}>
-          <h2 className="text-center text-[40px] font-semibold">
+      <div className="relative z-20 max-w-[1320px] mx-auto px-6 h-full flex flex-col py-16">
+        {/* Title */}
+        <FadeUpScroll delay={0.1}>
+          <h2 className="text-center text-[42px] font-semibold mb-24">
             Where You Operate Matters
           </h2>
-       </FadeUp >
+        </FadeUpScroll>
 
-        <div className="mt-20">
-          <div className="flex items-start gap-24">
+        {/* Best Suited For & Focus Section */}
+        <div className="mb-auto">
+          <div className="flex items-start gap-32">
             <div>
-              <FadeUp delay={0.2}>
-                <p className="text-xs uppercase text-white/70 mb-2">
-                  Best suited for
+              <FadeUpScroll delay={0.2}>
+                <p className="text-sm font-bold uppercase text-white mb-3 tracking-wide">
+                  BEST SUITED FOR:
                 </p>
-              </FadeUp>
-            <FadeUp delay={0.2}>
-                <p className="text-sm text-white/90 max-w-xs">
+              </FadeUpScroll>
+              <FadeUpScroll delay={0.3}>
+                <p className="text-base text-white/90 max-w-xs leading-relaxed">
                   {city.bestSuitedFor || "—"}
                 </p>
-            </FadeUp>
+              </FadeUpScroll>
             </div>
 
             <div>
-             <FadeUp delay={0.2}>
-                <p className="text-xs uppercase text-white/70 mb-2">
-                  Focus
+              <FadeUpScroll delay={0.2}>
+                <p className="text-sm font-bold uppercase text-white mb-3 tracking-wide">
+                  FOCUS:
                 </p>
-             </FadeUp >
-             <FadeUp delay={0.2}>
-                <p className="text-sm text-white/90 max-w-xs">
+              </FadeUpScroll>
+              <FadeUpScroll delay={0.3}>
+                <p className="text-base text-white/90 max-w-md leading-relaxed">
                   {city.focus || "—"}
                 </p>
-             </FadeUp >
+              </FadeUpScroll>
             </div>
           </div>
-
-          <div className="mt-10 w-full h-px bg-white/30" />
         </div>
 
-        <div>
-          <div className="flex items-center gap-4 mb-10">
-          <FadeUp delay={0.2}>
-              <h3 className="text-[82px] font-bold leading-none">
+        {/* Divider */}
+        <div className="w-full h-px bg-white/20 mb-12" />
+
+        {/* City Name with Arrow */}
+        <div className="mb-16">
+          <div className="flex items-center gap-6">
+            <FadeUpScroll delay={0.2}>
+              <h3 className="text-[90px] font-bold leading-none tracking-tight">
                 {city.cityName}
               </h3>
-          </FadeUp>
-            <Link
-              href={`/cities/${city.citySlug}`}
-              className="group"
-            >
+            </FadeUpScroll>
+            <Link href={`/cities/${city.citySlug}`} className="group mt-4">
               <OvalArrow
                 direction="right"
-                className="w-[62px] h-[102px] transition-transform group-hover:translate-x-1"
+                className="w-[62px] h-[102px] transition-transform group-hover:translate-x-2"
               />
             </Link>
           </div>
         </div>
 
+        {/* CTA Button */}
         <div className="flex justify-center">
-          <Link href="/ksa-expansion-cost-calculator">
-            <button className="bg-green-600 hover:bg-green-700 text-white px-10 py-3 rounded-full transition">
-              Calculate Your KSA Expansion Cost
-            </button>
-          </Link>
+          <FadeUpScroll delay={0.4}>
+            <Link href="/ksa-expansion-cost-calculator">
+              <button className="bg-green-600 hover:bg-green-700 text-white text-base font-medium px-12 py-4 rounded-full transition-all duration-300 hover:shadow-lg">
+                Calculate Your KSA Expansion Cost
+              </button>
+            </Link>
+          </FadeUpScroll>
         </div>
       </div>
     </section>

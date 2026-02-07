@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import WaterTouchHover from "@/components/user/shared/WaterTouchHover";
-import FadeUp from "../ui/FadeUp";
+import FadeUpMount from "../ui/FadeUpMount";
 
 export default function HeroSection() {
   return (
@@ -27,27 +27,18 @@ export default function HeroSection() {
       <div className="relative z-10 h-full flex flex-col px-6">
         <div className="mt-auto mb-[10px] text-center">
 
-          <FadeUp delay={1.2}>
+          <FadeUpMount delay={0.3}>
             <p className="text-white text-[35px] lg:text-[40px] mb-1">
               Your Gateway to
             </p>
-          </FadeUp>
+          </FadeUpMount>
 
-          <FadeUp delay={0.4}>
-            <h2
-              className="
-                w-full
-                text-white
-                font-extrabold
-                text-[16vw]
-                leading-[0.85]
-                text-center
-                whitespace-nowrap
-              "
-            >
+          <FadeUpMount delay={0.6}>
+            <h2 className="text-white font-extrabold text-[16vw] leading-[0.85] text-center whitespace-nowrap">
               Saudi Arabia
             </h2>
-          </FadeUp>
+          </FadeUpMount>
+
 
         </div>
       </div>

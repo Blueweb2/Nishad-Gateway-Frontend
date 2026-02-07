@@ -2,17 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 
-type Props = {
-  children: React.ReactNode;
-  delay?: number;
-  triggerKey?: number | string;
-};
-
-export default function FadeUp({
+export default function FadeUpScroll({
   children,
   delay = 0,
-  triggerKey,
-}: Props) {
+}: {
+  children: React.ReactNode;
+  delay?: number;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
 
@@ -20,21 +16,20 @@ export default function FadeUp({
     const element = ref.current;
     if (!element) return;
 
-    setVisible(false);
-
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setVisible(true);
+          observer.disconnect();
         }
       },
-      { threshold: 0.25 }
+      { threshold: 0.2 }
     );
 
     observer.observe(element);
 
     return () => observer.disconnect();
-  }, [triggerKey]);
+  }, []);
 
   return (
     <div
