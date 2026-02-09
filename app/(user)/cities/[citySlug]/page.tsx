@@ -12,6 +12,8 @@ export default async function CityPage({
   const { citySlug } = await params; // ✅ MUST await in Next 15
 
   const data = await getCityBlogBySlugServer(citySlug);
+  console.log("City page data:", data);
+  
 
   if (!data) return notFound();
 
@@ -21,6 +23,7 @@ export default async function CityPage({
         citySlug={citySlug}
         sections={data.sections}
         categories={data.categories || []}
+        
       />
     </main>
   );

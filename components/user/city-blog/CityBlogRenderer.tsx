@@ -2,12 +2,16 @@ import type {
   CityBlogSection,
   CategoriesSectionContent,
   HeroSectionContent,
-  VisionSectionContent
+  VisionSectionContent,
+  InvestmentHighlightsContent,
+  BusinessSetupOptionsContent, // ✅ ADD THIS
 } from "@/lib/types/city-blog";
 
 import HeroSection from "./HeroSection";
 import CategoriesSection from "./CategoriesSection";
 import VisionSection from "./VisionSection";
+import InvestmentHighlightsSection from "./InvestmentHighlightsSection";
+import BusinessSetupOptionsSection from "./BusinessSetupOptionsSection";
 
 type Props = {
   citySlug: string;
@@ -28,18 +32,25 @@ export default function CityBlogRenderer({
       {sections
         .filter((s) => s.isActive)
         .sort((a, b) => a.order - b.order)
-        .map((section, index) => {
+        .map((section) => {
           switch (section.type) {
+
             case "HERO": {
               const content = section.content as HeroSectionContent;
-              return <HeroSection key={`hero-${index}`} content={content} />;
+              return (
+                <HeroSection
+                  key={section.id}
+                  content={content}
+                />
+              );
             }
 
             case "CATEGORIES": {
-              const content = section.content as CategoriesSectionContent;
+              const content =
+                section.content as CategoriesSectionContent;
               return (
                 <CategoriesSection
-                  key={`categories-${index}`}
+                  key={section.id}
                   citySlug={citySlug}
                   heading={content.heading}
                   introText={content.introText}
@@ -49,10 +60,11 @@ export default function CityBlogRenderer({
             }
 
             case "VISION": {
-              const content = section.content as VisionSectionContent;
+              const content =
+                section.content as VisionSectionContent;
               return (
                 <VisionSection
-                  key={`vision-${index}`}
+                  key={section.id}
                   heading={content.heading}
                   content={content.content}
                   imageUrl={content.imageUrl}
@@ -60,10 +72,34 @@ export default function CityBlogRenderer({
               );
             }
 
+            case "INVESTMENT_HIGHLIGHTS": {
+              const content =
+                section.content as InvestmentHighlightsContent;
+              return (
+                <InvestmentHighlightsSection
+                  key={section.id}
+                  heading={content.heading}
+                  description={content.description}
+                  highlights={content.highlights}
+                />
+              );
+            }
+
+            case "BUSINESS_SETUP_OPTIONS": {
+              const content =
+                section.content as BusinessSetupOptionsContent;
+
+              return (
+                <BusinessSetupOptionsSection
+                  key={section.id}
+                  {...content}
+                />
+              );
+            }
+
             default:
               return null;
           }
-
         })}
     </>
   );

@@ -8,7 +8,8 @@ export type CityBlogSectionType =
   | "HERO"
   | "CATEGORIES"
   | "VISION"
-  | "INTRO_TEXT"
+  | "INVESTMENT_HIGHLIGHTS"
+  | "BUSINESS_SETUP_OPTIONS"
   | "FEATURE_CARDS"
   | "STATS"
   | "IMAGE_TEXT"
@@ -52,9 +53,33 @@ export type VisionSectionContent = {
 
 /* ---------- INTRO TEXT ---------- */
 
-export type IntroTextSectionContent = {
-  text: string;
+export type InvestmentHighlightsContent = {
+  heading: string;
+  description: string;
+  highlights: {
+    number: string;
+    title: string;
+    imageUrl: string;
+  }[];
 };
+
+/* ---------- BUSINESS SETUP OPTIONS ---------- */
+
+export type BusinessSetupOptionsContent = {
+  heading: string;
+  description: string;
+
+  options: {
+    title: string;
+    link: string;           // ✅ Admin-defined navigation link
+    isFeatured?: boolean;   // Optional highlighted card
+  }[];
+
+  decisionFlow: string;
+  bottomText: string;
+};
+
+
 
 /* ---------- FEATURE CARDS ---------- */
 
@@ -150,8 +175,8 @@ export type CityBlogSectionContentMap = {
   HERO: HeroSectionContent;
   CATEGORIES: CategoriesSectionContent;
   VISION: VisionSectionContent;
-  
-  INTRO_TEXT: IntroTextSectionContent;
+INVESTMENT_HIGHLIGHTS: InvestmentHighlightsContent;
+BUSINESS_SETUP_OPTIONS: BusinessSetupOptionsContent;
   FEATURE_CARDS: FeatureCardsSectionContent;
   STATS: StatsSectionContent;
   IMAGE_TEXT: ImageTextSectionContent;

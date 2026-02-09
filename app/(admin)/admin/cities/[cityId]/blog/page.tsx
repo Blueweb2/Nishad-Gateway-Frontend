@@ -227,6 +227,7 @@ export default function AdminCityBlogPage() {
               <option value="HERO">HERO</option>
               <option value="CATEGORIES">CATEGORIES</option>
               <option value="VISION">VISION</option>
+              <option value="INVESTMENT_HIGHLIGHTS">INVESTMENT HIGHLIGHTS</option>
               <option value="FAQ">FAQ</option>
             </select>
           </div>

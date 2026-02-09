@@ -6,6 +6,7 @@ import { Trash2, GripVertical, Copy } from "lucide-react";
 import HeroSectionEditor from "./HeroSectionEditor";
 import CategoriesSectionEditor from "./CategoriesSectionEditor";
 import VisionSectionEditor from "./VisionSectionEditor";
+import InvestmentHighlightsEditor from "./InvestmentHighlightsEditor";
 
 import type {
   CityBlogSection,
@@ -31,8 +32,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { v4 as uuid } from "uuid";
 
 /* =========================================================
-   ✅ MOVE SORTABLE ITEM OUTSIDE COMPONENT
-   (Prevents remounting + focus loss)
+   SORTABLE ITEM
 ========================================================= */
 function SortableItem({
   id,
@@ -97,7 +97,7 @@ export default function SectionsList({
 
       const duplicated: CityBlogSection = {
         ...sectionToCopy,
-        id: uuid(), // new stable id
+        id: uuid(),
         order: prev.length + 1,
         title: `${sectionToCopy.title || sectionToCopy.type} (Copy)`,
       };
@@ -137,7 +137,7 @@ export default function SectionsList({
     });
   };
 
-  /* ================= SORT ONCE (STABLE) ================= */
+  /* ================= STABLE SORT ================= */
   const sortedSections = useMemo(
     () => [...sections].sort((a, b) => a.order - b.order),
     [sections]
@@ -173,9 +173,7 @@ export default function SectionsList({
                       {/* HEADER */}
                       <div className="flex items-center justify-between mb-4">
 
-                        {/* LEFT */}
                         <div className="flex items-center gap-3">
-
                           <div
                             {...attributes}
                             {...listeners}
@@ -194,9 +192,7 @@ export default function SectionsList({
                           </div>
                         </div>
 
-                        {/* RIGHT */}
                         <div className="flex items-center gap-3">
-
                           <button
                             onClick={() =>
                               setCollapsed((prev) =>
@@ -252,6 +248,21 @@ export default function SectionsList({
                               content={section.content as VisionSectionContent}
                               onChange={(content) =>
                                 updateSectionContent(section.id, content)
+                              }
+                            />
+                          )}
+
+                          {section.type === "INVESTMENT_HIGHLIGHTS" && (
+                            <InvestmentHighlightsEditor
+                              section={
+                                section as CityBlogSection<"INVESTMENT_HIGHLIGHTS">
+                              }
+                              onChange={(updatedSection) =>
+                                setSections((prev) =>
+                                  prev.map((s) =>
+                                    s.id === section.id ? updatedSection : s
+                                  )
+                                )
                               }
                             />
                           )}
