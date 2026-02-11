@@ -4,7 +4,7 @@ import type {
   HeroSectionContent,
   VisionSectionContent,
   InvestmentHighlightsContent,
-  BusinessSetupOptionsContent,
+  BusinessSetupOptionsContent, // ✅ ADD THIS
 } from "@/lib/types/city-blog";
 
 import HeroSection from "./HeroSection";
@@ -15,8 +15,8 @@ import BusinessSetupOptionsSection from "./BusinessSetupOptionsSection";
 
 type Props = {
   citySlug: string;
-  sections?: CityBlogSection[]; // ✅ made optional (safer)
-  categories?: {
+  sections: CityBlogSection[];
+  categories: {
     name: string;
     slug: string;
   }[];
@@ -24,21 +24,19 @@ type Props = {
 
 export default function CityBlogRenderer({
   citySlug,
-  sections = [], // ✅ fallback to empty array
-  categories = [], // ✅ fallback to empty array
+  sections,
+  categories,
 }: Props) {
   return (
     <>
-      {(sections ?? [])
-        .filter((s) => s?.isActive)
-        .sort((a, b) => (a?.order ?? 0) - (b?.order ?? 0))
+      {sections
+        .filter((s) => s.isActive)
+        .sort((a, b) => a.order - b.order)
         .map((section) => {
-          if (!section) return null;
-
           switch (section.type) {
+
             case "HERO": {
               const content = section.content as HeroSectionContent;
-
               return (
                 <HeroSection
                   key={section.id}
@@ -50,13 +48,12 @@ export default function CityBlogRenderer({
             case "CATEGORIES": {
               const content =
                 section.content as CategoriesSectionContent;
-
               return (
                 <CategoriesSection
                   key={section.id}
                   citySlug={citySlug}
-                  heading={content?.heading}
-                  introText={content?.introText}
+                  heading={content.heading}
+                  introText={content.introText}
                   categories={categories}
                 />
               );
@@ -65,13 +62,12 @@ export default function CityBlogRenderer({
             case "VISION": {
               const content =
                 section.content as VisionSectionContent;
-
               return (
                 <VisionSection
                   key={section.id}
-                  heading={content?.heading}
-                  content={content?.content}
-                  imageUrl={content?.imageUrl}
+                  heading={content.heading}
+                  content={content.content}
+                  imageUrl={content.imageUrl}
                 />
               );
             }
@@ -79,13 +75,12 @@ export default function CityBlogRenderer({
             case "INVESTMENT_HIGHLIGHTS": {
               const content =
                 section.content as InvestmentHighlightsContent;
-
               return (
                 <InvestmentHighlightsSection
                   key={section.id}
-                  heading={content?.heading}
-                  description={content?.description}
-                  highlights={content?.highlights}
+                  heading={content.heading}
+                  description={content.description}
+                  highlights={content.highlights}
                 />
               );
             }

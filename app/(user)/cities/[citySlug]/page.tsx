@@ -6,20 +6,13 @@ export default async function CityPage({
 }: {
   params: Promise<{ citySlug: string }>;
 }) {
-  const { citySlug } = await params;
+  const { citySlug } = await params; // ✅ MUST await
 
-  console.log("citySlug:", citySlug);
-
-  // const apiUrl = process.env.API_URL;
-  const apiUrl = "https://nishad-gateway-backend.onrender.com/api";
-  console.log("PRODUCTION API_URL:", process.env.API_URL);
-
-
-  console.log("API_URL:", apiUrl);
+  const apiUrl = process.env.API_URL;
 
   if (!apiUrl) {
     console.error("API_URL not defined");
-    throw new Error("API_URL missing");
+    return notFound();
   }
 
   const res = await fetch(
@@ -27,23 +20,18 @@ export default async function CityPage({
     { cache: "no-store" }
   );
 
-  console.log("Backend status:", res.status);
-
   if (!res.ok) {
-    const text = await res.text();
-    console.error("Backend error response:", text);
-    throw new Error("Backend fetch failed");
+    console.error("City blog fetch failed:", res.status);
+    return notFound();
   }
 
   const data = await res.json();
-  console.log("Backend data received");
 
   return (
     <CityBlogRenderer
       citySlug={citySlug}
-      sections={data.city?.sections || []}
+      sections={data.sections}
       categories={data.categories || []}
     />
   );
 }
-
