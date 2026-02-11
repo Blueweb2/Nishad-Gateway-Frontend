@@ -6,9 +6,9 @@ export default async function CityPage({
 }: {
   params: Promise<{ citySlug: string }>;
 }) {
-  const { citySlug } = await params;
+  const { citySlug } = await params; // ✅ MUST await
 
-  const apiUrl = process.env.API_URL; // ✅ use API_URL (server-only)
+  const apiUrl = process.env.API_URL;
 
   if (!apiUrl) {
     console.error("API_URL not defined");
@@ -17,9 +17,7 @@ export default async function CityPage({
 
   const res = await fetch(
     `${apiUrl}/cities/slug/${citySlug}/blog`,
-    {
-      cache: "no-store",
-    }
+    { cache: "no-store" }
   );
 
   if (!res.ok) {

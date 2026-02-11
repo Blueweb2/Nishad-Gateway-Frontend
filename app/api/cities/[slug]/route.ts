@@ -2,10 +2,10 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   req: Request,
-  context: { params: Promise<{ slug: string }> }
+  context: { params: { slug: string } }
 ) {
   try {
-    const { slug } = await context.params;
+    const { slug } = context.params;
 
     const apiUrl = process.env.API_URL;
 
@@ -32,7 +32,6 @@ export async function GET(
     const data = await response.json();
 
     return NextResponse.json(data);
-
   } catch (error) {
     console.error("Proxy route error:", error);
     return NextResponse.json(
