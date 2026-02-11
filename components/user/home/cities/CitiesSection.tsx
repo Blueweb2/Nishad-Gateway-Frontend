@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getCities } from "@/lib/api/public";
+import { getCities } from "@/lib/api/public/city.api";
+
+
 import CitySlide, { City } from "./CitySlide";
 import OvalArrow from "@/components/user/ui/OvalArrow";
 

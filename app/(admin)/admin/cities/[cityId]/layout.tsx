@@ -114,7 +114,7 @@ export default function CityLayout({
             }`}
           >
             <FileText className="w-4 h-4" />
-            Blog
+           City Guide
           </Link>
 
           <Link

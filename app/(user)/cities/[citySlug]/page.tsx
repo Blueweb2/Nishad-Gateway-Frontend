@@ -1,31 +1,39 @@
 import { notFound } from "next/navigation";
 import CityBlogRenderer from "@/components/user/city-blog/CityBlogRenderer";
-import { getCityBlogBySlugServer } from "@/lib/api/public/cityBlog.server";
-
-
 
 export default async function CityPage({
   params,
 }: {
   params: Promise<{ citySlug: string }>;
 }) {
-  const { citySlug } = await params; // ✅ MUST await in Next 15
+  const { citySlug } = await params;
 
-  const data = await getCityBlogBySlugServer(citySlug);
-  console.log("City page data:", data);
-  
+  const apiUrl = process.env.API_URL; // ✅ use API_URL (server-only)
 
-  if (!data) return notFound();
+  if (!apiUrl) {
+    console.error("API_URL not defined");
+    return notFound();
+  }
+
+  const res = await fetch(
+    `${apiUrl}/cities/slug/${citySlug}/blog`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  if (!res.ok) {
+    console.error("City blog fetch failed:", res.status);
+    return notFound();
+  }
+
+  const data = await res.json();
 
   return (
-    <main>
-      <CityBlogRenderer
-        citySlug={citySlug}
-        sections={data.sections}
-        categories={data.categories || []}
-        
-      />
-    </main>
+    <CityBlogRenderer
+      citySlug={citySlug}
+      sections={data.sections}
+      categories={data.categories || []}
+    />
   );
 }
-
