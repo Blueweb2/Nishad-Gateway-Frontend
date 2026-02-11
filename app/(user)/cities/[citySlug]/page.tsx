@@ -28,10 +28,11 @@ export default async function CityPage({
   const data = await res.json();
 
   return (
-    <CityBlogRenderer
-      citySlug={citySlug}
-      sections={data.sections}
-      categories={data.categories || []}
-    />
+ <CityBlogRenderer
+  citySlug={citySlug}
+  sections={data.city?.sections || []}
+  categories={data.categories || []}
+/>
+
   );
 }
