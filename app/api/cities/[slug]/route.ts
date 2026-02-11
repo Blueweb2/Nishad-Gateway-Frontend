@@ -5,20 +5,20 @@ export async function GET(
   context: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const { slug } = await context.params; // ✅ MUST await
+    const { slug } = await context.params;
 
-    const backendUrl = process.env.BACKEND_API_URL;
+    const apiUrl = process.env.API_URL;
 
-    if (!backendUrl) {
-      console.error("BACKEND_API_URL not defined");
+    if (!apiUrl) {
+      console.error("API_URL not defined");
       return NextResponse.json(
-        { message: "Backend URL not configured" },
+        { message: "API URL not configured" },
         { status: 500 }
       );
     }
 
     const response = await fetch(
-      `${backendUrl}/cities/slug/${slug}/blog`,
+      `${apiUrl}/cities/slug/${slug}/blog`,
       { cache: "no-store" }
     );
 
