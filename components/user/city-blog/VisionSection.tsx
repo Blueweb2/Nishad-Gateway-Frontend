@@ -1,4 +1,6 @@
-import DOMPurify from "isomorphic-dompurify";
+"use client";
+
+import DOMPurify from "dompurify";
 
 type Props = {
   heading: string;
@@ -11,6 +13,8 @@ export default function VisionSection({
   content,
   imageUrl,
 }: Props) {
+  const cleanContent = DOMPurify.sanitize(content);
+
   return (
     <section className="bg-black py-24 text-white">
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
@@ -23,9 +27,7 @@ export default function VisionSection({
 
           <div
             className="rich-text text-gray-300 leading-relaxed space-y-6"
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(content),
-            }}
+            dangerouslySetInnerHTML={{ __html: cleanContent }}
           />
         </div>
 
