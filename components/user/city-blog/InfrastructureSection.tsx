@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import type { InfrastructureSectionContent } from "@/lib/types/city-blog";
+import { cloudinaryAutoWebp } from "@/utils/cloudinary";
 
 type Props = {
   content: InfrastructureSectionContent;
@@ -8,7 +11,7 @@ type Props = {
 export default function InfrastructureSection({ content }: Props) {
   return (
     <section className="py-24 bg-[#7f7b77] text-white">
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-8xl mx-auto px-6">
 
         {/* HEADER */}
         <div className="flex justify-between items-start mb-20 gap-16">
@@ -54,10 +57,11 @@ export default function InfrastructureSection({ content }: Props) {
               {/* RIGHT IMAGE */}
               <div className="relative w-[320px] h-[320px] rounded-[24px] overflow-hidden shrink-0">
                 <Image
-                  src={slide.imageUrl}
+                  src={cloudinaryAutoWebp(slide.imageUrl)}
                   alt={slide.title}
                   fill
                   className="object-cover"
+                  sizes="320px"
                 />
               </div>
 
@@ -67,6 +71,5 @@ export default function InfrastructureSection({ content }: Props) {
         </div>
       </div>
     </section>
-
   );
 }

@@ -11,15 +11,11 @@ export type CityBlogSectionType =
   | "INVESTMENT_HIGHLIGHTS"
   | "BUSINESS_SETUP_OPTIONS"
   | "INFRASTRUCTURE"
-  | "FEATURE_CARDS"
-  | "STATS"
-  | "IMAGE_TEXT"
-  | "BUSINESS"
-  | "LIFESTYLE"
-  | "STEPS"
-  | "PLACES_GRID"
-  | "FAQ"
-  | "CTA";
+  | "LANDMARKS"
+  | "FOOD_GUIDE"
+  | "TRANSPORTATION_GUIDE"
+  | "EXPANDABLE_SNAPSHOT"
+  | "FUTURE_OUTLOOK";
 
 /* ======================================================
    SECTION CONTENT TYPES
@@ -50,7 +46,7 @@ export type VisionSectionContent = {
   heading: string;
   content: string;
   imageUrl: string;
-  imagePublicId?: string; 
+  imagePublicId?: string;
 };
 
 
@@ -83,7 +79,7 @@ export type BusinessSetupOptionsContent = {
   options: {
     title: string;
     link: string;           // required
-     
+
   }[];
 
   decisionFlow?: string;    // ✅ optional
@@ -106,83 +102,86 @@ export type InfrastructureSectionContent = {
 
 
 
-/* ---------- FEATURE CARDS ---------- */
 
-export type FeatureCardsSectionContent = {
-  cards: {
+export type LandmarksSectionContent = {
+  heading: string;
+  ctaText?: string;
+  ctaLink?: string;
+  items: {
     title: string;
     description: string;
-    icon?: string;
+    link: string;
   }[];
 };
 
-/* ---------- STATS ---------- */
 
-export type StatsSectionContent = {
-  stats: {
+
+
+export type FoodGuideSectionContent = {
+  heading: string;
+
+  filters: {
     label: string;
-    value: string;
+
+    items: {
+      imageUrl: string;
+      imagePublicId?: string;
+      title: string;
+      description: string;
+      link: string;
+    }[];
   }[];
 };
 
-/* ---------- IMAGE + TEXT ---------- */
+// TransportationGuide
 
-export type ImageTextSectionContent = {
-  heading?: string;
-  description: string;
-  image: string;
-  imagePosition?: "left" | "right";
-};
+export type TransportationGuideSectionContent = {
+  heading: string;
 
-/* ---------- BUSINESS ---------- */
+  slides: {
+    label: string; // "By Air", "By Road", etc.
 
-export type BusinessSectionContent = {
-  heading?: string;
-  points: string[];
-};
+    backgroundImage: string;
+    backgroundImagePublicId?: string;
 
-/* ---------- LIFESTYLE ---------- */
-
-export type LifestyleSectionContent = {
-  heading?: string;
-  description: string;
-};
-
-/* ---------- STEPS ---------- */
-
-export type StepsSectionContent = {
-  steps: {
-    title: string;
-    description: string;
+    title: string; // "Highways connect across KSA"
+    link: string;  // detail blog page link
   }[];
 };
 
 
-/* ---------- PLACES GRID ---------- */
+export type ExpandableSnapshotSectionContent = {
+  heading: string;
 
-export type PlacesGridSectionContent = {
-  places: {
-    name: string;
-    image: string;
+  cards: {
+    imageUrl: string;
+    imagePublicId?: string;
+    caption: string;
   }[];
 };
+
+
+
 
 /* ---------- FAQ ---------- */
 
-export type FAQSectionContent = {
-  faqs: {
-    question: string;
-    answer: string;
+export type FutureOutlookSectionContent = {
+  heading: string;
+
+  slides: {
+    title: string;         // Metro Expansion
+    description: string;
+    imageUrl: string;
+    imagePublicId?: string;
+    ctaText: string;
+    ctaLink: string;
   }[];
 };
 
+
 /* ---------- CTA ---------- */
 
-export type CTASectionContent = {
-  text: string;
-  buttonText: string;
-  link: string;
-};
+
 
 /* ======================================================
    CONTENT MAP (TYPE-SAFE LINKING)
@@ -192,18 +191,16 @@ export type CityBlogSectionContentMap = {
   HERO: HeroSectionContent;
   CATEGORIES: CategoriesSectionContent;
   VISION: VisionSectionContent;
-INVESTMENT_HIGHLIGHTS: InvestmentHighlightsContent;
-BUSINESS_SETUP_OPTIONS: BusinessSetupOptionsContent;
-  FEATURE_CARDS: FeatureCardsSectionContent;
-  STATS: StatsSectionContent;
-  IMAGE_TEXT: ImageTextSectionContent;
-  BUSINESS: BusinessSectionContent;
-  LIFESTYLE: LifestyleSectionContent;
-  STEPS: StepsSectionContent;
+  INVESTMENT_HIGHLIGHTS: InvestmentHighlightsContent;
+  BUSINESS_SETUP_OPTIONS: BusinessSetupOptionsContent;
   INFRASTRUCTURE: InfrastructureSectionContent;
-  PLACES_GRID: PlacesGridSectionContent;
-  FAQ: FAQSectionContent;
-  CTA: CTASectionContent;
+  LANDMARKS: LandmarksSectionContent;
+  FOOD_GUIDE:FoodGuideSectionContent;
+  TRANSPORTATION_GUIDE:TransportationGuideSectionContent
+  EXPANDABLE_SNAPSHOT:ExpandableSnapshotSectionContent
+  FUTURE_OUTLOOK: FutureOutlookSectionContent;
+  
+
 };
 
 /* ======================================================

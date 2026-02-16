@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { Plus } from "lucide-react";
+import { cloudinaryAutoWebp } from "@/utils/cloudinary";
 
 type Props = {
   mainHeading: string;
@@ -28,7 +29,7 @@ export default function InvestmentHighlightsSection({
 
   return (
     <section className="py-24 bg-[#f5f5f5]">
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-8xl mx-auto px-6">
 
         {/* Top Section */}
         <div className="grid lg:grid-cols-2 gap-16 mb-16">
@@ -52,11 +53,12 @@ export default function InvestmentHighlightsSection({
                 {/* Main Image */}
                 <div className="relative rounded-3xl overflow-hidden shadow-xl">
                   <Image
-                    src={card.mainImage}
+                    src={cloudinaryAutoWebp(card.mainImage)}
                     alt={card.title}
                     width={700}
                     height={500}
                     className="object-cover w-full h-[420px] transition-transform duration-500 group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, 50vw"
                   />
                   <div className="absolute inset-0 bg-black/30" />
                 </div>
@@ -64,14 +66,15 @@ export default function InvestmentHighlightsSection({
                 {/* Floating Sub Image */}
                 <div className="absolute -bottom-12 left-8 w-40 h-40 rounded-2xl overflow-hidden shadow-lg border-4 border-white">
                   <Image
-                    src={card.subImage}
+                    src={cloudinaryAutoWebp(card.subImage)}
                     alt={`${card.title} sub`}
                     fill
                     className="object-cover"
+                    sizes="160px"
                   />
                 </div>
 
-                {/* White Expandable Card */}
+                {/* Expandable Card */}
                 <div
                   className={`mt-20 bg-white rounded-2xl p-6 shadow-md max-w-md transition-all duration-300 ${
                     isExpanded ? "pb-8" : ""

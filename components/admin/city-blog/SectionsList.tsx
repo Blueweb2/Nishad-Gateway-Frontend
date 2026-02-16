@@ -9,6 +9,13 @@ import VisionSectionEditor from "./VisionSectionEditor";
 import InvestmentHighlightsEditor from "./InvestmentHighlightsEditor";
 import BusinessSetupOptionsEditor from "./BusinessSetupOptionsEditor";
 import InfrastructureSectionEditor from "./InfrastructureSectionEditor";
+import FoodGuideSectionEditor from "./FoodGuideSectionEditor";
+import TransportationGuideEditor from "./TransportationGuideEditor";
+import ExpandableSnapshotEditor from "./ExpandableSnapshotEditor";
+import FutureOutlookEditor from "./FutureOutlookEditor";
+
+
+
 
 import type {
   CityBlogSection,
@@ -16,6 +23,11 @@ import type {
   CategoriesSectionContent,
   VisionSectionContent,
   InfrastructureSectionContent,
+  LandmarksSectionContent,
+  FoodGuideSectionContent,
+  TransportationGuideSectionContent,
+  ExpandableSnapshotSectionContent,
+  FutureOutlookSectionContent,
 } from "@/lib/types/city-blog";
 
 import {
@@ -32,6 +44,7 @@ import {
 } from "@dnd-kit/sortable";
 
 import { CSS } from "@dnd-kit/utilities";
+import LandmarksSectionEditor from "./LandmarksSectionEditor";
 
 /* =========================================================
    SORTABLE ITEM
@@ -276,6 +289,69 @@ export default function SectionsList({
                               }
                             />
                           )}
+                          {section.type === "LANDMARKS" && (
+                            <LandmarksSectionEditor
+                              section={
+                                section as CityBlogSection<"LANDMARKS">
+                              }
+                              onChange={(updatedSection) =>
+                                setSections((prev) =>
+                                  prev.map((s) =>
+                                    s.id === section.id ? updatedSection : s
+                                  )
+                                )
+                              }
+                            />
+                          )}
+
+                          {section.type === "FOOD_GUIDE" && (
+                            <FoodGuideSectionEditor
+                              section={
+                                section as CityBlogSection<"FOOD_GUIDE">
+                              }
+                              onChange={(updatedSection) =>
+                                setSections((prev) =>
+                                  prev.map((s) =>
+                                    s.id === section.id ? updatedSection : s
+                                  )
+                                )
+                              }
+                            />
+                          )}
+
+                          {section.type === "TRANSPORTATION_GUIDE" && (
+                            <TransportationGuideEditor
+                              content={
+                                section.content as TransportationGuideSectionContent
+                              }
+                              onChange={(updatedContent) =>
+                                updateSectionContent(section.id, updatedContent)
+                              }
+                            />
+                          )}
+
+                          {section.type === "EXPANDABLE_SNAPSHOT" && (
+                            <ExpandableSnapshotEditor
+                              content={
+                                section.content as ExpandableSnapshotSectionContent
+                              }
+                              onChange={(updatedContent) =>
+                                updateSectionContent(section.id, updatedContent)
+                              }
+                            />
+                          )}
+
+                          {section.type === "FUTURE_OUTLOOK" && (
+  <FutureOutlookEditor
+    content={section.content as FutureOutlookSectionContent}
+    onChange={(updatedContent) =>
+      updateSectionContent(section.id, updatedContent)
+    }
+  />
+)}
+
+
+
                         </>
                       )}
                     </div>

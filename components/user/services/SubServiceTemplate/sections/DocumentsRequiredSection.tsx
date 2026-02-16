@@ -78,7 +78,7 @@ export default function DocumentsRequiredSection({
 
   return (
     <section className="w-full py-16 md:py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-5 md:px-10">
+      <div className="max-w-8xl mx-auto px-5 md:px-10">
         <div className="border border-gray-200 rounded-[40px] px-6 md:px-12 py-10 md:py-14">
           
           {/* HEADER */}

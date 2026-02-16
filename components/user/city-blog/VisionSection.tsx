@@ -1,6 +1,8 @@
 "use client";
 
 import DOMPurify from "dompurify";
+import Image from "next/image";
+import { cloudinaryAutoWebp } from "@/utils/cloudinary";
 
 type Props = {
   heading: string;
@@ -17,7 +19,7 @@ export default function VisionSection({
 
   return (
     <section className="bg-black py-24 text-white">
-      <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
+      <div className="max-w-8xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
 
         {/* LEFT */}
         <div>
@@ -33,12 +35,17 @@ export default function VisionSection({
 
         {/* RIGHT IMAGE */}
         <div className="relative">
-          <div className="rounded-3xl overflow-hidden shadow-2xl">
-            <img
-              src={imageUrl}
+          <div className="relative w-full h-[500px] rounded-3xl overflow-hidden shadow-2xl">
+
+            <Image
+              src={cloudinaryAutoWebp(imageUrl)}
               alt="Vision Image"
-              className="w-full h-auto object-cover"
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              priority={false}
             />
+
           </div>
         </div>
 

@@ -8,7 +8,8 @@ import { ArrowLeft } from "lucide-react";
 
 import SectionsList from "@/components/admin/city-blog/SectionsList";
 import { CityBlogSection } from "@/lib/types/city-blog";
-import { v4 as uuid } from "uuid";
+import { createSection } from "@/lib/utils/createSection";
+import { normalizeSections } from "@/lib/utils/normalizeSections";
 
 type City = {
   _id: string;
@@ -23,7 +24,6 @@ export default function AdminCityBlogPage() {
   const [city, setCity] = useState<City | null>(null);
   const [sections, setSections] = useState<CityBlogSection[]>([]);
   const [loading, setLoading] = useState(true);
-
   const [open, setOpen] = useState(false);
   const [saveStatus, setSaveStatus] =
     useState<"idle" | "saving" | "saved">("idle");
@@ -31,6 +31,8 @@ export default function AdminCityBlogPage() {
   const [hasChanges, setHasChanges] = useState(false);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const initialSectionsRef = useRef<CityBlogSection[]>([]);
+  const hasFetchedRef = useRef(false);
 
   /* =========================
      CLOSE DROPDOWN OUTSIDE CLICK
@@ -51,12 +53,19 @@ export default function AdminCityBlogPage() {
   }, []);
 
   /* =========================
-     UNSAVED CHANGES DETECTION
+     DIRTY CHECK (REAL COMPARISON)
   ========================= */
   useEffect(() => {
-    setHasChanges(true);
+    const isDifferent =
+      JSON.stringify(sections) !==
+      JSON.stringify(initialSectionsRef.current);
+
+    setHasChanges(isDifferent);
   }, [sections]);
 
+  /* =========================
+     BEFORE UNLOAD WARNING
+  ========================= */
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (!hasChanges) return;
@@ -70,11 +79,14 @@ export default function AdminCityBlogPage() {
   }, [hasChanges]);
 
   /* =========================
-     FETCH BLOG
+     FETCH BLOG (STRICT SAFE)
   ========================= */
   const fetchBlog = async () => {
     try {
-      if (!API_URL) return toast.error("API URL missing");
+      if (!API_URL) {
+        toast.error("API URL missing");
+        return;
+      }
 
       const res = await fetch(
         `${API_URL}/admin/cities/${cityId}/blog`,
@@ -90,7 +102,11 @@ export default function AdminCityBlogPage() {
 
       setCity(data.city);
       setSections(data.sections || []);
+
+      // 🔥 Save snapshot for dirty tracking
+      initialSectionsRef.current = data.sections || [];
       setHasChanges(false);
+
     } catch {
       toast.error("Failed to load city blog");
     } finally {
@@ -99,6 +115,8 @@ export default function AdminCityBlogPage() {
   };
 
   useEffect(() => {
+    if (hasFetchedRef.current) return;
+    hasFetchedRef.current = true;
     fetchBlog();
   }, [cityId]);
 
@@ -106,17 +124,15 @@ export default function AdminCityBlogPage() {
      SAVE BLOG
   ========================= */
   const handleSaveBlog = async () => {
-    try {
-      if (!API_URL) return toast.error("API URL missing");
+    if (!API_URL) {
+      toast.error("API URL missing");
+      return;
+    }
 
+    try {
       setSaveStatus("saving");
 
-      const normalizedSections = [...sections]
-        .sort((a, b) => a.order - b.order)
-        .map((s, index) => ({
-          ...s,
-          order: index + 1,
-        }));
+      const normalizedSections = normalizeSections(sections);
 
       const res = await fetch(
         `${API_URL}/admin/cities/${cityId}/blog`,
@@ -136,14 +152,16 @@ export default function AdminCityBlogPage() {
         return;
       }
 
-      // 🔥 Sync state with normalized data
+      // Sync state + snapshot
       setSections(normalizedSections);
+      initialSectionsRef.current = normalizedSections;
       setHasChanges(false);
 
       setSaveStatus("saved");
       toast.success("Blog saved successfully");
 
       setTimeout(() => setSaveStatus("idle"), 2000);
+
     } catch {
       setSaveStatus("idle");
       toast.error("Failed to save blog");
@@ -159,101 +177,12 @@ export default function AdminCityBlogPage() {
       return;
     }
 
-    const baseSection = {
-      id: uuid(),
-      type,
-      title: `${type.replaceAll("_", " ")} Section`,
-      order: Math.max(0, ...sections.map((s) => s.order)) + 1,
-      isActive: true,
-    };
-
-    let content: any = {};
-
-    switch (type) {
-      case "HERO":
-        content = {
-          heading: "",
-          subheading: "",
-          backgroundImage: "",
-          ctaText: "",
-          ctaLink: "",
-        };
-        break;
-
-      case "CATEGORIES":
-        content = {
-          heading: "",
-          introText: "",
-        };
-        break;
-
-      case "VISION":
-        content = {
-          heading: "",
-          content: "",
-          imageUrl: "",
-        };
-        break;
-
-      case "INVESTMENT_HIGHLIGHTS":
-        content = {
-          mainHeading: "",
-          description: "",
-          cards: [
-            {
-              mainImage: "",
-              subImage: "",
-              title: "",
-              subText: "",
-            },
-          ],
-        };
-        break;
-
-      case "BUSINESS_SETUP_OPTIONS":
-        content = {
-          heading: "",
-          description: "",
-          options: [
-            {
-              title: "",
-              link: "",
-            },
-          ],
-          decisionFlow: "",
-          bottomText: "",
-        };
-        break;
-
-      case "INFRASTRUCTURE":
-        content = {
-          mainHeading: "",
-          description: "",
-          slides: [
-            {
-              image: "",
-              imagePublicId: undefined,
-              title: "",
-              text: "",
-            },
-          ],
-        };
-        break;
-
-
-      case "FAQ":
-        content = { faqs: [] };
-        break;
-
-      default:
-        content = {};
-    }
-
-    setSections((prev) => [...prev, { ...baseSection, content }]);
+    const newSection = createSection(type, sections);
+    setSections((prev) => [...prev, newSection]);
   };
 
   /* =========================
-     LOADING
+     LOADING STATES
   ========================= */
   if (loading) {
     return (
@@ -280,7 +209,6 @@ export default function AdminCityBlogPage() {
 
         {/* HEADER */}
         <div className="flex items-center justify-between mb-8">
-
           <div>
             <Link
               href="/admin/cities"
@@ -306,19 +234,20 @@ export default function AdminCityBlogPage() {
             <button
               onClick={handleSaveBlog}
               disabled={saveStatus === "saving"}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition ${saveStatus === "saving"
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                saveStatus === "saving"
                   ? "bg-yellow-500 text-black"
                   : "bg-emerald-600 hover:bg-emerald-700 text-white"
-                }`}
+              }`}
             >
               {saveStatus === "saving"
                 ? "Saving..."
                 : saveStatus === "saved"
-                  ? "Saved ✓"
-                  : "Save Changes"}
+                ? "Saved ✓"
+                : "Save Changes"}
             </button>
 
-            {/* ADD SECTION DROPDOWN */}
+            {/* ADD SECTION */}
             <div ref={dropdownRef} className="relative">
               <button
                 onClick={() => setOpen((prev) => !prev)}
@@ -336,7 +265,11 @@ export default function AdminCityBlogPage() {
                     "INVESTMENT_HIGHLIGHTS",
                     "BUSINESS_SETUP_OPTIONS",
                     "INFRASTRUCTURE",
-                    "FAQ",
+                    "LANDMARKS",
+                    "FOOD_GUIDE",
+                    "TRANSPORTATION_GUIDE",
+                    "EXPANDABLE_SNAPSHOT",
+                    "FUTURE_OUTLOOK",
                   ].map((type) => {
                     const isHeroDisabled =
                       type === "HERO" &&
@@ -347,15 +280,14 @@ export default function AdminCityBlogPage() {
                         key={type}
                         disabled={isHeroDisabled}
                         onClick={() => {
-                          addSection(
-                            type as CityBlogSection["type"]
-                          );
+                          addSection(type as CityBlogSection["type"]);
                           setOpen(false);
                         }}
-                        className={`w-full text-left px-4 py-2 text-sm transition ${isHeroDisabled
+                        className={`w-full text-left px-4 py-2 text-sm transition ${
+                          isHeroDisabled
                             ? "text-white/30 cursor-not-allowed"
                             : "text-white hover:bg-white/10"
-                          }`}
+                        }`}
                       >
                         {type.replaceAll("_", " ")}
                       </button>
