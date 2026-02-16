@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import toast from "react-hot-toast";
-import { UploadCloud } from "lucide-react";
+import { UploadCloud, Trash2 } from "lucide-react";
+import { useState } from "react";
 
 import RichTextEditor from "@/components/admin/common/RichTextEditor";
 import { VisionSectionContent } from "@/lib/types/city-blog";
@@ -19,11 +20,24 @@ export default function VisionSectionEditor({
   content,
   onChange,
 }: Props) {
-  /* =========================
-     IMAGE UPLOAD
-  ========================= */
+  const [uploading, setUploading] = useState(false);
+
+  /* ================= IMAGE UPLOAD ================= */
   const handleImageUpload = async (file: File) => {
+    if (uploading) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Only image files are allowed");
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Image must be less than 5MB");
+      return;
+    }
+
     try {
+      setUploading(true);
       toast.loading("Uploading image...", { id: "vision-upload" });
 
       const uploaded = await uploadToCloudinarySigned(
@@ -31,34 +45,44 @@ export default function VisionSectionEditor({
         "nishad-gateway/cities/vision"
       );
 
-      const optimizedUrl = cloudinaryAutoWebp(
-        uploaded.secure_url
-      );
+      const optimizedUrl = cloudinaryAutoWebp(uploaded.secure_url);
 
+      // 🔥 Only update state — backend will clean old images on save
       onChange({
         ...content,
         imageUrl: optimizedUrl,
+        imagePublicId: uploaded.public_id,
       });
 
-      toast.success("Image uploaded", {
+      toast.success("Image uploaded", { id: "vision-upload" });
+
+    } catch (err: any) {
+      toast.error(err?.message || "Upload failed", {
         id: "vision-upload",
       });
-    } catch (err: any) {
-      toast.error(
-        err?.message || "Upload failed",
-        { id: "vision-upload" }
-      );
+    } finally {
+      setUploading(false);
     }
+  };
+
+  /* ================= IMAGE REMOVE ================= */
+  const handleRemoveImage = () => {
+    if (!content.imageUrl) return;
+
+    // 🔥 Only update state — backend cleanup happens on save
+    onChange({
+      ...content,
+      imageUrl: "",
+      imagePublicId: undefined,
+    });
   };
 
   return (
     <div className="space-y-6 mt-6">
 
-      {/* =========================
-          HEADING
-      ========================= */}
+      {/* ================= HEADING ================= */}
       <input
-        placeholder="Section Heading (e.g. A City Designed Around Vision 2030)"
+        placeholder="Section Heading"
         value={content.heading}
         onChange={(e) =>
           onChange({ ...content, heading: e.target.value })
@@ -66,9 +90,7 @@ export default function VisionSectionEditor({
         className="w-full px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white"
       />
 
-      {/* =========================
-          RICH TEXT CONTENT
-      ========================= */}
+      {/* ================= RICH TEXT ================= */}
       <RichTextEditor
         value={content.content}
         onChange={(value) =>
@@ -76,17 +98,13 @@ export default function VisionSectionEditor({
         }
       />
 
-      {/* =========================
-          IMAGE UPLOAD
-      ========================= */}
+      {/* ================= IMAGE SECTION ================= */}
       <div>
         <p className="text-xs text-white/60 mb-2">
           Vision Image
         </p>
 
         <div className="flex flex-col md:flex-row gap-4">
-
-          {/* URL Field (Read Only) */}
           <input
             value={content.imageUrl}
             readOnly
@@ -94,23 +112,31 @@ export default function VisionSectionEditor({
             className="flex-1 px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white text-sm"
           />
 
-          {/* Upload Button */}
-          <label className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 border border-white/10 text-white text-sm font-semibold cursor-pointer">
+          <label
+            className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-semibold cursor-pointer transition
+              ${uploading
+                ? "bg-gray-600 text-gray-300 cursor-not-allowed"
+                : "bg-white/10 hover:bg-white/20 border-white/10 text-white"
+              }`}
+          >
             <UploadCloud className="w-4 h-4" />
-            Upload Image
+            {uploading ? "Uploading..." : "Upload Image"}
+
             <input
               type="file"
               accept="image/*"
               hidden
+              disabled={uploading}
               onChange={(e) => {
                 const file = e.target.files?.[0];
                 if (file) handleImageUpload(file);
+                e.target.value = "";
               }}
             />
           </label>
         </div>
 
-        {/* Preview */}
+        {/* ================= IMAGE PREVIEW ================= */}
         {content.imageUrl && (
           <div className="relative mt-4 w-full h-[220px] rounded-xl overflow-hidden border border-white/10">
             <Image
@@ -119,10 +145,19 @@ export default function VisionSectionEditor({
               fill
               className="object-cover"
             />
+
+            {!uploading && (
+              <button
+                type="button"
+                onClick={handleRemoveImage}
+                className="absolute top-3 right-3 bg-black/70 hover:bg-black text-white p-2 rounded-full transition"
+              >
+                <Trash2 size={16} />
+              </button>
+            )}
           </div>
         )}
       </div>
-
     </div>
   );
 }

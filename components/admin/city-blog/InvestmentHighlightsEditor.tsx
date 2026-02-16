@@ -3,8 +3,13 @@
 import Image from "next/image";
 import toast from "react-hot-toast";
 import { UploadCloud, Plus, Trash } from "lucide-react";
+import { useState } from "react";
 
-import { CityBlogSection } from "@/lib/types/city-blog";
+import type {
+  CityBlogSection,
+  InvestmentHighlightsContent,
+} from "@/lib/types/city-blog";
+
 import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
 import { cloudinaryAutoWebp } from "@/utils/cloudinary";
 
@@ -17,112 +22,117 @@ export default function InvestmentHighlightsEditor({
   section,
   onChange,
 }: Props) {
-  const content = section.content;
+  const content = section.content as InvestmentHighlightsContent;
 
-  /* =========================
-     UPDATE CONTENT
-  ========================= */
-  const updateContent = (newContent: any) => {
+  const [uploadingKey, setUploadingKey] = useState<string | null>(null);
+
+  /* ================= UPDATE CONTENT ================= */
+  const updateContent = (newContent: InvestmentHighlightsContent) => {
     onChange({ ...section, content: newContent });
   };
 
-  /* =========================
-     UPDATE SINGLE HIGHLIGHT
-  ========================= */
-  const updateHighlight = (
+  /* ================= UPDATE CARD FIELD ================= */
+  const updateCardField = (
     index: number,
-    field: "number" | "title" | "imageUrl",
-    value: string
+    updates: Partial<InvestmentHighlightsContent["cards"][number]>
   ) => {
-    const updated = [...content.highlights];
-    updated[index] = { ...updated[index], [field]: value };
+    const updated = [...content.cards];
+    updated[index] = { ...updated[index], ...updates };
 
-    updateContent({ ...content, highlights: updated });
+    updateContent({ ...content, cards: updated });
   };
 
-  /* =========================
-     ADD HIGHLIGHT
-  ========================= */
-  const addHighlight = () => {
+  /* ================= ADD CARD ================= */
+  const addCard = () => {
     updateContent({
       ...content,
-      highlights: [
-        ...content.highlights,
+      cards: [
+        ...content.cards,
         {
-          number: String(content.highlights.length + 1).padStart(2, "0"),
+          mainImage: "",
+          mainImagePublicId: undefined,
+          subImage: "",
+          subImagePublicId: undefined,
           title: "",
-          imageUrl: "",
+          subText: "",
         },
       ],
     });
   };
 
-  /* =========================
-     REMOVE HIGHLIGHT
-  ========================= */
-  const removeHighlight = (index: number) => {
-    const updated = content.highlights.filter(
-      (_: any, i: number) => i !== index
-    );
-
-    updateContent({ ...content, highlights: updated });
+  /* ================= REMOVE CARD ================= */
+  const removeCard = (index: number) => {
+    // 🔥 Only update state — backend cleans images on save
+    const updated = content.cards.filter((_, i) => i !== index);
+    updateContent({ ...content, cards: updated });
   };
 
-  /* =========================
-     IMAGE UPLOAD
-  ========================= */
+  /* ================= IMAGE UPLOAD ================= */
   const handleImageUpload = async (
     file: File,
-    index: number
+    index: number,
+    field: "mainImage" | "subImage"
   ) => {
+    const uploadId = `card-${index}-${field}`;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Only image files allowed");
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Image must be less than 5MB");
+      return;
+    }
+
     try {
-      toast.loading("Uploading image...", {
-        id: `highlight-upload-${index}`,
-      });
+      setUploadingKey(uploadId);
+
+      toast.loading("Uploading image...", { id: uploadId });
 
       const uploaded = await uploadToCloudinarySigned(
         file,
         "nishad-gateway/cities/investment"
       );
 
-      const optimizedUrl = cloudinaryAutoWebp(
-        uploaded.secure_url
-      );
+      const optimizedUrl = cloudinaryAutoWebp(uploaded.secure_url);
 
-      updateHighlight(index, "imageUrl", optimizedUrl);
-
-      toast.success("Image uploaded", {
-        id: `highlight-upload-${index}`,
+      // 🔥 Only update state — backend handles old image cleanup
+      updateCardField(index, {
+        [field]: optimizedUrl,
+        [field === "mainImage"
+          ? "mainImagePublicId"
+          : "subImagePublicId"]: uploaded.public_id,
       });
+
+      toast.success("Image uploaded", { id: uploadId });
+
     } catch (err: any) {
-      toast.error(
-        err?.message || "Upload failed",
-        { id: `highlight-upload-${index}` }
-      );
+      toast.error(err?.message || "Upload failed", {
+        id: uploadId,
+      });
+    } finally {
+      setUploadingKey(null);
     }
   };
 
   return (
     <div className="space-y-8 mt-6">
 
-      {/* =========================
-          HEADING
-      ========================= */}
+      {/* ================= MAIN HEADING ================= */}
       <input
-        placeholder="Section Heading"
-        value={content.heading}
+        placeholder="Main Heading"
+        value={content.mainHeading}
         onChange={(e) =>
           updateContent({
             ...content,
-            heading: e.target.value,
+            mainHeading: e.target.value,
           })
         }
         className="w-full px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white"
       />
 
-      {/* =========================
-          DESCRIPTION
-      ========================= */}
+      {/* ================= DESCRIPTION ================= */}
       <textarea
         placeholder="Section Description"
         value={content.description}
@@ -132,107 +142,138 @@ export default function InvestmentHighlightsEditor({
             description: e.target.value,
           })
         }
-        rows={4}
+        rows={3}
         className="w-full px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white"
       />
 
-      {/* =========================
-          HIGHLIGHTS
-      ========================= */}
+      {/* ================= CARDS ================= */}
       <div className="space-y-6">
 
         <div className="flex justify-between items-center">
-          <h3 className="text-white font-medium">
-            Highlights
-          </h3>
+          <h3 className="text-white font-medium">Cards</h3>
 
           <button
-            onClick={addHighlight}
+            type="button"
+            onClick={addCard}
             className="flex items-center gap-2 text-sm text-emerald-400 hover:text-emerald-300"
           >
             <Plus size={16} />
-            Add Highlight
+            Add Card
           </button>
         </div>
 
-        {content.highlights.map((item: any, index: number) => (
-          <div
-            key={index}
-            className="p-5 rounded-xl bg-white/5 border border-white/10 space-y-4"
-          >
-            {/* Header */}
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-white/60">
-                Highlight {index + 1}
-              </span>
+        {content.cards.map((card, index) => {
+          const mainUploading = uploadingKey === `card-${index}-mainImage`;
+          const subUploading = uploadingKey === `card-${index}-subImage`;
 
-              <button
-                onClick={() => removeHighlight(index)}
-                className="text-red-400 hover:text-red-300"
-              >
-                <Trash size={16} />
-              </button>
-            </div>
+          return (
+            <div
+              key={index}
+              className="p-5 rounded-xl bg-white/5 border border-white/10 space-y-4"
+            >
 
-            {/* Number */}
-            <input
-              placeholder="Number (e.g. 01)"
-              value={item.number}
-              onChange={(e) =>
-                updateHighlight(index, "number", e.target.value)
-              }
-              className="w-full px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white"
-            />
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-white/60">
+                  Card {index + 1}
+                </span>
 
-            {/* Title */}
-            <input
-              placeholder="Highlight Title"
-              value={item.title}
-              onChange={(e) =>
-                updateHighlight(index, "title", e.target.value)
-              }
-              className="w-full px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white"
-            />
+                <button
+                  type="button"
+                  onClick={() => removeCard(index)}
+                  className="text-red-400 hover:text-red-300"
+                >
+                  <Trash size={16} />
+                </button>
+              </div>
 
-            {/* Image Upload */}
-            <div className="flex flex-col md:flex-row gap-4">
-
+              {/* Title */}
               <input
-                value={item.imageUrl}
-                readOnly
-                placeholder="Image will appear here"
-                className="flex-1 px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white text-sm"
+                placeholder="Card Title"
+                value={card.title}
+                onChange={(e) =>
+                  updateCardField(index, { title: e.target.value })
+                }
+                className="w-full px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white"
               />
 
-              <label className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 border border-white/10 text-white text-sm font-semibold cursor-pointer">
-                <UploadCloud className="w-4 h-4" />
-                Upload Image
-                <input
-                  type="file"
-                  accept="image/*"
-                  hidden
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file)
-                      handleImageUpload(file, index);
-                  }}
-                />
-              </label>
-            </div>
+              {/* Sub Text */}
+              <textarea
+                placeholder="Card Sub Text"
+                value={card.subText}
+                onChange={(e) =>
+                  updateCardField(index, { subText: e.target.value })
+                }
+                rows={2}
+                className="w-full px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white"
+              />
 
-            {/* Preview */}
-            {item.imageUrl && (
-              <div className="relative mt-3 w-full h-[200px] rounded-xl overflow-hidden border border-white/10">
-                <Image
-                  src={item.imageUrl}
-                  alt="Highlight Preview"
-                  fill
-                  className="object-cover"
-                />
+              {/* MAIN IMAGE */}
+              <div className="space-y-2">
+                <p className="text-sm text-white/60">Main Image</p>
+
+                <label className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 border border-white/10 text-white text-sm font-semibold cursor-pointer">
+                  <UploadCloud className="w-4 h-4" />
+                  {mainUploading ? "Uploading..." : "Upload Main Image"}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    hidden
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file)
+                        handleImageUpload(file, index, "mainImage");
+                      e.target.value = "";
+                    }}
+                  />
+                </label>
+
+                {card.mainImage && (
+                  <div className="relative w-full h-[200px] rounded-xl overflow-hidden border border-white/10">
+                    <Image
+                      src={card.mainImage}
+                      alt="Main Preview"
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        ))}
+
+              {/* SUB IMAGE */}
+              <div className="space-y-2">
+                <p className="text-sm text-white/60">Sub Image</p>
+
+                <label className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 border border-white/10 text-white text-sm font-semibold cursor-pointer">
+                  <UploadCloud className="w-4 h-4" />
+                  {subUploading ? "Uploading..." : "Upload Sub Image"}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    hidden
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file)
+                        handleImageUpload(file, index, "subImage");
+                      e.target.value = "";
+                    }}
+                  />
+                </label>
+
+                {card.subImage && (
+                  <div className="relative w-full h-[200px] rounded-xl overflow-hidden border border-white/10">
+                    <Image
+                      src={card.subImage}
+                      alt="Sub Preview"
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                )}
+              </div>
+
+            </div>
+          );
+        })}
       </div>
     </div>
   );

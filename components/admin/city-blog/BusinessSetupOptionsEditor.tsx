@@ -1,7 +1,10 @@
 "use client";
 
 import { Plus, Trash } from "lucide-react";
-import { CityBlogSection } from "@/lib/types/city-blog";
+import type {
+  CityBlogSection,
+  BusinessSetupOptionsContent,
+} from "@/lib/types/city-blog";
 
 type Props = {
   section: CityBlogSection<"BUSINESS_SETUP_OPTIONS">;
@@ -12,18 +15,19 @@ export default function BusinessSetupOptionsEditor({
   section,
   onChange,
 }: Props) {
-  const content = section.content;
+  const content = section.content as BusinessSetupOptionsContent;
+  const options = content.options ?? [];
 
-  const updateContent = (newContent: any) => {
+  const updateContent = (newContent: BusinessSetupOptionsContent) => {
     onChange({ ...section, content: newContent });
   };
 
   const updateOption = (
     index: number,
-    field: "title" | "isFeatured",
-    value: any
+    field: "title" | "link",
+    value: string
   ) => {
-    const updated = [...content.options];
+    const updated = [...options];
     updated[index] = { ...updated[index], [field]: value };
 
     updateContent({ ...content, options: updated });
@@ -33,27 +37,28 @@ export default function BusinessSetupOptionsEditor({
     updateContent({
       ...content,
       options: [
-        ...content.options,
-        { title: "", isFeatured: false },
+        ...options,
+        { title: "", link: "" },
       ],
     });
   };
 
   const removeOption = (index: number) => {
+    if (options.length === 1) return; // prevent invalid state
+
     updateContent({
       ...content,
-      options: content.options.filter(
-        (_: any, i: number) => i !== index
-      ),
+      options: options.filter((_, i) => i !== index),
     });
   };
 
   return (
     <div className="space-y-6 mt-6">
 
+      {/* Heading */}
       <input
         placeholder="Section Heading"
-        value={content.heading}
+        value={content.heading || ""}
         onChange={(e) =>
           updateContent({
             ...content,
@@ -63,9 +68,10 @@ export default function BusinessSetupOptionsEditor({
         className="w-full px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white"
       />
 
+      {/* Description */}
       <textarea
         placeholder="Short Description"
-        value={content.description}
+        value={content.description || ""}
         onChange={(e) =>
           updateContent({
             ...content,
@@ -76,6 +82,7 @@ export default function BusinessSetupOptionsEditor({
         className="w-full px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white"
       />
 
+      {/* Options */}
       <div className="space-y-4">
         <div className="flex justify-between items-center">
           <h3 className="text-white font-medium">
@@ -83,6 +90,7 @@ export default function BusinessSetupOptionsEditor({
           </h3>
 
           <button
+            type="button"
             onClick={addOption}
             className="flex items-center gap-2 text-emerald-400 text-sm"
           >
@@ -91,7 +99,7 @@ export default function BusinessSetupOptionsEditor({
           </button>
         </div>
 
-        {content.options.map((item: any, index: number) => (
+        {options.map((item, index) => (
           <div
             key={index}
             className="p-4 rounded-lg bg-white/5 border border-white/10 space-y-3"
@@ -102,8 +110,14 @@ export default function BusinessSetupOptionsEditor({
               </span>
 
               <button
+                type="button"
+                disabled={options.length === 1}
                 onClick={() => removeOption(index)}
-                className="text-red-400"
+                className={`text-red-400 ${
+                  options.length === 1
+                    ? "opacity-40 cursor-not-allowed"
+                    : ""
+                }`}
               >
                 <Trash size={16} />
               </button>
@@ -111,34 +125,29 @@ export default function BusinessSetupOptionsEditor({
 
             <input
               placeholder="Option Title"
-              value={item.title}
+              value={item.title || ""}
               onChange={(e) =>
                 updateOption(index, "title", e.target.value)
               }
               className="w-full px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white"
             />
 
-            <label className="flex items-center gap-2 text-sm text-white/70">
-              <input
-                type="checkbox"
-                checked={item.isFeatured}
-                onChange={(e) =>
-                  updateOption(
-                    index,
-                    "isFeatured",
-                    e.target.checked
-                  )
-                }
-              />
-              Highlight this card
-            </label>
+            <input
+              placeholder="Navigation Link (e.g. /company-setup)"
+              value={item.link || ""}
+              onChange={(e) =>
+                updateOption(index, "link", e.target.value)
+              }
+              className="w-full px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white"
+            />
           </div>
         ))}
       </div>
 
+      {/* Optional Decision Flow */}
       <textarea
-        placeholder="Decision Flow Text"
-        value={content.decisionFlow}
+        placeholder="Decision Flow Text (Optional)"
+        value={content.decisionFlow ?? ""}
         onChange={(e) =>
           updateContent({
             ...content,
@@ -149,9 +158,10 @@ export default function BusinessSetupOptionsEditor({
         className="w-full px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white"
       />
 
+      {/* Optional Bottom Text */}
       <textarea
-        placeholder="Bottom Paragraph"
-        value={content.bottomText}
+        placeholder="Bottom Paragraph (Optional)"
+        value={content.bottomText ?? ""}
         onChange={(e) =>
           updateContent({
             ...content,

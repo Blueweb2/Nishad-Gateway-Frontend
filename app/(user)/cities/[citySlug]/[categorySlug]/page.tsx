@@ -3,7 +3,7 @@ import BlogCardsGrid from "@/components/user/blog/BlogCardsGrid";
 
 async function getCategoryBlogs(citySlug: string, categorySlug: string) {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/public/cities/${citySlug}/${categorySlug}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/cities/${citySlug}/${categorySlug}`,
     { cache: "no-store" }
   );
 

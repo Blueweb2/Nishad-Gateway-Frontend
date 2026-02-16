@@ -31,7 +31,7 @@ export default function CitySettingsPage() {
 
         // Fetch city
         const cityRes = await fetch(
-          `${API_URL}/cities/${cityId}`,
+          `${API_URL}/admin/cities/${cityId}`,
           { credentials: "include" }
         );
 
@@ -45,7 +45,7 @@ export default function CitySettingsPage() {
 
         // Fetch blog
         const blogRes = await fetch(
-          `${API_URL}/cities/${cityId}/blog`,
+          `${API_URL}/admin/cities/${cityId}/blog`,
           { credentials: "include" }
         );
 
@@ -77,7 +77,7 @@ export default function CitySettingsPage() {
          1️⃣ Update City
       ====================== */
       const cityRes = await fetch(
-        `${API_URL}/cities/${cityId}`,
+        `${API_URL}/admin/cities/${cityId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -98,7 +98,7 @@ export default function CitySettingsPage() {
          2️⃣ Update Blog Status ONLY
       ====================== */
       const blogRes = await fetch(
-        `${API_URL}/cities/${cityId}/blog`,
+        `${API_URL}/admin/cities/${cityId}/blog`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -133,7 +133,7 @@ export default function CitySettingsPage() {
 
     try {
       const res = await fetch(
-        `${API_URL}/cities/${cityId}`,
+        `${API_URL}/admin/cities/${cityId}`,
         {
           method: "DELETE",
           credentials: "include",

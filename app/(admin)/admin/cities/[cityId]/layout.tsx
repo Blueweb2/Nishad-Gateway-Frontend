@@ -38,7 +38,7 @@ export default function CityLayout({
         if (!API_URL) return;
 
         const res = await fetch(
-          `${API_URL}/cities/${cityId}`,
+          `${API_URL}/admin/cities/${cityId}`,
           { credentials: "include" }
         );
 

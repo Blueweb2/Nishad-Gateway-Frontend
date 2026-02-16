@@ -1,18 +1,21 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { Trash2, GripVertical, Copy } from "lucide-react";
+import { Trash2, GripVertical } from "lucide-react";
 
 import HeroSectionEditor from "./HeroSectionEditor";
 import CategoriesSectionEditor from "./CategoriesSectionEditor";
 import VisionSectionEditor from "./VisionSectionEditor";
 import InvestmentHighlightsEditor from "./InvestmentHighlightsEditor";
+import BusinessSetupOptionsEditor from "./BusinessSetupOptionsEditor";
+import InfrastructureSectionEditor from "./InfrastructureSectionEditor";
 
 import type {
   CityBlogSection,
   HeroSectionContent,
   CategoriesSectionContent,
   VisionSectionContent,
+  InfrastructureSectionContent,
 } from "@/lib/types/city-blog";
 
 import {
@@ -29,7 +32,6 @@ import {
 } from "@dnd-kit/sortable";
 
 import { CSS } from "@dnd-kit/utilities";
-import { v4 as uuid } from "uuid";
 
 /* =========================================================
    SORTABLE ITEM
@@ -78,8 +80,13 @@ export default function SectionsList({
 }: Props) {
   const [collapsed, setCollapsed] = useState<string[]>([]);
 
-  /* ================= REMOVE ================= */
+  /* ================= REMOVE SECTION ================= */
   const removeSection = (id: string) => {
+    const sectionToDelete = sections.find((s) => s.id === id);
+    if (!sectionToDelete) return;
+
+    if (sectionToDelete.type === "HERO") return;
+
     if (!confirm("Remove this section?")) return;
 
     setSections((prev) =>
@@ -87,23 +94,6 @@ export default function SectionsList({
         .filter((s) => s.id !== id)
         .map((s, i) => ({ ...s, order: i + 1 }))
     );
-  };
-
-  /* ================= DUPLICATE ================= */
-  const duplicateSection = (id: string) => {
-    setSections((prev) => {
-      const sectionToCopy = prev.find((s) => s.id === id);
-      if (!sectionToCopy) return prev;
-
-      const duplicated: CityBlogSection = {
-        ...sectionToCopy,
-        id: uuid(),
-        order: prev.length + 1,
-        title: `${sectionToCopy.title || sectionToCopy.type} (Copy)`,
-      };
-
-      return [...prev, duplicated];
-    });
   };
 
   /* ================= UPDATE CONTENT ================= */
@@ -137,13 +127,11 @@ export default function SectionsList({
     });
   };
 
-  /* ================= STABLE SORT ================= */
   const sortedSections = useMemo(
     () => [...sections].sort((a, b) => a.order - b.order),
     [sections]
   );
 
-  /* ================= RENDER ================= */
   return (
     <div className="mt-10 space-y-4">
       {sortedSections.length === 0 ? (
@@ -163,10 +151,7 @@ export default function SectionsList({
               const isCollapsed = collapsed.includes(section.id);
 
               return (
-                <SortableItem
-                  key={section.id}
-                  id={section.id}
-                >
+                <SortableItem key={section.id} id={section.id}>
                   {(attributes, listeners) => (
                     <div className="rounded-xl border border-white/10 bg-white/5 p-5">
 
@@ -206,19 +191,14 @@ export default function SectionsList({
                             {isCollapsed ? "Expand" : "Collapse"}
                           </button>
 
-                          <button
-                            onClick={() => duplicateSection(section.id)}
-                            className="text-white/40 hover:text-white"
-                          >
-                            <Copy className="w-4 h-4" />
-                          </button>
-
-                          <button
-                            onClick={() => removeSection(section.id)}
-                            className="text-red-400 hover:text-red-300"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
+                          {section.type !== "HERO" && (
+                            <button
+                              onClick={() => removeSection(section.id)}
+                              className="text-red-400 hover:text-red-300"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          )}
                         </div>
                       </div>
 
@@ -256,6 +236,36 @@ export default function SectionsList({
                             <InvestmentHighlightsEditor
                               section={
                                 section as CityBlogSection<"INVESTMENT_HIGHLIGHTS">
+                              }
+                              onChange={(updatedSection) =>
+                                setSections((prev) =>
+                                  prev.map((s) =>
+                                    s.id === section.id ? updatedSection : s
+                                  )
+                                )
+                              }
+                            />
+                          )}
+
+                          {section.type === "BUSINESS_SETUP_OPTIONS" && (
+                            <BusinessSetupOptionsEditor
+                              section={
+                                section as CityBlogSection<"BUSINESS_SETUP_OPTIONS">
+                              }
+                              onChange={(updatedSection) =>
+                                setSections((prev) =>
+                                  prev.map((s) =>
+                                    s.id === section.id ? updatedSection : s
+                                  )
+                                )
+                              }
+                            />
+                          )}
+
+                          {section.type === "INFRASTRUCTURE" && (
+                            <InfrastructureSectionEditor
+                              section={
+                                section as CityBlogSection<"INFRASTRUCTURE">
                               }
                               onChange={(updatedSection) =>
                                 setSections((prev) =>

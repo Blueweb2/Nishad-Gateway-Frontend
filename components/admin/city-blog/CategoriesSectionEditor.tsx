@@ -18,16 +18,16 @@ export default function CategoriesSectionEditor({
       {/* Section Heading */}
       <input
         placeholder="Left side heading (e.g. The Capital Built for Investors)"
-        value={content.heading}
+        value={content.heading || ""}
         onChange={(e) =>
           onChange({ ...content, heading: e.target.value })
         }
         className="w-full px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white"
       />
 
-      {/* ✅ Rich Text Editor Instead of Textarea */}
+      {/* Rich Text Intro */}
       <RichTextEditor
-        value={content.introText}
+        value={content.introText || ""}
         onChange={(value) =>
           onChange({ ...content, introText: value })
         }

@@ -32,7 +32,7 @@ export default function CityDashboardPage() {
 
         // Fetch City
         const cityRes = await fetch(
-          `${API_URL}/cities/${cityId}`,
+          `${API_URL}/admin/cities/${cityId}`,
           { credentials: "include" }
         );
 
@@ -43,7 +43,7 @@ export default function CityDashboardPage() {
 
         // Fetch Blog
         const blogRes = await fetch(
-          `${API_URL}/cities/${cityId}/blog`,
+          `${API_URL}/admin/cities/${cityId}/blog`,
           { credentials: "include" }
         );
 
@@ -54,7 +54,7 @@ export default function CityDashboardPage() {
 
         // Fetch Categories
         const catRes = await fetch(
-          `${API_URL}/cities/${cityId}/categories`,
+          `${API_URL}/admin/cities/${cityId}/categories`,
           { credentials: "include" }
         );
 

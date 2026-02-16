@@ -72,18 +72,16 @@ export default function CityBlogRenderer({
               );
             }
 
-            case "INVESTMENT_HIGHLIGHTS": {
-              const content =
-                section.content as InvestmentHighlightsContent;
-              return (
-                <InvestmentHighlightsSection
-                  key={section.id}
-                  heading={content.heading}
-                  description={content.description}
-                  highlights={content.highlights}
-                />
-              );
-            }
+case "INVESTMENT_HIGHLIGHTS": {
+  return (
+    <InvestmentHighlightsSection
+      key={section.id}
+      {...(section.content as InvestmentHighlightsContent)}
+    />
+  );
+}
+
+
 
             case "BUSINESS_SETUP_OPTIONS": {
               const content =

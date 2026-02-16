@@ -42,7 +42,7 @@ export default function CreateCategoryPage() {
       setLoading(true);
 
       const res = await fetch(
-        `${API_URL}/cities/${cityId}/categories`,
+        `${API_URL}/admin/cities/${cityId}/categories`,
         {
           method: "POST",
           credentials: "include",

@@ -4,6 +4,8 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { Trash2 } from "lucide-react";
+
 import {
   LayoutDashboard,
   FileText,
@@ -51,23 +53,28 @@ export default function AdminSidebar() {
     { name: "Blogs", href: "/admin/blogs", icon: FileText },
     { name: "Cities", href: "/admin/cities", icon: MapPin },
     { name: "Services", href: "/admin/services", icon: Briefcase },
-    { name: "Add Service", href: "/admin/services/create", icon: PlusCircle },
-    { name: "Leads", href: "/admin/leads", icon: Users },
+    // { name: "Leads", href: "/admin/leads", icon: Users },
   ];
 
   // 👑 If superadmin → add Manage Admins after Dashboard
-  const links =
-    role === "superadmin"
-      ? [
-          baseLinks[0],
-          {
-            name: "Manage Admins",
-            href: "/admin/manage-admins",
-            icon: Shield,
-          },
-          ...baseLinks.slice(1),
-        ]
-      : baseLinks;
+const links =
+  role === "superadmin"
+    ? [
+        baseLinks[0],
+        {
+          name: "Manage Admins",
+          href: "/admin/manage-admins",
+          icon: Shield,
+        },
+        {
+          name: "Media Cleanup",
+          href: "/admin/media-cleanup",
+          icon: Trash2, // you can change to Trash2 if you want
+        },
+        ...baseLinks.slice(1),
+      ]
+    : baseLinks;
+
 
   const handleLogout = async () => {
     try {

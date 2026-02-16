@@ -20,7 +20,7 @@ async function getBlog(
   blogSlug: string
 ) {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/public/cities/${citySlug}/${categorySlug}/${blogSlug}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/cities/${citySlug}/${categorySlug}/${blogSlug}`,
     { cache: "no-store" }
   );
 

@@ -10,13 +10,13 @@ export type CityBlogSectionType =
   | "VISION"
   | "INVESTMENT_HIGHLIGHTS"
   | "BUSINESS_SETUP_OPTIONS"
+  | "INFRASTRUCTURE"
   | "FEATURE_CARDS"
   | "STATS"
   | "IMAGE_TEXT"
   | "BUSINESS"
   | "LIFESTYLE"
   | "STEPS"
-  | "INFRASTRUCTURE"
   | "PLACES_GRID"
   | "FAQ"
   | "CTA";
@@ -31,9 +31,11 @@ export type HeroSectionContent = {
   heading: string;
   subheading: string;
   backgroundImage: string;
-  ctaText?: string;
+  backgroundImagePublicId?: string;   // ✅ ADD THIS
+  ctaText: string;
   ctaLink?: string;
 };
+
 
 
 /* ---------- CATEGORIES ---------- */
@@ -48,20 +50,29 @@ export type VisionSectionContent = {
   heading: string;
   content: string;
   imageUrl: string;
+  imagePublicId?: string; 
 };
 
 
-/* ---------- INTRO TEXT ---------- */
+/* ---------- InvestmentHighlights ---------- */
 
 export type InvestmentHighlightsContent = {
-  heading: string;
+  mainHeading: string;
   description: string;
-  highlights: {
-    number: string;
+
+  cards: {
+    mainImage: string;
+    mainImagePublicId?: string;  // ✅ ADD
+
+    subImage: string;
+    subImagePublicId?: string;   // ✅ ADD
+
     title: string;
-    imageUrl: string;
+    subText: string;
   }[];
 };
+
+
 
 /* ---------- BUSINESS SETUP OPTIONS ---------- */
 
@@ -71,12 +82,26 @@ export type BusinessSetupOptionsContent = {
 
   options: {
     title: string;
-    link: string;           // ✅ Admin-defined navigation link
-    isFeatured?: boolean;   // Optional highlighted card
+    link: string;           // required
+     
   }[];
 
-  decisionFlow: string;
-  bottomText: string;
+  decisionFlow?: string;    // ✅ optional
+  bottomText?: string;      // ✅ optional
+};
+
+
+
+export type InfrastructureSectionContent = {
+  heading: string;
+  description: string;
+
+  slides: {
+    imageUrl: string;
+    imagePublicId?: string;
+    title: string;
+    text: string;
+  }[];
 };
 
 
@@ -132,14 +157,6 @@ export type StepsSectionContent = {
   }[];
 };
 
-/* ---------- INFRASTRUCTURE ---------- */
-
-export type InfrastructureSectionContent = {
-  items: {
-    title: string;
-    description: string;
-  }[];
-};
 
 /* ---------- PLACES GRID ---------- */
 
