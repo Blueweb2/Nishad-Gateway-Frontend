@@ -25,23 +25,37 @@ export default function Navbar() {
 
 
   //  change navbar color based on white sections
-  useEffect(() => {
-    const whiteSections = document.querySelectorAll('[data-navbar="white"]');
+useEffect(() => {
+  const sections = document.querySelectorAll<HTMLElement>("[data-navbar]");
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const anyWhiteVisible = entries.some((e) => e.isIntersecting);
-        setUseColoredLogo(anyWhiteVisible);
-      },
-      {
-        rootMargin: "0px 0px 0px 0px",
-        threshold: 0.01,
+  const observer = new IntersectionObserver(
+    (entries) => {
+      // Get all visible sections
+      const visibleSections = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+      if (visibleSections.length > 0) {
+        const activeSection = visibleSections[0].target as HTMLElement;
+        const theme = activeSection.getAttribute("data-navbar");
+
+        setUseColoredLogo(theme === "light");
       }
-    );
+    },
+    {
+      rootMargin: "-80px 0px 0px 0px",
+      threshold: [0.3, 0.6, 0.9], // multiple thresholds for accuracy
+    }
+  );
 
-    whiteSections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
-  }, [pathname]);
+  sections.forEach((section) => observer.observe(section));
+
+  return () => observer.disconnect();
+}, [pathname]);
+
+
+
+
 
   //  close popups on route change
   useEffect(() => {
