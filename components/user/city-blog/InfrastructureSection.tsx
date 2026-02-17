@@ -25,49 +25,65 @@ export default function InfrastructureSection({ content }: Props) {
             </h2>
           </div>
 
-          <p className="text-white/70 max-w-md text-sm leading-relaxed">
-            {content.description}
-          </p>
+          {/* 🔥 Rich Description */}
+          <div
+            className="text-white/70 max-w-md text-sm leading-relaxed prose prose-invert max-w-none"
+            dangerouslySetInnerHTML={{
+              __html: content.description || "",
+            }}
+          />
         </div>
 
         {/* SLIDES */}
         <div className="flex gap-10 overflow-x-auto pb-6 scrollbar-hide">
+          {content.slides.map((slide, index) => {
+            const imageSrc =
+              slide.imageUrl &&
+              typeof slide.imageUrl === "string" &&
+              slide.imageUrl.trim() !== ""
+                ? cloudinaryAutoWebp(slide.imageUrl)
+                : null;
 
-          {content.slides.map((slide, index) => (
-            <div
-              key={index}
-              className="min-w-[760px] bg-white rounded-[28px] p-8 flex gap-12 relative"
-            >
-              {/* Slide Number */}
-              <span className="absolute top-6 left-8 text-gray-400 text-sm">
-                {String(index + 1).padStart(2, "0")} /
-              </span>
+            return (
+              <div
+                key={index}
+                className="min-w-[760px] bg-white rounded-[28px] p-8 flex gap-12 relative"
+              >
+                {/* Slide Number */}
+                <span className="absolute top-6 left-8 text-gray-400 text-sm">
+                  {String(index + 1).padStart(2, "0")} /
+                </span>
 
-              {/* LEFT CONTENT */}
-              <div className="flex-1 mt-10 pr-4">
-                <h3 className="text-2xl font-semibold text-gray-900 mb-4">
-                  {slide.title}
-                </h3>
+                {/* LEFT CONTENT */}
+                <div className="flex-1 mt-10 pr-4">
+                  <h3 className="text-2xl font-semibold text-gray-900 mb-4">
+                    {slide.title}
+                  </h3>
 
-                <p className="text-gray-600 text-sm leading-relaxed max-w-sm">
-                  {slide.text}
-                </p>
+                  {/* 🔥 Rich Slide Text */}
+                  <div
+                    className="text-gray-600 text-sm leading-relaxed max-w-sm prose prose-sm max-w-none"
+                    dangerouslySetInnerHTML={{
+                      __html: slide.text || "",
+                    }}
+                  />
+                </div>
+
+                {/* RIGHT IMAGE (Safe Render) */}
+                {imageSrc && (
+                  <div className="relative w-[320px] h-[320px] rounded-[24px] overflow-hidden shrink-0">
+                    <Image
+                      src={imageSrc}
+                      alt={slide.title}
+                      fill
+                      className="object-cover"
+                      sizes="320px"
+                    />
+                  </div>
+                )}
               </div>
-
-              {/* RIGHT IMAGE */}
-              <div className="relative w-[320px] h-[320px] rounded-[24px] overflow-hidden shrink-0">
-                <Image
-                  src={cloudinaryAutoWebp(slide.imageUrl)}
-                  alt={slide.title}
-                  fill
-                  className="object-cover"
-                  sizes="320px"
-                />
-              </div>
-
-            </div>
-          ))}
-
+            );
+          })}
         </div>
       </div>
     </section>

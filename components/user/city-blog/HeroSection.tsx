@@ -13,52 +13,64 @@ export default function HeroSection({ content }: Props) {
   const isExternal = content.ctaLink?.startsWith("http");
 
   return (
-    <section className="relative h-[98vh] text-white overflow-hidden">
+    <section
+      className="relative min-h-screen flex items-center pt-32 pb-10"
+      data-navbar="light"
+    >
+      {/* Container with rounded hero like screenshot */}
+      <div className="relative w-full max-w-[1600px] mx-auto px-6">
+        <div className="relative h-[80vh] rounded-[32px] overflow-hidden">
 
-      {/* Background Image */}
-      <Image
-        src={cloudinaryAutoWebp(content.backgroundImage)}
-        alt={content.heading || "Hero Image"}
-        fill
-        priority
-        sizes="100vw"
-        className="object-cover"
-      />
+          {/* Background Image */}
+          <Image
+            src={cloudinaryAutoWebp(content.backgroundImage)}
+            alt={content.heading || "Hero Image"}
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
 
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-black/50" />
+          {/* Dark gradient overlay (left fade like screenshot) */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-black/20" />
 
-      {/* Content */}
-      <div className="relative z-10 max-w-8xl mx-auto px-6 pt-40">
-        <h1 className="text-5xl font-bold mb-4">
-          {content.heading}
-        </h1>
+          {/* Content */}
+          <div className="relative z-10 h-full flex items-center">
+            <div className="max-w-2xl px-12">
 
-        <p className="text-lg max-w-xl">
-          {content.subheading}
-        </p>
+              <h1 className="text-5xl md:text-6xl font-semibold leading-tight mb-6">
+                {content.heading}
+              </h1>
 
-        {content.ctaText && content.ctaLink && (
-          isExternal ? (
-            <a
-              href={content.ctaLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-8 inline-block bg-green-600 px-6 py-3 rounded-full hover:bg-green-500 transition"
-            >
-              {content.ctaText}
-            </a>
-          ) : (
-            <Link
-              href={content.ctaLink}
-              className="mt-8 inline-block bg-green-600 px-6 py-3 rounded-full hover:bg-green-500 transition"
-            >
-              {content.ctaText}
-            </Link>
-          )
-        )}
+              <p className="text-lg md:text-xl text-white/90 max-w-xl">
+                {content.subheading}
+              </p>
+
+              {content.ctaText && content.ctaLink && (
+                isExternal ? (
+                  <a
+                    href={content.ctaLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-10 inline-flex items-center bg-green-600 hover:bg-green-500 transition px-8 py-4 rounded-full text-base font-medium"
+                  >
+                    {content.ctaText}
+                  </a>
+                ) : (
+                  <Link
+                    href={content.ctaLink}
+                    className="mt-10 inline-flex items-center bg-green-600 hover:bg-green-500 transition px-8 py-4 rounded-full text-base font-medium"
+                  >
+                    {content.ctaText}
+                  </Link>
+                )
+              )}
+
+            </div>
+          </div>
+
+        </div>
       </div>
-
     </section>
   );
 }

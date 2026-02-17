@@ -20,9 +20,18 @@ export default function CategoriesSection({
   introText,
   categories,
 }: Props) {
-  const cleanIntro = useMemo(() => {
-    return DOMPurify.sanitize(introText || "");
-  }, [introText]);
+const cleanIntro = useMemo(() => {
+  if (!introText) return "";
+
+  if (typeof window === "undefined") {
+    return introText;
+  }
+
+  const DOMPurify = require("dompurify");
+  return DOMPurify.sanitize(introText);
+}, [introText]);
+
+
 
   return (
     <section className="bg-white py-[clamp(60px,8vw,120px)]">

@@ -12,6 +12,7 @@ import type {
 
 import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
 import { cloudinaryAutoWebp } from "@/utils/cloudinary";
+import RichTextEditor from "../common/RichTextEditor";
 
 type Props = {
   section: CityBlogSection<"FOOD_GUIDE">;
@@ -262,17 +263,19 @@ export default function FoodGuideSectionEditor({
                     className="w-full px-3 py-2 rounded bg-black/30 border border-white/10 text-white"
                   />
 
-                  <textarea
-                    placeholder="Description"
-                    value={item.description || ""}
-                    onChange={(e) =>
-                      updateItem(filterIndex, itemIndex, {
-                        description: e.target.value,
-                      })
-                    }
-                    rows={2}
-                    className="w-full px-3 py-2 rounded bg-black/30 border border-white/10 text-white"
-                  />
+               <div className="space-y-2">
+  <p className="text-white/60 text-xs">Description</p>
+
+  <RichTextEditor
+    value={item.description || ""}
+    onChange={(val) =>
+      updateItem(filterIndex, itemIndex, {
+        description: val,
+      })
+    }
+  />
+</div>
+
 
                   <input
                     placeholder="Link"

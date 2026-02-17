@@ -12,6 +12,8 @@ import type {
 
 import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
 import { cloudinaryAutoWebp } from "@/utils/cloudinary";
+import RichTextEditor from "../common/RichTextEditor";
+
 
 type Props = {
   section: CityBlogSection<"INVESTMENT_HIGHLIGHTS">;
@@ -133,18 +135,19 @@ export default function InvestmentHighlightsEditor({
       />
 
       {/* ================= DESCRIPTION ================= */}
-      <textarea
-        placeholder="Section Description"
-        value={content.description}
-        onChange={(e) =>
-          updateContent({
-            ...content,
-            description: e.target.value,
-          })
-        }
-        rows={3}
-        className="w-full px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white"
-      />
+    <textarea
+  placeholder="Section Description"
+  value={content.description}
+  onChange={(e) =>
+    updateContent({
+      ...content,
+      description: e.target.value,
+    })
+  }
+  rows={3}
+  className="w-full px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white"
+/>
+
 
       {/* ================= CARDS ================= */}
       <div className="space-y-6">
@@ -197,15 +200,17 @@ export default function InvestmentHighlightsEditor({
               />
 
               {/* Sub Text */}
-              <textarea
-                placeholder="Card Sub Text"
-                value={card.subText}
-                onChange={(e) =>
-                  updateCardField(index, { subText: e.target.value })
-                }
-                rows={2}
-                className="w-full px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white"
-              />
+            <div className="space-y-2">
+  <p className="text-sm text-white/60">Card Sub Text</p>
+
+  <RichTextEditor
+    value={card.subText}
+    onChange={(val) =>
+      updateCardField(index, { subText: val })
+    }
+  />
+</div>
+
 
               {/* MAIN IMAGE */}
               <div className="space-y-2">

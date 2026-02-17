@@ -12,10 +12,14 @@ type Props = {
 };
 
 export default function FutureOutlookSection({ content }: Props) {
+  const slides = content.slides || [];
+
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const total = content.slides.length;
-  const slide = content.slides[activeIndex];
+  if (!slides.length) return null;
+
+  const total = slides.length;
+  const slide = slides[activeIndex];
 
   const formatNumber = (num: number) =>
     String(num).padStart(2, "0");
@@ -29,6 +33,18 @@ export default function FutureOutlookSection({ content }: Props) {
       prev === 0 ? total - 1 : prev - 1
     );
   };
+
+  const imageSrc =
+    slide.imageUrl &&
+    typeof slide.imageUrl === "string" &&
+    slide.imageUrl.trim() !== ""
+      ? cloudinaryAutoWebp(slide.imageUrl)
+      : null;
+
+  const hasCTA =
+    slide.ctaText &&
+    slide.ctaLink &&
+    slide.ctaLink.trim() !== "";
 
   return (
     <section className="bg-[#efefef] py-24">
@@ -57,22 +73,30 @@ export default function FutureOutlookSection({ content }: Props) {
           </div>
 
           {/* CENTER IMAGE */}
-          <div className="relative mx-auto w-[380px] h-[540px] rounded-[200px] overflow-hidden shadow-xl">
-
-            <Image
-              src={cloudinaryAutoWebp(slide.imageUrl)}
-              alt={slide.title}
-              fill
-              className="object-cover"
-            />
-          </div>
+          {imageSrc && (
+            <div className="relative mx-auto w-[380px] h-[540px] rounded-[200px] overflow-hidden shadow-xl">
+              <Image
+                src={imageSrc}
+                alt={slide.title}
+                fill
+                className="object-cover"
+                sizes="380px"
+              />
+            </div>
+          )}
 
           {/* RIGHT SIDE */}
           <div>
-            <p className="text-gray-600 leading-relaxed mb-10">
-              {slide.description}
-            </p>
 
+            {/* 🔥 Rich Description */}
+            <div
+              className="text-gray-600 leading-relaxed mb-10 prose prose-sm max-w-none"
+              dangerouslySetInnerHTML={{
+                __html: slide.description || "",
+              }}
+            />
+
+            {/* NAVIGATION */}
             <div className="flex gap-4 mb-10">
               <button
                 onClick={prev}
@@ -91,12 +115,16 @@ export default function FutureOutlookSection({ content }: Props) {
 
             <div className="h-px bg-gray-300 mb-6" />
 
-            <Link
-              href={slide.ctaLink}
-              className="text-green-600 font-medium hover:underline"
-            >
-              {slide.ctaText}
-            </Link>
+            {/* SAFE CTA */}
+            {hasCTA && (
+              <Link
+                href={slide.ctaLink}
+                className="text-green-600 font-medium hover:underline"
+              >
+                {slide.ctaText}
+              </Link>
+            )}
+
           </div>
         </div>
       </div>

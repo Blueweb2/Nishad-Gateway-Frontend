@@ -11,6 +11,7 @@ import type {
   CityBlogSection,
   InfrastructureSectionContent,
 } from "@/lib/types/city-blog";
+import RichTextEditor from "../common/RichTextEditor";
 
 type Props = {
   section: CityBlogSection<"INFRASTRUCTURE">;
@@ -110,15 +111,20 @@ return (
     />
 
     {/* SECTION DESCRIPTION */}
-    <textarea
-      placeholder="Section Description"
-      value={content.description}
-      onChange={(e) =>
-        updateContent({ ...content, description: e.target.value })
-      }
-      rows={3}
-      className="w-full px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white placeholder:text-white/40 focus:outline-none focus:border-emerald-500 transition"
-    />
+  <div className="space-y-2">
+  <p className="text-sm text-white/60">Section Description</p>
+
+  <RichTextEditor
+    value={content.description}
+    onChange={(val) =>
+      updateContent({
+        ...content,
+        description: val,
+      })
+    }
+  />
+</div>
+
 
     {/* SLIDES HEADER */}
     <div className="flex justify-between items-center pt-4">
@@ -166,15 +172,17 @@ return (
         />
 
         {/* Text */}
-        <textarea
-          placeholder="Slide Description"
-          value={slide.text}
-          onChange={(e) =>
-            updateSlide(index, { text: e.target.value })
-          }
-          rows={3}
-          className="w-full px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white placeholder:text-white/40 focus:outline-none focus:border-emerald-500 transition"
-        />
+     <div className="space-y-2">
+  <p className="text-sm text-white/60">Slide Description</p>
+
+  <RichTextEditor
+    value={slide.text}
+    onChange={(val) =>
+      updateSlide(index, { text: val })
+    }
+  />
+</div>
+
 
         {/* Upload */}
         <label

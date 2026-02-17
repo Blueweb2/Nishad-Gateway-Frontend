@@ -8,6 +8,7 @@ import { UploadCloud, Trash2, Plus } from "lucide-react";
 import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
 import { cloudinaryAutoWebp } from "@/utils/cloudinary";
 import type { FutureOutlookSectionContent } from "@/lib/types/city-blog";
+import RichTextEditor from "../common/RichTextEditor";
 
 type Props = {
   content: FutureOutlookSectionContent;
@@ -159,15 +160,19 @@ export default function FutureOutlookEditor({
             />
 
             {/* Description */}
-            <textarea
-              value={slide.description}
-              onChange={(e) =>
-                updateSlide(index, { description: e.target.value })
-              }
-              placeholder="Short description"
-              rows={3}
-              className="w-full px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white"
-            />
+            <div className="space-y-2">
+              <p className="text-xs text-white/60">
+                Slide Description
+              </p>
+
+              <RichTextEditor
+                value={slide.description}
+                onChange={(val) =>
+                  updateSlide(index, { description: val })
+                }
+              />
+            </div>
+
 
             {/* CTA */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -206,10 +211,9 @@ export default function FutureOutlookEditor({
 
                 <label
                   className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border text-sm font-semibold cursor-pointer transition
-                    ${
-                      uploadingIndex === index
-                        ? "bg-gray-600 text-gray-300 cursor-not-allowed"
-                        : "bg-white/10 hover:bg-white/20 border-white/10 text-white"
+                    ${uploadingIndex === index
+                      ? "bg-gray-600 text-gray-300 cursor-not-allowed"
+                      : "bg-white/10 hover:bg-white/20 border-white/10 text-white"
                     }`}
                 >
                   <UploadCloud className="w-4 h-4" />

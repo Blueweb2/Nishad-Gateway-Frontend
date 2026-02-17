@@ -37,9 +37,11 @@ export default function InvestmentHighlightsSection({
             {mainHeading}
           </h2>
 
-          <p className="text-gray-600 text-lg leading-relaxed">
-            {description}
-          </p>
+          {/* 🔥 Rich Description */}
+          <div
+            className="text-gray-600 text-lg leading-relaxed prose max-w-none"
+            dangerouslySetInnerHTML={{ __html: description || "" }}
+          />
         </div>
 
         {/* Cards */}
@@ -47,32 +49,42 @@ export default function InvestmentHighlightsSection({
           {cards.map((card, index) => {
             const isExpanded = expandedIndex === index;
 
+            const mainSrc =
+              card.mainImage && cloudinaryAutoWebp(card.mainImage);
+
+            const subSrc =
+              card.subImage && cloudinaryAutoWebp(card.subImage);
+
             return (
               <div key={index} className="relative group">
 
                 {/* Main Image */}
-                <div className="relative rounded-3xl overflow-hidden shadow-xl">
-                  <Image
-                    src={cloudinaryAutoWebp(card.mainImage)}
-                    alt={card.title}
-                    width={700}
-                    height={500}
-                    className="object-cover w-full h-[420px] transition-transform duration-500 group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                  <div className="absolute inset-0 bg-black/30" />
-                </div>
+                {mainSrc && (
+                  <div className="relative rounded-3xl overflow-hidden shadow-xl">
+                    <Image
+                      src={mainSrc}
+                      alt={card.title}
+                      width={700}
+                      height={500}
+                      className="object-cover w-full h-[420px] transition-transform duration-500 group-hover:scale-105"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                    <div className="absolute inset-0 bg-black/30" />
+                  </div>
+                )}
 
                 {/* Floating Sub Image */}
-                <div className="absolute -bottom-12 left-8 w-40 h-40 rounded-2xl overflow-hidden shadow-lg border-4 border-white">
-                  <Image
-                    src={cloudinaryAutoWebp(card.subImage)}
-                    alt={`${card.title} sub`}
-                    fill
-                    className="object-cover"
-                    sizes="160px"
-                  />
-                </div>
+                {subSrc && (
+                  <div className="absolute -bottom-12 left-8 w-40 h-40 rounded-2xl overflow-hidden shadow-lg border-4 border-white">
+                    <Image
+                      src={subSrc}
+                      alt={`${card.title} sub`}
+                      fill
+                      className="object-cover"
+                      sizes="160px"
+                    />
+                  </div>
+                )}
 
                 {/* Expandable Card */}
                 <div
@@ -97,16 +109,20 @@ export default function InvestmentHighlightsSection({
                     </button>
                   </div>
 
+                  {/* 🔥 Rich SubText */}
                   <div
                     className={`overflow-hidden transition-all duration-500 ${
                       isExpanded
-                        ? "max-h-40 opacity-100 mt-4"
+                        ? "max-h-[500px] opacity-100 mt-4"
                         : "max-h-0 opacity-0"
                     }`}
                   >
-                    <p className="text-gray-600 text-sm leading-relaxed">
-                      {card.subText}
-                    </p>
+                    <div
+                      className="text-gray-600 text-sm leading-relaxed prose prose-sm max-w-none"
+                      dangerouslySetInnerHTML={{
+                        __html: card.subText || "",
+                      }}
+                    />
                   </div>
                 </div>
 

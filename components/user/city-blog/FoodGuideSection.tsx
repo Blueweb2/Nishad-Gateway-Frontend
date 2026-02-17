@@ -15,7 +15,7 @@ type Props = {
 export default function FoodGuideSection({ content }: Props) {
   const [activeFilterIndex, setActiveFilterIndex] = useState(0);
 
-  const activeFilter = content.filters[activeFilterIndex];
+  const activeFilter = content.filters?.[activeFilterIndex];
 
   const getInitial = (title: string) => {
     if (!title) return "#";
@@ -34,12 +34,11 @@ export default function FoodGuideSection({ content }: Props) {
 
         {/* ================= FILTERS ================= */}
         <div className="flex flex-wrap justify-center gap-4 mb-16">
-
           <span className="text-white/50 text-sm self-center mr-2">
             Features:
           </span>
 
-          {content.filters.map((filter, index) => {
+          {content.filters?.map((filter, index) => {
             const isActive = index === activeFilterIndex;
 
             return (
@@ -60,7 +59,7 @@ export default function FoodGuideSection({ content }: Props) {
                     ${isActive ? "bg-white/20" : "bg-white/10"}
                   `}
                 >
-                  {filter.items.length}
+                  {filter.items?.length || 0}
                 </span>
               </button>
             );
@@ -69,51 +68,71 @@ export default function FoodGuideSection({ content }: Props) {
 
         {/* ================= ITEMS ================= */}
         <div className="space-y-10 transition-all duration-300">
+          {activeFilter?.items?.map((item, index) => {
+            const hasLink = item.link && item.link.trim() !== "";
 
-          {activeFilter?.items.map((item, index) => (
-            <Link
-              key={index}
-              href={item.link}
-              className="group flex items-center justify-between border-b border-white/10 pb-8 hover:bg-white/5 transition-all duration-300"
-            >
-              <div className="flex items-center gap-6">
+            const imageSrc =
+              item.imageUrl &&
+              typeof item.imageUrl === "string" &&
+              item.imageUrl.trim() !== ""
+                ? cloudinaryAutoWebp(item.imageUrl)
+                : null;
 
-                {/* LETTER */}
-                <span className="text-white/40 text-sm w-6">
-                  {getInitial(item.title)}
-                </span>
+            const Wrapper: any = hasLink ? Link : "div";
 
-                {/* IMAGE */}
-                <div className="relative w-16 h-16 rounded-full overflow-hidden">
-                  <Image
-                    src={cloudinaryAutoWebp(item.imageUrl)}
-                    alt={item.title}
-                    fill
-                    className="object-cover"
-                  />
+            return (
+              <Wrapper
+                key={index}
+                {...(hasLink ? { href: item.link } : {})}
+                className="group flex items-center justify-between border-b border-white/10 pb-8 hover:bg-white/5 transition-all duration-300"
+              >
+                <div className="flex items-center gap-6">
+
+                  {/* LETTER */}
+                  <span className="text-white/40 text-sm w-6">
+                    {getInitial(item.title)}
+                  </span>
+
+                  {/* IMAGE (Safe) */}
+                  {imageSrc && (
+                    <div className="relative w-16 h-16 rounded-full overflow-hidden">
+                      <Image
+                        src={imageSrc}
+                        alt={item.title}
+                        fill
+                        className="object-cover"
+                        sizes="64px"
+                      />
+                    </div>
+                  )}
+
+                  {/* TEXT */}
+                  <div>
+                    <h3 className="text-xl font-medium mb-1 group-hover:text-[#096C6C] transition">
+                      {item.title}
+                    </h3>
+
+                    {/* 🔥 Rich Description */}
+                    <div
+                      className="text-sm text-white/60 max-w-md prose prose-invert prose-sm max-w-none"
+                      dangerouslySetInnerHTML={{
+                        __html: item.description || "",
+                      }}
+                    />
+                  </div>
                 </div>
 
-                {/* TEXT */}
-                <div>
-                  <h3 className="text-xl font-medium mb-1 group-hover:text-[#096C6C] transition">
-                    {item.title}
-                  </h3>
-
-                  <p className="text-sm text-white/60 max-w-md">
-                    {item.description}
-                  </p>
-                </div>
-              </div>
-
-              {/* ARROW */}
-              <div className="opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
-                <div className="w-9 h-9 rounded-full border border-white/30 flex items-center justify-center">
-                  <ArrowRight size={16} />
-                </div>
-              </div>
-            </Link>
-          ))}
-
+                {/* ARROW */}
+                {hasLink && (
+                  <div className="opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+                    <div className="w-9 h-9 rounded-full border border-white/30 flex items-center justify-center">
+                      <ArrowRight size={16} />
+                    </div>
+                  </div>
+                )}
+              </Wrapper>
+            );
+          })}
         </div>
 
       </div>

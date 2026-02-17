@@ -5,6 +5,7 @@ import type {
   CityBlogSection,
   LandmarksSectionContent,
 } from "@/lib/types/city-blog";
+import RichTextEditor from "../common/RichTextEditor";
 
 type Props = {
   section: CityBlogSection<"LANDMARKS">;
@@ -30,7 +31,7 @@ export default function LandmarksSectionEditor({
   const addItem = () => {
     updateContent({
       ...content,
-      items: [...content.items, { title: "", description: "" ,link: " "}, ],
+      items: [...content.items, { title: "", description: "" ,link: ""}, ],
     });
   };
 
@@ -112,15 +113,16 @@ export default function LandmarksSectionEditor({
       className="w-full px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white"
     />
 
-    <textarea
-      placeholder="Description"
-      value={item.description}
-      onChange={(e) =>
-        updateItem(index, { description: e.target.value })
-      }
-      rows={3}
-      className="w-full px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white"
-    />
+<div className="space-y-2">
+  <p className="text-sm text-white/60">Description</p>
+
+  <RichTextEditor
+    value={item.description}
+    onChange={(val) =>
+      updateItem(index, { description: val })
+    }
+  />
+</div>
 
     {/* ✅ NEW LINK FIELD */}
     <input
