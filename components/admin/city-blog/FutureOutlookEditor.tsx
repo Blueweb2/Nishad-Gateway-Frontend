@@ -20,16 +20,16 @@ export default function FutureOutlookEditor({
 }: Props) {
   const [uploadingIndex, setUploadingIndex] = useState<number | null>(null);
 
-  /* ================= UPDATE SLIDE ================= */
+  /* ================= SAFE UPDATE SLIDE ================= */
   const updateSlide = (
     index: number,
-    field: keyof FutureOutlookSectionContent["slides"][0],
-    value: string | undefined
+    updates: Partial<FutureOutlookSectionContent["slides"][0]>
   ) => {
     const updatedSlides = [...content.slides];
+
     updatedSlides[index] = {
       ...updatedSlides[index],
-      [field]: value,
+      ...updates,
     };
 
     onChange({
@@ -91,10 +91,15 @@ export default function FutureOutlookEditor({
 
       const imageUrl = cloudinaryAutoWebp(uploaded.secure_url);
 
-      updateSlide(index, "imageUrl", imageUrl);
-      updateSlide(index, "imagePublicId", uploaded.public_id);
+      // ✅ Single safe update (FIXED)
+      updateSlide(index, {
+        imageUrl,
+        imagePublicId: uploaded.public_id,
+      });
 
       toast.success("Image uploaded", { id: "future-upload" });
+      console.log("Uploaded:", uploaded);
+
     } catch (err: any) {
       toast.error(err?.message || "Upload failed", {
         id: "future-upload",
@@ -106,8 +111,10 @@ export default function FutureOutlookEditor({
 
   /* ================= REMOVE IMAGE ================= */
   const removeImage = (index: number) => {
-    updateSlide(index, "imageUrl", "");
-    updateSlide(index, "imagePublicId", undefined);
+    updateSlide(index, {
+      imageUrl: "",
+      imagePublicId: undefined,
+    });
   };
 
   return (
@@ -137,7 +144,6 @@ export default function FutureOutlookEditor({
             key={index}
             className="rounded-xl border border-white/10 bg-black/30 p-6 space-y-6"
           >
-            {/* Slide Label */}
             <p className="text-xs text-white/50 tracking-widest">
               SLIDE {String(index + 1).padStart(2, "0")}
             </p>
@@ -146,7 +152,7 @@ export default function FutureOutlookEditor({
             <input
               value={slide.title}
               onChange={(e) =>
-                updateSlide(index, "title", e.target.value)
+                updateSlide(index, { title: e.target.value })
               }
               placeholder="Metro Expansion"
               className="w-full px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white"
@@ -156,7 +162,7 @@ export default function FutureOutlookEditor({
             <textarea
               value={slide.description}
               onChange={(e) =>
-                updateSlide(index, "description", e.target.value)
+                updateSlide(index, { description: e.target.value })
               }
               placeholder="Short description"
               rows={3}
@@ -168,7 +174,7 @@ export default function FutureOutlookEditor({
               <input
                 value={slide.ctaText}
                 onChange={(e) =>
-                  updateSlide(index, "ctaText", e.target.value)
+                  updateSlide(index, { ctaText: e.target.value })
                 }
                 placeholder="CTA Text"
                 className="px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white"
@@ -177,7 +183,7 @@ export default function FutureOutlookEditor({
               <input
                 value={slide.ctaLink}
                 onChange={(e) =>
-                  updateSlide(index, "ctaLink", e.target.value)
+                  updateSlide(index, { ctaLink: e.target.value })
                 }
                 placeholder="/metro-expansion"
                 className="px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white"
@@ -191,7 +197,6 @@ export default function FutureOutlookEditor({
               </p>
 
               <div className="flex flex-col md:flex-row gap-4">
-
                 <input
                   value={slide.imageUrl}
                   readOnly
@@ -230,6 +235,7 @@ export default function FutureOutlookEditor({
                     src={slide.imageUrl}
                     alt="Future Outlook Preview"
                     fill
+                    sizes="100vw"
                     className="object-cover"
                   />
 

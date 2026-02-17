@@ -110,13 +110,19 @@ export default function SectionsList({
   };
 
   /* ================= UPDATE CONTENT ================= */
-  const updateSectionContent = (id: string, content: any) => {
-    setSections((prev) =>
-      prev.map((s) =>
-        s.id === id ? { ...s, content } : s
-      )
-    );
-  };
+const updateSectionContent = (id: string, content: any) => {
+  setSections((prev) =>
+    prev.map((s) =>
+      s.id === id
+        ? {
+            ...s,
+            content: { ...content }, // 🔥 force new reference
+          }
+        : s
+    )
+  );
+};
+
 
   /* ================= DRAG END ================= */
   const handleDragEnd = (event: DragEndEvent) => {
