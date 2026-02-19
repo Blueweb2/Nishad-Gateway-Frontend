@@ -7,30 +7,18 @@ import { Search, Star, Pencil } from "lucide-react";
 
 /* ---------------- Types ---------------- */
 
-type BlogType = "city" | "service" | "general";
-
 type BlogStatus = "draft" | "published";
 
 type AdminBlog = {
   _id: string;
   title: string;
   slug: string;
-  type: BlogType;
   coverImage: string;
   tags: string[];
   status: BlogStatus;
   featured?: boolean;
   publishedAt?: string;
 };
-
-/* ---------------- Constants ---------------- */
-
-const BLOG_TABS: { key: "all" | BlogType; label: string }[] = [
-  { key: "all", label: "All" },
-  { key: "service", label: "Service Blogs" },
-  { key: "city", label: "City Blogs" },
-  { key: "general", label: "General Blogs" },
-];
 
 /* ---------------- Page ---------------- */
 
@@ -39,53 +27,45 @@ export default function AdminBlogsPage() {
   const [blogs, setBlogs] = useState<AdminBlog[]>([
     {
       _id: "1",
-      title: "Entity Types in Saudi Arabia",
-      slug: "entity-types-in-saudi-arabia",
-      type: "service",
+      title: "Why Saudi Arabia is a Business Hub",
+      slug: "saudi-arabia-business-hub",
       coverImage: "/Olaya.webp",
-      tags: ["Service", "Business Setup"],
+      tags: ["Guide", "Saudi Arabia"],
       status: "published",
       featured: true,
       publishedAt: "2026-01-22",
     },
     {
       _id: "2",
-      title: "Business Setup in Riyadh",
-      slug: "business-setup-in-riyadh",
-      type: "city",
+      title: "Top Investment Opportunities in KSA",
+      slug: "investment-opportunities-ksa",
       coverImage: "/Olaya.webp",
-      tags: ["City", "Riyadh"],
+      tags: ["Investment", "Business"],
       status: "published",
       publishedAt: "2026-01-20",
     },
     {
       _id: "3",
-      title: "Why Saudi Arabia is a Business Hub",
-      slug: "saudi-arabia-business-hub",
-      type: "general",
+      title: "Future of Digital Economy in Saudi Arabia",
+      slug: "future-digital-economy-saudi",
       coverImage: "/Olaya.webp",
-      tags: ["Guide", "Saudi Arabia"],
+      tags: ["Economy", "Technology"],
       status: "draft",
     },
   ]);
 
-  const [activeTab, setActiveTab] = useState<"all" | BlogType>("all");
   const [search, setSearch] = useState("");
 
   /* ---------------- Derived Data ---------------- */
 
   const filteredBlogs = useMemo(() => {
-    return blogs
-      .filter((blog) =>
-        activeTab === "all" ? true : blog.type === activeTab
-      )
-      .filter((blog) =>
-        blog.title.toLowerCase().includes(search.toLowerCase())
-      );
-  }, [blogs, activeTab, search]);
+    return blogs.filter((blog) =>
+      blog.title.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [blogs, search]);
 
   const handleSetFeatured = (id: string) => {
-    // 🔹 Backend version → PUT /api/admin/blog/:id/feature
+    // 🔹 Later → PUT /admin/blogs/:id/feature
     setBlogs((prev) =>
       prev.map((b) => ({
         ...b,
@@ -102,9 +82,11 @@ export default function AdminBlogsPage() {
         {/* Header */}
         <div className="flex items-start justify-between gap-6">
           <div>
-            <h1 className="text-3xl font-semibold text-white">Blogs</h1>
+            <h1 className="text-3xl font-semibold text-white">
+              General Blogs
+            </h1>
             <p className="text-sm text-white/60 mt-2">
-              Manage all blogs — city, service, and general — from one place.
+              Manage all independent blog articles.
             </p>
           </div>
 
@@ -116,25 +98,8 @@ export default function AdminBlogsPage() {
           </Link>
         </div>
 
-        {/* Tabs + Search */}
-        <div className="mt-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          {/* Tabs */}
-          <div className="flex flex-wrap items-center gap-2">
-            {BLOG_TABS.map((tab) => (
-              <TabButton
-                key={tab.key}
-                active={activeTab === tab.key}
-                onClick={() => setActiveTab(tab.key)}
-                label={`${tab.label} ${
-                  tab.key === "all"
-                    ? `(${blogs.length})`
-                    : `(${blogs.filter((b) => b.type === tab.key).length})`
-                }`}
-              />
-            ))}
-          </div>
-
-          {/* Search */}
+        {/* Search */}
+        <div className="mt-8 flex justify-end">
           <div className="relative w-full md:w-[340px]">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40 w-4 h-4" />
             <input
@@ -150,10 +115,9 @@ export default function AdminBlogsPage() {
         <div className="mt-8 rounded-2xl border border-white/10 bg-white/5 overflow-hidden">
           {/* Header Row */}
           <div className="grid grid-cols-12 px-4 py-3 text-xs font-medium text-white/50 border-b border-white/10">
-            <div className="col-span-6">Blog</div>
-            <div className="col-span-2">Type</div>
+            <div className="col-span-7">Blog</div>
             <div className="col-span-2">Status</div>
-            <div className="col-span-2 text-right">Actions</div>
+            <div className="col-span-3 text-right">Actions</div>
           </div>
 
           {filteredBlogs.length === 0 ? (
@@ -167,7 +131,7 @@ export default function AdminBlogsPage() {
                 className="grid grid-cols-12 items-center px-4 py-4 border-b border-white/10 hover:bg-white/5 transition"
               >
                 {/* Blog Info */}
-                <div className="col-span-6 flex items-center gap-4">
+                <div className="col-span-7 flex items-center gap-4">
                   <div className="relative w-16 h-12 rounded-lg overflow-hidden border border-white/10">
                     <Image
                       src={blog.coverImage}
@@ -204,18 +168,13 @@ export default function AdminBlogsPage() {
                   </div>
                 </div>
 
-                {/* Type */}
-                <div className="col-span-2 capitalize text-white/70">
-                  {blog.type}
-                </div>
-
                 {/* Status */}
                 <div className="col-span-2">
                   <StatusBadge status={blog.status} />
                 </div>
 
                 {/* Actions */}
-                <div className="col-span-2 flex items-center justify-end gap-2">
+                <div className="col-span-3 flex items-center justify-end gap-2">
                   <button
                     onClick={() => handleSetFeatured(blog._id)}
                     className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition flex items-center gap-2
@@ -237,6 +196,14 @@ export default function AdminBlogsPage() {
                     <Pencil className="w-4 h-4" />
                     Edit
                   </Link>
+
+                  <Link
+                    href={`/blogs/${blog.slug}`}
+                    target="_blank"
+                    className="px-3 py-1.5 rounded-lg text-xs font-semibold border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/20 transition"
+                  >
+                    Preview
+                  </Link>
                 </div>
               </div>
             ))
@@ -248,31 +215,6 @@ export default function AdminBlogsPage() {
 }
 
 /* ---------------- Components ---------------- */
-
-function TabButton({
-  label,
-  active,
-  onClick,
-}: {
-  label: string;
-  active: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={`px-4 py-2 rounded-full text-sm font-semibold border transition
-        ${
-          active
-            ? "bg-emerald-500 text-black border-emerald-500"
-            : "bg-white/5 text-white/80 border-white/10 hover:bg-white/10"
-        }
-      `}
-    >
-      {label}
-    </button>
-  );
-}
 
 function StatusBadge({ status }: { status: BlogStatus }) {
   if (status === "published") {

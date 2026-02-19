@@ -12,7 +12,11 @@ type Props = {
 export default function RichTextEditor({ value, onChange }: Props) {
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        heading: {
+          levels: [2, 3], // allow H2 and H3
+        },
+      }),
       Link.configure({
         openOnClick: false,
         HTMLAttributes: {
@@ -26,13 +30,11 @@ export default function RichTextEditor({ value, onChange }: Props) {
     editorProps: {
       attributes: {
         class:
-          "min-h-[150px] outline-none text-white prose prose-invert max-w-none",
+          "min-h-[200px] outline-none text-white prose prose-invert max-w-none focus:outline-none",
       },
     },
     onUpdate({ editor }) {
       const html = editor.getHTML();
-
-      // prevent unnecessary parent updates
       if (html !== value) {
         onChange(html);
       }
@@ -41,34 +43,78 @@ export default function RichTextEditor({ value, onChange }: Props) {
 
   if (!editor) return null;
 
+  const btn = (active: boolean) =>
+    `px-3 py-1 rounded text-sm transition ${
+      active
+        ? "bg-emerald-600 text-white"
+        : "bg-white/10 text-white hover:bg-white/20"
+    }`;
+
   return (
-    <div className="border border-white/10 rounded-lg bg-black/40">
+    <div className="border border-white/10 rounded-lg bg-black/40 overflow-hidden">
+      
       {/* Toolbar */}
-      <div className="flex flex-wrap gap-2 p-2 border-b border-white/10">
+      <div className="flex flex-wrap gap-2 p-3 border-b border-white/10">
+
+        {/* Bold */}
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleBold().run()}
-          className={`px-3 py-1 rounded text-sm ${
-            editor.isActive("bold")
-              ? "bg-green-600 text-white"
-              : "bg-white/10 text-white"
-          }`}
+          className={btn(editor.isActive("bold"))}
         >
           Bold
         </button>
 
+        {/* Italic */}
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleItalic().run()}
-          className={`px-3 py-1 rounded text-sm ${
-            editor.isActive("italic")
-              ? "bg-green-600 text-white"
-              : "bg-white/10 text-white"
-          }`}
+          className={btn(editor.isActive("italic"))}
         >
           Italic
         </button>
 
+        {/* H2 */}
+        <button
+          type="button"
+          onClick={() =>
+            editor.chain().focus().toggleHeading({ level: 2 }).run()
+          }
+          className={btn(editor.isActive("heading", { level: 2 }))}
+        >
+          H2
+        </button>
+
+        {/* H3 */}
+        <button
+          type="button"
+          onClick={() =>
+            editor.chain().focus().toggleHeading({ level: 3 }).run()
+          }
+          className={btn(editor.isActive("heading", { level: 3 }))}
+        >
+          H3
+        </button>
+
+        {/* Bullet List */}
+        <button
+          type="button"
+          onClick={() => editor.chain().focus().toggleBulletList().run()}
+          className={btn(editor.isActive("bulletList"))}
+        >
+          Bullet List
+        </button>
+
+        {/* Ordered List */}
+        <button
+          type="button"
+          onClick={() => editor.chain().focus().toggleOrderedList().run()}
+          className={btn(editor.isActive("orderedList"))}
+        >
+          Ordered List
+        </button>
+
+        {/* Link */}
         <button
           type="button"
           onClick={() => {
@@ -87,23 +133,9 @@ export default function RichTextEditor({ value, onChange }: Props) {
               .setLink({ href: url })
               .run();
           }}
-          className={`px-3 py-1 rounded text-sm ${
-            editor.isActive("link")
-              ? "bg-green-600 text-white"
-              : "bg-white/10 text-white"
-          }`}
+          className={btn(editor.isActive("link"))}
         >
           Link
-        </button>
-
-        <button
-          type="button"
-          onClick={() =>
-            editor.chain().focus().toggleBulletList().run()
-          }
-          className="px-3 py-1 rounded text-sm bg-white/10 text-white"
-        >
-          List
         </button>
       </div>
 

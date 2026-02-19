@@ -26,32 +26,30 @@ export default function Navbar() {
 
   //  change navbar color based on white sections
 useEffect(() => {
-  const sections = document.querySelectorAll<HTMLElement>("[data-navbar]");
+  const handleScroll = () => {
+    const sections = document.querySelectorAll<HTMLElement>("[data-navbar]");
+    const viewportMiddle = window.innerHeight / 2;
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      // Get all visible sections
-      const visibleSections = entries
-        .filter((entry) => entry.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+    let currentTheme = "dark";
 
-      if (visibleSections.length > 0) {
-        const activeSection = visibleSections[0].target as HTMLElement;
-        const theme = activeSection.getAttribute("data-navbar");
+    sections.forEach((section) => {
+      const rect = section.getBoundingClientRect();
 
-        setUseColoredLogo(theme === "light");
+      if (rect.top <= viewportMiddle && rect.bottom >= viewportMiddle) {
+        const theme = section.getAttribute("data-navbar");
+        if (theme) currentTheme = theme;
       }
-    },
-    {
-      rootMargin: "-80px 0px 0px 0px",
-      threshold: [0.3, 0.6, 0.9], // multiple thresholds for accuracy
-    }
-  );
+    });
 
-  sections.forEach((section) => observer.observe(section));
+    setUseColoredLogo(currentTheme === "light");
+  };
 
-  return () => observer.disconnect();
+  handleScroll();
+  window.addEventListener("scroll", handleScroll);
+
+  return () => window.removeEventListener("scroll", handleScroll);
 }, [pathname]);
+
 
 
 

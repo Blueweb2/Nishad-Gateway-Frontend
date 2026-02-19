@@ -109,21 +109,28 @@ export default function CityCategoriesPage() {
                   <div className="flex items-center gap-4">
 
                     <span
-                      className={`text-xs px-3 py-1 rounded-full ${
-                        category.isActive
+                      className={`text-xs px-3 py-1 rounded-full ${category.isActive
                           ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
                           : "bg-red-500/20 text-red-400 border border-red-500/30"
-                      }`}
+                        }`}
                     >
                       {category.isActive ? "Active" : "Inactive"}
                     </span>
 
-                    <Link
+                    {/* <Link
                       href={`/admin/cities/${cityId}/categories/${category._id}`}
                       className="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white text-sm"
                     >
-                      Manage Blog
+                      Manage Single Category
+                    </Link> */}
+
+                    <Link
+                      href={`/admin/cities/${cityId}/categories/${category._id}/blogs`}
+                      className="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white text-sm"
+                    >
+                      Manage Blogs
                     </Link>
+
                   </div>
 
                 </div>
