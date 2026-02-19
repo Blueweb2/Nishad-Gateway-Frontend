@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect  } from "react";
 import Image from "next/image";
 import OvalArrow from "@/components/user/ui/OvalArrow";
 import { motion, AnimatePresence } from "framer-motion";
@@ -45,7 +45,17 @@ const slides = [
 ];
 
 export default function WhySaudi() {
-  const [index, setIndex] = useState(0);
+const [index, setIndex] = useState(0);
+
+useEffect(() => {
+  const timer = setTimeout(() => {
+    setIndex((prev) => (prev + 1) % slides.length);
+  }, 4000);
+
+  return () => clearTimeout(timer);
+}, [index]); // ALWAYS keep this dependency consistent
+
+
 
   const nextSlide = () => {
     setIndex((prev) => (prev + 1) % slides.length);
@@ -55,7 +65,7 @@ export default function WhySaudi() {
     <section
       data-navbar="light"
       data-menu="dark-text"
-      className="relative w-full bg-white text-black py-[4vw] pt-[6vw] overflow-hidden"
+      className="relative w-full bg-white text-black py-[4vw] pt-[6vw] overflow-hidden "
     >
       {/* ===== Background SVG Layer ===== */}
       <div

@@ -49,7 +49,7 @@ export default function Consultant() {
       : activeContent[activeIndex - 1].title;
 
   return (
-    <section className="relative w-full h-screen text-white overflow-hidden">
+    <section className="relative w-full h-screen text-white overflow-hidden" data-navbar="light">
 
       {/* Background */}
  <div key={activeIndex + activeTab} className="absolute inset-0 z-0 transition-opacity duration-700">

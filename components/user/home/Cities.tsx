@@ -15,7 +15,7 @@ type City = {
 
 export default function Cities({ city }: { city: City }) {
   return (
-    <section className="relative w-full h-[110vh] text-white overflow-hidden">
+    <section className="relative w-full h-[110vh] text-white overflow-hidden" data-navbar="light">
       {/* BACKGROUND */}
       <div className="absolute inset-0 z-0">
         <ParallaxImage
