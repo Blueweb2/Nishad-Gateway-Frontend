@@ -1,13 +1,26 @@
 import axios from "axios";
+import toast from "react-hot-toast";
 
 export const adminAxios = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   withCredentials: true,
 });
-console.log("BASE URL:", process.env.NEXT_PUBLIC_API_URL);
 
+let isRefreshing = false;
+let failedQueue: any[] = [];
 
-// 🔁 RESPONSE INTERCEPTOR (ADMIN ONLY)
+const processQueue = (error: any) => {
+  failedQueue.forEach((prom) => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve();
+    }
+  });
+
+  failedQueue = [];
+};
+
 adminAxios.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -15,26 +28,44 @@ adminAxios.interceptors.response.use(
     const status = error?.response?.status;
     const url = originalRequest?.url || "";
 
-    // ❌ never refresh on auth routes
+    // ❌ Never refresh for login or refresh itself
     if (
       url.includes("/admin/login") ||
-      url.includes("/admin/refresh") ||
-      url.includes("/admin/me")
+      url.includes("/admin/refresh")
     ) {
       return Promise.reject(error);
     }
 
     if (status === 401 && !originalRequest._retry) {
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        })
+          .then(() => adminAxios(originalRequest))
+          .catch((err) => Promise.reject(err));
+      }
+
       originalRequest._retry = true;
+      isRefreshing = true;
 
       try {
         await adminAxios.post("/admin/refresh");
+
+        processQueue(null);
         return adminAxios(originalRequest);
-      } catch {
-        // 🔐 session expired
+      } catch (refreshError) {
+        processQueue(refreshError);
+
         if (typeof window !== "undefined") {
-          window.location.href = "/admin/login";
+          toast.error("Session expired. Please login again.");
+          setTimeout(() => {
+            window.location.href = "/admin/login";
+          }, 800);
         }
+
+        return Promise.reject(refreshError);
+      } finally {
+        isRefreshing = false;
       }
     }
 

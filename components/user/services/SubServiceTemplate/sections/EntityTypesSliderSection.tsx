@@ -26,6 +26,9 @@ export default function EntityTypesSliderSection({
   const slides = useMemo(() => entityTypesSlides || [], [entityTypesSlides]);
   const [active, setActive] = useState(0);
 
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+
+
   const total = slides.length;
 
   const goPrev = () => {
@@ -37,6 +40,11 @@ export default function EntityTypesSliderSection({
     if (total <= 1) return;
     setActive((p) => (p + 1) % total);
   };
+
+  const toggleExpand = (index: number) => {
+    setExpandedIndex((prev) => (prev === index ? null : index));
+  };
+
 
   const prevIndex = total ? (active - 1 + total) % total : 0;
   const nextIndex = total ? (active + 1) % total : 0;
@@ -74,7 +82,7 @@ export default function EntityTypesSliderSection({
   return (
     <section className="w-full bg-white py-20 overflow-hidden">
       {/* TOP CONTENT */}
-      <div className="w-full max-w-7xl mx-auto px-6 md:px-10">
+      <div className="w-full max-w-8xl mx-auto px-6 md:px-10">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-10">
           <div className="flex items-start gap-6">
             <div className="text-xs text-gray-400 tracking-wider pt-2">
@@ -82,13 +90,13 @@ export default function EntityTypesSliderSection({
               {formatIndex(Math.max(total, 1))}
             </div>
 
-            <h2 className="text-3xl md:text-4xl font-semibold leading-tight text-gray-900 max-w-md">
+            <h2 className="text-3xl md:text-4xl font-semibold leading-tight text-gray-900 max-w-xl">
               {entityTypesHeading ||
                 "Entity Types Available to Foreign Investors"}
             </h2>
           </div>
 
-          <p className="text-sm text-gray-500 leading-relaxed max-w-md">
+          <p className="text-lg text-gray-500 leading-relaxed max-w-xl">
             {entityTypesDescription ||
               "Lorem Ipsum is simply dummy text of the printing and typesetting industry."}
           </p>
@@ -146,21 +154,40 @@ export default function EntityTypesSliderSection({
               </div>
 
               <div className="absolute left-[28%] top-1/2 -translate-y-1/2 z-10 w-[360px]">
-                <div className="bg-white rounded-[28px] shadow-xl px-8 py-8 flex items-start justify-between gap-6">
-                  <div>
-                    <p className="text-xs text-gray-400 mb-4">
-                      {formatIndex(prevIndex + 1)}
-                    </p>
-                    <h3 className="text-lg font-medium text-gray-900 leading-snug max-w-[220px]">
-                      {leftSlide.title}
-                    </h3>
+                <div
+                  className="bg-white rounded-[28px] shadow-xl px-8 py-8 transition-all duration-500"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="flex items-start justify-between gap-6">
+                    <div>
+                      <p className="text-xs text-gray-400 mb-4">
+                        {formatIndex(prevIndex + 1)}
+                      </p>
+                      <h3 className="text-lg font-medium text-gray-900 leading-snug max-w-[220px]">
+                        {leftSlide.title}
+                      </h3>
+                    </div>
+
+                    <button
+                      onClick={() => toggleExpand(prevIndex)}
+                      className="w-10 h-10 rounded-full border border-green-500 flex items-center justify-center transition-all duration-300"
+                    >
+                      <Plus
+                        size={18}
+                        className={`text-green-600 transition-transform duration-300 ${expandedIndex === prevIndex ? "rotate-45" : ""
+                          }`}
+                      />
+                    </button>
                   </div>
 
-                  <div className="w-10 h-10 rounded-full border border-green-500 flex items-center justify-center">
-                    <Plus size={18} className="text-green-600" />
-                  </div>
+                  {expandedIndex === prevIndex && leftSlide.description && (
+                    <div className="mt-6 text-sm text-gray-600 leading-relaxed">
+                      {leftSlide.description}
+                    </div>
+                  )}
                 </div>
               </div>
+
             </div>
           )}
 

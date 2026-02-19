@@ -4,108 +4,80 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { Trash2 } from "lucide-react";
 
 import {
   LayoutDashboard,
   FileText,
   Briefcase,
-  PlusCircle,
   LogOut,
-  Users,
   MapPin,
   Shield,
+  Trash2,
 } from "lucide-react";
+
+import { adminMe, adminLogout } from "@/lib/api";
 
 export default function AdminSidebar() {
   const pathname = usePathname();
   const router = useRouter();
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   const [role, setRole] = useState<string | null>(null);
 
-  // 🔥 Fetch logged-in admin role
+  // ✅ Fetch logged-in admin safely
   useEffect(() => {
     const fetchAdmin = async () => {
       try {
-        if (!API_URL) return;
+        const data = await adminMe();
 
-        const res = await fetch(`${API_URL}/admin/me`, {
-          credentials: "include",
-        });
-
-        const data = await res.json();
-
-        if (res.ok && data?.success) {
+        if (data?.success) {
           setRole(data.data.role);
         }
-      } catch (err) {
-        console.log("Failed to fetch admin role");
+      } catch {
+        // Interceptor handles redirect if session expired
+        console.log("Session check failed");
       }
     };
 
     fetchAdmin();
-  }, [API_URL]);
+  }, []);
 
-  // 🔥 Base Links
   const baseLinks = [
     { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
     { name: "Blogs", href: "/admin/blogs", icon: FileText },
     { name: "Cities", href: "/admin/cities", icon: MapPin },
     { name: "Services", href: "/admin/services", icon: Briefcase },
-    // { name: "Leads", href: "/admin/leads", icon: Users },
   ];
 
-  // 👑 If superadmin → add Manage Admins after Dashboard
-const links =
-  role === "superadmin"
-    ? [
-        baseLinks[0],
-        {
-          name: "Manage Admins",
-          href: "/admin/manage-admins",
-          icon: Shield,
-        },
-        {
-          name: "Media Cleanup",
-          href: "/admin/media-cleanup",
-          icon: Trash2, // you can change to Trash2 if you want
-        },
-        ...baseLinks.slice(1),
-      ]
-    : baseLinks;
-
+  const links =
+    role === "superadmin"
+      ? [
+          baseLinks[0],
+          {
+            name: "Manage Admins",
+            href: "/admin/manage-admins",
+            icon: Shield,
+          },
+          {
+            name: "Media Cleanup",
+            href: "/admin/media-cleanup",
+            icon: Trash2,
+          },
+          ...baseLinks.slice(1),
+        ]
+      : baseLinks;
 
   const handleLogout = async () => {
     try {
-      if (!API_URL) {
-        toast.error("API URL missing");
-        return;
-      }
-
-      const res = await fetch(`${API_URL}/admin/logout`, {
-        method: "POST",
-        credentials: "include",
-      });
-
-      const data = await res.json().catch(() => null);
-
-      if (!res.ok || !data?.success) {
-        toast.error(data?.message || "Logout failed");
-        return;
-      }
-
-      toast.success("Logout success");
+      await adminLogout();
+      toast.success("Logout successful");
       router.replace("/admin/login");
-    } catch (err) {
+    } catch {
       toast.error("Logout failed");
     }
   };
 
   return (
     <aside className="w-[260px] bg-[#0b0f0b] border-r border-green-700/30 p-6 flex flex-col">
-      
-      {/* Title */}
       <div className="mb-8">
         <h2 className="text-xl font-bold text-green-400">
           Nishad Admin
@@ -118,7 +90,6 @@ const links =
         )}
       </div>
 
-      {/* Navigation */}
       <nav className="flex flex-col gap-3 flex-1">
         {links.map((item) => {
           const Icon = item.icon;
@@ -142,7 +113,6 @@ const links =
         })}
       </nav>
 
-      {/* Logout */}
       <button
         onClick={handleLogout}
         className="mt-6 flex items-center gap-3 px-4 py-3 rounded-lg border border-red-600/40 text-red-300 hover:bg-red-600/10 transition"

@@ -1,6 +1,9 @@
 import { adminAxios } from "@/lib/http/adminAxios";
 
-export const adminLogin = (payload: { email: string; password: string }) =>
+export const adminLogin = (payload: {
+  email: string;
+  password: string;
+}) =>
   adminAxios.post("/admin/login", payload).then((res) => res.data);
 
 export const adminRefresh = () =>

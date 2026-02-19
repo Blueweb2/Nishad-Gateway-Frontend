@@ -1,8 +1,8 @@
 "use client";
 
+import { useMemo, useState } from "react";
 import Image from "next/image";
-import { useState } from "react";
-import { Plus } from "lucide-react";
+import { ArrowLeft, ArrowRight, Plus } from "lucide-react";
 import { cloudinaryAutoWebp } from "@/utils/cloudinary";
 
 type Props = {
@@ -21,117 +21,245 @@ export default function InvestmentHighlightsSection({
   description,
   cards,
 }: Props) {
+  const slides = useMemo(() => cards || [], [cards]);
+
+  const [active, setActive] = useState(0);
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
-  const toggleCard = (index: number) => {
+  const total = slides.length;
+
+  const goPrev = () => {
+    if (total <= 1) return;
+    setExpandedIndex(null);
+    setActive((p) => (p - 1 + total) % total);
+  };
+
+  const goNext = () => {
+    if (total <= 1) return;
+    setExpandedIndex(null);
+    setActive((p) => (p + 1) % total);
+  };
+
+  const toggleExpand = (index: number) => {
     setExpandedIndex((prev) => (prev === index ? null : index));
   };
 
+  const prevIndex = total ? (active - 1 + total) % total : 0;
+
+  const leftSlide = total ? slides[prevIndex] : null;
+  const centerSlide = total ? slides[active] : null;
+
+  const formatIndex = (i: number) => String(i).padStart(2, "0");
+
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (total <= 1) return;
+
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+
+    if (x < rect.width / 2) goPrev();
+    else goNext();
+  };
+
   return (
-    <section className="py-24 bg-[#f5f5f5]">
-      <div className="max-w-8xl mx-auto px-6">
+    <section className="w-full bg-white py-20 overflow-hidden">
 
-        {/* Top Section */}
-        <div className="grid lg:grid-cols-2 gap-16 mb-16">
-          <h2 className="text-4xl font-bold leading-tight">
-            {mainHeading}
-          </h2>
+      {/* ================= TOP SECTION ================= */}
+      <div className="w-full max-w-8xl mx-auto px-6 md:px-12">
+        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
 
-          {/* 🔥 Rich Description */}
+          <div className="flex items-start gap-8">
+            <div className="text-xs text-gray-400 tracking-[0.25em] mt-2 whitespace-nowrap">
+              {formatIndex(active + 1)} | {formatIndex(Math.max(total, 1))}
+            </div>
+
+            <h2 className="text-3xl md:text-4xl font-semibold leading-[1.2] text-gray-900 max-w-lg">
+              {mainHeading}
+            </h2>
+          </div>
+
           <div
-            className="text-gray-600 text-lg leading-relaxed prose max-w-none"
+            className="max-w-lg pr-6 text-lg text-gray-500 leading-tight"
             dangerouslySetInnerHTML={{ __html: description || "" }}
           />
         </div>
+      </div>
 
-        {/* Cards */}
-        <div className="grid md:grid-cols-2 gap-16">
-          {cards.map((card, index) => {
-            const isExpanded = expandedIndex === index;
-
-            const mainSrc =
-              card.mainImage && cloudinaryAutoWebp(card.mainImage);
-
-            const subSrc =
-              card.subImage && cloudinaryAutoWebp(card.subImage);
-
-            return (
-              <div key={index} className="relative group">
-
-                {/* Main Image */}
-                {mainSrc && (
-                  <div className="relative rounded-3xl overflow-hidden shadow-xl">
-                    <Image
-                      src={mainSrc}
-                      alt={card.title}
-                      width={700}
-                      height={500}
-                      className="object-cover w-full h-[420px] transition-transform duration-500 group-hover:scale-105"
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                    />
-                    <div className="absolute inset-0 bg-black/30" />
-                  </div>
-                )}
-
-                {/* Floating Sub Image */}
-                {subSrc && (
-                  <div className="absolute -bottom-12 left-8 w-40 h-40 rounded-2xl overflow-hidden shadow-lg border-4 border-white">
-                    <Image
-                      src={subSrc}
-                      alt={`${card.title} sub`}
-                      fill
-                      className="object-cover"
-                      sizes="160px"
-                    />
-                  </div>
-                )}
-
-                {/* Expandable Card */}
-                <div
-                  className={`mt-20 bg-white rounded-2xl p-6 shadow-md max-w-md transition-all duration-300 ${
-                    isExpanded ? "pb-8" : ""
-                  }`}
-                >
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-xl font-semibold">
-                      {card.title}
-                    </h3>
-
-                    <button
-                      onClick={() => toggleCard(index)}
-                      className="w-9 h-9 flex items-center justify-center rounded-full border border-green-600 text-green-600 hover:bg-green-600 hover:text-white transition"
-                    >
-                      <Plus
-                        className={`w-4 h-4 transition-transform duration-300 ${
-                          isExpanded ? "rotate-45" : ""
-                        }`}
-                      />
-                    </button>
-                  </div>
-
-                  {/* 🔥 Rich SubText */}
-                  <div
-                    className={`overflow-hidden transition-all duration-500 ${
-                      isExpanded
-                        ? "max-h-[500px] opacity-100 mt-4"
-                        : "max-h-0 opacity-0"
-                    }`}
-                  >
-                    <div
-                      className="text-gray-600 text-sm leading-relaxed prose prose-sm max-w-none"
-                      dangerouslySetInnerHTML={{
-                        __html: card.subText || "",
-                      }}
-                    />
-                  </div>
-                </div>
-
+      {/* ================= DESKTOP SLIDER ================= */}
+      <div
+        className="mt-14 relative w-full hidden md:block cursor-pointer"
+        onClick={handleClick}
+      >
+        {total > 1 && (
+          <div className="absolute inset-0 z-40 flex items-center justify-center pointer-events-none">
+            <div className="w-[74px] h-[96px] rounded-[160px] border border-black/20 bg-white/90 backdrop-blur-sm flex items-center justify-center text-gray-500 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+              <div className="flex items-center gap-2">
+                <ArrowLeft size={16} />
+                <ArrowRight size={16} />
               </div>
-            );
-          })}
+            </div>
+          </div>
+        )}
+
+        <div className="relative w-full h-[520px] flex">
+
+          {/* LEFT SLIDE */}
+          {leftSlide && (
+            <div className="relative h-full w-1/2">
+              <ImageLayer slide={leftSlide} align="left" />
+
+              <SlideCard
+                slide={leftSlide}
+                index={prevIndex}
+                expandedIndex={expandedIndex}
+                toggleExpand={toggleExpand}
+                formatIndex={formatIndex}
+                align="left"
+              />
+            </div>
+          )}
+
+          {/* RIGHT / ACTIVE SLIDE */}
+          {centerSlide && (
+            <div className="relative h-full w-1/2">
+              <ImageLayer slide={centerSlide} priority align="right" />
+
+              <SlideCard
+                slide={centerSlide}
+                index={active}
+                expandedIndex={expandedIndex}
+                toggleExpand={toggleExpand}
+                formatIndex={formatIndex}
+                align="right"
+              />
+            </div>
+          )}
+
+        </div>
+      </div>
+
+      {/* ================= MOBILE ================= */}
+      <div className="md:hidden px-6 mt-10">
+        {centerSlide && (
+          <div className="space-y-6">
+            <div className="relative h-[320px] rounded-[30px] overflow-hidden">
+              <Image
+                src={cloudinaryAutoWebp(centerSlide.mainImage)}
+                alt={centerSlide.title}
+                fill
+                className="object-cover"
+              />
+            </div>
+
+            <SlideCard
+              slide={centerSlide}
+              index={active}
+              expandedIndex={expandedIndex}
+              toggleExpand={toggleExpand}
+              formatIndex={formatIndex}
+              align="center"
+            />
+          </div>
+        )}
+      </div>
+
+    </section>
+  );
+}
+
+/* ================= IMAGE LAYER ================= */
+
+function ImageLayer({
+  slide,
+  priority = false,
+  align = "right",
+}: {
+  slide: any;
+  priority?: boolean;
+  align?: "left" | "right";
+}) {
+  return (
+    <>
+      <div
+        className={`absolute top-0 h-full w-[62%] overflow-hidden rounded-[44px]
+        ${align === "right" ? "right-[6%]" : "left-[6%]"}`}
+      >
+        <Image
+          src={cloudinaryAutoWebp(slide.mainImage)}
+          alt={slide.title}
+          fill
+          priority={priority}
+          className="object-cover"
+        />
+      </div>
+
+      <div
+        className={`absolute top-[110px] h-[240px] w-[44%] overflow-hidden rounded-[34px]
+        ${align === "right" ? "right-[58%]" : "left-[58%]"}`}
+      >
+        <Image
+          src={cloudinaryAutoWebp(slide.subImage)}
+          alt={slide.title}
+          fill
+          className="object-cover"
+        />
+      </div>
+    </>
+  );
+}
+
+/* ================= SLIDE CARD ================= */
+
+function SlideCard({
+  slide,
+  index,
+  expandedIndex,
+  toggleExpand,
+  formatIndex,
+  align,
+}: any) {
+  const isExpanded = expandedIndex === index;
+
+  return (
+    <div
+      className={`absolute top-1/2 -translate-y-1/2 z-20 w-[360px]
+      ${align === "left" ? "left-[28%]" : "right-[28%]"}`}
+    >
+      <div
+        className="bg-white rounded-[28px] px-8 py-8 
+        shadow-[0_15px_40px_rgba(0,0,0,0.08)] transition-all duration-500"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-start justify-between gap-6">
+          <div>
+            <p className="text-xs text-gray-400 mb-4">
+              {formatIndex(index + 1)}
+            </p>
+            <h3 className="text-lg font-medium text-gray-900 leading-snug">
+              {slide.title}
+            </h3>
+          </div>
+
+          <button
+            onClick={() => toggleExpand(index)}
+            className="w-10 h-10 rounded-full border border-green-500 flex items-center justify-center transition-all duration-300"
+          >
+            <Plus
+              size={18}
+              className={`text-green-600 transition-transform duration-300 ${
+                isExpanded ? "rotate-45" : ""
+              }`}
+            />
+          </button>
         </div>
 
+        {isExpanded && slide.subText && (
+          <div
+            className="mt-6 text-sm text-gray-600 leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: slide.subText }}
+          />
+        )}
       </div>
-    </section>
+    </div>
   );
 }

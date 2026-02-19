@@ -46,7 +46,7 @@ export default function WhySliderSection({
 
   return (
     <section
-      data-navbar="white"
+      data-navbar="light"
       className="relative w-full bg-white text-black py-6 overflow-hidden"
     >
       {/* ================= FULL WIDTH CONTROLS (TOP) ================= */}
