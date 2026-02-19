@@ -53,9 +53,9 @@ export default function WhySaudi() {
 
   return (
     <section
-      data-navbar="white"
+      data-navbar="light"
       data-menu="dark-text"
-      className="relative w-full bg-white text-black py-[4vw] pt-[8vw] overflow-hidden"
+      className="relative w-full bg-white text-black py-[4vw] pt-[6vw] overflow-hidden"
     >
       {/* ===== Background SVG Layer ===== */}
       <div
@@ -95,7 +95,7 @@ export default function WhySaudi() {
           </div>
 
           {/* CENTER SLIDE CONTENT */}
-          <div className="flex flex-col items-start">
+          <div className="flex flex-col items-start ">
             <AnimatePresence mode="wait">
               <motion.div
                 key={index}
@@ -113,7 +113,7 @@ export default function WhySaudi() {
                     transition: { staggerChildren: 0.1, staggerDirection: -1 },
                   },
                 }}
-                className="flex flex-col items-start"
+                className="flex flex-col items-start "
               >
                 {/* Icon */}
                 <motion.div
@@ -129,12 +129,12 @@ export default function WhySaudi() {
                     alt={slides[index].title}
                     width={120}
                     height={120}
-                    className="object-contain"
+                    className="object-contain "
                   />
                 </motion.div>
 
                 {/* Text */}
-                <div className="mt-[4vw] max-w-[22vw]">
+                <div className="mt-[6vw] max-w-[22vw]">
                   <motion.h3
                     className="text-[1.5vw] font-medium"
                     variants={{

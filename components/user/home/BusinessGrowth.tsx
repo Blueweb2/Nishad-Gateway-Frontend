@@ -67,7 +67,7 @@ export default function BusinessGrowth() {
 
   return (
     <section
-      data-navbar="white"
+      data-navbar="light"
       className="relative w-full bg-white text-black py-[2vw] overflow-hidden"
     >
       {/* CONTROLS */}
