@@ -114,7 +114,7 @@ export default function BusinessGrowth() {
           {/* LEFT */}
           <div className="grid grid-rows-[1fr_auto] pr-[2vw] min-h-[38vw]">
 
-            {/* Top Content (grows upward) */}
+            {/* Top Content */}
             <div className="flex flex-col justify-end pb-[1.5vw]">
 
 
