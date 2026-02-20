@@ -7,78 +7,92 @@ import FadeUpScroll from "../ui/FadeUpScroll";
 export default function KeyServices() {
   return (
     <section className="w-full bg-[#84817F] text-white" data-navbar="light">
-      <div className="max-w-[1320px] mx-auto px-6 py-24">
+      <div className="max-w-[1420px] mx-auto px-6 py-24">
 
         {/* HEADER */}
         <div className="flex items-center justify-between mb-16">
-         <FadeUpScroll delay={0.1}>
+          <FadeUpScroll delay={0.1}>
             <h2 className="text-2xl font-semibold">
               Key Sectors Driving Growth
             </h2>
-         </FadeUpScroll>
+          </FadeUpScroll>
           <button className="text-sm text-white/80 hover:text-white underline">
             Explore Investment Sectors
           </button>
         </div>
 
         {/* GRID */}
-        <div className="grid grid-cols-4 gap-6">
+        <div className="grid grid-cols-5 gap-4">
 
           <Card
             icon="/icons/sectors/manufacturing.svg"
-            title="Manufacturing & Industrial"
-            description="Growing industrial zones across key neighborhoods and regions."
+            title="Manufacturing & Industrial Licenses"
+            description="Government localization policies are accelerating domestic manufacturing and industrial expansion."
           />
 
           <Card
             icon="/icons/sectors/trading.svg"
             title="Trading & Distribution"
-            description="Strengthening import, export, and regional distribution networks."
+            description="Saudi Arabia’s large consumer base and strategic location support strong trade and distribution growth."
           />
 
           <Card
             icon="/icons/sectors/tech.svg"
-            title="IT, AI & Tech"
-            description="Innovation driven by digital culture, smart cities, and AI adoption."
+            title="IT, AI, SaaS & Tech Startups"
+            description="Digital transformation and smart-city initiatives are fueling rapid technology adoption."
           />
 
           <Card
             icon="/icons/sectors/healthcare.svg"
             title="Healthcare & Pharma"
-            description="Advanced medical services supporting local communities and demand."
+            description="Public and private investment is expanding healthcare infrastructure and pharmaceutical production."
           />
 
           <Card
             icon="/icons/sectors/education.svg"
-            title="Education & Training"
-            description="Skills development aligned with local cultures and future needs."
+            title="Education & Training Institutes"
+            description="Workforce development and Saudization are increasing demand for professional education providers."
           />
 
           <Card
             icon="/icons/sectors/food.svg"
-            title="Food & Hospitality"
-            description="Culinary diversity shaped by food traditions and celebrations."
+            title="Restaurants, Cafes & Food Production"
+            description="Lifestyle changes and a young population are driving growth in food and beverage businesses."
           />
 
           <Card
             icon="/icons/sectors/logistics.svg"
-            title="Logistics & Transport"
-            description="Supporting tourism, attractions, and cross-region connectivity."
+            title="Logistics & Supply Chain"
+            description="Vision 2030 positions Saudi Arabia as a global logistics and supply-chain hub."
+          />
+
+          <Card
+            icon="/icons/sectors/Fleet-and-Transportation-Services.svg"
+            title="Fleet & Transportation Services"
+            description="Rising e-commerce and infrastructure projects are boosting transport and fleet operations."
           />
 
           <Card
             icon="/icons/sectors/realestate.svg"
             title="Real Estate & Construction"
-            description="Developments for housing, shopping, and lifestyle destinations."
+            description="Mega projects and urban development continue to generate long-term construction demand."
+          />
+
+          <Card
+            icon="/icons/sectors/Sports-Media-and-Entertainment.svg"
+            title="Sports, Media & Entertainment"
+            description="Government-backed tourism and cultural initiatives are transforming the entertainment sector."
           />
 
         </div>
+
       </div>
     </section>
   );
 }
 
 /* ---------- Reusable Card ---------- */
+
 
 function Card({
   icon,
@@ -92,44 +106,38 @@ function Card({
   return (
     <div
       className="
-        group
-        relative
-        bg-[#908D8C] border border-[transparent]
-        hover:bg-[#096C6C]
-        transition-colors duration-300
-        rounded-2xl
-        p-6
-        h-[170px]
-        cursor-pointer
-        overflow-hidden
-      "
+    group
+    bg-[#908D8C]
+    hover:bg-[#096C6C]
+    transition-colors duration-300 ease-out
+    rounded-2xl
+    p-6
+    h-[190px]
+    cursor-pointer
+    flex flex-col
+  "
     >
-      {/* TOP ROW */}
+
+      {/* Top Row */}
       <div className="flex items-start justify-between">
-        {/* SECTOR ICON */}
-      <Image
-  src={icon}
-  alt={title}
-  width={50}
-  height={46}
-  priority={false}
-/>
-        {/* ARROW ICON */}
+        <Image src={icon} alt={title} width={42} height={42} />
 
-      <ArrowRight
-  size={18}
-  className="text-white transition-transform duration-300 group-hover:translate-x-1"
-/>
-
+        <ArrowRight
+          size={18}
+          className="transition-transform duration-300 group-hover:translate-x-1"
+        />
       </div>
 
-      {/* BOTTOM CONTENT */}
-      <div className="absolute left-6 right-6 bottom-6">
-        {/* Description (hover only) */}
+      {/* Content */}
+      <div className="mt-6">
+        <p className="text-sm font-medium">
+          {title}
+        </p>
+
         <p
           className="
             text-xs text-white/90 leading-relaxed
-            mb-2
+            mt-3
             opacity-0 translate-y-2
             transition-all duration-300
             group-hover:opacity-100
@@ -138,18 +146,12 @@ function Card({
         >
           {description}
         </p>
-
-        {/* Title (always visible, bottom-aligned) */}
-        <p
-          className="
-            text-sm font-medium
-            transition-opacity duration-300
-            group-hover:opacity-90
-          "
-        >
-          {title}
-        </p>
       </div>
     </div>
   );
 }
+
+
+
+
+

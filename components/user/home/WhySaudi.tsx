@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect  } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import OvalArrow from "@/components/user/ui/OvalArrow";
 import { motion, AnimatePresence } from "framer-motion";
@@ -45,17 +45,15 @@ const slides = [
 ];
 
 export default function WhySaudi() {
-const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(0);
 
-useEffect(() => {
-  const timer = setTimeout(() => {
-    setIndex((prev) => (prev + 1) % slides.length);
-  }, 4000);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIndex((prev) => (prev + 1) % slides.length);
+    }, 4000);
 
-  return () => clearTimeout(timer);
-}, [index]); // ALWAYS keep this dependency consistent
-
-
+    return () => clearTimeout(timer);
+  }, [index]);
 
   const nextSlide = () => {
     setIndex((prev) => (prev + 1) % slides.length);
@@ -65,15 +63,15 @@ useEffect(() => {
     <section
       data-navbar="light"
       data-menu="dark-text"
-      className="relative w-full bg-white text-black py-[4vw] pt-[6vw] overflow-hidden "
+      className="relative w-full bg-white text-black py-[4vw] pt-[6vw] overflow-hidden"
     >
-      {/* ===== Background SVG Layer ===== */}
+      {/* Background */}
       <div
         className="absolute inset-0 -z-10 bg-no-repeat bg-right-top bg-[length:55vw] opacity-10"
         style={{ backgroundImage: "url('/bg-why-saudi.svg')" }}
       />
 
-      {/* ===== Pagination Top Right ===== */}
+      {/* Pagination */}
       <div className="absolute inset-x-0 top-0">
         <div className="w-full flex justify-end px-[4vw] pt-[6vw]">
           <div className="flex items-center gap-6">
@@ -92,11 +90,11 @@ useEffect(() => {
         </div>
       </div>
 
-      {/* ===== Main Content ===== */}
+      {/* Main Content */}
       <div className="relative max-w-[85vw] mx-auto">
-        <div className="grid grid-cols-3 gap-[6vw] items-start">
+        <div className="grid grid-cols-3 gap-[6vw] items-center">
 
-          {/* LEFT STATIC TITLE */}
+          {/* Left Title */}
           <div className="leading-tight">
             <p className="text-[2vw] font-semibold">Why</p>
             <h2 className="text-[2.18vw] font-bold leading-tight">
@@ -104,42 +102,31 @@ useEffect(() => {
             </h2>
           </div>
 
-          {/* CENTER SLIDE CONTENT */}
-          <div className="flex flex-col items-start ">
+          {/* Center Slide (FIXED HEIGHT + ABSOLUTE CONTENT) */}
+          <div className="relative h-[98vw] w-full">
+
             <AnimatePresence mode="wait">
               <motion.div
                 key={index}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                variants={{
-                  hidden: { opacity: 0 },
-                  visible: {
-                    opacity: 1,
-                    transition: { staggerChildren: 0.15 },
-                  },
-                  exit: {
-                    opacity: 0,
-                    transition: { staggerChildren: 0.1, staggerDirection: -1 },
-                  },
-                }}
-                className="flex flex-col items-start "
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.4 }}
+                className="absolute inset-0 flex flex-col items-start"
               >
                 {/* Icon */}
                 <motion.div
-                  variants={{
-                    hidden: { opacity: 0, y: 50 },
-                    visible: { opacity: 1, y: 0 },
-                    exit: { opacity: 0, y: -50 },
-                  }}
-                  transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -40 }}
+                  transition={{ duration: 0.5 }}
                 >
                   <Image
                     src={slides[index].image}
                     alt={slides[index].title}
                     width={120}
                     height={120}
-                    className="object-contain "
+                    className="object-contain"
                   />
                 </motion.div>
 
@@ -147,38 +134,35 @@ useEffect(() => {
                 <div className="mt-[6vw] max-w-[22vw]">
                   <motion.h3
                     className="text-[1.5vw] font-medium"
-                    variants={{
-                      hidden: { opacity: 0, y: 40 },
-                      visible: { opacity: 1, y: 0 },
-                      exit: { opacity: 0, y: -40 },
-                    }}
-                    transition={{ duration: 0.6 }}
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -40 }}
+                    transition={{ duration: 0.5 }}
                   >
                     {slides[index].title}
                   </motion.h3>
 
                   <motion.p
                     className="text-gray-500 leading-tight text-[1vw] mt-[1vw]"
-                    variants={{
-                      hidden: { opacity: 0, y: 40 },
-                      visible: { opacity: 1, y: 0 },
-                      exit: { opacity: 0, y: -40 },
-                    }}
-                    transition={{ duration: 0.6 }}
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -40 }}
+                    transition={{ duration: 0.5 }}
                   >
                     {slides[index].content}
                   </motion.p>
                 </div>
               </motion.div>
             </AnimatePresence>
+
           </div>
 
-          {/* EMPTY RIGHT COLUMN */}
+          {/* Empty Right Column */}
           <div />
         </div>
 
         {/* Divider */}
-        <div className="mt-[3vw] border-t border-gray-200" />
+        <div className="mt-[6vw] border-t border-gray-200" />
       </div>
     </section>
   );

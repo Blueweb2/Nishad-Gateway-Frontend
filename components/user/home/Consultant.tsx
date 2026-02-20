@@ -6,7 +6,7 @@ import ParallaxImage from "../shared/ParallaxImage";
 
 const contentData = {
   western: [
-    { title: "Professional Work Culture", description: "Professional, relationship-driven, and fast-evolving, with a strong focus on results and Vision 2030 goals.", image: "/consultant/Work-Culture.jpg" },
+    { title: "Professional Work Culture", description: "Professional, relationship-driven, and fast-evolving, with a strong focus on results and Vision 2030 goals.", image: "/consultant/employment-opportunities-across-key-sectors.jpg" },
     { title: "Dress Code & Cultural Etiquette ", description: "Modest and professional; expats enjoy flexibility while respecting local norms in public spaces.", image: "/consultant/Dress-Code.jpg" },
     { title: "Social Life, Entertainment & Lifestyle ", description: "A growing lifestyle scene with cafés, events, gyms, entertainment zones, and expat communities.", image: "/consultant/Social-Life.jpg" },
     { title: "Housing Options & Expat Communities ", description: "Wide options including expat compounds, gated communities, and modern city apartments.", image: "/consultant/Housing.jpg"  },
@@ -17,7 +17,7 @@ const contentData = {
   asian: [
     { title: "Employment Opportunities Across Key Sectors ", description: "Strong demand across construction, healthcare, IT, logistics, retail, and service sectors.", image: "/consultant/employment.jpg" },
     { title: "Cost of Living & Community Life", description: "Affordable living options with well-established Asian communities across major cities.", image: "/consultant/Cost-of-Living-and-Community-Life.jpg" },
-    { title: "Community Networks & Cultural Support", description: "Strong Asian communities, cultural associations, religious centers, and social groups provide support, connection, and a sense of home across major Saudi cities.",image: "/consultant/Cost-of-Living-and-Community-Life.jpg" },
+    { title: "Community Networks & Cultural Support", description: "Strong Asian communities, cultural associations, religious centers, and social groups provide support, connection, and a sense of home across major Saudi cities.",image: "/consultant/community-networks-and-cultural-support.jpg" },
     { title: "Schools & Curriculum Options ", description: "International and community-based schools offering Indian, Filipino, British, and CBSE curricula." ,image: "/consultant/Schoolsasian.jpg"},
     { title: "Food Culture, Cuisine & Daily Lifestyle  ", description: "Easy access to Asian groceries, restaurants, cultural food habits, and social networks", image: "/consultant/Food-and-Lifestyle.jpg"},
   ],

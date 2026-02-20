@@ -5,7 +5,7 @@ import OvalArrow from "@/components/user/ui/OvalArrow";
 import ParallaxImage from "../shared/ParallaxImage";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import { EffectFade } from "swiper/modules";
+import { EffectFade, Autoplay } from "swiper/modules";
 import { useRef, useState } from "react";
 
 import "swiper/css";
@@ -96,42 +96,56 @@ export default function BusinessGrowth() {
         </div>
       </div>
 
+      {/*  HEADING  */}
+      <div className="px-[4vw] pt-[3vw]">
+        <FadeUpScroll delay={0.2}>
+          <h2 className="text-[2.2vw] font-bold leading-[1.25]">
+            How Business <br />
+            Works in <br />
+            Saudi Arabia
+          </h2>
+        </FadeUpScroll>
+      </div>
+
       {/* CONTENT */}
       <div className="relative max-w-[85vw] mx-auto px-[3vw] z-10">
         <div className="grid grid-cols-3 gap-[4vw] min-h-[35vw]">
 
           {/* LEFT */}
-          <div className="flex flex-col pr-[2vw]">
+          <div className="grid grid-rows-[1fr_auto] pr-[2vw] min-h-[38vw]">
 
-            {/* ✅ Main Heading (animates only once) */}
-            <FadeUpScroll delay={0.2}>
-              <h2 className="text-[2.2vw] font-bold leading-[1.25] mb-[8vw]">
-                How Business <br />
-                Works in <br />
-                Saudi Arabia
-              </h2>
-            </FadeUpScroll>
+            {/* Top Content (grows upward) */}
+            <div className="flex flex-col justify-end pb-[1.5vw]">
 
-            {/* ✅ Dynamic Subtitle (changes per slide) */}
-            <FadeUpScroll delay={0.3} key={activeIndex}>
-              <p className="text-[1.8vw] max-w-[16vw] font-medium text-[#287F7F] mb-[1vw] mt-[2vw]">
-                {activeSlide.title}
-              </p>
-            </FadeUpScroll>
 
-            <div className="w-full h-px bg-gray-200" />
+              <FadeUpScroll delay={0.3} key={activeIndex}>
+                <p className="text-[1.8vw] max-w-[17vw] font-medium text-[#287F7F] leading-[1.25]">
+                  {activeSlide.title}
+                </p>
+              </FadeUpScroll>
+            </div>
+
+            {/* Divider (true center anchor) */}
+            <div className="h-px bg-gray-200 w-full mt-5" />
+
           </div>
+
 
           {/* CENTER SLIDER */}
           <div className="flex items-center justify-center">
             <div className="flex flex-col items-center">
               <Swiper
-                modules={[EffectFade]}
+                modules={[EffectFade, Autoplay]}
                 effect="fade"
                 fadeEffect={{ crossFade: true }}
                 speed={900}
                 loop
                 slidesPerView={1}
+                autoplay={{
+                  delay: 4000, // 4 seconds
+                  disableOnInteraction: false, // continue after manual swipe
+                  pauseOnMouseEnter: true, // pause on hover
+                }}
                 onSwiper={(swiper) => (swiperRef.current = swiper)}
                 onSlideChange={(swiper) => {
                   setActiveIndex(swiper.realIndex);
@@ -139,6 +153,7 @@ export default function BusinessGrowth() {
                 }}
                 className="w-[30vw] h-[38vw]"
               >
+
                 {slides.map((slide, index) => (
                   <SwiperSlide key={index}>
                     <div className="relative w-[30vw] h-[38vw] overflow-hidden rounded-[10vw]">
@@ -168,15 +183,23 @@ export default function BusinessGrowth() {
           </div>
 
           {/* RIGHT */}
-          <div className="flex flex-col items-start pl-[2vw]">
-            <FadeUpScroll delay={0.5} key={activeIndex + "desc"}>
-              <p className="text-gray-500 leading-[1.2] max-w-[20vw] text-left mb-[2vw] mt-[18vw] text-[1vw]">
-                {activeSlide.description}
-              </p>
-            </FadeUpScroll>
+          <div className="grid grid-rows-[1fr_auto] pl-[2vw] min-h-[38vw]">
 
-            <div className="w-full h-px bg-gray-200" />
+            {/* Top Content */}
+            <div className="flex flex-col justify-end pb-[1.5vw]">
+              <FadeUpScroll delay={0.5} key={activeIndex + "desc"}>
+                <p className="text-gray-500 leading-[1.4] max-w-[20vw] text-left text-[1vw]">
+                  {activeSlide.description}
+                </p>
+              </FadeUpScroll>
+            </div>
+
+            {/* Divider */}
+            <div className="h-px bg-gray-200 w-full mt-5 " />
+
           </div>
+
+
 
         </div>
       </div>
