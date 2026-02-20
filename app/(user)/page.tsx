@@ -47,7 +47,7 @@ export default function HomePage() {
       </section>
 
       {/* WHITE SECTION (Navbar becomes white here automatically) */}
-      <section data-navbar="white" className="bg-white">
+      <section data-navbar="light" className="bg-white">
         <div className="mx-auto w-full max-w-6xl px-6 py-16">
           <h2 className="text-2xl md:text-3xl font-semibold text-gray-900">
             Why choose Nishad Gateway?

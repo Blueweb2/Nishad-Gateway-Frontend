@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
@@ -14,15 +15,13 @@ export default function RichTextEditor({ value, onChange }: Props) {
     extensions: [
       StarterKit.configure({
         heading: {
-          levels: [2, 3], // allow H2 and H3
+          levels: [2, 3],
         },
       }),
       Link.configure({
         openOnClick: false,
-        HTMLAttributes: {
-          target: "_blank",
-          rel: "noopener noreferrer",
-        },
+        autolink: true,
+        protocols: ["http", "https"],
       }),
     ],
     content: value || "",
@@ -41,22 +40,70 @@ export default function RichTextEditor({ value, onChange }: Props) {
     },
   });
 
+  /* ================================
+     🔄 Sync external value changes
+  ================================= */
+  useEffect(() => {
+    if (!editor) return;
+
+    if (editor.getHTML() !== value) {
+      editor.commands.setContent(value || "", {
+        emitUpdate: false,
+      });
+    }
+  }, [value, editor]);
+
   if (!editor) return null;
 
   const btn = (active: boolean) =>
-    `px-3 py-1 rounded text-sm transition ${
-      active
-        ? "bg-emerald-600 text-white"
-        : "bg-white/10 text-white hover:bg-white/20"
+    `px-3 py-1 rounded text-sm transition ${active
+      ? "bg-emerald-600 text-white"
+      : "bg-white/10 text-white hover:bg-white/20"
     }`;
+
+  /* ================================
+     🔐 Safe Link Insert
+  ================================= */
+const handleLink = () => {
+  if (editor.isActive("link")) {
+    editor.chain().focus().unsetLink().run();
+    return;
+  }
+
+  const input = window.prompt("Enter URL (https://... or /path)");
+
+  if (!input) return;
+
+  const url = input.trim();
+
+  const isExternal = /^https?:\/\/.+/i.test(url);
+  const isInternal = url.startsWith("/");
+
+  if (!isExternal && !isInternal) {
+    alert("Only https:// links or internal /paths are allowed.");
+    return;
+  }
+
+  editor
+    .chain()
+    .focus()
+    .extendMarkRange("link")
+    .setLink({
+      href: url,
+      ...(isExternal && {
+        target: "_blank",
+        rel: "noopener noreferrer",
+      }),
+    })
+    .run();
+};
 
   return (
     <div className="border border-white/10 rounded-lg bg-black/40 overflow-hidden">
-      
+
       {/* Toolbar */}
       <div className="flex flex-wrap gap-2 p-3 border-b border-white/10">
 
-        {/* Bold */}
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleBold().run()}
@@ -65,7 +112,6 @@ export default function RichTextEditor({ value, onChange }: Props) {
           Bold
         </button>
 
-        {/* Italic */}
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleItalic().run()}
@@ -74,7 +120,6 @@ export default function RichTextEditor({ value, onChange }: Props) {
           Italic
         </button>
 
-        {/* H2 */}
         <button
           type="button"
           onClick={() =>
@@ -85,7 +130,6 @@ export default function RichTextEditor({ value, onChange }: Props) {
           H2
         </button>
 
-        {/* H3 */}
         <button
           type="button"
           onClick={() =>
@@ -96,43 +140,25 @@ export default function RichTextEditor({ value, onChange }: Props) {
           H3
         </button>
 
-        {/* Bullet List */}
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleBulletList().run()}
           className={btn(editor.isActive("bulletList"))}
         >
-          Bullet List
+          Bullet
         </button>
 
-        {/* Ordered List */}
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
           className={btn(editor.isActive("orderedList"))}
         >
-          Ordered List
+          Ordered
         </button>
 
-        {/* Link */}
         <button
           type="button"
-          onClick={() => {
-            if (editor.isActive("link")) {
-              editor.chain().focus().unsetLink().run();
-              return;
-            }
-
-            const url = prompt("Enter URL");
-            if (!url) return;
-
-            editor
-              .chain()
-              .focus()
-              .extendMarkRange("link")
-              .setLink({ href: url })
-              .run();
-          }}
+          onClick={handleLink}
           className={btn(editor.isActive("link"))}
         >
           Link

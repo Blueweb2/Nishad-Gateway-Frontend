@@ -1,4 +1,4 @@
-import { getData, putData } from "./request";
+import { getData, putData } from "./publicApi";
 
 // same endpoint (admin + user)
 export const adminGetSubServiceContent = (subId: string) => {

@@ -9,7 +9,6 @@ import RichTextEditor from "@/components/admin/common/RichTextEditor";
 import { VisionSectionContent } from "@/lib/types/city-blog";
 
 import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
-import { cloudinaryAutoWebp } from "@/utils/cloudinary";
 
 type Props = {
   content: VisionSectionContent;
@@ -45,12 +44,10 @@ export default function VisionSectionEditor({
         "nishad-gateway/cities/vision"
       );
 
-      const optimizedUrl = cloudinaryAutoWebp(uploaded.secure_url);
-
-      // 🔥 Only update state — backend will clean old images on save
+      // ✅ Store RAW secure_url only
       onChange({
         ...content,
-        imageUrl: optimizedUrl,
+        imageUrl: uploaded.secure_url,
         imagePublicId: uploaded.public_id,
       });
 
@@ -69,7 +66,6 @@ export default function VisionSectionEditor({
   const handleRemoveImage = () => {
     if (!content.imageUrl) return;
 
-    // 🔥 Only update state — backend cleanup happens on save
     onChange({
       ...content,
       imageUrl: "",
@@ -83,7 +79,7 @@ export default function VisionSectionEditor({
       {/* ================= HEADING ================= */}
       <input
         placeholder="Section Heading"
-        value={content.heading}
+        value={content.heading || ""}
         onChange={(e) =>
           onChange({ ...content, heading: e.target.value })
         }
@@ -92,7 +88,7 @@ export default function VisionSectionEditor({
 
       {/* ================= RICH TEXT ================= */}
       <RichTextEditor
-        value={content.content}
+        value={content.content || ""}
         onChange={(value) =>
           onChange({ ...content, content: value })
         }
@@ -106,7 +102,7 @@ export default function VisionSectionEditor({
 
         <div className="flex flex-col md:flex-row gap-4">
           <input
-            value={content.imageUrl}
+            value={content.imageUrl || ""}
             readOnly
             placeholder="Image will appear here after upload"
             className="flex-1 px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white text-sm"
@@ -141,8 +137,9 @@ export default function VisionSectionEditor({
           <div className="relative mt-4 w-full h-[220px] rounded-xl overflow-hidden border border-white/10">
             <Image
               src={content.imageUrl}
-              alt="Vision Preview"
+              alt={content.heading || "Vision Preview"}
               fill
+              sizes="100vw"
               className="object-cover"
             />
 

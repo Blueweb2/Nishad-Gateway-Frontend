@@ -6,7 +6,7 @@ import { FaInstagram, FaWhatsapp, FaTelegramPlane } from "react-icons/fa";
 
 export default function ContactPage() {
     return (
-        <main className="min-h-screen bg-white" data-navbar="white">
+        <main className="min-h-screen bg-white" data-navbar="light">
             {/* FULL WIDTH BACK ROW */}
             <div className="w-full px-6 pt-6">
                 <Link
