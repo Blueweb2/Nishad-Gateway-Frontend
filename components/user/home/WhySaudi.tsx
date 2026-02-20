@@ -1,168 +1,124 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import OvalArrow from "@/components/user/ui/OvalArrow";
-import { motion, AnimatePresence } from "framer-motion";
 
 const slides = [
   {
     title: "Vision 2030–Driven Growth",
     content:
       "Massive government investment is transforming the economy and opening new industries.",
-    image: "/vision.svg",
   },
   {
     title: "Strategic Global Location",
     content:
       "Saudi Arabia connects Asia, Europe, and Africa, making it a gateway for regional expansion.",
-    image: "/icons/Strategic-Global-Location.svg",
   },
   {
     title: "100% Foreign Ownership Options",
     content:
       "Many sectors allow full foreign ownership with strong investor protections.",
-    image: "/icons/Foreign-Ownership-Options.svg",
   },
   {
     title: "Business-Friendly Reforms",
     content:
       "Fast company setup, digital government portals, and transparent regulations.",
-    image: "/icons/Business-Friendly-Reforms.svg",
   },
   {
     title: "High-Growth Sectors",
     content:
       "Opportunities across healthcare, logistics, manufacturing, fintech, tourism, and energy.",
-    image: "/icons/High-Growth-Sectors.svg",
   },
   {
     title: "Strong Economy & Stability",
     content:
       "The largest economy in the Middle East with stable currency and government-backed growth.",
-    image: "/icons/Strong-Economy&Stability.svg",
   },
 ];
 
 export default function WhySaudi() {
   const [index, setIndex] = useState(0);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIndex((prev) => (prev + 1) % slides.length);
-    }, 4000);
-
-    return () => clearTimeout(timer);
-  }, [index]);
+  const [animateKey, setAnimateKey] = useState(0);
 
   const nextSlide = () => {
     setIndex((prev) => (prev + 1) % slides.length);
+    setAnimateKey((prev) => prev + 1); // trigger animation
   };
 
   return (
     <section
-      data-navbar="light"
+      data-navbar="white"
       data-menu="dark-text"
-      className="relative w-full bg-white text-black py-[4vw] pt-[6vw] overflow-hidden"
+      className="relative w-full bg-white text-black py-[6vw] px-[0vw] overflow-hidden"
     >
-      {/* Background */}
-      <div
-        className="absolute inset-0 -z-10 bg-no-repeat bg-right-top bg-[length:55vw] opacity-10"
-        style={{ backgroundImage: "url('/bg-why-saudi.svg')" }}
-      />
-
-      {/* Pagination */}
+      {/* PAGINATION */}
       <div className="absolute inset-x-0 top-0">
-        <div className="w-full flex justify-end px-[4vw] pt-[6vw]">
+        <div className="w-full flex justify-end px-[2vw] pt-[3vw]">
           <div className="flex items-center gap-6">
             <span className="text-sm text-gray-600">
-              {index + 1} /{" "}
-              <span className="text-black">{slides.length}</span>
+              {index + 1} / <span className="text-black">6</span>
             </span>
 
-            <OvalArrow
-              direction="right"
-              variant="gray"
-              onClick={nextSlide}
-              className="w-[2.2vw] h-[3vw]"
-            />
+            <button onClick={nextSlide}>
+              <OvalArrow
+                direction="right"
+                variant="gray"
+                className="w-[2.2vw] h-[3vw]"
+              />
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="relative max-w-[85vw] mx-auto">
-        <div className="grid grid-cols-3 gap-[6vw] items-center">
+      {/* CONTENT */}
+      <div className="relative max-w-[85vw] mx-auto px-[0vw]">
 
-          {/* Left Title */}
-          <div className="leading-tight">
+        <div className="grid grid-cols-3 gap-[6vw] items-start">
+
+          {/* LEFT STATIC TITLE */}
+          <div>
             <p className="text-[2vw] font-semibold">Why</p>
-            <h2 className="text-[2.18vw] font-bold leading-tight">
+            <h2 className="text-[4vw] font-bold leading-tight">
               Saudi Arabia
             </h2>
           </div>
 
-          {/* Center Slide (FIXED HEIGHT + ABSOLUTE CONTENT) */}
-          <div className="relative h-[98vw] w-full">
+          {/* CENTER SLIDE CONTENT */}
+          {/* CENTER SLIDE CONTENT */}
+          <div key={index} className="flex flex-col items-start">
 
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={index}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.4 }}
-                className="absolute inset-0 flex flex-col items-start"
+            <Image
+              src="/vision.svg"
+              alt="Vision 2030"
+              width={80}
+              height={80}
+              className="fade-up-animate"
+            />
+
+            <div className="mt-[12vw] max-w-[30vw]">
+
+              <h3 className="text-[1.5vw] font-medium mb-[1vw] fade-up-animate">
+                {slides[index].title}
+              </h3>
+
+              <p
+                className="text-gray-500 leading-relaxed text-[1.1vw] fade-up-animate"
+                style={{ animationDelay: "0.15s" }}
               >
-                {/* Icon */}
-                <motion.div
-                  initial={{ opacity: 0, y: 40 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -40 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <Image
-                    src={slides[index].image}
-                    alt={slides[index].title}
-                    width={120}
-                    height={120}
-                    className="object-contain"
-                  />
-                </motion.div>
+                {slides[index].content}
+              </p>
 
-                {/* Text */}
-                <div className="mt-[6vw] max-w-[22vw]">
-                  <motion.h3
-                    className="text-[1.5vw] font-medium"
-                    initial={{ opacity: 0, y: 40 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -40 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    {slides[index].title}
-                  </motion.h3>
-
-                  <motion.p
-                    className="text-gray-500 leading-tight text-[1vw] mt-[1vw]"
-                    initial={{ opacity: 0, y: 40 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -40 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    {slides[index].content}
-                  </motion.p>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-
+            </div>
           </div>
 
-          {/* Empty Right Column */}
+
+          {/* EMPTY RIGHT COLUMN */}
           <div />
         </div>
 
-        {/* Divider */}
-        <div className="mt-[6vw] border-t border-gray-200" />
+        {/* DIVIDER */}
+        <div className="mt-[4vw] border-t border-gray-200" />
       </div>
     </section>
   );
