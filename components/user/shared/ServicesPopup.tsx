@@ -88,10 +88,7 @@ export default function ServicesPopup({
       <div
         onClick={(e) => e.stopPropagation()}
         className={`
-          fixed top-20 left-1/2 -translate-x-1/2
-          w-[430px]
-          z-50
-          overflow-hidden
+          fixed top-20 left-1/2 w-[340px] sm:w-[360px] z-50
           ${open ? "animate-sheetReveal" : "animate-sheetHide"}
         `}
       >

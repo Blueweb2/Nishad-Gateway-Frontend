@@ -107,17 +107,13 @@ export default function BlogsPopup({
             {/* POPUP – OUTER */}
             <div
                 onClick={(e) => e.stopPropagation()}
-                className={`
-          fixed top-20 left-1/2 -translate-x-1/2
-          w-[340px] sm:w-[360px]
-          z-50
-          ${open ? "animate-sheetReveal" : "animate-sheetHide"}
-        `}
+                className={`fixed top-20 left-1/2 w-[340px] sm:w-[360px] z-50
+                ${open ? "animate-sheetReveal" : "animate-sheetHide"}`}
             >
                 {/* INNER CARD */}
-                <div className="bg-white rounded-[28px] shadow-2xl border border-black/10 overflow-hidden">
+                <div className="bg-white rounded-[28px] shadow-2xl border border-black/10 overflow-hidden flex flex-col max-h-full">
                     {/* TOP BAR */}
-                    <div className="flex items-center justify-between px-5 pt-5 pb-4">
+                    <div className="flex items-center justify-between px-5 pt-5 pb-4 border-b border-gray-300">
                         {/* left: Articles pill */}
                         <button
                             className="px-4 py-2 rounded-full text-xs font-medium bg-gray-100 text-gray-800 hover:bg-gray-200 transition"
@@ -141,7 +137,7 @@ export default function BlogsPopup({
                     </div>
 
                     {/* LIST */}
-                    <div className="px-5 pb-6 max-h-[520px] overflow-y-auto">
+                    <div className="px-5 max-h-[520px] overflow-y-auto hide-scrollbar mt-5 pb-10">
                         {filtered.length === 0 ? (
                             <p className="text-sm text-gray-500 py-10 text-center">
                                 No blogs found.
