@@ -222,3 +222,21 @@ xl: 768px   // Fold / Tablet */
   width: 0px;
   height: 0px;
 }
+
+
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes borderFlow {
+  to {
+    --angle: 360deg;
+  }
+}
+
+.border-animate {
+  --angle: 0deg;
+  animation: borderFlow 3s linear infinite;
+}
