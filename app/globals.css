@@ -92,7 +92,7 @@ xl: 768px   // Fold / Tablet */
 
 
 /* contact us  */
-@keyframes sheetReveal {
+@keyframes contactSheetReveal {
   from {
     opacity: 0;
     transform: translateY(-10px) scale(0.98);
@@ -103,7 +103,7 @@ xl: 768px   // Fold / Tablet */
   }
 }
 
-@keyframes sheetHide {
+@keyframes contactSheetHide {
   from {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -114,12 +114,12 @@ xl: 768px   // Fold / Tablet */
   }
 }
 
-.animate-sheetReveal {
-  animation: sheetReveal 0.45s ease forwards;
+.animate-contactSheetReveal {
+  animation: contactSheetReveal 0.45s ease forwards;
 }
 
-.animate-sheetHide {
-  animation: sheetHide 0.45s ease forwards;
+.animate-contactSheetHide {
+  animation: contactSheetHide 0.45s ease forwards;
 }
 
 
@@ -208,5 +208,5 @@ xl: 768px   // Fold / Tablet */
 
 
 .description-text {
-  @apply text-base md:text-lg text-gray-600 leading-relaxed;
+  @apply text-base md:text-lg text-gray-600 leading-tight;
 }
