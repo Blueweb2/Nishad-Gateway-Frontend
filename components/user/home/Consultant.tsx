@@ -15,11 +15,11 @@ const contentData = {
     { title: "Banking, Finance & Digital Payments ", description: "Advanced digital banking, international transfers, and expat-friendly financial services." , image: "/consultant/Banking.jpg"},
   ],
   asian: [
-    { title: "Employment Opportunities Across Key Sectors ", description: "Strong demand across construction, healthcare, IT, logistics, retail, and service sectors.", image: "/consultant/employment.jpg" },
+    { title: "Employment Opportunities Across Key Sectors ", description: "Strong demand across construction, healthcare, IT, logistics, retail, and service sectors.", image: "/consultant/employment-opportunities-across-key-sectors.jpg" },
     { title: "Cost of Living & Community Life", description: "Affordable living options with well-established Asian communities across major cities.", image: "/consultant/Cost-of-Living-and-Community-Life.jpg" },
     { title: "Community Networks & Cultural Support", description: "Strong Asian communities, cultural associations, religious centers, and social groups provide support, connection, and a sense of home across major Saudi cities.",image: "/consultant/community-networks-and-cultural-support.jpg" },
     { title: "Schools & Curriculum Options ", description: "International and community-based schools offering Indian, Filipino, British, and CBSE curricula." ,image: "/consultant/Schoolsasian.jpg"},
-    { title: "Food Culture, Cuisine & Daily Lifestyle  ", description: "Easy access to Asian groceries, restaurants, cultural food habits, and social networks", image: "/consultant/Food-and-Lifestyle.jpg"},
+    { title: "Food Culture, Cuisine & Daily Lifestyle", description: "Easy access to Asian groceries, restaurants, cultural food habits, and social networks", image: "/consultant/Food-and-Lifestyle.jpg"},
   ],
 };
 

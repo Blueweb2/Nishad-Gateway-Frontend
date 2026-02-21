@@ -7,22 +7,22 @@ import FadeUpScroll from "../ui/FadeUpScroll";
 export default function KeyServices() {
   return (
     <section className="w-full bg-[#84817F] text-white" data-navbar="light">
-      <div className="max-w-[1420px] mx-auto px-6 py-24">
+      <div className="max-w-8xl mx-auto px-6 py-24">
 
         {/* HEADER */}
         <div className="flex items-center justify-between mb-16">
           <FadeUpScroll delay={0.1}>
-            <h2 className="text-2xl font-semibold">
+            <h2 className="text-[30px] font-semibold">
               Key Sectors Driving Growth
             </h2>
           </FadeUpScroll>
-          <button className="text-sm text-white/80 hover:text-white underline">
+          <button className="text-xl text-white/80 hover:text-white underline">
             Explore Investment Sectors
           </button>
         </div>
 
         {/* GRID */}
-        <div className="grid grid-cols-5 gap-4">
+   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-6 gap-y-8">
 
           <Card
             icon="/icons/sectors/manufacturing.svg"
@@ -105,22 +105,23 @@ function Card({
 }) {
   return (
     <div
-      className="
-    group
-    bg-[#908D8C]
-    hover:bg-[#096C6C]
-    transition-colors duration-300 ease-out
-    rounded-2xl
-    p-6
-    h-[190px]
-    cursor-pointer
-    flex flex-col
-  "
+   className="
+  group
+  bg-[#908D8C]
+  hover:bg-[#096C6C]
+  transition-all duration-300 ease-out
+  rounded-2xl
+  p-6
+  w-full
+  min-h-[280px]
+  cursor-pointer
+  flex flex-col justify-between
+"
     >
 
       {/* Top Row */}
       <div className="flex items-start justify-between">
-        <Image src={icon} alt={title} width={42} height={42} />
+        <Image src={icon} alt={title} width={82} height={82} />
 
         <ArrowRight
           size={18}
@@ -130,13 +131,13 @@ function Card({
 
       {/* Content */}
       <div className="mt-6">
-        <p className="text-sm font-medium">
+        <p className="text-xl font-medium">
           {title}
         </p>
 
         <p
           className="
-            text-xs text-white/90 leading-relaxed
+            text-base md:text-lg text-white/90 leading-tight
             mt-3
             opacity-0 translate-y-2
             transition-all duration-300

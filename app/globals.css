@@ -206,6 +206,11 @@ xl: 768px   // Fold / Tablet */
 }
 
 
+
+.description-text {
+  @apply text-base md:text-lg text-gray-600 leading-tight;
+}
+
 /* Hide scrollbar completely */
 .hide-scrollbar {
   overflow-y: auto;

@@ -1,4 +1,4 @@
-import { postData } from "./request";
+import { postData } from "./publicApi";
 
 export const uploadImage = async (file: File) => {
   const formData = new FormData();
