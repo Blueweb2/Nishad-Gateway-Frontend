@@ -112,7 +112,7 @@ function Card({
     transition-colors duration-300 ease-out
     rounded-2xl
     p-6
-    h-[190px]
+    h-[210px]
     cursor-pointer
     flex flex-col
   "

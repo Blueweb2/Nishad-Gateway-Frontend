@@ -68,13 +68,13 @@ export default function BusinessGrowth() {
   return (
     <section
       data-navbar="light"
-      className="relative w-full bg-white text-black py-[2vw] overflow-hidden"
+      className="relative w-full bg-white text-black py-12 md:py-16 overflow-hidden"
     >
       {/* CONTROLS */}
       <div className="absolute inset-x-0 top-0 h-full pointer-events-none z-20">
-        <div className="w-full h-full flex items-center justify-between px-[4vw]">
+        <div className="w-full h-full flex items-center justify-between px-6 md:px-16">
           <div className="pointer-events-auto">
-            <div className="flex items-center gap-[0.5vw] text-[0.9vw] text-gray-400">
+            <div className="flex items-center gap-[0.5vw] text-sm md:text-base text-gray-400">
               <span>{String(activeIndex + 1).padStart(2, "0")}</span>
               <span>|</span>
               <span>{String(slides.length).padStart(2, "0")}</span>
@@ -97,9 +97,9 @@ export default function BusinessGrowth() {
       </div>
 
       {/*  HEADING  */}
-      <div className="px-[4vw] pt-[3vw]">
+      <div className="px-6 md:px-16 pt-[3vw]">
         <FadeUpScroll delay={0.2}>
-          <h2 className="text-[2.2vw] font-bold leading-[1.25]">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-[1.25]">
             How Business <br />
             Works in <br />
             Saudi Arabia
@@ -109,27 +109,25 @@ export default function BusinessGrowth() {
 
       {/* CONTENT */}
       <div className="relative max-w-[85vw] mx-auto px-[3vw] z-10">
-        <div className="grid grid-cols-3 gap-[4vw] min-h-[35vw]">
+        <div className="grid grid-cols-3 gap-4 min-h-[35vw]">
 
           {/* LEFT */}
-          <div className="grid grid-rows-[1fr_auto] pr-[2vw] min-h-[38vw]">
 
-            {/* Top Content */}
-            <div className="flex flex-col justify-end pb-[1.5vw]">
+          <div className="relative min-h-[38vw] pr-[2vw]">
 
+            {/* Divider fixed at center */}
+            <div className="absolute left-0 right-0 top-1/2 h-px bg-gray-200" />
 
+            {/* Text positioned just above divider */}
+            <div className="absolute top-1/2 -translate-y-full pb-[1.2vw]">
               <FadeUpScroll delay={0.3} key={activeIndex}>
-                <p className="text-[1.8vw] max-w-[17vw] font-medium text-[#287F7F] leading-[1.25]">
+                <p className="text-xl md:text-2xl lg:text-3xl max-w-[17vw] font-medium text-[#287F7F] leading-[1.25]">
                   {activeSlide.title}
                 </p>
               </FadeUpScroll>
             </div>
 
-            {/* Divider (true center anchor) */}
-            <div className="h-px bg-gray-200 w-full mt-5" />
-
           </div>
-
 
           {/* CENTER SLIDER */}
           <div className="flex items-center justify-center">
@@ -175,7 +173,7 @@ export default function BusinessGrowth() {
               </Swiper>
 
               <FadeUpScroll delay={0.4} key={activeIndex + "cta"}>
-                <p className="mt-[2vw] text-[0.9vw] text-green-600 underline underline-offset-[0.3vw] cursor-pointer">
+                <p className="mt-[2vw] text-sm md:text-base text-green-600 underline underline-offset-[0.3vw] cursor-pointer">
                   {activeSlide.linkText}
                 </p>
               </FadeUpScroll>
@@ -183,19 +181,19 @@ export default function BusinessGrowth() {
           </div>
 
           {/* RIGHT */}
-          <div className="grid grid-rows-[1fr_auto] pl-[2vw] min-h-[38vw]">
+          <div className="relative min-h-[38vw] pl-[2vw]">
 
-            {/* Top Content */}
-            <div className="flex flex-col justify-end pb-[1.5vw]">
+            {/* Divider fixed at center */}
+            <div className="absolute left-0 right-0 top-1/2 h-px bg-gray-200" />
+
+            {/* Text positioned just above divider */}
+            <div className="absolute top-1/2 -translate-y-full pb-[1.2vw]">
               <FadeUpScroll delay={0.5} key={activeIndex + "desc"}>
-                <p className="text-gray-500 leading-[1.4] max-w-[20vw] text-left text-[1vw]">
+                <p className="text-gray-500 leading-[1.4] max-w-[20vw] text-base md:text-lg">
                   {activeSlide.description}
                 </p>
               </FadeUpScroll>
             </div>
-
-            {/* Divider */}
-            <div className="h-px bg-gray-200 w-full mt-5 " />
 
           </div>
 

@@ -205,3 +205,8 @@ xl: 768px   // Fold / Tablet */
   animation: fadeUp 1s cubic-bezier(.22,1,.36,1) forwards;
 }
 
+
+
+.description-text {
+  @apply text-base md:text-lg text-gray-600 leading-relaxed;
+}
