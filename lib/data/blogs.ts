@@ -1,7 +1,5 @@
 export const BLOGS = [
-
   {
-
     id: "1",
     image: "/Olaya.webp",
     tags: ["Market Entry", "Investor Guide"],
@@ -10,14 +8,14 @@ export const BLOGS = [
   },
   {
     id: "2",
-    image: "/Olaya.webp",
+    image: "/ksa-a.png",
     tags: ["Government Platforms", "Investor Guide"],
     title:
       "Top Saudi Government Platforms Every Investor Should Know Before Starting a Business",
   },
   {
     id: "3",
-    image: "/Olaya.webp",
+    image: "/ksa-b.png",
     tags: ["Lifestyle", "Expat Living"],
     title:
       "Investor Lifein Saudi Arabia – Culture, Costs & Family-Friendly Insights for Expats",
