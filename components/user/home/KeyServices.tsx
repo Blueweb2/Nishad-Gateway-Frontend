@@ -6,7 +6,7 @@ import FadeUpScroll from "../ui/FadeUpScroll";
 
 export default function KeyServices() {
   return (
-    <section className="w-full bg-[#84817F] text-white" data-navbar="light">
+    <section className="w-full bg-[#84817F] text-white" data-navbar="light" data-menu="dark-text">
       <div className="max-w-8xl mx-auto px-6 py-24">
 
         {/* HEADER */}
