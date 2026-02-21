@@ -66,22 +66,21 @@ export default function BusinessGrowth() {
   const activeSlide = slides[activeIndex];
 
   return (
-    <section
-      data-navbar="light"
-      className="relative w-full bg-white text-black py-12 md:py-16 overflow-hidden"
+    <section data-navbar="light"
+      className="relative w-full h-screen bg-white text-black overflow-hidden flex items-center"
     >
-      {/* CONTROLS */}
-      <div className="absolute inset-x-0 top-0 h-full pointer-events-none z-20">
-        <div className="w-full h-full flex items-center justify-between px-6 md:px-16">
+      {/* ================= FULL-WIDTH CONTROLS ================= */}
+      <div className="absolute inset-x-0 top-0 h-full pointer-events-none">
+        <div className="w-full h-full flex items-center justify-between px-10">
           <div className="pointer-events-auto">
-            <div className="flex items-center gap-[0.5vw] text-sm md:text-base text-gray-400">
+            <div className="flex items-center gap-2 text-sm text-gray-400">
               <span>{String(activeIndex + 1).padStart(2, "0")}</span>
               <span>|</span>
               <span>{String(slides.length).padStart(2, "0")}</span>
             </div>
           </div>
 
-          <div className="pointer-events-auto flex gap-[2vw]">
+          <div className="pointer-events-auto flex gap-6">
             <OvalArrow
               direction="left"
               variant="gray"
@@ -96,111 +95,77 @@ export default function BusinessGrowth() {
         </div>
       </div>
 
-      {/*  HEADING  */}
-      <div className="px-6 md:px-16 pt-[3vw]">
+      {/* ================= CONSTRAINED CONTENT ================= */}
+      <div className="relative z-10 max-w-[1320px] mx-auto px-6 w-full">
+        
+        {/* HEADING */}
         <FadeUpScroll delay={0.2}>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-[1.25]">
+          <h2 className="text-[36px] font-bold leading-tight ">
             How Business <br />
             Works in <br />
             Saudi Arabia
           </h2>
         </FadeUpScroll>
-      </div>
 
-      {/* CONTENT */}
-      <div className="relative max-w-[85vw] mx-auto px-[3vw] z-10">
-        <div className="grid grid-cols-3 gap-4 min-h-[35vw]">
+        <div className="grid grid-cols-3 gap-12 items-center">
 
-          {/* LEFT */}
-
-          <div className="relative min-h-[38vw] pr-[2vw]">
-
-            {/* Divider fixed at center */}
-            <div className="absolute left-0 right-0 top-1/2 h-px bg-gray-200" />
-
-            {/* Text positioned just above divider */}
-            <div className="absolute top-1/2 -translate-y-full pb-[1.2vw]">
-              <FadeUpScroll delay={0.3} key={activeIndex}>
-                <p className="text-xl md:text-2xl lg:text-3xl max-w-[17vw] font-medium text-[#287F7F] leading-[1.25]">
-                  {activeSlide.title}
-                </p>
-              </FadeUpScroll>
-            </div>
-
+          {/* LEFT COLUMN */}
+          <div className="flex flex-col justify-center">
+            <FadeUpScroll delay={0.3} key={activeIndex}>
+              <p className="text-2xl font-medium text-[#287F7F] max-w-sm">
+                {activeSlide.title}
+              </p>
+            </FadeUpScroll>
           </div>
 
           {/* CENTER SLIDER */}
-          <div className="flex items-center justify-center">
-            <div className="flex flex-col items-center">
-              <Swiper
-                modules={[EffectFade, Autoplay]}
-                effect="fade"
-                fadeEffect={{ crossFade: true }}
-                speed={900}
-                loop
-                slidesPerView={1}
-                autoplay={{
-                  delay: 4000, // 4 seconds
-                  disableOnInteraction: false, // continue after manual swipe
-                  pauseOnMouseEnter: true, // pause on hover
-                }}
-                onSwiper={(swiper) => (swiperRef.current = swiper)}
-                onSlideChange={(swiper) => {
-                  setActiveIndex(swiper.realIndex);
-                  setWipeKey((k) => k + 1);
-                }}
-                className="w-[30vw] h-[38vw]"
-              >
+          <div className="flex flex-col items-center">
+            <Swiper
+              modules={[EffectFade, Autoplay]}
+              effect="fade"
+              fadeEffect={{ crossFade: true }}
+              speed={900}
+              loop
+              slidesPerView={1}
+              autoplay={{
+                delay: 4000,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+              }}
+              onSwiper={(swiper) => (swiperRef.current = swiper)}
+              onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
+              className="w-[340px] h-[480px]"
+            >
+              {slides.map((slide, index) => (
+                <SwiperSlide key={index}>
+                  <div className="relative w-[340px] h-[480px] rounded-[150px] overflow-hidden">
+                    <ParallaxImage
+                      src={slide.src}
+                      alt={slide.alt}
+                      className="w-full h-full"
+                      priority={index === 0}
+                    />
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
 
-                {slides.map((slide, index) => (
-                  <SwiperSlide key={index}>
-                    <div className="relative w-[30vw] h-[38vw] overflow-hidden rounded-[10vw]">
-                      <ParallaxImage
-                        src={slide.src}
-                        alt={slide.alt}
-                        className="w-full h-full"
-                        priority={index === 0}
-                        speed={120}
-                      />
-
-                      <div
-                        key={wipeKey}
-                        className="absolute inset-0 z-20 bg-white origin-left animate-wipeReveal pointer-events-none"
-                      />
-                    </div>
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-
-              <FadeUpScroll delay={0.4} key={activeIndex + "cta"}>
-                <p className="mt-[2vw] text-sm md:text-base text-green-600 underline underline-offset-[0.3vw] cursor-pointer">
-                  {activeSlide.linkText}
-                </p>
-              </FadeUpScroll>
-            </div>
+            <button className="mt-6 text-sm text-green-600 underline underline-offset-4">
+              {activeSlide.linkText}
+            </button>
           </div>
 
-          {/* RIGHT */}
-          <div className="relative min-h-[38vw] pl-[2vw]">
-
-            {/* Divider fixed at center */}
-            <div className="absolute left-0 right-0 top-1/2 h-px bg-gray-200" />
-
-            {/* Text positioned just above divider */}
-            <div className="absolute top-1/2 -translate-y-full pb-[1.2vw]">
-              <FadeUpScroll delay={0.5} key={activeIndex + "desc"}>
-                <p className="text-gray-500 leading-[1.4] max-w-[20vw] text-base md:text-lg">
-                  {activeSlide.description}
-                </p>
-              </FadeUpScroll>
-            </div>
-
+          {/* RIGHT COLUMN */}
+          <div className="flex flex-col justify-center">
+            <FadeUpScroll delay={0.4} key={activeIndex + "desc"}>
+              <p className="text-gray-500 leading-relaxed max-w-sm">
+                {activeSlide.description}
+              </p>
+            </FadeUpScroll>
           </div>
-
-
 
         </div>
       </div>
     </section>
   );
-}
+};
