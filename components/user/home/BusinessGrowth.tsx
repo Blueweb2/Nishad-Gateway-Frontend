@@ -66,7 +66,7 @@ export default function BusinessGrowth() {
   const activeSlide = slides[activeIndex];
 
   return (
-    <section data-navbar="light"
+    <section data-navbar="light" data-menu="dark-text"
       className="relative w-full h-screen bg-white text-black overflow-hidden flex items-center"
     >
       {/* ================= FULL-WIDTH CONTROLS ================= */}
@@ -100,7 +100,7 @@ export default function BusinessGrowth() {
         
         {/* HEADING */}
         <FadeUpScroll delay={0.2}>
-          <h2 className="text-[36px] font-bold leading-tight ">
+          <h2 className="text-[36px] font-bold leading-tight">
             How Business <br />
             Works in <br />
             Saudi Arabia
@@ -110,12 +110,20 @@ export default function BusinessGrowth() {
         <div className="grid grid-cols-3 gap-12 items-center">
 
           {/* LEFT COLUMN */}
-          <div className="flex flex-col justify-center">
-            <FadeUpScroll delay={0.3} key={activeIndex}>
-              <p className="text-2xl font-medium text-[#287F7F] max-w-sm">
-                {activeSlide.title}
-              </p>
-            </FadeUpScroll>
+          <div className="relative min-h-[480px]">
+
+            {/* Center Divider */}
+            <div className="absolute left-0 right-0 top-1/2 h-px bg-gray-200" />
+
+            {/* Text above divider */}
+            <div className="absolute top-1/2 -translate-y-full pb-6">
+              <FadeUpScroll delay={0.3} key={activeIndex}>
+                <p className="text-2xl font-medium text-[#287F7F] max-w-sm">
+                  {activeSlide.title}
+                </p>
+              </FadeUpScroll>
+            </div>
+
           </div>
 
           {/* CENTER SLIDER */}
@@ -156,12 +164,20 @@ export default function BusinessGrowth() {
           </div>
 
           {/* RIGHT COLUMN */}
-          <div className="flex flex-col justify-center">
-            <FadeUpScroll delay={0.4} key={activeIndex + "desc"}>
-              <p className="text-gray-500 leading-relaxed max-w-sm">
-                {activeSlide.description}
-              </p>
-            </FadeUpScroll>
+          <div className="relative min-h-[480px]">
+
+            {/* Center Divider */}
+            <div className="absolute left-0 right-0 top-1/2 h-px bg-gray-200" />
+
+            {/* Text above divider */}
+            <div className="absolute top-1/2 -translate-y-full pb-6">
+              <FadeUpScroll delay={0.4} key={activeIndex + "desc"}>
+                <p className="text-gray-500 leading-relaxed max-w-sm">
+                  {activeSlide.description}
+                </p>
+              </FadeUpScroll>
+            </div>
+
           </div>
 
         </div>
