@@ -38,20 +38,31 @@ export default function HamburgerMenu({ open, onClose }: Props) {
   }, [onClose]);
 
   // Detect background type
-  useEffect(() => {
-    const sections = document.querySelectorAll('[data-menu="dark-text"]');
+useEffect(() => {
+  const handleScroll = () => {
+    const sections = document.querySelectorAll<HTMLElement>("[data-menu]");
+    const viewportMiddle = window.innerHeight / 2;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const anyLightVisible = entries.some((e) => e.isIntersecting);
-        setUseDarkText(anyLightVisible);
-      },
-      { threshold: 0.2 }
-    );
+    let isDarkText = false;
 
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
-  }, []);
+    sections.forEach((section) => {
+      const rect = section.getBoundingClientRect();
+
+      if (rect.top <= viewportMiddle && rect.bottom >= viewportMiddle) {
+        const mode = section.getAttribute("data-menu");
+        if (mode === "dark-text") {
+          isDarkText = true;
+        }
+      }
+    });
+
+    setUseDarkText(isDarkText);
+  };
+
+  handleScroll();
+  window.addEventListener("scroll", handleScroll);
+  return () => window.removeEventListener("scroll", handleScroll);
+}, []);
 
   const menu: MenuItem[] = [
    

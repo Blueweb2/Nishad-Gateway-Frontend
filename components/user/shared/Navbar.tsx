@@ -25,30 +25,30 @@ export default function Navbar() {
 
 
   //  change navbar color based on white sections
-useEffect(() => {
-  const handleScroll = () => {
-    const sections = document.querySelectorAll<HTMLElement>("[data-navbar]");
-    const viewportMiddle = window.innerHeight / 2;
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = document.querySelectorAll<HTMLElement>("[data-navbar]");
+      const viewportMiddle = window.innerHeight / 2;
 
-    let currentTheme = "dark";
+      let currentTheme = "dark";
 
-    sections.forEach((section) => {
-      const rect = section.getBoundingClientRect();
+      sections.forEach((section) => {
+        const rect = section.getBoundingClientRect();
 
-      if (rect.top <= viewportMiddle && rect.bottom >= viewportMiddle) {
-        const theme = section.getAttribute("data-navbar");
-        if (theme) currentTheme = theme;
-      }
-    });
+        if (rect.top <= viewportMiddle && rect.bottom >= viewportMiddle) {
+          const theme = section.getAttribute("data-navbar");
+          if (theme) currentTheme = theme;
+        }
+      });
 
-    setUseColoredLogo(currentTheme === "light");
-  };
+      setUseColoredLogo(currentTheme === "light");
+    };
 
-  handleScroll();
-  window.addEventListener("scroll", handleScroll);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll);
 
-  return () => window.removeEventListener("scroll", handleScroll);
-}, [pathname]);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [pathname]);
 
 
 
@@ -101,13 +101,13 @@ ${isLight ? "bg-white shadow-sm" : "bg-transparent"}
   px-4 py-2 rounded-full
   text-sm font-medium
   transition-all
-  ${isLight
+${isLight
                     ? openServices
-                      ? "bg-black text-white"
-                      : "bg-white/70 text-black hover:bg-white"
+                      ? "bg-black text-white shadow-md"
+                      : "bg-black/[0.04] text-black border border-black/10 hover:bg-black/[0.08]"
                     : openServices
-                      ? "bg-white text-gray-900"
-                      : "bg-white/10 text-white hover:bg-white/20"
+                      ? "bg-white text-gray-900 shadow-md"
+                      : "bg-white/10 text-white border border-white/20 hover:bg-white/20"
                   }
 `}
 
@@ -134,13 +134,13 @@ ${isLight ? "bg-white shadow-sm" : "bg-transparent"}
   px-4 py-2 rounded-full
   text-sm font-medium
   transition-all
-  ${isLight
+${isLight
                     ? openBlogs
-                      ? "bg-black text-white"
-                      : "bg-white/70 text-black hover:bg-white"
+                      ? "bg-black text-white shadow-md"
+                      : "bg-black/[0.05] text-black border border-black/10 hover:bg-black/[0.08]"
                     : openBlogs
-                      ? "bg-white text-gray-900"
-                      : "bg-white/10 text-white hover:bg-white/20"
+                      ? "bg-white text-gray-900 shadow-md"
+                      : "bg-white/10 text-white border border-white/20 hover:bg-white/20"
                   }
 `}
 
@@ -191,7 +191,6 @@ ${isLight ? "bg-white shadow-sm" : "bg-transparent"}
 
 
 
-              {/* Hamburger */}
               {/* Hamburger / Close Button */}
               <button
                 onClick={() => {

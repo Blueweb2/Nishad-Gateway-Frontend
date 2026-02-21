@@ -19,7 +19,7 @@ export default function BlogHeroCard({ blog }: Props) {
   return (
     <Link
       href={`/blogs/${blog.id}`}
-      className="group block w-full h-screen overflow-hidden relative bg-white border-r border-gray-200"
+      className="group block w-full h-[830px] overflow-hidden relative bg-white border-r border-gray-200"
     >
       <div className="relative w-full h-full bg-white">
 

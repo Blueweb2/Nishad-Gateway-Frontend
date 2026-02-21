@@ -85,7 +85,7 @@ export default function WhySaudi() {
   return (
     <section
       className="relative w-full bg-white text-black
-                 py-12 md:py-12 px-6 md:px-16 overflow-hidden"
+                 py-12 md:py-12 px-6 md:px-16 overflow-hidden" data-menu="dark-text"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
