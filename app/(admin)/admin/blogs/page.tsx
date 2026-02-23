@@ -1,9 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Search, Star, Pencil } from "lucide-react";
+import { Search, Pencil, Trash2 } from "lucide-react";
 
 /* ---------------- Types ---------------- */
 
@@ -13,65 +13,82 @@ type AdminBlog = {
   _id: string;
   title: string;
   slug: string;
-  coverImage: string;
+  coverImage: {
+    url: string;
+    alt: string;
+  };
   tags: string[];
   status: BlogStatus;
-  featured?: boolean;
   publishedAt?: string;
 };
 
 /* ---------------- Page ---------------- */
 
 export default function AdminBlogsPage() {
-  // 🔹 Replace this with API call later
-  const [blogs, setBlogs] = useState<AdminBlog[]>([
-    {
-      _id: "1",
-      title: "Why Saudi Arabia is a Business Hub",
-      slug: "saudi-arabia-business-hub",
-      coverImage: "/Olaya.webp",
-      tags: ["Guide", "Saudi Arabia"],
-      status: "published",
-      featured: true,
-      publishedAt: "2026-01-22",
-    },
-    {
-      _id: "2",
-      title: "Top Investment Opportunities in KSA",
-      slug: "investment-opportunities-ksa",
-      coverImage: "/Olaya.webp",
-      tags: ["Investment", "Business"],
-      status: "published",
-      publishedAt: "2026-01-20",
-    },
-    {
-      _id: "3",
-      title: "Future of Digital Economy in Saudi Arabia",
-      slug: "future-digital-economy-saudi",
-      coverImage: "/Olaya.webp",
-      tags: ["Economy", "Technology"],
-      status: "draft",
-    },
-  ]);
-
+  const [blogs, setBlogs] = useState<AdminBlog[]>([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
-  /* ---------------- Derived Data ---------------- */
+  const API = process.env.NEXT_PUBLIC_API_URL;
+
+  /* ---------------- Fetch Blogs ---------------- */
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const res = await fetch(
+          `${API}/blogs/admin/all`,
+          { credentials: "include" }
+        );
+
+        if (!res.ok) throw new Error("Failed to fetch");
+
+        const data = await res.json();
+        setBlogs(Array.isArray(data) ? data : []);
+      } catch (error) {
+        console.error("Failed to fetch blogs:", error);
+        setBlogs([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogs();
+  }, [API]);
+
+  /* ---------------- Search Filter ---------------- */
 
   const filteredBlogs = useMemo(() => {
     return blogs.filter((blog) =>
-      blog.title.toLowerCase().includes(search.toLowerCase())
+      blog.title?.toLowerCase().includes(search.toLowerCase())
     );
   }, [blogs, search]);
 
-  const handleSetFeatured = (id: string) => {
-    // 🔹 Later → PUT /admin/blogs/:id/feature
-    setBlogs((prev) =>
-      prev.map((b) => ({
-        ...b,
-        featured: b._id === id,
-      }))
+  /* ---------------- Delete ---------------- */
+
+  const handleDelete = async (id: string) => {
+    const confirmDelete = confirm(
+      "Are you sure you want to delete this blog?"
     );
+    if (!confirmDelete) return;
+
+    try {
+      const res = await fetch(
+        `${API}/blogs/admin/${id}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
+
+      if (!res.ok) throw new Error("Delete failed");
+
+      setBlogs((prev) =>
+        prev.filter((b) => b._id !== id)
+      );
+    } catch (error) {
+      console.error("Delete failed:", error);
+    }
   };
 
   /* ---------------- UI ---------------- */
@@ -86,7 +103,7 @@ export default function AdminBlogsPage() {
               General Blogs
             </h1>
             <p className="text-sm text-white/60 mt-2">
-              Manage all independent blog articles.
+              Manage all blog articles.
             </p>
           </div>
 
@@ -104,7 +121,9 @@ export default function AdminBlogsPage() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40 w-4 h-4" />
             <input
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) =>
+                setSearch(e.target.value)
+              }
               placeholder="Search blogs..."
               className="w-full pl-10 pr-4 py-2 rounded-lg border border-white/10 bg-white/5 text-sm text-white outline-none focus:ring-2 focus:ring-emerald-500/20"
             />
@@ -113,15 +132,18 @@ export default function AdminBlogsPage() {
 
         {/* Table */}
         <div className="mt-8 rounded-2xl border border-white/10 bg-white/5 overflow-hidden">
-          {/* Header Row */}
           <div className="grid grid-cols-12 px-4 py-3 text-xs font-medium text-white/50 border-b border-white/10">
             <div className="col-span-7">Blog</div>
             <div className="col-span-2">Status</div>
             <div className="col-span-3 text-right">Actions</div>
           </div>
 
-          {filteredBlogs.length === 0 ? (
-            <div className="p-10 text-center text-sm text-white/60">
+          {loading ? (
+            <div className="p-10 text-center text-white/60">
+              Loading blogs...
+            </div>
+          ) : filteredBlogs.length === 0 ? (
+            <div className="p-10 text-center text-white/60">
               No blogs found.
             </div>
           ) : (
@@ -134,29 +156,20 @@ export default function AdminBlogsPage() {
                 <div className="col-span-7 flex items-center gap-4">
                   <div className="relative w-16 h-12 rounded-lg overflow-hidden border border-white/10">
                     <Image
-                      src={blog.coverImage}
-                      alt={blog.title}
+                      src={blog.coverImage?.url}
+                      alt={blog.coverImage?.alt || blog.title}
                       fill
                       className="object-cover"
                     />
                   </div>
 
                   <div className="min-w-0">
-                    <div className="flex items-center gap-2">
-                      <p className="font-medium text-white truncate">
-                        {blog.title}
-                      </p>
-
-                      {blog.featured && (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                          <Star className="w-3 h-3" />
-                          Featured
-                        </span>
-                      )}
-                    </div>
+                    <p className="font-medium text-white truncate">
+                      {blog.title}
+                    </p>
 
                     <div className="flex flex-wrap gap-2 mt-1">
-                      {blog.tags.slice(0, 3).map((tag) => (
+                      {blog.tags?.slice(0, 3).map((tag) => (
                         <span
                           key={tag}
                           className="px-2 py-0.5 rounded-full text-[11px] bg-white/5 border border-white/10 text-white/60"
@@ -175,20 +188,6 @@ export default function AdminBlogsPage() {
 
                 {/* Actions */}
                 <div className="col-span-3 flex items-center justify-end gap-2">
-                  <button
-                    onClick={() => handleSetFeatured(blog._id)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition flex items-center gap-2
-                      ${
-                        blog.featured
-                          ? "bg-emerald-500 text-black border-emerald-500"
-                          : "bg-white/5 text-white border-white/10 hover:bg-white/10"
-                      }
-                    `}
-                  >
-                    <Star className="w-4 h-4" />
-                    {blog.featured ? "Featured" : "Set Featured"}
-                  </button>
-
                   <Link
                     href={`/admin/blogs/edit/${blog._id}`}
                     className="px-3 py-1.5 rounded-lg text-xs font-semibold border border-white/10 bg-white/5 hover:bg-white/10 text-white transition flex items-center gap-2"
@@ -204,6 +203,16 @@ export default function AdminBlogsPage() {
                   >
                     Preview
                   </Link>
+
+                  <button
+                    onClick={() =>
+                      handleDelete(blog._id)
+                    }
+                    className="px-3 py-1.5 rounded-lg text-xs font-semibold border border-red-500/30 bg-red-500/10 text-red-400 hover:bg-red-500/20 transition flex items-center gap-2"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                    Delete
+                  </button>
                 </div>
               </div>
             ))
@@ -214,18 +223,14 @@ export default function AdminBlogsPage() {
   );
 }
 
-/* ---------------- Components ---------------- */
+/* ---------------- Status Badge ---------------- */
 
 function StatusBadge({ status }: { status: BlogStatus }) {
-  if (status === "published") {
-    return (
-      <span className="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-        Published
-      </span>
-    );
-  }
-
-  return (
+  return status === "published" ? (
+    <span className="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+      Published
+    </span>
+  ) : (
     <span className="px-3 py-1 rounded-full text-xs font-semibold bg-white/10 text-white/60 border border-white/10">
       Draft
     </span>

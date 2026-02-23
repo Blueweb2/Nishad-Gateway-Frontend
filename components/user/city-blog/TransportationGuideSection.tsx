@@ -6,7 +6,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 import type { TransportationGuideSectionContent } from "@/lib/types/city-blog";
-import { cloudinaryAutoWebp } from "@/utils/cloudinary";
+import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 
 type Props = {
   content: TransportationGuideSectionContent;

@@ -11,7 +11,7 @@ import type {
 } from "@/lib/types/city-blog";
 
 import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
-import { cloudinaryAutoWebp } from "@/utils/cloudinary";
+import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 import RichTextEditor from "../common/RichTextEditor";
 
 type Props = {

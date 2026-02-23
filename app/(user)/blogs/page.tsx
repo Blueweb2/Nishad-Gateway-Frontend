@@ -1,97 +1,97 @@
-// import BlogCardsGrid from "@/components/user/blog/BlogCardsGrid";
-// import { BLOGS } from "@/lib/data/blogs";
-// import Image from "next/image";
+import Link from "next/link";
+import Image from "next/image";
+import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 
-// export default function BlogsPage() {
-//   return (
-//     <main data-navbar="white" className="bg-white">
-//       <section className="pt-28">
-//         <div className="max-w-6xl mx-auto px-6">
-//           {/* Top Header Section */}
-//           <div className="flex items-start justify-between gap-10">
-//             {/* Left Title */}
-//             <div>
-//               <h1 className="text-[56px] leading-none font-semibold text-gray-900">
-//                 Blog
-//               </h1>
-//             </div>
+type Blog = {
+  _id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  coverImage: {
+    url: string;
+    alt: string;
+  };
+  publishedAt: string;
+};
 
-//             {/* Right Side Count + Description */}
-//             <div className="flex flex-col items-end gap-6">
-//               {/* All / Count */}
-//               <div className="flex flex-col items-end leading-none">
-//                 <p className="text-xs text-gray-400 tracking-wide">All/</p>
-//                 <p className="text-3xl font-semibold text-gray-800">
-//                   {BLOGS.length}
-//                 </p>
-//               </div>
+type BlogListResponse = {
+  data: Blog[];
+  total: number;
+  page: number;
+  totalPages: number;
+};
 
-//               {/* Description */}
-//               <p className="max-w-sm text-sm text-gray-500 leading-relaxed text-right">
-//                 Lorem Ipsum is simply dummy text of the printing and typesetting
-//                 industry. Lorem Ipsum has been the industry standard
-//               </p>
-//             </div>
-//           </div>
+async function getBlogs(): Promise<Blog[]> {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/blogs?page=1&limit=9`,
+    {
+      next: { revalidate: 60 }, // ISR
+    }
+  );
 
-//           {/* Divider Line */}
-//           <div className="mt-12 border-t border-gray-200" />
+  if (!res.ok) return [];
 
-//           {/* ✅ BLOG PAGE HERO / INTRO SECTION (Static) */}
-//           <div className="mt-10">
-//             <div className="relative h-[420px] w-full overflow-hidden rounded-[36px] bg-gray-100">
-//               {/* Background Image */}
-//               <Image
-//                 src="/Olaya.webp"
-//                 alt="Blog Hero"
-//                 fill
-//                 priority
-//                 className="object-cover"
-//               />
+  const result: BlogListResponse = await res.json();
 
-//               {/* Overlay */}
-//               <div className="absolute inset-0 bg-black/25" />
-
-//               {/* Text inside image */}
-//               <div className="absolute left-10 bottom-10 right-10">
-//                 {/* Small Date Style */}
-//                 <p className="text-white/80 text-2xl font-medium mb-4">
-//                   30<span className="text-white/60 text-lg">.5</span>
-//                 </p>
-
-//                 {/* Title */}
-//                 <h2 className="text-white text-3xl md:text-4xl font-semibold leading-snug max-w-2xl">
-//                   Saudi Arabia Opens Capital Market to All Foreign Investors
-//                 </h2>
-
-//                 {/* Tags (Right side) */}
-//                 <div className="absolute right-0 bottom-20 hidden md:flex gap-3">
-//                   <span className="px-4 py-2 rounded-full text-xs font-medium text-white bg-white/15 border border-white/25 backdrop-blur-md">
-//                     Article
-//                   </span>
-//                   <span className="px-4 py-2 rounded-full text-xs font-medium text-white bg-white/15 border border-white/25 backdrop-blur-md">
-//                     Investor Guide
-//                   </span>
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-
-//         {/* ✅ Actual Blogs Grid */}
-//         <div className="mt-10">
-//           <BlogCardsGrid blogs={BLOGS} />
-//         </div>
-//       </section>
-//     </main>
-//   );
-// }
-import React from 'react'
-
-export default function page() {
-  return (
-    <div>page</div>
-  )
+  return result.data || [];
 }
 
+export default async function BlogsPage() {
+  const blogs = await getBlogs();
 
+  return (
+    <main className="max-w-6xl mx-auto px-6 py-16">
+      <h1 className="text-4xl font-semibold mb-12">
+        Blog
+      </h1>
+
+      {blogs.length === 0 && (
+        <p className="text-gray-500">
+          No blogs available.
+        </p>
+      )}
+
+      <div className="grid md:grid-cols-3 gap-8">
+        {blogs.map((blog) => (
+          <Link
+            key={blog._id}
+            href={`/blogs/${blog.slug}`}
+            className="group"
+          >
+            <div className="rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition">
+              <div className="relative h-60">
+                <Image
+                  src={cloudinaryAutoWebp(
+                    blog.coverImage.url
+                  )}
+                  alt={
+                    blog.coverImage.alt ||
+                    blog.title
+                  }
+                  fill
+                  className="object-cover group-hover:scale-105 transition"
+                />
+              </div>
+
+              <div className="p-6">
+                <h2 className="text-xl font-semibold mb-3">
+                  {blog.title}
+                </h2>
+
+                <p className="text-gray-600 text-sm line-clamp-3">
+                  {blog.excerpt}
+                </p>
+
+                <p className="text-xs text-gray-400 mt-4">
+                  {new Date(
+                    blog.publishedAt
+                  ).toLocaleDateString()}
+                </p>
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </main>
+  );
+}

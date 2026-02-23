@@ -2,7 +2,7 @@
 
 import toast from "react-hot-toast";
 import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
-import { cloudinaryAutoWebp } from "@/utils/cloudinary";
+import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 
 export type OwnershipSlide = {
   title: string; // Capsule text (Main title inside)

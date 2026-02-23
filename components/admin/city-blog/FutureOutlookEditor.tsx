@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { UploadCloud, Trash2, Plus } from "lucide-react";
 
 import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
-import { cloudinaryAutoWebp } from "@/utils/cloudinary";
+import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 import type { FutureOutlookSectionContent } from "@/lib/types/city-blog";
 import RichTextEditor from "../common/RichTextEditor";
 

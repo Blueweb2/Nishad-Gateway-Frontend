@@ -7,7 +7,7 @@ import Image from "next/image";
 import { UploadCloud, Trash2 } from "lucide-react";
 
 import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
-import { cloudinaryAutoWebp } from "@/utils/cloudinary";
+import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 import {
   getCityByIdClient,
   updateCityClient,
