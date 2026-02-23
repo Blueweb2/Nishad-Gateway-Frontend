@@ -84,8 +84,8 @@ export default function WhySaudi() {
 
   return (
     <section
-      className="relative w-full bg-white text-black
-                 py-12 md:py-12 px-6 md:px-16 overflow-hidden" data-menu="dark-text"
+      className="relative w-full bg-green-50 text-black
+                 py-12 md:py-12 px-6 md:px-16" data-menu="dark-text" data-navbar="light"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
@@ -156,7 +156,7 @@ export default function WhySaudi() {
         </div>
       </div>
 
-      <div className="mt-12 border-t border-gray-200" />
+      {/* <div className="mt-12 border-t border-gray-200" /> */}
     </section>
   );
 }

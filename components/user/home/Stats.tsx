@@ -103,11 +103,11 @@ export default function Stats() {
         </Swiper>
 
         {/* FOOTER */}
-        <div className="mt-20 text-center">
+        {/* <div className="mt-20 text-center">
           <button className="text-sm underline text-white/70 hover:text-white transition">
             Access Tools & Resources
           </button>
-        </div>
+        </div> */}
 
       </div>
     </section>

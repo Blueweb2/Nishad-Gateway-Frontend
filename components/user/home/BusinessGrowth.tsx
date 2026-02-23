@@ -62,7 +62,7 @@ export default function BusinessGrowth() {
 
   return (
     <section data-navbar="light" data-menu="dark-text"
-      className="relative w-full h-screen bg-white text-black overflow-hidden flex flex-col justify-center"
+      className="relative w-full  bg-white text-black overflow-hidden flex flex-col justify-center pb-10"
     >
       {/* ================= FULL-WIDTH CONTROLS ================= */}
       <div className="absolute inset-x-0 top-0 h-full pointer-events-none z-20">
@@ -91,29 +91,29 @@ export default function BusinessGrowth() {
       </div>
 
       {/* ================= CONSTRAINED CONTENT ================= */}
-      <div className="relative z-10 max-w-[1320px] mx-auto px-6 w-full">
+      <div className="relative z-10 max-w-[1320px] mx-auto  w-full ">
         
         {/* HEADING */}
-        <FadeUpScroll delay={0.2}>
-          <h2 className="text-[32px] font-bold leading-tight">
-            How Business <br />
-            Works in <br />
-            Saudi Arabia
-          </h2>
-        </FadeUpScroll>
+<FadeUpScroll delay={0.2}>
+  <div className="max-w-3xl mx-auto mt-18 text-center mb-12">
+    <h2 className="text-[38px] font-bold leading-tight">
+      How Business Works in Saudi Arabia
+    </h2>
+  </div>
+</FadeUpScroll>
 
         <div className="grid grid-cols-3 gap-12 items-center">
 
           {/* LEFT COLUMN */}
-          <div className="relative min-h-[480px]">
+          <div className="relative min-h-[480px] ">
 
             {/* Center Divider */}
             <div className="absolute left-0 right-0 top-1/2 h-px bg-gray-200" />
 
             {/* Text above divider */}
-            <div className="absolute top-1/2 right-0 -translate-y-full pb-6 w-[75%]">
+            <div className="absolute top-1/2 right-0 -translate-y-full pb-6  w-[100%]">
               <FadeUpScroll delay={0.3} key={activeIndex}>
-                <p className="text-2xl font-medium text-[#287F7F] max-w-sm">
+                <p className="text-[36px] font-medium text-[#287F7F] max-w-sm pr-24 leading-snug">
                   {activeSlide.title}
                 </p>
               </FadeUpScroll>
@@ -137,11 +137,11 @@ export default function BusinessGrowth() {
               }}
               onSwiper={(swiper) => (swiperRef.current = swiper)}
               onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
-              className="w-[340px] h-[480px]"
+              className="w-[380px] h-[500px]"
             >
               {slides.map((slide, index) => (
                 <SwiperSlide key={index}>
-                  <div className="relative w-[320px] h-[420px] rounded-[150px] overflow-hidden">
+                  <div className="relative w-[380px] h-[500px] rounded-[150px] overflow-hidden">
                     <ParallaxImage
                       src={slide.src}
                       alt={slide.alt}
@@ -153,7 +153,7 @@ export default function BusinessGrowth() {
               ))}
             </Swiper>
 
-            <button className="-mt-8 text-sm text-green-600 underline underline-offset-4">
+            <button className=" text-sm text-green-600 underline underline-offset-4 pt-6">
               {activeSlide.linkText}
             </button>
           </div>
@@ -167,7 +167,7 @@ export default function BusinessGrowth() {
             {/* Text above divider */}
             <div className="absolute top-1/2 -translate-y-full pb-6 w-[75%]">
               <FadeUpScroll delay={0.4} key={activeIndex + "desc"}>
-                <p className="text-gray-500 leading-relaxed max-w-sm">
+                <p className="text-gray-500 leading-relaxed max-w-sm description-text">
                   {activeSlide.description}
                 </p>
               </FadeUpScroll>
