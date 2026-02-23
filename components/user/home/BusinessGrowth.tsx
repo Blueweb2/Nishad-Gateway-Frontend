@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import OvalArrow from "@/components/user/ui/OvalArrow";
 import ParallaxImage from "../shared/ParallaxImage";
 
@@ -55,22 +54,18 @@ const slides = [
   },
 ];
 
-console.log("Slides:", slides);
-
-
 export default function BusinessGrowth() {
   const swiperRef = useRef<any>(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [wipeKey, setWipeKey] = useState(0);
 
   const activeSlide = slides[activeIndex];
 
   return (
     <section data-navbar="light" data-menu="dark-text"
-      className="relative w-full h-screen bg-white text-black overflow-hidden flex items-center"
+      className="relative w-full h-screen bg-white text-black overflow-hidden flex flex-col justify-center"
     >
       {/* ================= FULL-WIDTH CONTROLS ================= */}
-      <div className="absolute inset-x-0 top-0 h-full pointer-events-none">
+      <div className="absolute inset-x-0 top-0 h-full pointer-events-none z-20">
         <div className="w-full h-full flex items-center justify-between px-10">
           <div className="pointer-events-auto">
             <div className="flex items-center gap-2 text-sm text-gray-400">
@@ -100,7 +95,7 @@ export default function BusinessGrowth() {
         
         {/* HEADING */}
         <FadeUpScroll delay={0.2}>
-          <h2 className="text-[36px] font-bold leading-tight">
+          <h2 className="text-[32px] font-bold leading-tight">
             How Business <br />
             Works in <br />
             Saudi Arabia
@@ -116,7 +111,7 @@ export default function BusinessGrowth() {
             <div className="absolute left-0 right-0 top-1/2 h-px bg-gray-200" />
 
             {/* Text above divider */}
-            <div className="absolute top-1/2 -translate-y-full pb-6">
+            <div className="absolute top-1/2 right-0 -translate-y-full pb-6 w-[75%]">
               <FadeUpScroll delay={0.3} key={activeIndex}>
                 <p className="text-2xl font-medium text-[#287F7F] max-w-sm">
                   {activeSlide.title}
@@ -127,7 +122,7 @@ export default function BusinessGrowth() {
           </div>
 
           {/* CENTER SLIDER */}
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center self-start">
             <Swiper
               modules={[EffectFade, Autoplay]}
               effect="fade"
@@ -146,7 +141,7 @@ export default function BusinessGrowth() {
             >
               {slides.map((slide, index) => (
                 <SwiperSlide key={index}>
-                  <div className="relative w-[340px] h-[480px] rounded-[150px] overflow-hidden">
+                  <div className="relative w-[320px] h-[420px] rounded-[150px] overflow-hidden">
                     <ParallaxImage
                       src={slide.src}
                       alt={slide.alt}
@@ -158,7 +153,7 @@ export default function BusinessGrowth() {
               ))}
             </Swiper>
 
-            <button className="mt-6 text-sm text-green-600 underline underline-offset-4">
+            <button className="-mt-8 text-sm text-green-600 underline underline-offset-4">
               {activeSlide.linkText}
             </button>
           </div>
@@ -170,7 +165,7 @@ export default function BusinessGrowth() {
             <div className="absolute left-0 right-0 top-1/2 h-px bg-gray-200" />
 
             {/* Text above divider */}
-            <div className="absolute top-1/2 -translate-y-full pb-6">
+            <div className="absolute top-1/2 -translate-y-full pb-6 w-[75%]">
               <FadeUpScroll delay={0.4} key={activeIndex + "desc"}>
                 <p className="text-gray-500 leading-relaxed max-w-sm">
                   {activeSlide.description}
