@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <main className="min-h-screen bg-white" data-navbar="light">
+    <main className="min-h-screen bg-white" data-navbar="light" data-menu="dark-text">
       <KsaExpansionCostCalculator />
     </main>
   );

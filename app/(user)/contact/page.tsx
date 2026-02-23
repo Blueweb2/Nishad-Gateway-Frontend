@@ -19,9 +19,9 @@ export default function ContactPage() {
             </div>
 
             {/* CONTAINER CONTENT */}
-            <div className="max-w-6xl mx-auto px-6">
+            <div className="max-w-[1360px] mx-auto px-6" data-menu="dark-text">
                 {/* Title */}
-                <div className="text-center mt-10">
+                <div className="text-center mt-16">
                     <h1 className="text-[54px] md:text-[92px] font-extrabold tracking-tight text-black leading-[0.95]">
                         Nishad Abdurhiman
                     </h1>
