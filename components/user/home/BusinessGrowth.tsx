@@ -91,16 +91,16 @@ export default function BusinessGrowth() {
       </div>
 
       {/* ================= CONSTRAINED CONTENT ================= */}
-      <div className="relative z-10 max-w-[1320px] mx-auto  w-full">
+      <div className="relative z-10 max-w-[1320px] mx-auto  w-full ">
         
         {/* HEADING */}
-        <FadeUpScroll delay={0.2}>
-          <h2 className="text-[38px] font-bold leading-tight mt-18">
-            How Business <br />
-            Works in <br />
-            Saudi Arabia
-          </h2>
-        </FadeUpScroll>
+<FadeUpScroll delay={0.2}>
+  <div className="max-w-3xl mx-auto mt-18 text-center mb-12">
+    <h2 className="text-[38px] font-bold leading-tight">
+      How Business Works in Saudi Arabia
+    </h2>
+  </div>
+</FadeUpScroll>
 
         <div className="grid grid-cols-3 gap-12 items-center">
 
@@ -167,7 +167,7 @@ export default function BusinessGrowth() {
             {/* Text above divider */}
             <div className="absolute top-1/2 -translate-y-full pb-6 w-[75%]">
               <FadeUpScroll delay={0.4} key={activeIndex + "desc"}>
-                <p className="text-gray-500 leading-relaxed max-w-sm">
+                <p className="text-gray-500 leading-relaxed max-w-sm description-text">
                   {activeSlide.description}
                 </p>
               </FadeUpScroll>
