@@ -4,18 +4,38 @@ import { adminAxios } from "@/lib/http/adminAxios";
 
 export type BlogStatus = "draft" | "published";
 
+/* ---------- Block Types ---------- */
+
+export type Block =
+  | { type: "heading"; level: 1 | 2 | 3; text: string }
+  | { type: "paragraph"; text: string }
+  | { type: "image"; url: string; alt: string }
+  | { type: "table"; headers: string[]; rows: string[][] };
+
 export type AdminBlogPayload = {
   title: string;
+  slug?: string;
   excerpt: string;
-  content: string;
+
+  blocks: {
+    type: string;
+    data: Block;
+  }[];
+
   status: BlogStatus;
+
   tags: string[];
+
   coverImage: {
     url: string;
     alt: string;
   };
+
   metaTitle?: string;
   metaDescription?: string;
+  metaKeywords?: string[];
+  ogImage?: string;
+  canonicalUrl?: string;
 };
 
 /* ================= ADMIN BLOG APIs ================= */

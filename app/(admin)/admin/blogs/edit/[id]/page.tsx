@@ -5,23 +5,30 @@ import { useParams, useRouter } from "next/navigation";
 
 type BlogStatus = "draft" | "published";
 
+type Block =
+  | { type: "heading"; level: 1 | 2 | 3; text: string }
+  | { type: "paragraph"; text: string }
+  | { type: "image"; url: string; alt: string }
+  | { type: "table"; headers: string[]; rows: string[][] };
+
 type Blog = {
   _id: string;
   title: string;
-  slug: string; // ✅ Added
+  slug: string;
   excerpt: string;
   coverImage: {
     url: string;
     alt: string;
   };
   tags: string[];
-  content: string;
+  blocks: { type: string; data: Block }[];
   status: BlogStatus;
   metaTitle?: string;
   metaDescription?: string;
 };
 
 /* ================= SLUG HELPER ================= */
+
 const slugify = (text: string) =>
   text
     .toLowerCase()
@@ -30,28 +37,34 @@ const slugify = (text: string) =>
     .replace(/^-+|-+$/g, "");
 
 export default function EditBlogPage() {
-  const { id } = useParams();
+  const params = useParams();
   const router = useRouter();
   const API = process.env.NEXT_PUBLIC_API_URL;
+
+  const id = params?.id as string;
+
+  /* ================= STATES ================= */
 
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
   const [error, setError] = useState("");
 
   const [title, setTitle] = useState("");
-  const [slug, setSlug] = useState(""); // ✅ Added
+  const [slug, setSlug] = useState("");
   const [isSlugEdited, setIsSlugEdited] = useState(false);
 
   const [excerpt, setExcerpt] = useState("");
   const [coverUrl, setCoverUrl] = useState("");
   const [coverAlt, setCoverAlt] = useState("");
   const [tags, setTags] = useState("");
-  const [content, setContent] = useState("");
   const [status, setStatus] = useState<BlogStatus>("draft");
+
   const [metaTitle, setMetaTitle] = useState("");
   const [metaDescription, setMetaDescription] = useState("");
 
-  /* ---------------- Fetch Blog ---------------- */
+  const [blocks, setBlocks] = useState<Block[]>([]);
+
+  /* ================= FETCH BLOG ================= */
 
   useEffect(() => {
     if (!id) return;
@@ -68,15 +81,17 @@ export default function EditBlogPage() {
         const blog: Blog = await res.json();
 
         setTitle(blog.title);
-        setSlug(blog.slug); // ✅ Load slug
+        setSlug(blog.slug);
         setExcerpt(blog.excerpt);
         setCoverUrl(blog.coverImage?.url || "");
         setCoverAlt(blog.coverImage?.alt || "");
         setTags(blog.tags?.join(", ") || "");
-        setContent(blog.content);
         setStatus(blog.status);
         setMetaTitle(blog.metaTitle || "");
         setMetaDescription(blog.metaDescription || "");
+
+        // Convert backend blocks to UI blocks
+        setBlocks(blog.blocks.map((b) => b.data));
       } catch (err: any) {
         setError(err.message);
       } finally {
@@ -87,7 +102,7 @@ export default function EditBlogPage() {
     fetchBlog();
   }, [id, API]);
 
-  /* ---------------- Auto Slug From Title ---------------- */
+  /* ================= AUTO SLUG ================= */
 
   useEffect(() => {
     if (!isSlugEdited) {
@@ -95,12 +110,29 @@ export default function EditBlogPage() {
     }
   }, [title, isSlugEdited]);
 
-  /* ---------------- Submit ---------------- */
+  /* ================= BLOCK FUNCTIONS ================= */
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const addBlock = (block: Block) =>
+    setBlocks((prev) => [...prev, block]);
+
+  const updateBlock = (index: number, newBlock: Block) => {
+    const copy = [...blocks];
+    copy[index] = newBlock;
+    setBlocks(copy);
+  };
+
+  const removeBlock = (index: number) => {
+    setBlocks((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  /* ================= SUBMIT ================= */
+
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
     e.preventDefault();
-    setError("");
     setLoading(true);
+    setError("");
 
     try {
       const res = await fetch(
@@ -113,34 +145,29 @@ export default function EditBlogPage() {
           credentials: "include",
           body: JSON.stringify({
             title,
-            slug, // ✅ Send slug
+            slug,
             excerpt,
-            content,
             status,
             tags: tags
               .split(",")
               .map((t) => t.trim())
               .filter(Boolean),
-
             coverImage: {
               url: coverUrl,
               alt: coverAlt || title,
             },
-
             metaTitle: metaTitle || title,
             metaDescription:
               metaDescription || excerpt,
+            blocks: blocks.map((b) => ({
+              type: b.type,
+              data: b,
+            })),
           }),
         }
       );
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(
-          data.message || "Update failed"
-        );
-      }
+      if (!res.ok) throw new Error("Update failed");
 
       router.push("/admin/blogs");
     } catch (err: any) {
@@ -159,116 +186,214 @@ export default function EditBlogPage() {
   }
 
   return (
-    <main className="max-w-4xl mx-auto px-6 py-12">
-      <h1 className="text-3xl font-semibold text-white mb-8">
+    <main className="max-w-4xl mx-auto px-6 py-12 text-white">
+      <h1 className="text-3xl font-semibold mb-8">
         Edit Blog
       </h1>
 
-      <form
-        onSubmit={handleSubmit}
-        className="space-y-6 bg-white/5 border border-white/10 rounded-2xl p-8"
-      >
+      <form onSubmit={handleSubmit} className="space-y-8">
+
         {error && (
-          <div className="bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-2 rounded-lg text-sm">
-            {error}
-          </div>
+          <div className="text-red-400">{error}</div>
         )}
 
-        {/* TITLE */}
         <Input
           label="Title"
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={(e) =>
+            setTitle(e.target.value)
+          }
         />
 
-        {/* SLUG */}
-        <div>
-          <Input
-            label="Slug"
-            value={slug}
-            onChange={(e) => {
-              setIsSlugEdited(true);
-              setSlug(slugify(e.target.value));
-            }}
-          />
-          <p className="text-xs text-white/50 mt-1">
-            {isSlugEdited
-              ? "Manually edited"
-              : "Auto-generated from title"}
-          </p>
-        </div>
+        <Input
+          label="Slug"
+          value={slug}
+          onChange={(e) => {
+            setIsSlugEdited(true);
+            setSlug(slugify(e.target.value));
+          }}
+        />
 
         <Textarea
           label="Excerpt"
           value={excerpt}
-          onChange={(e) => setExcerpt(e.target.value)}
+          onChange={(e) =>
+            setExcerpt(e.target.value)
+          }
         />
 
         <Input
           label="Cover Image URL"
           value={coverUrl}
-          onChange={(e) => setCoverUrl(e.target.value)}
+          onChange={(e) =>
+            setCoverUrl(e.target.value)
+          }
         />
 
         <Input
           label="Cover Image Alt"
           value={coverAlt}
-          onChange={(e) => setCoverAlt(e.target.value)}
+          onChange={(e) =>
+            setCoverAlt(e.target.value)
+          }
         />
 
         <Input
-          label="Tags (comma separated)"
+          label="Tags"
           value={tags}
-          onChange={(e) => setTags(e.target.value)}
+          onChange={(e) =>
+            setTags(e.target.value)
+          }
         />
 
-        <div>
-          <label className="block text-sm text-white/70 mb-2">
-            Status
-          </label>
-          <select
-            value={status}
-            onChange={(e) =>
-              setStatus(e.target.value as BlogStatus)
-            }
-            className="w-full bg-black border border-white/10 rounded-lg px-4 py-2 text-white"
-          >
-            <option value="draft">Draft</option>
-            <option value="published">Published</option>
-          </select>
+        <select
+          value={status}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+            setStatus(e.target.value as BlogStatus)
+          }
+          className="bg-black border p-2"
+        >
+          <option value="draft">Draft</option>
+          <option value="published">
+            Published
+          </option>
+        </select>
+
+        {/* BLOCK EDITOR */}
+
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold">
+            Content Blocks
+          </h2>
+
+          <div className="flex gap-3 flex-wrap">
+            <button type="button" onClick={() => addBlock({ type: "heading", level: 2, text: "" })}>+ Heading</button>
+            <button type="button" onClick={() => addBlock({ type: "paragraph", text: "" })}>+ Paragraph</button>
+            <button type="button" onClick={() => addBlock({ type: "image", url: "", alt: "" })}>+ Image</button>
+            <button type="button" onClick={() => addBlock({ type: "table", headers: ["Column 1","Column 2"], rows: [["",""]] })}>+ Table</button>
+          </div>
+
+          {blocks.map((block, i) => (
+            <div key={i} className="border p-4 bg-black/30 rounded-lg space-y-3">
+              
+              {block.type === "heading" && (
+                <>
+                  <select
+                    value={block.level}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                      updateBlock(i, {
+                        ...block,
+                        level: Number(e.target.value) as 1|2|3,
+                      })
+                    }
+                  >
+                    <option value={1}>H1</option>
+                    <option value={2}>H2</option>
+                    <option value={3}>H3</option>
+                  </select>
+
+                  <input
+                    value={block.text}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      updateBlock(i, {
+                        ...block,
+                        text: e.target.value,
+                      })
+                    }
+                    className="w-full bg-black border p-2"
+                  />
+                </>
+              )}
+
+              {block.type === "paragraph" && (
+                <textarea
+                  value={block.text}
+                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                    updateBlock(i, {
+                      ...block,
+                      text: e.target.value,
+                    })
+                  }
+                  className="w-full bg-black border p-2"
+                />
+              )}
+
+              {block.type === "image" && (
+                <>
+                  <input
+                    value={block.url}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      updateBlock(i, {
+                        ...block,
+                        url: e.target.value,
+                      })
+                    }
+                    className="w-full bg-black border p-2"
+                  />
+                  <input
+                    value={block.alt}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      updateBlock(i, {
+                        ...block,
+                        alt: e.target.value,
+                      })
+                    }
+                    className="w-full bg-black border p-2"
+                  />
+                </>
+              )}
+
+              {block.type === "table" &&
+                block.rows.map((row, r) => (
+                  <div key={r} className="flex gap-2">
+                    {row.map((cell, c) => (
+                      <input
+                        key={c}
+                        value={cell}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                          const rows = [...block.rows];
+                          rows[r][c] = e.target.value;
+                          updateBlock(i, { ...block, rows });
+                        }}
+                        className="bg-black border p-1"
+                      />
+                    ))}
+                  </div>
+                ))}
+
+              <button
+                type="button"
+                onClick={() => removeBlock(i)}
+                className="text-red-400 text-sm"
+              >
+                Remove Block
+              </button>
+            </div>
+          ))}
         </div>
+
+        {/* SEO */}
+
+        <Input
+          label="Meta Title"
+          value={metaTitle}
+          onChange={(e) =>
+            setMetaTitle(e.target.value)
+          }
+        />
 
         <Textarea
-          label="Content"
-          rows={10}
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
+          label="Meta Description"
+          value={metaDescription}
+          onChange={(e) =>
+            setMetaDescription(e.target.value)
+          }
         />
-
-        <div className="border-t border-white/10 pt-6 space-y-4">
-          <h2 className="text-lg font-semibold text-white">
-            SEO Settings
-          </h2>
-          <Input
-            label="Meta Title"
-            value={metaTitle}
-            onChange={(e) =>
-              setMetaTitle(e.target.value)
-            }
-          />
-          <Textarea
-            label="Meta Description"
-            value={metaDescription}
-            onChange={(e) =>
-              setMetaDescription(e.target.value)
-            }
-          />
-        </div>
 
         <button
           type="submit"
           disabled={loading}
-          className="px-6 py-3 rounded-lg bg-emerald-500 text-black font-semibold hover:bg-emerald-400 transition disabled:opacity-50"
+          className="px-6 py-3 bg-emerald-500 text-black font-semibold rounded-lg"
         >
           {loading ? "Updating..." : "Update Blog"}
         </button>
@@ -277,7 +402,7 @@ export default function EditBlogPage() {
   );
 }
 
-/* Reusable Inputs */
+/* REUSABLE INPUTS */
 
 function Input({
   label,
@@ -287,12 +412,12 @@ function Input({
 }) {
   return (
     <div>
-      <label className="block text-sm text-white/70 mb-2">
+      <label className="block mb-2">
         {label}
       </label>
       <input
         {...props}
-        className="w-full bg-black border border-white/10 rounded-lg px-4 py-2 text-white"
+        className="w-full bg-black border p-2"
       />
     </div>
   );
@@ -308,13 +433,13 @@ function Textarea({
 }) {
   return (
     <div>
-      <label className="block text-sm text-white/70 mb-2">
+      <label className="block mb-2">
         {label}
       </label>
       <textarea
         rows={rows}
         {...props}
-        className="w-full bg-black border border-white/10 rounded-lg px-4 py-2 text-white"
+        className="w-full bg-black border p-2"
       />
     </div>
   );

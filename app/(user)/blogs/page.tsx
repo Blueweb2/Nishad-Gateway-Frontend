@@ -2,16 +2,18 @@ import Link from "next/link";
 import Image from "next/image";
 import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 
+/* ================= TYPES ================= */
+
 type Blog = {
   _id: string;
   title: string;
   slug: string;
   excerpt: string;
-  coverImage: {
+  coverImage?: {
     url: string;
-    alt: string;
+    alt?: string;
   };
-  publishedAt: string;
+  publishedAt?: string;
 };
 
 type BlogListResponse = {
@@ -21,11 +23,13 @@ type BlogListResponse = {
   totalPages: number;
 };
 
+/* ================= FETCH ================= */
+
 async function getBlogs(): Promise<Blog[]> {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/blogs?page=1&limit=9`,
+    `${process.env.API_URL}/blogs?page=1&limit=9`,
     {
-      cache: "no-store", // ISR
+      cache: "no-store",
     }
   );
 
@@ -33,14 +37,19 @@ async function getBlogs(): Promise<Blog[]> {
 
   const result: BlogListResponse = await res.json();
 
-  return result.data || [];
+  return result.data ?? [];
 }
+
+/* ================= PAGE ================= */
 
 export default async function BlogsPage() {
   const blogs = await getBlogs();
 
   return (
-    <main className="max-w-6xl mx-auto px-4 py-32" data-navbar="light">
+    <main
+      className="max-w-6xl mx-auto px-4 py-32"
+      data-navbar="light"
+    >
       <h1 className="text-4xl font-semibold mb-12">
         Blog
       </h1>
@@ -52,45 +61,56 @@ export default async function BlogsPage() {
       )}
 
       <div className="grid md:grid-cols-3 gap-8">
-        {blogs.map((blog) => (
-          <Link
-            key={blog._id}
-            href={`/blogs/${blog.slug}`}
-            className="group"
-          >
-            <div className="rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition">
-              <div className="relative h-60">
-                <Image
-                  src={cloudinaryAutoWebp(
-                    blog.coverImage.url
+        {blogs.map((blog) => {
+          const imageUrl =
+            blog.coverImage?.url
+              ? cloudinaryAutoWebp(
+                  blog.coverImage.url
+                )
+              : "/placeholder.jpg";
+
+          return (
+            <Link
+              key={blog._id}
+              href={`/blogs/${blog.slug}`}
+              className="group"
+            >
+              <div className="rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition">
+                {/* IMAGE */}
+                <div className="relative h-60">
+                  <Image
+                    src={imageUrl}
+                    alt={
+                      blog.coverImage?.alt ||
+                      blog.title
+                    }
+                    fill
+                    className="object-cover group-hover:scale-105 transition duration-300"
+                  />
+                </div>
+
+                {/* CONTENT */}
+                <div className="p-6">
+                  <h2 className="text-xl font-semibold mb-3">
+                    {blog.title}
+                  </h2>
+
+                  <p className="text-gray-600 text-sm line-clamp-3">
+                    {blog.excerpt}
+                  </p>
+
+                  {blog.publishedAt && (
+                    <p className="text-xs text-gray-400 mt-4">
+                      {new Date(
+                        blog.publishedAt
+                      ).toLocaleDateString()}
+                    </p>
                   )}
-                  alt={
-                    blog.coverImage.alt ||
-                    blog.title
-                  }
-                  fill
-                  className="object-cover group-hover:scale-105 transition"
-                />
+                </div>
               </div>
-
-              <div className="p-6">
-                <h2 className="text-xl font-semibold mb-3">
-                  {blog.title}
-                </h2>
-
-                <p className="text-gray-600 text-sm line-clamp-3">
-                  {blog.excerpt}
-                </p>
-
-                <p className="text-xs text-gray-400 mt-4">
-                  {new Date(
-                    blog.publishedAt
-                  ).toLocaleDateString()}
-                </p>
-              </div>
-            </div>
-          </Link>
-        ))}
+            </Link>
+          );
+        })}
       </div>
     </main>
   );
