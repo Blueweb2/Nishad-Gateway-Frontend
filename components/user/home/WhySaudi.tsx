@@ -116,15 +116,15 @@ export default function WhySaudi() {
               className="flex flex-col gap-8 items-start"
             >
               {/* Image */}
-          <div className="w-40 h-40 md:w-48 md:h-48 flex items-center justify-center mb-8">
-            <Image
-              src={slides[index].image}
-              alt={slides[index].title}
-              width={110}
-              height={110}
-              className="object-contain md:w-[130px] md:h-[130px]"
-            />
-          </div>
+              <div className="w-40 h-40 md:w-48 md:h-48 flex items-center justify-start mb-8">
+                <Image
+                  src={slides[index].image}
+                  alt={slides[index].title}
+                  width={110}
+                  height={110}
+                  className="object-contain md:w-[130px] md:h-[130px]"
+                />
+              </div>
 
               {/* Text */}
               <div className="max-w-md">
