@@ -230,11 +230,11 @@ export default async function SingleBlogPage({
 
   return (
     <main
-      className="max-w-4xl mx-auto px-6 py-28 bg-white"
+      className="max-w-8xl mx-auto px-6 py-28 bg-white"
       data-navbar="light"
     >
       {/* COVER IMAGE */}
-      <div className="relative h-[600px] rounded-2xl overflow-hidden mb-12">
+      <div className="relative h-[700px] rounded-2xl overflow-hidden mb-12">
         <Image
           src={coverImageUrl}
           alt={
