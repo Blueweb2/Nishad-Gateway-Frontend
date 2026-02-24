@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { UploadCloud, Plus, Trash, Trash2 } from "lucide-react";
 import { adminAxios } from "@/lib/http/adminAxios";
 import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
-import { cloudinaryAutoWebp } from "@/utils/cloudinary";
+import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 import type {
   CityBlogSection,
   InfrastructureSectionContent,

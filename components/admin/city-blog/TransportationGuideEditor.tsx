@@ -7,7 +7,7 @@ import { UploadCloud, Trash2, Plus } from "lucide-react";
 
 import { TransportationGuideSectionContent } from "@/lib/types/city-blog";
 import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
-import { cloudinaryAutoWebp } from "@/utils/cloudinary";
+import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 
 type Props = {
   content: TransportationGuideSectionContent;

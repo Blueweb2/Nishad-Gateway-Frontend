@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import Image from "next/image";
 import { ArrowLeft, ArrowRight, Plus } from "lucide-react";
-import { cloudinaryAutoWebp } from "@/utils/cloudinary";
+import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 
 type Props = {
   mainHeading: string;

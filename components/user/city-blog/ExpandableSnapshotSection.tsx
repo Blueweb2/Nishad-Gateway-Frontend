@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { cloudinaryAutoWebp } from "@/utils/cloudinary";
+import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 
 type Card = {
   imageUrl: string;

@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { useState } from "react";
 
 import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
-import { cloudinaryAutoWebp } from "@/utils/cloudinary";
+import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 import type { ExpandableSnapshotSectionContent } from "@/lib/types/city-blog";
 
 type Props = {
