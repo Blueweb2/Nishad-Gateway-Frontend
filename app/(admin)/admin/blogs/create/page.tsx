@@ -41,11 +41,18 @@ type TableBlock = {
   rows: string[][];
 };
 
+type ListBlock = {
+  type: "list";
+  style: "unordered" | "ordered";
+  items: string[];
+};
+
 type Block =
   | HeadingBlock
   | ParagraphBlock
   | GalleryBlock
-  | TableBlock;
+  | TableBlock
+  | ListBlock;
 
 const slugify = (text: string) =>
   text
@@ -255,7 +262,7 @@ export default function CreateBlogPage() {
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setExcerpt(e.target.value)}
         />
 
-        {/* COVER IMAGE */}
+
         {/* COVER IMAGE */}
         <div>
           <label className="block mb-2">Cover Image *</label>
@@ -326,6 +333,19 @@ export default function CreateBlogPage() {
             >
               + Table
             </button>          </div>
+          <button
+            type="button"
+            onClick={() =>
+              addBlock({
+                type: "list",
+                style: "unordered",
+                items: [""],
+              })
+            }
+            className="btn"
+          >
+            + List
+          </button>
 
           {blocks.map((block, i) => (
             <div key={i} className="border p-4 rounded-lg bg-black/30 space-y-3">
@@ -636,6 +656,76 @@ export default function CreateBlogPage() {
                 </div>
               )}
 
+              {block.type === "list" && (
+                <div className="space-y-3">
+
+                  {/* Style Selector */}
+                  <select
+                    value={block.style}
+                    onChange={(e) =>
+                      updateBlock(i, {
+                        ...block,
+                        style: e.target.value as "unordered" | "ordered",
+                      })
+                    }
+                    className="bg-black border p-2 text-white"
+                  >
+                    <option value="unordered">Bullet List</option>
+                    <option value="ordered">Numbered List</option>
+                  </select>
+
+                  {/* List Items */}
+                  {block.items.map((item, itemIndex) => (
+                    <div key={itemIndex} className="flex gap-2">
+                      <input
+                        value={item}
+                        onChange={(e) => {
+                          const newItems = [...block.items];
+                          newItems[itemIndex] = e.target.value;
+
+                          updateBlock(i, {
+                            ...block,
+                            items: newItems,
+                          });
+                        }}
+                        className="flex-1 bg-black border p-2 text-white"
+                      />
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const newItems = block.items.filter(
+                            (_, idx) => idx !== itemIndex
+                          );
+
+                          updateBlock(i, {
+                            ...block,
+                            items: newItems,
+                          });
+                        }}
+                        className="text-red-400"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      updateBlock(i, {
+                        ...block,
+                        items: [...block.items, ""],
+                      })
+                    }
+                    className="text-sm text-emerald-400"
+                  >
+                    + Add Item
+                  </button>
+                </div>
+              )}
+
+
               <button
                 type="button"
                 onClick={() => removeBlock(i)}
@@ -645,6 +735,8 @@ export default function CreateBlogPage() {
               </button>
             </div>
           ))}
+
+
         </div>
 
         {/* SEO */}

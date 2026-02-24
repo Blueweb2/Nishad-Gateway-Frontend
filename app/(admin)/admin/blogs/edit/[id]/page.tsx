@@ -2,6 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import {
+  adminGetBlogById,
+  adminUpdateBlog,
+} from "@/lib/api/admin/adminBlogs.api";
+import toast from "react-hot-toast";
 
 type BlogStatus = "draft" | "published";
 
@@ -39,7 +44,6 @@ const slugify = (text: string) =>
 export default function EditBlogPage() {
   const params = useParams();
   const router = useRouter();
-  const API = process.env.NEXT_PUBLIC_API_URL;
 
   const id = params?.id as string;
 
@@ -65,20 +69,12 @@ export default function EditBlogPage() {
   const [blocks, setBlocks] = useState<Block[]>([]);
 
   /* ================= FETCH BLOG ================= */
-
   useEffect(() => {
     if (!id) return;
 
     const fetchBlog = async () => {
       try {
-        const res = await fetch(
-          `${API}/blogs/admin/${id}`,
-          { credentials: "include" }
-        );
-
-        if (!res.ok) throw new Error("Blog not found");
-
-        const blog: Blog = await res.json();
+        const blog: Blog = await adminGetBlogById(id);
 
         setTitle(blog.title);
         setSlug(blog.slug);
@@ -89,8 +85,6 @@ export default function EditBlogPage() {
         setStatus(blog.status);
         setMetaTitle(blog.metaTitle || "");
         setMetaDescription(blog.metaDescription || "");
-
-        // Convert backend blocks to UI blocks
         setBlocks(blog.blocks.map((b) => b.data));
       } catch (err: any) {
         setError(err.message);
@@ -100,7 +94,7 @@ export default function EditBlogPage() {
     };
 
     fetchBlog();
-  }, [id, API]);
+  }, [id]);
 
   /* ================= AUTO SLUG ================= */
 
@@ -131,52 +125,57 @@ export default function EditBlogPage() {
     e: React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
+
+    if (!id) {
+      setError("Invalid blog ID");
+      return;
+    }
+
+    if (!title || !excerpt) {
+      setError("Title and excerpt are required");
+      return;
+    }
+
     setLoading(true);
     setError("");
 
     try {
-      const res = await fetch(
-        `${API}/blogs/admin/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({
-            title,
-            slug,
-            excerpt,
-            status,
-            tags: tags
-              .split(",")
-              .map((t) => t.trim())
-              .filter(Boolean),
-            coverImage: {
-              url: coverUrl,
-              alt: coverAlt || title,
-            },
-            metaTitle: metaTitle || title,
-            metaDescription:
-              metaDescription || excerpt,
-            blocks: blocks.map((b) => ({
-              type: b.type,
-              data: b,
-            })),
-          }),
-        }
-      );
+      await adminUpdateBlog(id, {
+        title,
+        slug,
+        excerpt,
+        status,
+        tags: tags
+          .split(",")
+          .map((t) => t.trim())
+          .filter(Boolean),
 
-      if (!res.ok) throw new Error("Update failed");
+        coverImage: {
+          url: coverUrl,
+          alt: coverAlt || title,
+        },
+
+        metaTitle: metaTitle || title,
+        metaDescription: metaDescription || excerpt,
+
+        blocks: blocks.map((b) => ({
+          type: b.type,
+          data: b,
+        })),
+      });
+
+      // Optional: success feedback
+      toast.success("Blog updated successfully");
 
       router.push("/admin/blogs");
     } catch (err: any) {
-      setError(err.message);
+      setError(
+        err?.message || "Something went wrong while updating"
+      );
     } finally {
       setLoading(false);
     }
   };
-
   if (fetching) {
     return (
       <div className="p-10 text-white text-center">
@@ -270,12 +269,12 @@ export default function EditBlogPage() {
             <button type="button" onClick={() => addBlock({ type: "heading", level: 2, text: "" })}>+ Heading</button>
             <button type="button" onClick={() => addBlock({ type: "paragraph", text: "" })}>+ Paragraph</button>
             <button type="button" onClick={() => addBlock({ type: "image", url: "", alt: "" })}>+ Image</button>
-            <button type="button" onClick={() => addBlock({ type: "table", headers: ["Column 1","Column 2"], rows: [["",""]] })}>+ Table</button>
+            <button type="button" onClick={() => addBlock({ type: "table", headers: ["Column 1", "Column 2"], rows: [["", ""]] })}>+ Table</button>
           </div>
 
           {blocks.map((block, i) => (
             <div key={i} className="border p-4 bg-black/30 rounded-lg space-y-3">
-              
+
               {block.type === "heading" && (
                 <>
                   <select
@@ -283,7 +282,7 @@ export default function EditBlogPage() {
                     onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                       updateBlock(i, {
                         ...block,
-                        level: Number(e.target.value) as 1|2|3,
+                        level: Number(e.target.value) as 1 | 2 | 3,
                       })
                     }
                   >
@@ -393,7 +392,7 @@ export default function EditBlogPage() {
         <button
           type="submit"
           disabled={loading}
-          className="px-6 py-3 bg-emerald-500 text-black font-semibold rounded-lg"
+          className="px-6 py-3 bg-emerald-500 text-black font-semibold rounded-lg disabled:opacity-50"
         >
           {loading ? "Updating..." : "Update Blog"}
         </button>

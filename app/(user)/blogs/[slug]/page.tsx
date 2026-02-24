@@ -8,7 +8,9 @@ type Block =
   | { type: "heading"; level: 1 | 2 | 3; text: string }
   | { type: "paragraph"; text: string }
   | { type: "image"; url: string; alt: string }
-  | { type: "table"; headers: string[]; rows: string[][] };
+  | { type: "list"; style: "unordered" | "ordered"; items: string[] }
+  | { type: "table"; headers: string[]; rows: string[][] }
+  | { type: "gallery"; images: { url: string; alt?: string }[] };
 
 type Blog = {
   _id: string;
@@ -105,11 +107,7 @@ export async function generateMetadata({
 }
 
 /* ================= BLOCK RENDERER ================= */
-
-function renderBlock(
-  block: Block | undefined,
-  index: number
-) {
+function renderBlock(block: Block | undefined, index: number) {
   if (!block) return null;
 
   switch (block.type) {
@@ -136,20 +134,14 @@ function renderBlock(
 
     case "paragraph":
       return (
-        <p
-          key={index}
-          className="text-gray-700 leading-relaxed mb-6"
-        >
+        <p key={index} className="text-gray-700 leading-relaxed mb-6">
           {block.text}
         </p>
       );
 
     case "image":
       return (
-        <div
-          key={index}
-          className="relative w-full h-[500px] my-10 rounded-2xl overflow-hidden"
-        >
+        <div key={index} className="relative w-full h-[500px] my-10 rounded-2xl overflow-hidden">
           <Image
             src={block.url || "/placeholder.jpg"}
             alt={block.alt || ""}
@@ -159,39 +151,63 @@ function renderBlock(
         </div>
       );
 
+    case "gallery":
+      return (
+        <div key={index} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-10">
+          {block.images.map((img, i) => (
+            <div key={i} className="relative h-80 rounded-2xl overflow-hidden">
+              <Image
+                src={img.url}
+                alt={img.alt || ""}
+                fill
+                className="object-cover"
+              />
+            </div>
+          ))}
+        </div>
+      );
+
+    case "list":
+      if (block.style === "ordered") {
+        return (
+          <ol key={index} className="list-decimal pl-6 my-6 space-y-2 text-gray-700">
+            {block.items.map((item, i) => (
+              <li key={i}>{item}</li>
+            ))}
+          </ol>
+        );
+      }
+
+      return (
+        <ul key={index} className="list-disc pl-6 my-6 space-y-2 text-gray-700">
+          {block.items.map((item, i) => (
+            <li key={i}>{item}</li>
+          ))}
+        </ul>
+      );
+
     case "table":
       return (
-        <div
-          key={index}
-          className="overflow-x-auto my-10"
-        >
+        <div key={index} className="overflow-x-auto my-10">
           <table className="w-full border-collapse rounded-xl overflow-hidden shadow-sm">
             <thead>
               <tr>
-                {block.headers?.map(
-                  (header, i) => (
-                    <th
-                      key={i}
-                      className="bg-black text-white px-5 py-4 text-sm tracking-wide text-left"
-                    >
-                      {header}
-                    </th>
-                  )
-                )}
+                {block.headers?.map((header, i) => (
+                  <th
+                    key={i}
+                    className="bg-black text-white px-5 py-4 text-sm tracking-wide text-left"
+                  >
+                    {header}
+                  </th>
+                ))}
               </tr>
             </thead>
 
             <tbody>
               {block.rows?.map((row, r) => (
-                <tr
-                  key={r}
-                  className="border-b last:border-0 hover:bg-gray-50"
-                >
+                <tr key={r} className="border-b last:border-0 hover:bg-gray-50">
                   {row.map((cell, c) => (
-                    <td
-                      key={c}
-                      className="px-5 py-4 text-gray-700"
-                    >
+                    <td key={c} className="px-5 py-4 text-gray-700">
                       {cell}
                     </td>
                   ))}

@@ -4,6 +4,10 @@ import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Search, Pencil, Trash2 } from "lucide-react";
+import {
+  adminGetBlogs,
+  adminDeleteBlog,
+} from "@/lib/api/admin/adminBlogs.api"; // ✅ adjust path
 
 /* ---------------- Types ---------------- */
 
@@ -28,33 +32,25 @@ export default function AdminBlogsPage() {
   const [blogs, setBlogs] = useState<AdminBlog[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-
-  const API = process.env.NEXT_PUBLIC_API_URL;
+  const [error, setError] = useState("");
 
   /* ---------------- Fetch Blogs ---------------- */
 
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const res = await fetch(
-          `${API}/blogs/admin/all`,
-          { credentials: "include" }
-        );
-
-        if (!res.ok) throw new Error("Failed to fetch");
-
-        const data = await res.json();
+        const data = await adminGetBlogs();
         setBlogs(Array.isArray(data) ? data : []);
-      } catch (error) {
-        console.error("Failed to fetch blogs:", error);
-        setBlogs([]);
+      } catch (err: any) {
+        console.error("Failed to fetch blogs:", err);
+        setError(err.message);
       } finally {
         setLoading(false);
       }
     };
 
     fetchBlogs();
-  }, [API]);
+  }, []);
 
   /* ---------------- Search Filter ---------------- */
 
@@ -73,21 +69,14 @@ export default function AdminBlogsPage() {
     if (!confirmDelete) return;
 
     try {
-      const res = await fetch(
-        `${API}/blogs/admin/${id}`,
-        {
-          method: "DELETE",
-          credentials: "include",
-        }
-      );
-
-      if (!res.ok) throw new Error("Delete failed");
+      await adminDeleteBlog(id);
 
       setBlogs((prev) =>
         prev.filter((b) => b._id !== id)
       );
-    } catch (error) {
-      console.error("Delete failed:", error);
+    } catch (err: any) {
+      console.error("Delete failed:", err);
+      alert(err.message);
     }
   };
 
@@ -114,6 +103,12 @@ export default function AdminBlogsPage() {
             + Create Blog
           </Link>
         </div>
+
+        {error && (
+          <div className="mt-6 text-red-400">
+            {error}
+          </div>
+        )}
 
         {/* Search */}
         <div className="mt-8 flex justify-end">
