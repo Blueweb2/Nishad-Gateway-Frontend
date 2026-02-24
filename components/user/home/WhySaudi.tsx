@@ -89,20 +89,6 @@ export default function WhySaudi() {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      {/* Top Controls */}
-      <div className="flex justify-end items-center gap-6 ">
-        <span className="text-sm text-gray-500">
-          {index + 1} /
-          <span className="text-black font-semibold ml-1">
-            {slides.length}
-          </span>
-        </span>
-
-        <div className="flex gap-3">
-          <OvalArrow direction="left" variant="gray" onClick={prevSlide} />
-          <OvalArrow direction="right" variant="gray" onClick={nextSlide} />
-        </div>
-      </div>
 
       {/* Grid Layout */}
       <div className="grid md:grid-cols-3 gap-12 items-center">
@@ -131,14 +117,14 @@ export default function WhySaudi() {
             >
               {/* Image */}
           <div className="w-40 h-40 md:w-48 md:h-48 flex items-center justify-center mb-8">
-  <Image
-    src={slides[index].image}
-    alt={slides[index].title}
-    width={110}
-    height={110}
-    className="object-contain md:w-[130px] md:h-[130px]"
-  />
-</div>
+            <Image
+              src={slides[index].image}
+              alt={slides[index].title}
+              width={110}
+              height={110}
+              className="object-contain md:w-[130px] md:h-[130px]"
+            />
+          </div>
 
               {/* Text */}
               <div className="max-w-md">
@@ -155,8 +141,24 @@ export default function WhySaudi() {
 
         </div>
 
-        <div className="h-full w-full">
+        <div className="h-full w-full relative mt-8 pt-6">
+          <div className="flex justify-end items-center gap-6 absolute top-5 right-0">
+            
+            <span className="text-sm text-gray-500">
+              {index + 1} /
+              <span className="text-black font-semibold ml-1">
+                {slides.length}
+              </span>
+            </span>
+
+            <div className="flex gap-3">
+              <OvalArrow direction="left" variant="gray" onClick={prevSlide} />
+              <OvalArrow direction="right" variant="gray" onClick={nextSlide} />
+            </div>
+            
+          </div>
           <img src="/why-saudi-arabia.svg" alt="saudi arabia" />
+          
         </div>
       </div>
     </section>
