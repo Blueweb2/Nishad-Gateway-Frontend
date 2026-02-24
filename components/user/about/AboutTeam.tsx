@@ -3,46 +3,75 @@
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Parallax } from "swiper/modules";
+import OvalArrow from "@/components/user/ui/OvalArrow";
+import FadeUpScroll from "../ui/FadeUpScroll";
+import "swiper/css/parallax";
 
 const slides = [
   {
-    src: "/about/testimonials.jpg",
+    name: "Ahmed Al-Qahtani",
+    jobTitle: "Business Incorporation Specialist",
     title: "MAADEN",
+    country: "Saudi Arabia",
+    experience: "8+ Years",
+    src: "/about/aboutIntro.jpg",
     description:
       "MODON enables integrated industrial investment environments that support diversification and employment.",
     link: "Browse Case Studies"
   },
   {
-    src: "/about/saudi-expansion.png",
+    name: "Fahad Al-Salem",
+    jobTitle: "Industrial Development Manager",
     title: "MODON",
+    country: "UAE",
+    experience: "10+ Years",
+    src: "/about/saudi-expansion.png",
     description:
       "Creating strong industrial ecosystems that foster investment, employment, and long-term development.",
     link: "Explore Mining Projects"
   },
   {
-    src: "/about/indro-section.jpg",
+    name: "Sara Al-Harbi",
+    jobTitle: "Sustainability Strategy Director",
     title: "NEOM",
+    country: "India",
+    experience: "12+ Years",
+    src: "/about/indro-section.jpg",
     description:
       "NEOM is building a futuristic, sustainable region powered by innovation, advanced technology, and smart infrastructure.",
     link: "View Industrial Developments"
   },
   {
-    src: "/about/buisnessveriticals.jpg",
+    name: "Omar Al-Faraj",
+    jobTitle: "Energy Investment Advisor",
     title: "ARAMCO",
+    country: "America",
+    experience: "15+ Years",
+    src: "/about/buisnessveriticals.jpg",
     description:
       "Aramco drives global energy solutions while investing in sustainable development and technological advancement.",
     link: "Discover Future Cities"
   },
   {
-    src: "/about/aboutIntro.jpg",
+    name: "Noura Al-Mutairi",
+    jobTitle: "Tourism Development Consultant",
     title: "RED SEA GLOBAL",
+    country: "China",
+    experience: "9+ Years",
+    src: "/about/aboutIntro.jpg",
     description:
       "Red Sea Global develops regenerative tourism destinations focused on environmental protection and luxury experiences.",
     link: "Explore Energy Innovations"
   },
   {
-    src: "/about/aboutHero.jpg",
+    name: "Khalid Al-Dossari",
+    jobTitle: "Chemical Innovation Lead",
     title: "SABIC",
+    country: "Brazil",
+    experience: "11+ Years",
+    src: "/about/aboutHero.jpg",
     description:
       "SABIC is a global leader in diversified chemicals, delivering innovative material solutions for industries worldwide.",
     link: "View Tourism Destinations"
@@ -72,16 +101,18 @@ export default function TeamSection() {
             <div className="flex items-center">
               {/* Counter */}
               <p className="text-sm text-gray-500">
-                01 <span className="mx-2">|</span> 06
+                {String(activeIndex + 1).padStart(2, "0")} 
+                <span className="mx-2">|</span> 
+                {String(slides.length).padStart(2, "0")}
               </p>
 
               {/* Name */}
               <div className="ml-10">
-                <h3 className="text-xl font-semibold">
-                  Nishad <br /> Abdurahiman
-                </h3>
+                <FadeUpScroll delay={0.3} key={activeIndex}>
+                  <h3 className="text-xl font-semibold">{activeSlide.title}</h3>
+                </FadeUpScroll>
                 <p className="text-sm text-gray-500 mt-2">
-                  Business Incorporation Specialist
+                  {activeSlide.jobTitle}
                 </p>
               </div>
             </div>
@@ -92,25 +123,45 @@ export default function TeamSection() {
             <div className="flex items-center relative">
               {/* Description */}
               <p className="text-sm text-gray-600 leading-relaxed max-w-sm ml-10">
-                At Analytix, we help businesses expand into Saudi Arabia through
-                expert consulting, company setup, and incorporation services.
-                We simplify legal procedures, ensure compliance, and guide
-                clients through every stage of market entry.
+                {activeSlide.description}
               </p>
             </div> 
           </div>
 
-          {/* CENTER IMAGE */}
+          {/* CENTER IMAGE src="/about/aboutIntro.jpg"*/}
           <div className="flex flex-col items-center">
-
-            <div className="relative w-80 h-[480px] rounded-[160px] overflow-hidden">
-              <Image
-                src="/about/aboutIntro.jpg"
-                alt="Team Member"
-                fill
-                className="object-cover"
-              />
-            </div>
+            <Swiper
+              modules={[Parallax]}
+              speed={900}
+              parallax
+              slidesPerView={1}
+              loop
+              onSwiper={(swiper) => (swiperRef.current = swiper)}
+              onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
+              className="w-[360px] h-[520px]"
+            >
+              {slides.map((slide, index) => (
+                <SwiperSlide
+                  key={index}
+                  className="!flex !items-center !justify-center"
+                >
+                  <div className="relative w-[360px] h-[520px] rounded-[160px] overflow-hidden">
+                    <div
+                      className="absolute inset-0"
+                      data-swiper-parallax="-30%"
+                    >
+                      <Image
+                        src={slide.src}
+                        alt="Case Study"
+                        fill
+                        className="object-cover"
+                        priority={index === 0}
+                      />
+                    </div>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
 
             {/* Social Icons */}
             <div className="flex gap-4 mt-6">
@@ -128,22 +179,26 @@ export default function TeamSection() {
 
             <div>
               <p className="text-xs text-gray-400">Work Experience:</p>
-              <p className="text-lg font-semibold mt-1">12 Years</p>
+              <p className="text-lg font-semibold mt-1">{activeSlide.experience}</p>
             </div>
 
             <div>
               <p className="text-xs text-gray-400">Country:</p>
-              <p className="text-lg font-semibold mt-1">Saudi Arabia</p>
+              <p className="text-lg font-semibold mt-1">{activeSlide.country}</p>
             </div>
 
             {/* Navigation Arrows */}
             <div className="flex gap-3">
-              <button className="w-9 h-9 flex items-center justify-center rounded-full border border-gray-300 hover:bg-black hover:text-white transition">
-                <ChevronLeft size={18} />
-              </button>
-              <button className="w-9 h-9 flex items-center justify-center rounded-full border border-gray-300 hover:bg-black hover:text-white transition">
-                <ChevronRight size={18} />
-              </button>
+              <OvalArrow
+                direction="left"
+                variant="gray"
+                onClick={() => swiperRef.current?.slidePrev()}
+              />
+              <OvalArrow
+                direction="right"
+                variant="gray"
+                onClick={() => swiperRef.current?.slideNext()}
+              />
             </div>
 
           </div>

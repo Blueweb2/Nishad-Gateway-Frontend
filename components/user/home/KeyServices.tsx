@@ -121,7 +121,7 @@ function Card({
 
       {/* Top Row */}
       <div className="flex items-start justify-between">
-        <Image src={icon} alt={title} width={82} height={82} />
+        <Image src={icon} alt={title} width={40} height={40} />
 
         <ArrowRight
           size={18}
@@ -131,13 +131,13 @@ function Card({
 
       {/* Content */}
       <div className="mt-6">
-        <p className="text-xl font-medium">
+        <p className="text-2xl font-medium">
           {title}
         </p>
 
         <p
           className="
-            text-base md:text-lg text-white/90 leading-tight
+            text-base md:text-lg text-white/50 leading-tight
             mt-3
             opacity-0 translate-y-2
             transition-all duration-300
