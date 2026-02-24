@@ -16,15 +16,15 @@ const slides = [
     alt: "Company Formation Overview",
     title: "Company Formation Overview",
     description:
-      "Understand the end-to-end process of setting up a company in Saudi Arabia, from foreign investor licensing to Commercial Registration (CR), municipality approvals, banking, and visa activation.",
+      "Understand the end-to-end process of company formation in Saudi Arabia, from foreign investor licensing to Commercial Registration (CR), municipality approvals, banking, and visa activation.",
     linkText: "Understand Business Setup",
   },
   {
     src: "/buisnessgrowth/Types-of-Licenses.jpg",
     alt: "Types of Licenses",
-    title: "Types of Licenses",
+    title: "Types of Business Licenses",
     description:
-      "Saudi Arabia offers multiple license types—LLC, Branch Office, Entrepreneur, and Professional—each tailored to different business models, ownership needs, and stages of market entry.",
+      "Saudi Arabia provides various types of licenses: LLC, Branch Office, Entrepreneur, and Professional licenses, designed for different business structures and market entry strategies.",
     linkText: "Explore License Types",
   },
   {
@@ -32,7 +32,7 @@ const slides = [
     alt: "Ownership & Capital Rules",
     title: "Ownership & Capital Rules",
     description:
-      "Learn how ownership structures and capital requirements impact control, licensing, banking, and visas.",
+      "Understand the implications of ownership structures and capital on control, licensing, banking, and visas.",
     linkText: "View Ownership Rules",
   },
   {
@@ -40,7 +40,7 @@ const slides = [
     alt: "Taxes & Compliance",
     title: "Taxes & Compliance (Zakat, VAT, CT)",
     description:
-      "Understand Saudi tax obligations, Zakat for Saudi entities, VAT compliance, and Corporate Tax requirements.",
+      "Understand Saudi tax requirements, Zakat for Saudi companies, VAT compliance, and Corporate Tax obligations.",
     linkText: "Understand Tax Structure",
   },
   {
@@ -48,7 +48,7 @@ const slides = [
     alt: "Setup Timeline",
     title: "Setup Timeline (Step-by-Step)",
     description:
-      "A clear roadmap showing how long each stage takes—from approvals and licensing to banking and visas.",
+      "A step-by-step guide on how long each process takes, from approvals and licensing to banking and visas.",
     linkText: "View Setup Timeline",
   },
 ];
