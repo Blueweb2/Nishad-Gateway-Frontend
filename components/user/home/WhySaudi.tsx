@@ -7,39 +7,39 @@ import OvalArrow from "@/components/user/ui/OvalArrow";
 
 const slides = [
   {
-    title: "Vision 2030–Driven Growth",
+    title: "Vision 2030 Investment Growth",
     content:
-      "Massive government investment is transforming the economy and opening new industries.",
+      "The Vision 2030 program is fueling massive strategic development projects, industrial zones, tourism development, and economic transformation programs that attract foreign direct investment (FDI) into Saudi Arabia.",
     image: "/vision.svg",
   },
   {
-    title: "Strategic Global Location",
+    title: "Strategic Global Location.",
     content:
-      "Saudi Arabia connects Asia, Europe, and Africa, making it a gateway for regional expansion.",
+      "Being situated at the intersection of Asia, Europe, and Africa, Saudi Arabia serves a strategic logistics and business gateway for companies looking to expand across the GCC and Middle East.",
     image: "/icons/Strategic-Global-Location.svg",
   },
   {
-    title: "100% Foreign Ownership Options",
+    title: "100% Foreign Ownership",
     content:
-      "Many sectors allow full foreign ownership with strong investor protections.",
+      "Foreign ownership of up to 100% is permitted in most industries, allowing foreign investors to set up wholly foreign-owned businesses through a structured company formation in Saudi Arabia.",
     image: "/icons/Foreign-Ownership-Options.svg",
   },
   {
-    title: "Business-Friendly Reforms",
+    title: "Fast & Structured Business Setup",
     content:
-      "Fast company setup, digital government portals, and transparent regulations.",
+      "Saudi Arabia offers fast business setup options through online government services, fast-track MISA approvals, simplified Commercial Registration (CR), and well-defined compliance procedures.",
     image: "/icons/Business-Friendly-Reforms.svg",
   },
   {
     title: "High-Growth Sectors",
     content:
-      "Opportunities across healthcare, logistics, manufacturing, fintech, tourism, and energy.",
+      "Saudi Arabia offers growth-ready investment opportunities in healthcare, logistics, fintech, manufacturing, renewable energy, and tourism sectors, making it one of the top investment destinations in the GCC.",
     image: "/icons/High-Growth-Sectors.svg",
   },
   {
     title: "Strong Economy & Stability",
     content:
-      "The largest economy in the Middle East with stable currency and government-backed growth.",
+      "Saudi Arabia is the biggest economy in the Middle East, providing strong economic stability, a USD pegged exchange rate, and government-supported growth programs that boost overall investment confidence.",
     image: "/icons/Strong-Economy-Stability.svg",
   },
 ];
