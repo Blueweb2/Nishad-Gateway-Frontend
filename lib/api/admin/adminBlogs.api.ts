@@ -23,7 +23,6 @@ export type AdminBlogPayload = {
   }[];
 
   status: BlogStatus;
-
   tags: string[];
 
   coverImage: {
@@ -40,53 +39,90 @@ export type AdminBlogPayload = {
 
 /* ================= ADMIN BLOG APIs ================= */
 
-// 📋 Get all blogs (admin)
+/* ---------------- Get All Blogs (Admin) ---------------- */
+
 export const adminGetBlogs = async () => {
-  const { data } = await adminAxios.get(
-    "/blogs/admin/all"
-  );
-  return data;
+  try {
+    const { data } = await adminAxios.get("/blogs/admin/all");
+    return data;
+  } catch (error: any) {
+    throw new Error(
+      error?.response?.data?.message || "Failed to fetch blogs"
+    );
+  }
 };
 
-// 📄 Get single blog by ID (admin)
-export const adminGetBlogById = async (
-  id: string
-) => {
-  const { data } = await adminAxios.get(
-    `/blogs/admin/${id}`
-  );
-  return data;
+/* ---------------- Get Single Blog by ID (Admin) ---------------- */
+
+export const adminGetBlogById = async (id: string) => {
+  if (!id) throw new Error("Blog ID is required");
+
+  try {
+    const { data } = await adminAxios.get(
+      `/blogs/admin/${id}`
+    );
+    return data;
+  } catch (error: any) {
+    throw new Error(
+      error?.response?.data?.message || "Failed to fetch blog"
+    );
+  }
 };
 
-// ➕ Create blog
+/* ---------------- Create Blog ---------------- */
+
 export const adminCreateBlog = async (
   payload: AdminBlogPayload
 ) => {
-  const { data } = await adminAxios.post(
-    "/blogs/admin",
-    payload
-  );
-  return data;
+  try {
+    const { data } = await adminAxios.post(
+      "/blogs/admin",
+      payload
+    );
+    return data;
+  } catch (error: any) {
+    throw new Error(
+      error?.response?.data?.message || "Blog creation failed"
+    );
+  }
 };
 
-// ✏ Update blog
+/* ---------------- Update Blog ---------------- */
+
 export const adminUpdateBlog = async (
   id: string,
   payload: Partial<AdminBlogPayload>
 ) => {
-  const { data } = await adminAxios.put(
-    `/blogs/admin/${id}`,
-    payload
-  );
-  return data;
+  if (!id) throw new Error("Blog ID is required");
+
+  try {
+    const { data } = await adminAxios.put(
+      `/blogs/admin/${id}`,
+      payload
+    );
+    return data;
+  } catch (error: any) {
+    throw new Error(
+      error?.response?.data?.message || "Blog update failed"
+    );
+  }
 };
 
-// ❌ Delete blog
+/* ---------------- Delete Blog ---------------- */
+
 export const adminDeleteBlog = async (
   id: string
 ) => {
-  const { data } = await adminAxios.delete(
-    `/blogs/admin/${id}`
-  );
-  return data;
+  if (!id) throw new Error("Blog ID is required");
+
+  try {
+    const { data } = await adminAxios.delete(
+      `/blogs/admin/${id}`
+    );
+    return data;
+  } catch (error: any) {
+    throw new Error(
+      error?.response?.data?.message || "Blog deletion failed"
+    );
+  }
 };
