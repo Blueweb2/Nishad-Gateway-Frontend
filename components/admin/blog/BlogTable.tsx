@@ -11,7 +11,10 @@ export type AdminBlog = {
   _id: string;
   title: string;
   slug: string;
-  coverImage: string;
+  coverImage: {
+    url: string;
+    alt: string;
+  };
   tags: string[];
   status: BlogStatus;
 };
@@ -41,12 +44,12 @@ export default function BlogTable({
           <div className="col-span-7 flex items-center gap-4">
             <div className="relative w-16 h-12 rounded-lg overflow-hidden border border-white/10">
               <Image
-                src={blog.coverImage?.u}
+                src={blog.coverImage?.url}
                 alt={blog.coverImage?.alt || blog.title}
                 fill
                 className="object-cover"
               />
-            </div>
+            </div>git 
 
             <div>
               <p className="font-medium text-white">
