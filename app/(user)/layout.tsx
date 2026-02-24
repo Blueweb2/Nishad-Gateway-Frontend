@@ -8,7 +8,7 @@ export default function UserLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-white" >
       <Navbar />
 
       {/* Navbar is fixed */}
