@@ -13,7 +13,7 @@ export default function KeyServices() {
         <div className="flex items-center justify-between mb-16">
           <FadeUpScroll delay={0.1}>
             <h2 className="text-[30px] font-semibold">
-              Key Sectors Driving Growth
+              Top Investment Sectors in Saudi Arabia
             </h2>
           </FadeUpScroll>
         </div>
@@ -24,61 +24,61 @@ export default function KeyServices() {
           <Card
             icon="/icons/sectors/manufacturing.svg"
             title="Manufacturing & Industrial Licenses"
-            description="Government localization policies are accelerating domestic manufacturing and industrial expansion."
+            description="The government’s localization initiatives in Saudi Arabia are promoting local manufacturing, industrial licensing, and export-oriented manufacturing as part of Vision 2030."
           />
 
           <Card
             icon="/icons/sectors/trading.svg"
             title="Trading & Distribution"
-            description="Saudi Arabia’s large consumer base and strategic location support strong trade and distribution growth."
+            description="Saudi Arabia’s massive consumer market and favorable geographical position make it one of the most prominent trading, import-export, and distribution centers."
           />
 
           <Card
             icon="/icons/sectors/tech.svg"
             title="IT, AI, SaaS & Tech Startups"
-            description="Digital transformation and smart-city initiatives are fueling rapid technology adoption."
+            description="Digital transformation projects, smart city developments, and government-supported innovation initiatives are opening up technology investment opportunities in Saudi Arabia."
           />
 
           <Card
             icon="/icons/sectors/healthcare.svg"
             title="Healthcare & Pharma"
-            description="Public and private investment is expanding healthcare infrastructure and pharmaceutical production."
+            description="Healthcare development, pharmaceutical manufacturing, and private healthcare investment are opening up scalable business opportunities in the Kingdom."
           />
 
           <Card
             icon="/icons/sectors/education.svg"
             title="Education & Training Institutes"
-            description="Workforce development and Saudization are increasing demand for professional education providers."
+            description="Saudization and workforce development initiatives are fueling demand for licensed training institutes and professional education services."
           />
 
           <Card
             icon="/icons/sectors/food.svg"
             title="Restaurants, Cafes & Food Production"
-            description="Lifestyle changes and a young population are driving growth in food and beverage businesses."
+            description="The Kingdom’s young population, lifestyle development, and tourism development are fueling food and beverage business setup in Saudi Arabia."
           />
 
           <Card
             icon="/icons/sectors/logistics.svg"
             title="Logistics & Supply Chain"
-            description="Vision 2030 positions Saudi Arabia as a global logistics and supply-chain hub."
+            description="The Kingdom’s infrastructure development under Vision 2030 is making Saudi Arabia a global logistics and supply chain hub in the GCC and Middle East."
           />
 
           <Card
             icon="/icons/sectors/Fleet-and-Transportation-Services.svg"
             title="Fleet & Transportation Services"
-            description="Rising e-commerce and infrastructure projects are boosting transport and fleet operations."
+            description="E-commerce development and infrastructure development are fueling demand for licensed transportation and fleet management services."
           />
 
           <Card
             icon="/icons/sectors/realestate.svg"
             title="Real Estate & Construction"
-            description="Mega projects and urban development continue to generate long-term construction demand."
+            description="Mega projects, economic cities, and urban development initiatives are driving the long-term."
           />
 
           <Card
             icon="/icons/sectors/Sports-Media-and-Entertainment.svg"
             title="Sports, Media & Entertainment"
-            description="Government-backed tourism and cultural initiatives are transforming the entertainment sector."
+            description="Tourism, cultural, and global initiatives are transforming the sports and entertainment sectors in Saudi Arabia."
           />
 
         </div>
@@ -130,16 +130,16 @@ function Card({
         <p
           className="
             text-2xl text-[20px] font-medium text-white
-            absolute bottom-6  left-0
+            absolute bottom-2  left-0 leading-[26px]
             transition-all duration-300
-            group-hover:translate-y-[-60px]
+            group-hover:translate-y-[-100px]
           "
         >
           {title}
         </p>
         <p
           className="
-            text-white text-sm
+            text-white text-sm leading-[16px]
             opacity-0 translate-y-4
             transition-all duration-300
             group-hover:opacity-100
