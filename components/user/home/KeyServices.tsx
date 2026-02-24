@@ -16,9 +16,6 @@ export default function KeyServices() {
               Key Sectors Driving Growth
             </h2>
           </FadeUpScroll>
-          <button className="text-xl text-white/80 hover:text-white underline">
-            Explore Investment Sectors
-          </button>
         </div>
 
         {/* GRID */}
@@ -120,7 +117,7 @@ function Card({
 
       {/* Top Row */}
       <div className="flex items-start justify-between">
-        <Image src={icon} alt={title} width={40} height={40} />
+        <Image src={icon} alt={title} width={50} height={50} />
 
         <ArrowRight
           size={18}
@@ -133,16 +130,16 @@ function Card({
         <p
           className="
             text-2xl text-[20px] font-medium text-white
-            absolute bottom-6  right-6
+            absolute bottom-6  left-0
             transition-all duration-300
-            group-hover:translate-y-[-90px]
+            group-hover:translate-y-[-60px]
           "
         >
           {title}
         </p>
         <p
           className="
-            text-white mt-3 text-sm
+            text-white text-sm
             opacity-0 translate-y-4
             transition-all duration-300
             group-hover:opacity-100
