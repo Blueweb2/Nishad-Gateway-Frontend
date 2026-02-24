@@ -10,11 +10,42 @@ import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 
 type BlogStatus = "draft" | "published";
 
+type HeadingBlock = {
+  type: "heading";
+  level: 1 | 2 | 3;
+  text: string;
+};
+
+type ParagraphBlock = {
+  type: "paragraph";
+  text: string;
+};
+
+type ImageItem = {
+  url: string;
+  alt: string;
+  publicId?: string;
+  caption?: string;
+  width?: number;
+  height?: number;
+};
+
+type GalleryBlock = {
+  type: "gallery";
+  images: ImageItem[];
+};
+
+type TableBlock = {
+  type: "table";
+  headers: string[];
+  rows: string[][];
+};
+
 type Block =
-  | { type: "heading"; level: 1 | 2 | 3; text: string }
-  | { type: "paragraph"; text: string }
-  | { type: "image"; url: string; alt: string }
-  | { type: "table"; headers: string[]; rows: string[][] };
+  | HeadingBlock
+  | ParagraphBlock
+  | GalleryBlock
+  | TableBlock;
 
 const slugify = (text: string) =>
   text
@@ -36,6 +67,8 @@ export default function CreateBlogPage() {
   const [tags, setTags] = useState("");
   const [status, setStatus] = useState<BlogStatus>("draft");
 
+  const [galleryUploading, setGalleryUploading] = useState(false);
+
   /* ================= SEO ================= */
 
   const [metaTitle, setMetaTitle] = useState("");
@@ -43,8 +76,11 @@ export default function CreateBlogPage() {
 
   /* ================= COVER IMAGE ================= */
 
-  const [coverUrl, setCoverUrl] = useState("");
-  const [coverAlt, setCoverAlt] = useState("");
+  const [coverImage, setCoverImage] = useState<{
+    url: string;
+    alt: string;
+    publicId?: string;
+  } | null>(null);
   const [uploading, setUploading] = useState(false);
 
   /* ================= BLOCKS ================= */
@@ -55,17 +91,17 @@ export default function CreateBlogPage() {
     setBlocks((prev) => [...prev, block]);
 
   const updateBlock = (index: number, newBlock: Block) => {
-    const copy = [...blocks];
-    copy[index] = newBlock;
-    setBlocks(copy);
-  };
-
+    setBlocks((prev) =>
+      prev.map((b, i) =>
+        i === index ? newBlock : b
+      )
+    );
+  }
   const removeBlock = (index: number) => {
     setBlocks((prev) => prev.filter((_, i) => i !== index));
   };
 
   /* ================= IMAGE UPLOAD ================= */
-
   const handleCoverUpload = async (file: File) => {
     if (!file.type.startsWith("image/")) {
       toast.error("Only image files allowed");
@@ -81,7 +117,11 @@ export default function CreateBlogPage() {
         "nishad-gateway/blogs"
       );
 
-      setCoverUrl(cloudinaryAutoWebp(uploaded.secure_url));
+      setCoverImage({
+        url: cloudinaryAutoWebp(uploaded.secure_url),
+        alt: title || "",
+        publicId: uploaded.public_id, // ✅ IMPORTANT
+      });
 
       toast.success("Uploaded", { id: "upload" });
     } catch {
@@ -91,13 +131,57 @@ export default function CreateBlogPage() {
     }
   };
 
+  const handleCoverDelete = async () => {
+    if (!coverImage?.publicId) return;
+
+    try {
+      await fetch(`${API}/cloudinary/delete`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          publicId: coverImage.publicId,
+        }),
+      });
+
+      setCoverImage(null);
+      toast.success("Cover image deleted");
+    } catch {
+      toast.error("Delete failed");
+    }
+  };
   /* ================= SUBMIT ================= */
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!title || !excerpt || !coverUrl || blocks.length === 0) {
+    if (!title || !excerpt || !coverImage?.url || blocks.length === 0) {
       toast.error("All required fields must be filled.");
+      return;
+    }
+    const invalidTable = blocks.some(
+      (b) =>
+        b.type === "table" &&
+        (b.headers.length === 0 ||
+          b.rows.length === 0)
+    );
+
+    if (invalidTable) {
+      toast.error("Tables must have columns and rows.");
+      return;
+    }
+    if (!slug) {
+      toast.error("Slug is required.");
+      return;
+    }
+    const invalidGallery = blocks.some(
+      (b) =>
+        b.type === "gallery" &&
+        b.images.length === 0
+    );
+
+    if (invalidGallery) {
+      toast.error("Gallery block must contain at least one image.");
       return;
     }
 
@@ -113,8 +197,9 @@ export default function CreateBlogPage() {
           status,
           tags: tags.split(",").map((t) => t.trim()).filter(Boolean),
           coverImage: {
-            url: coverUrl,
-            alt: coverAlt || title,
+            url: coverImage?.url,
+            alt: coverImage?.alt || title,
+            publicId: coverImage?.publicId,
           },
           metaTitle: metaTitle || title,
           metaDescription: metaDescription || excerpt,
@@ -171,8 +256,10 @@ export default function CreateBlogPage() {
         />
 
         {/* COVER IMAGE */}
+        {/* COVER IMAGE */}
         <div>
           <label className="block mb-2">Cover Image *</label>
+
           <input
             type="file"
             accept="image/*"
@@ -181,23 +268,40 @@ export default function CreateBlogPage() {
               handleCoverUpload(e.target.files[0])
             }
           />
-          {coverUrl && (
+
+          {coverImage?.url && (
             <div className="relative h-48 mt-4">
               <Image
-                src={coverUrl}
-                alt="Preview"
+                src={coverImage.url}
+                alt={coverImage.alt}
                 fill
                 className="object-cover rounded-lg"
               />
+
+              <button
+                type="button"
+                onClick={handleCoverDelete}
+                className="absolute top-2 right-2 bg-red-600 text-white rounded-full p-1 text-xs"
+              >
+                ✕
+              </button>
             </div>
           )}
         </div>
 
         <Input
           label="Cover Alt Text"
-          value={coverAlt}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCoverAlt(e.target.value)}
+          value={coverImage?.alt || ""}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setCoverImage((prev) =>
+              prev
+                ? { ...prev, alt: e.target.value }
+                : prev
+            )
+          }
         />
+
+
 
         {/* BLOCK CONTROLS */}
         <div className="space-y-4">
@@ -208,19 +312,30 @@ export default function CreateBlogPage() {
           <div className="flex gap-3 flex-wrap">
             <button type="button" onClick={() => addBlock({ type: "heading", level: 2, text: "" })} className="btn">+ Heading</button>
             <button type="button" onClick={() => addBlock({ type: "paragraph", text: "" })} className="btn">+ Paragraph</button>
-            <button type="button" onClick={() => addBlock({ type: "image", url: "", alt: "" })} className="btn">+ Image</button>
-            <button type="button" onClick={() => addBlock({ type: "table", headers: ["Column 1","Column 2"], rows: [["",""]] })} className="btn">+ Table</button>
-          </div>
+            <button type="button" onClick={() => addBlock({ type: "gallery", images: [] })} className="btn">+ Image</button>
+            <button
+              type="button"
+              onClick={() =>
+                addBlock({
+                  type: "table",
+                  headers: [],
+                  rows: [],
+                })
+              }
+              className="btn"
+            >
+              + Table
+            </button>          </div>
 
           {blocks.map((block, i) => (
             <div key={i} className="border p-4 rounded-lg bg-black/30 space-y-3">
-              
+
               {block.type === "heading" && (
                 <>
                   <select
                     value={block.level}
                     onChange={(e) =>
-                      updateBlock(i, { ...block, level: Number(e.target.value) as 1|2|3 })
+                      updateBlock(i, { ...block, level: Number(e.target.value) as 1 | 2 | 3 })
                     }
                   >
                     <option value={1}>H1</option>
@@ -249,44 +364,277 @@ export default function CreateBlogPage() {
                 />
               )}
 
-              {block.type === "image" && (
-                <>
-                  <input
-                    placeholder="Image URL"
-                    value={block.url}
-                    onChange={(e) =>
-                      updateBlock(i, { ...block, url: e.target.value })
-                    }
-                    className="w-full bg-black border p-2"
-                  />
-                  <input
-                    placeholder="Alt Text"
-                    value={block.alt}
-                    onChange={(e) =>
-                      updateBlock(i, { ...block, alt: e.target.value })
-                    }
-                    className="w-full bg-black border p-2"
-                  />
-                </>
-              )}
+              {block.type === "gallery" && (
+                <div className="space-y-4">
 
-              {block.type === "table" &&
-                block.rows.map((row, r) => (
-                  <div key={r} className="flex gap-2">
-                    {row.map((cell, c) => (
-                      <input
-                        key={c}
-                        value={cell}
-                        onChange={(e) => {
-                          const rows = [...block.rows];
-                          rows[r][c] = e.target.value;
-                          updateBlock(i, { ...block, rows });
-                        }}
-                        className="bg-black border p-1"
-                      />
+                  {/* Upload Button */}
+                  <label className="px-3 py-2 bg-emerald-600 text-white rounded text-sm cursor-pointer inline-block disabled:opacity-50">
+                    {galleryUploading ? "Uploading..." : "+ Upload Image"}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      hidden
+                      disabled={galleryUploading}
+                      onChange={async (e) => {
+                        if (!e.target.files) return;
+
+                        const file = e.target.files[0];
+
+                        if (!file.type.startsWith("image/")) {
+                          toast.error("Only image files allowed");
+                          return;
+                        }
+
+                        try {
+                          setGalleryUploading(true);
+
+                          const uploaded = await uploadToCloudinarySigned(
+                            file,
+                            "nishad-gateway/blogs"
+                          );
+
+                          const newImages = [
+                            ...block.images,
+                            {
+                              url: cloudinaryAutoWebp(uploaded.secure_url),
+                              alt: "",
+                              publicId: uploaded.public_id,
+                            },
+                          ];
+
+                          updateBlock(i, {
+                            ...block,
+                            images: newImages,
+                          });
+
+                          toast.success("Image uploaded");
+                        } catch {
+                          toast.error("Upload failed");
+                        } finally {
+                          setGalleryUploading(false);
+                        }
+                      }}
+                    />
+                  </label>
+
+                  {/* Image Grid */}
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    {block.images.map((img, imgIndex) => (
+                      <div key={imgIndex} className="relative group">
+
+                        {/* Image Preview */}
+                        <div className="relative h-40 rounded overflow-hidden">
+                          <Image
+                            src={img.url}
+                            alt={img.alt || ""}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+
+                        {/* Alt Text */}
+                        <input
+                          value={img.alt}
+                          onChange={(e) => {
+                            const newImages = [...block.images];
+                            newImages[imgIndex] = {
+                              ...newImages[imgIndex],
+                              alt: e.target.value,
+                            };
+
+                            updateBlock(i, {
+                              ...block,
+                              images: newImages,
+                            });
+                          }}
+                          placeholder="Alt text"
+                          className="w-full mt-2 bg-black border border-white/10 p-1 text-sm rounded"
+                        />
+
+                        {/* Delete Button */}
+                        <button
+                          type="button"
+                          onClick={async () => {
+                            try {
+                              if (img.publicId) {
+                                await fetch(`${API}/cloudinary/delete`, {
+                                  method: "POST",
+                                  headers: { "Content-Type": "application/json" },
+                                  credentials: "include",
+                                  body: JSON.stringify({
+                                    publicId: img.publicId,
+                                  }),
+                                });
+                              }
+
+                              const newImages = block.images.filter(
+                                (_, idx) => idx !== imgIndex
+                              );
+
+                              updateBlock(i, {
+                                ...block,
+                                images: newImages,
+                              });
+
+                              toast.success("Image deleted");
+                            } catch {
+                              toast.error("Delete failed");
+                            }
+                          }}
+                          className="absolute top-2 right-2 bg-red-600 text-white rounded-full p-1 text-xs opacity-0 group-hover:opacity-100 transition"
+                        >
+                          ✕
+                        </button>
+                      </div>
                     ))}
                   </div>
-                ))}
+                </div>
+              )}
+
+              {block.type === "table" && (
+                <div className="space-y-4">
+
+                  {/* COLUMN CONTROLS */}
+                  <div className="flex gap-2 flex-wrap">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const newHeaders = [
+                          ...block.headers,
+                          `Column ${block.headers.length + 1}`,
+                        ];
+
+                        const newRows = block.rows.map((row) => [
+                          ...row,
+                          "",
+                        ]);
+
+                        updateBlock(i, {
+                          ...block,
+                          headers: newHeaders,
+                          rows: newRows,
+                        });
+                      }}
+                      className="px-3 py-1 bg-emerald-600 text-white text-sm rounded"
+                    >
+                      + Add Column
+                    </button>
+
+                    {block.headers.length > 0 && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const newHeaders =
+                            block.headers.slice(0, -1);
+
+
+
+                          const newRows =
+                            newHeaders.length === 0
+                              ? []
+                              : block.rows.map((row) =>
+                                row.slice(0, -1)
+                              );
+
+                          updateBlock(i, {
+                            ...block,
+                            headers: newHeaders,
+                            rows: newRows,
+                          });
+                        }}
+                        className="px-3 py-1 bg-red-600 text-white text-sm rounded"
+                      >
+                        Remove Column
+                      </button>
+                    )}
+                  </div>
+
+                  {/* HEADER INPUTS */}
+                  {block.headers.length > 0 && (
+                    <div className="flex gap-2">
+                      {block.headers.map((header, colIndex) => (
+                        <input
+                          key={colIndex}
+                          value={header}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            const newHeaders = [...block.headers];
+                            newHeaders[colIndex] =
+                              e.target.value;
+
+                            updateBlock(i, {
+                              ...block,
+                              headers: newHeaders,
+                            });
+                          }}
+                          placeholder={`Header ${colIndex + 1}`}
+                          className="bg-black border p-2 text-white"
+                        />
+                      ))}
+                    </div>
+                  )}
+
+                  {/* ROW CONTROLS */}
+                  {block.headers.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const newRow = Array(
+                          block.headers.length
+                        ).fill("");
+
+                        updateBlock(i, {
+                          ...block,
+                          rows: [...block.rows, newRow],
+                        });
+                      }}
+                      className="px-3 py-1 bg-blue-600 text-white text-sm rounded"
+                    >
+                      + Add Row
+                    </button>
+                  )}
+
+                  {/* ROW INPUTS */}
+                  {block.rows.map((row, rowIndex) => (
+                    <div key={rowIndex} className="flex gap-2">
+                      {row.map((cell, cellIndex) => (
+                        <input
+                          key={cellIndex}
+                          value={cell}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            const newRows = [...block.rows];
+                            newRows[rowIndex][cellIndex] =
+                              e.target.value;
+
+                            updateBlock(i, {
+                              ...block,
+                              rows: newRows,
+                            });
+                          }}
+                          className="bg-black border p-2 text-white"
+                        />
+                      ))}
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const newRows =
+                            block.rows.filter(
+                              (_, r) => r !== rowIndex
+                            );
+
+                          updateBlock(i, {
+                            ...block,
+                            rows: newRows,
+                          });
+                        }}
+                        className="text-red-400 text-sm"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
 
               <button
                 type="button"
@@ -326,30 +674,54 @@ export default function CreateBlogPage() {
           <option value="published">Published</option>
         </select>
 
-        <button className="px-6 py-3 bg-emerald-500 text-black font-semibold rounded-lg">
-          Create Blog
-        </button>
+        <div className="pt-5">
+          <button
+            disabled={uploading || galleryUploading}
+            className="px-6 py-3 bg-emerald-500 disabled:opacity-50"
+          >
+            Create Blog
+          </button>
+        </div>
       </form>
     </main>
   );
 }
 
 /* ================= REUSABLE INPUTS ================= */
-
-function Input({ label, ...props }: any) {
+function Input({
+  label,
+  ...props
+}: React.InputHTMLAttributes<HTMLInputElement> & {
+  label: string;
+}) {
   return (
     <div>
-      <label className="block mb-2">{label}</label>
-      <input {...props} className="w-full bg-black border p-2" />
+      <label className="block mb-2 text-sm text-white/70">
+        {label}
+      </label>
+      <input
+        {...props}
+        className="w-full bg-black border border-white/10 p-2 rounded text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
+      />
     </div>
   );
 }
 
-function Textarea({ label, ...props }: any) {
+function Textarea({
+  label,
+  ...props
+}: React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
+  label: string;
+}) {
   return (
     <div>
-      <label className="block mb-2">{label}</label>
-      <textarea {...props} className="w-full bg-black border p-2" />
+      <label className="block mb-2 text-sm text-white/70">
+        {label}
+      </label>
+      <textarea
+        {...props}
+        className="w-full bg-black border border-white/10 p-2 rounded text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
+      />
     </div>
   );
 }
