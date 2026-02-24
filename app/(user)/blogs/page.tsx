@@ -40,7 +40,7 @@ export default async function BlogsPage() {
   const blogs = await getBlogs();
 
   return (
-    <main className="max-w-6xl mx-auto px-6 py-16">
+    <main className="max-w-6xl mx-auto px-4 py-32" data-navbar="light">
       <h1 className="text-4xl font-semibold mb-12">
         Blog
       </h1>

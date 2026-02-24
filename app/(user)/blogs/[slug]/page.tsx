@@ -97,14 +97,14 @@ export default async function SingleBlogPage({
   );
 
   return (
-    <main className="max-w-4xl mx-auto px-6 py-16">
-      <div className="relative h-[400px] rounded-2xl overflow-hidden mb-12">
+    <main className="max-w-8xl mx-auto px-6 py-28 bg-white " data-navbar="light">
+      <div className="relative h-[800px] rounded-2xl overflow-hidden mb-12">
         <Image
           src={blog.coverImage.url}
           alt={blog.coverImage.alt || blog.title}
           fill
           priority
-          className="object-cover"
+          className="object-fit-cover"
         />
       </div>
 
