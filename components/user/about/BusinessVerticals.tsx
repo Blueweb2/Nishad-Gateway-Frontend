@@ -18,7 +18,7 @@ const verticals = [
   {
     title: "Investment Advisory",
     subtitle: "Capital & Growth Advisory",
-    image: "/about/buisnessveriticals.jpg",
+    image: "/buisnessgrowth/Dress-Code.jpg",
     points: [
       "Investment Structuring",
       "Due Diligence",
@@ -28,7 +28,7 @@ const verticals = [
   {
     title: "Strategic Partnerships",
     subtitle: "Global Expansion Support",
-    image: "/about/buisnessveriticals.jpg",
+    image: "/buisnessgrowth/business-coworkers-discussing-new-ideas-brainstorming-together-looking-new-project-document.jpg",
     points: [
       "Joint Ventures",
       "Local Sponsor Identification",

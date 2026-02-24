@@ -22,7 +22,7 @@ export default function KeyServices() {
         </div>
 
         {/* GRID */}
-   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-6 gap-y-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-6 gap-y-8">
 
           <Card
             icon="/icons/sectors/manufacturing.svg"
@@ -105,23 +105,22 @@ function Card({
 }) {
   return (
     <div
-   className="
-  group
-  bg-[#908D8C]
-  hover:bg-[#096C6C]
-  transition-all duration-300 ease-out
-  rounded-2xl
-  p-6
-  w-full
-  min-h-[280px]
-  cursor-pointer
-  flex flex-col justify-between
-"
-    >
+      className="
+      group
+      bg-[#908D8C]
+      hover:bg-[#096C6C]
+      transition-all duration-300 ease-out
+      rounded-2xl
+      p-6
+      w-full
+      min-h-[280px]
+      cursor-pointer
+      flex flex-col justify-between
+    ">
 
       {/* Top Row */}
       <div className="flex items-start justify-between">
-        <Image src={icon} alt={title} width={82} height={82} />
+        <Image src={icon} alt={title} width={40} height={40} />
 
         <ArrowRight
           size={18}
@@ -130,16 +129,21 @@ function Card({
       </div>
 
       {/* Content */}
-      <div className="mt-6">
-        <p className="text-xl font-medium">
-          {title}
-        </p>
-
+      <div className="mt-6 relative">
         <p
           className="
-            text-base md:text-lg text-white/90 leading-tight
-            mt-3
-            opacity-0 translate-y-2
+            text-2xl text-[20px] font-medium text-white
+            absolute bottom-6  right-6
+            transition-all duration-300
+            group-hover:translate-y-[-90px]
+          "
+        >
+          {title}
+        </p>
+        <p
+          className="
+            text-white mt-3 text-sm
+            opacity-0 translate-y-4
             transition-all duration-300
             group-hover:opacity-100
             group-hover:translate-y-0
@@ -150,9 +154,4 @@ function Card({
       </div>
     </div>
   );
-}
-
-
-
-
-
+};
