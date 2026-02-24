@@ -1,95 +1,73 @@
-"use client";
-
-import Image from "next/image";
-import { motion } from "framer-motion";
-
-const stats = [
-  { value: "17+", label: "Years of Experience" },
-  { value: "8+", label: "International Market Presence" },
-  { value: "2,500+", label: "Company Formations in KSA" },
-  { value: "250+", label: "Professionals" },
-];
-
 export default function SaudiExpansion() {
   return (
-    <section className="w-full bg-[#0F6B63] text-white py-28">
-      <div className="max-w-[1400px] mx-auto px-6">
+    <section className="w-full bg-[#0f6f66] text-white py-20">
+      <div className="max-w-7xl mx-auto px-8">
 
         {/* Top Grid */}
-        <div className="grid lg:grid-cols-2 gap-16 items-start">
+        <div className="grid md:grid-cols-2 gap-16 items-start">
 
-          {/* LEFT TITLE */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="text-4xl lg:text-5xl font-semibold leading-tight max-w-[500px]">
-              We help you to expand your business in Saudi Arabia
+          {/* LEFT SIDE */}
+          <div>
+            <h2 className="text-4xl font-bold leading-snug mb-10">
+              We help you to <br />
+              expand your business <br />
+              in Saudi Arabia
             </h2>
-          </motion.div>
 
-          {/* RIGHT DESCRIPTION */}
-          <motion.p
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-white/80 leading-relaxed max-w-[520px]"
-          >
-            Lorem Ipsum is simply dummy text of the printing and
-            typesetting industry. Lorem Ipsum has been the industry's
-            standard dummy text ever since the 1500s, when an unknown
-            printer took a galley of type and scrambled it to make a type
-            specimen book.
-          </motion.p>
-        </div>
+            {/* Image */}
+            <div className="relative w-full h-[380px] rounded-3xl overflow-hidden">
+              <img src="/about/saudi-expansion.png" alt="Business Meeting" className="w-full h-full object-cover object-center"/>
+            </div>
+          </div>
 
-        {/* Bottom Grid */}
-        <div className="mt-20 grid lg:grid-cols-2 gap-16 items-center">
+          {/* RIGHT SIDE */}
+          <div className="flex flex-col justify-between h-full">
 
-          {/* IMAGE */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="relative w-full h-[420px] rounded-[40px] overflow-hidden"
-          >
-            <Image
-              src="/about/saudi-expansion.jpg"
-              alt="Saudi Expansion"
-              fill
-              className="object-cover"
-            />
-          </motion.div>
+            {/* Description */}
+            <p className="text-sm text-gray-200 leading-relaxed max-w-md mb-12">
+              Lorem Ipsum is simply dummy text of the printing and
+              typesetting industry. Lorem Ipsum has been the industry’s
+              standard dummy text ever since the 1500s, when an unknown
+              printer took a galley of type and scrambled it to make a
+              type specimen book.
+            </p>
 
-          {/* STATS */}
-          <div className="space-y-12">
+            {/* Stats */}
+            <div className="space-y-8 border-t border-white/30 pt-8">
 
-            {stats.map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, x: 40 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.15 }}
-                className="flex justify-between items-center border-b border-white/20 pb-6"
-              >
-                <span className="text-3xl font-semibold">
-                  {stat.value}
+              {/* Item */}
+              <div className="flex justify-between items-center border-b border-white/20 pb-6">
+                <span className="text-3xl font-bold">17+</span>
+                <span className="text-sm text-gray-200">
+                  Years of Experience
                 </span>
+              </div>
 
-                <span className="text-white/80 text-sm">
-                  {stat.label}
+              <div className="flex justify-between items-center border-b border-white/20 pb-6">
+                <span className="text-3xl font-bold">8+</span>
+                <span className="text-sm text-gray-200">
+                  International Market Presence
                 </span>
-              </motion.div>
-            ))}
+              </div>
 
+              <div className="flex justify-between items-center border-b border-white/20 pb-6">
+                <span className="text-3xl font-bold">2,500+</span>
+                <span className="text-sm text-gray-200">
+                  Company Formations in KSA
+                </span>
+              </div>
+
+              <div className="flex justify-between items-center">
+                <span className="text-3xl font-bold">250+</span>
+                <span className="text-sm text-gray-200">
+                  Professionals
+                </span>
+              </div>
+
+            </div>
           </div>
         </div>
       </div>
     </section>
   );
-}
+};

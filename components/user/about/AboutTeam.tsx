@@ -1,9 +1,61 @@
 "use client";
 
 import Image from "next/image";
-import { ChevronLeft, ChevronRight, Linkedin } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useRef, useState } from "react";
+
+const slides = [
+  {
+    src: "/about/testimonials.jpg",
+    title: "MAADEN",
+    description:
+      "MODON enables integrated industrial investment environments that support diversification and employment.",
+    link: "Browse Case Studies"
+  },
+  {
+    src: "/about/saudi-expansion.png",
+    title: "MODON",
+    description:
+      "Creating strong industrial ecosystems that foster investment, employment, and long-term development.",
+    link: "Explore Mining Projects"
+  },
+  {
+    src: "/about/indro-section.jpg",
+    title: "NEOM",
+    description:
+      "NEOM is building a futuristic, sustainable region powered by innovation, advanced technology, and smart infrastructure.",
+    link: "View Industrial Developments"
+  },
+  {
+    src: "/about/buisnessveriticals.jpg",
+    title: "ARAMCO",
+    description:
+      "Aramco drives global energy solutions while investing in sustainable development and technological advancement.",
+    link: "Discover Future Cities"
+  },
+  {
+    src: "/about/aboutIntro.jpg",
+    title: "RED SEA GLOBAL",
+    description:
+      "Red Sea Global develops regenerative tourism destinations focused on environmental protection and luxury experiences.",
+    link: "Explore Energy Innovations"
+  },
+  {
+    src: "/about/aboutHero.jpg",
+    title: "SABIC",
+    description:
+      "SABIC is a global leader in diversified chemicals, delivering innovative material solutions for industries worldwide.",
+    link: "View Tourism Destinations"
+  },
+];
 
 export default function TeamSection() {
+
+  const swiperRef = useRef<any>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+    
+  const activeSlide = slides[activeIndex];
+
   return (
     <section className="w-full bg-[#f3f3f3] py-24">
       <div className="max-w-7xl mx-auto px-8 relative">
@@ -62,12 +114,11 @@ export default function TeamSection() {
 
             {/* Social Icons */}
             <div className="flex gap-4 mt-6">
-              <a className="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow">
-                <Linkedin size={16} />
+              <a className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-300 hover:bg-gray-400">
+                <img src="/about/linkedin.svg" alt="" className="w-4 h-4"/>
               </a>
-              <a className="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow">
-                {/* WhatsApp circle */}
-                <span className="text-sm font-bold">W</span>
+              <a className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-300 hover:bg-gray-400">
+                <img src="/about/whatsapp.svg" alt="" className="w-4 h-4"/>
               </a>
             </div>
           </div>
