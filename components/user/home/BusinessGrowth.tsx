@@ -1,7 +1,6 @@
 "use client";
 
 import OvalArrow from "@/components/user/ui/OvalArrow";
-import ParallaxImage from "../shared/ParallaxImage";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectFade, Autoplay } from "swiper/modules";
@@ -142,12 +141,7 @@ export default function BusinessGrowth() {
               {slides.map((slide, index) => (
                 <SwiperSlide key={index}>
                   <div className="relative w-[380px] h-[500px] rounded-[150px] overflow-hidden">
-                    <ParallaxImage
-                      src={slide.src}
-                      alt={slide.alt}
-                      className="w-full h-full"
-                      priority={index === 0}
-                    />
+                    <img src={slide.src} alt={slide.alt} className="w-full h-full"/>
                   </div>
                 </SwiperSlide>
               ))}

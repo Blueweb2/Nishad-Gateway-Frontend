@@ -41,7 +41,7 @@ export default function CitySlide({ city }: Props) {
       </div>
 
       {/* Overlay */}
-      <div className="absolute inset-0 z-10 bg-black/50" />
+      <div className="absolute inset-0 z-10 bg-black/40" />
 
       <div className="relative z-20 max-w-[91.6vw] mx-auto px-[4vw] h-full flex flex-col py-[4vw]">
 
@@ -63,7 +63,7 @@ export default function CitySlide({ city }: Props) {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-[1.8vw] leading-[1.8vw] tracking-wide max-w-[18vw] text-[#00A63E]"
+            className="text-[1.8vw] leading-[1.8vw] tracking-wide max-w-[18vw] "
           >
             {city.heading}
           </motion.h4>
@@ -87,7 +87,7 @@ export default function CitySlide({ city }: Props) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="w-full h-px bg-white/20 mb-[8vw]"
+          className="w-full h-px bg-white/20 mb-[4vw]"
         />
 
         {/* City Name + Arrow */}
@@ -120,7 +120,7 @@ export default function CitySlide({ city }: Props) {
         </div>
 
         {/* CTA */}
-        <div className="flex justify-center">
+        <div className="flex">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}

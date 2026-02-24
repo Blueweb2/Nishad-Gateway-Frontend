@@ -2,7 +2,6 @@ import BusinessGrowth from "@/components/user/home/BusinessGrowth";
 import HeroSection from "@/components/user/home/HeroSection";
 import WhySaudi from "@/components/user/home/WhySaudi";
 import KeyServices from "@/components/user/home/KeyServices";
-import Cities from "@/components/user/home/Cities";
 import Consultant from "@/components/user/home/Consultant";
 import Stats from "@/components/user/home/Stats";
 import CaseStudies from "@/components/user/home/CaseStudies";
@@ -20,8 +19,8 @@ export default function Page() {
         <HeroSection />
         <WhySaudi />
         <BusinessGrowth />
+        <CitiesSection />
         <KeyServices />
-         <CitiesSection />
         <Consultant />
         <Stats />
         <CaseStudies />
