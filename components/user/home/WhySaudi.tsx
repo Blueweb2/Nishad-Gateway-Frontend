@@ -154,9 +154,11 @@ export default function WhySaudi() {
           </AnimatePresence>
 
         </div>
-      </div>
 
-      {/* <div className="mt-12 border-t border-gray-200" /> */}
+        <div className="h-full w-full">
+          <img src="/why-saudi-arabia.svg" alt="saudi arabia" />
+        </div>
+      </div>
     </section>
   );
 }
