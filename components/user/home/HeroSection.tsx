@@ -21,7 +21,7 @@ export default function HeroSection() {
       <WaterTouchHover className="z-[5]" strength={1.5} />
 
       {/* Gradient Overlay */}
-      <div className="absolute inset-0 z-[6] pointer-events-none bg-gradient-to-b from-black/60 via-black/30 to-black/60" />
+      {/* <div className="absolute inset-0 z-[6] pointer-events-none bg-gradient-to-b from-black/60 via-black/30 to-black/60" /> */}
 
       {/* Content */}
       <div className="relative z-10 h-full flex flex-col px-6">
