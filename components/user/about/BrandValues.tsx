@@ -48,7 +48,7 @@ export default function BrandValues() {
         </p>
 
         {/* Cards */}
-        <div className="mt-16 flex gap-6 overflow-x-auto pb-4 scroll-smooth">
+        <div className="mt-16 flex gap-6 overflow-x-auto pb-4 scroll-smooth hide-scrollbar">
 
           {values.map((value, index) => {
             const isActive = index === active;
@@ -59,22 +59,7 @@ export default function BrandValues() {
                 onClick={() => setActive(index)}
                 whileHover={{ y: -6 }}
                 transition={{ duration: 0.3 }}
-                className={`
-                  relative
-                  min-w-[300px] md:min-w-[340px]
-                  h-[220px]
-                  p-8
-                  rounded-3xl
-                  text-left
-                  flex flex-col justify-between
-                  transition-all duration-300
-                  cursor-pointer
-                  ${
-                    isActive
-                      ? "bg-[#0E6B63] text-white shadow-xl"
-                      : "bg-white text-gray-800 shadow-sm hover:shadow-md"
-                  }
-                `}
+                className="group relative min-w-[300px] md:min-w-[340px] h-[220px] p-8 rounded-3xl text-left flex flex-col justify-between transition-all duration-300 cursor-pointer bg-white text-gray-800 shadow-sm hover:bg-[#0E6B63] hover:text-white hover:shadow-xl"
               >
                 {/* Text */}
                 <p className="leading-relaxed text-[15px]">
@@ -85,7 +70,7 @@ export default function BrandValues() {
                 <div className="flex justify-end">
                   <OvalArrow
                     direction="right"
-                    variant={isActive ? "white" : "gray"}
+                    variant="gray"
                     className="w-[36px] h-[48px]"
                   />
                 </div>

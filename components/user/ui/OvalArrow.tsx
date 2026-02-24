@@ -45,7 +45,7 @@ export default function OvalArrow({
           transition-transform duration-300
           ${
             isGray
-              ? "text-gray-600"
+              ? "text-gray-600 group-hover:text-white"
               : "text-white"
           }
           ${
