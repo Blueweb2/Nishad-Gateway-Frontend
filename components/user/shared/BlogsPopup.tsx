@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 
 type BlogItem = {
@@ -106,12 +107,12 @@ export default function BlogsPopup({
             <div
                 onClick={onClose}
                 className="
-          fixed inset-0
-          bg-black/30 backdrop-blur-sm
-          z-40
-          transition-opacity
-          duration-500
-        "
+                    fixed inset-0
+                    bg-black/30 backdrop-blur-sm
+                    z-40
+                    transition-opacity
+                    duration-500
+                    "
                 style={{ opacity: open ? 1 : 0 }}
             />
 
@@ -181,7 +182,13 @@ export default function BlogsPopup({
 
                                         {/* IMAGE (exact oval shape) */}
                                         <div className="w-full flex justify-center my-4">
-                                            <div className="rounded-[160px] overflow-hidden">
+                                            <motion.div 
+                                                initial={{ opacity: 0, y: 40 }}
+                                                whileInView={{ opacity: 1, y: 0 }}
+                                                viewport={{ once: true, amount: 0.5 }} 
+                                                transition={{ duration: 1, ease: "easeOut" }}
+                                                className="rounded-[160px] overflow-hidden"
+                                            >
                                                 <Image
                                                     src={item.image}
                                                     alt={item.title}
@@ -190,15 +197,21 @@ export default function BlogsPopup({
                                                     className="object-cover w-[120px] h-[150px]"
                                                     priority
                                                 />
-                                            </div>
+                                            </motion.div>
                                         </div>
 
 
                                         {/* title + arrow */}
                                         <div className="mt-5 flex items-center justify-between gap-4">
-                                            <h4 className="text-sm font-semibold text-gray-900 leading-snug whitespace-pre-line">
+                                            <motion.h4 
+                                                className="text-sm font-semibold text-gray-900 leading-snug whitespace-pre-line"
+                                                initial={{ opacity: 0, y: 40 }}
+                                                whileInView={{ opacity: 1, y: 0 }}
+                                                viewport={{ once: true, amount: 0.5 }} 
+                                                transition={{ duration: 1, ease: "easeOut" }}
+                                            >
                                                 {item.title}
-                                            </h4>
+                                            </motion.h4>
 
                                             <Link
                                                 href={item.href}
