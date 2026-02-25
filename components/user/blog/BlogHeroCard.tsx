@@ -19,7 +19,7 @@ export default function BlogHeroCard({ blog }: Props) {
   return (
     <Link
       href={`/blogs/${blog.id}`}
-      className="group block w-full h-[830px] overflow-hidden relative bg-white border-r border-gray-200"
+      className="group block w-full h-[750px] overflow-hidden relative bg-white border-r border-gray-200"
     >
       <div className="relative w-full h-full bg-white">
 
@@ -28,7 +28,7 @@ export default function BlogHeroCard({ blog }: Props) {
           alt={blog.title}
           fill
           priority
-          className="object-cover transition-all duration-700 scale-40 group-hover:scale-100 rounded-[200px] group-hover:rounded-none"
+          className=" transition-all duration-700 scale-40 group-hover:scale-100 rounded-[160px] group-hover:rounded-none"
         />
 
         <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10" />
