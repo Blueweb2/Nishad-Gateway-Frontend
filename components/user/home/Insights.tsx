@@ -7,15 +7,14 @@ type BlogResponse = {
   coverImage?: {
     url: string;
   };
-  category?: string;
-  city?: string;
+  tags?: string[];
   publishedAt?: string;
 };
 
 async function getBlogs() {
   const res = await fetch(
     `${process.env.API_URL}/blogs?page=1&limit=3`,
-    { cache: "no-store" }
+    { next: { revalidate: 60 } } // better than no-store
   );
 
   if (!res.ok) return [];
@@ -29,13 +28,10 @@ export default async function Insights() {
   const blogs: BlogResponse[] = await getBlogs();
 
   const mapped = blogs.map((blog) => ({
-    id: blog.slug, // 🔥 IMPORTANT: use slug, not _id
+    id: blog.slug,
     image: blog.coverImage?.url || "/placeholder.jpg",
     title: blog.title,
-    tags: [
-      blog.category || "Articles",
-      blog.city || "KSA",
-    ],
+    tags: blog.tags?.slice(0, 2) || [],
     date: blog.publishedAt
       ? new Date(blog.publishedAt).toLocaleDateString()
       : "",
