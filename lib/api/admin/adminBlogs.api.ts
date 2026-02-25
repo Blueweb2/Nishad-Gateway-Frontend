@@ -6,11 +6,51 @@ export type BlogStatus = "draft" | "published";
 
 /* ---------- Block Types ---------- */
 
+export type HeadingBlock = {
+  type: "heading";
+  level: 1 | 2 | 3;
+  text: string;
+};
+
+export type ParagraphBlock = {
+  type: "paragraph";
+  text: string;
+};
+
+export type ImageItem = {
+  url: string;
+  alt: string;
+  publicId?: string;
+  caption?: string;
+  width?: number;
+  height?: number;
+};
+
+export type GalleryBlock = {
+  type: "gallery";
+  images: ImageItem[];
+};
+
+export type TableBlock = {
+  type: "table";
+  headers: string[];
+  rows: string[][];
+};
+
+export type ListBlock = {
+  type: "list";
+  style: "unordered" | "ordered";
+  items: string[];
+};
+
 export type Block =
-  | { type: "heading"; level: 1 | 2 | 3; text: string }
-  | { type: "paragraph"; text: string }
-  | { type: "image"; url: string; alt: string }
-  | { type: "table"; headers: string[]; rows: string[][] };
+  | HeadingBlock
+  | ParagraphBlock
+  | GalleryBlock
+  | TableBlock
+  | ListBlock;
+
+/* ---------- Payload Type ---------- */
 
 export type AdminBlogPayload = {
   title: string;
@@ -28,6 +68,7 @@ export type AdminBlogPayload = {
   coverImage: {
     url: string;
     alt: string;
+    publicId?: string; // ✅ Added for Cloudinary delete support
   };
 
   metaTitle?: string;
@@ -58,9 +99,7 @@ export const adminGetBlogById = async (id: string) => {
   if (!id) throw new Error("Blog ID is required");
 
   try {
-    const { data } = await adminAxios.get(
-      `/blogs/admin/${id}`
-    );
+    const { data } = await adminAxios.get(`/blogs/admin/${id}`);
     return data;
   } catch (error: any) {
     throw new Error(
