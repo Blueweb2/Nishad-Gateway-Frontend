@@ -1,3 +1,4 @@
+import BlogCardsGrid from "@/components/user/blog/BlogCardsGrid";
 import BlogShare from "@/components/user/blog/BlogShare";
 import NewsletterSection from "@/components/user/shared/NewsletterSection";
 import Image from "next/image";
@@ -285,45 +286,23 @@ export default async function SingleBlogPage({
       <BlogShare title={blog.title} />
 
       {/* RELATED */}
-      {related.length > 0 && (
-        <div className="mt-20">
-          <h2 className="text-2xl font-semibold mb-8">
-            Related Topics
-          </h2>
+{/* RELATED */}
+{related.length > 0 && (
+  <div className="mt-32" data-navbar="light" data-menu="dark-text">
+    <h2 className="text-3xl font-semibold mb-14">
+      Related Insights
+    </h2>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            {related.map((item) => (
-              <Link
-                key={item._id}
-                href={`/blogs/${item.slug}`}
-              >
-                <div className="border rounded-xl overflow-hidden hover:shadow-md transition">
-                  <div className="relative h-40">
-                    <Image
-                      src={
-                        item.coverImage?.url ||
-                        "/placeholder.jpg"
-                      }
-                      alt={
-                        item.coverImage?.alt ||
-                        item.title
-                      }
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-
-                  <div className="p-4">
-                    <h3 className="font-medium">
-                      {item.title}
-                    </h3>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
+    <BlogCardsGrid
+      blogs={related.map((item) => ({
+        id: item.slug,
+        image: item.coverImage?.url || "/placeholder.jpg",
+        title: item.title,
+        tags: item.tags?.slice(0, 2) || [],
+      }))}
+    />
+  </div>
+)}
 
       {/* NEWSLETTER CTA */}
       <NewsletterSection />

@@ -1,5 +1,4 @@
-import Link from "next/link";
-import Image from "next/image";
+import BlogCardsGrid from "@/components/user/blog/BlogCardsGrid";
 import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 
 /* ================= TYPES ================= */
@@ -13,6 +12,7 @@ type Blog = {
     url: string;
     alt?: string;
   };
+  tags?: string[];
   publishedAt?: string;
 };
 
@@ -29,7 +29,7 @@ async function getBlogs(): Promise<Blog[]> {
   const res = await fetch(
     `${process.env.API_URL}/blogs?page=1&limit=9`,
     {
-      cache: "no-store",
+      next: { revalidate: 60 }, // 🔥 better than no-store
     }
   );
 
@@ -45,73 +45,37 @@ async function getBlogs(): Promise<Blog[]> {
 export default async function BlogsPage() {
   const blogs = await getBlogs();
 
+  const mapped = blogs.map((blog) => ({
+    id: blog.slug,
+    image: blog.coverImage?.url
+      ? cloudinaryAutoWebp(blog.coverImage.url)
+      : "/placeholder.jpg",
+    title: blog.title,
+    tags: blog.tags?.slice(0, 2) || [],
+    date: blog.publishedAt
+      ? new Date(blog.publishedAt).toLocaleDateString()
+      : "",
+  }));
+
   return (
     <main
-      className="max-w-6xl mx-auto px-4 py-32"
+      className="max-w-8xl mx-auto py-28 bg-white"
       data-navbar="light"
+      data-menu="dark-text"
     >
-      <h1 className="text-4xl font-semibold mb-12">
-        Blog
-      </h1>
+      <div className="px-8 mb-20">
+        <h1 className="text-5xl font-semibold">
+          Insights
+        </h1>
+      </div>
 
-      {blogs.length === 0 && (
-        <p className="text-gray-500">
+      {mapped.length === 0 ? (
+        <p className="text-gray-500 px-8">
           No blogs available.
         </p>
+      ) : (
+        <BlogCardsGrid blogs={mapped} />
       )}
-
-      <div className="grid md:grid-cols-3 gap-8">
-        {blogs.map((blog) => {
-          const imageUrl =
-            blog.coverImage?.url
-              ? cloudinaryAutoWebp(
-                  blog.coverImage.url
-                )
-              : "/placeholder.jpg";
-
-          return (
-            <Link
-              key={blog._id}
-              href={`/blogs/${blog.slug}`}
-              className="group"
-            >
-              <div className="rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition">
-                {/* IMAGE */}
-                <div className="relative h-60">
-                  <Image
-                    src={imageUrl}
-                    alt={
-                      blog.coverImage?.alt ||
-                      blog.title
-                    }
-                    fill
-                    className="object-cover group-hover:scale-105 transition duration-300"
-                  />
-                </div>
-
-                {/* CONTENT */}
-                <div className="p-6">
-                  <h2 className="text-xl font-semibold mb-3">
-                    {blog.title}
-                  </h2>
-
-                  <p className="text-gray-600 text-sm line-clamp-3">
-                    {blog.excerpt}
-                  </p>
-
-                  {blog.publishedAt && (
-                    <p className="text-xs text-gray-400 mt-4">
-                      {new Date(
-                        blog.publishedAt
-                      ).toLocaleDateString()}
-                    </p>
-                  )}
-                </div>
-              </div>
-            </Link>
-          );
-        })}
-      </div>
     </main>
   );
 }
