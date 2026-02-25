@@ -334,6 +334,15 @@ export default function EditBlogPage() {
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setExcerpt(e.target.value)}
         />
 
+        {/* TAGS */}
+        <Input
+          label="Tags (comma separated)"
+          value={tags}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setTags(e.target.value)
+          }
+        />
+
 
         {/* COVER IMAGE */}
         <div>

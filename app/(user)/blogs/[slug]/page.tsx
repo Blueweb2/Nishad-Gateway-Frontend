@@ -1,3 +1,5 @@
+import BlogShare from "@/components/user/blog/BlogShare";
+import NewsletterSection from "@/components/user/shared/NewsletterSection";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -247,7 +249,7 @@ export default async function SingleBlogPage({
   return (
     <main
       className="max-w-8xl mx-auto px-6 py-28 bg-white"
-      data-navbar="light"
+      data-navbar="light" data-menu="light"
     >
       {/* COVER IMAGE */}
       <div className="relative h-[700px] rounded-2xl overflow-hidden mb-12">
@@ -279,6 +281,8 @@ export default async function SingleBlogPage({
           renderBlock(blockObj?.data, i)
         )}
       </div>
+      {/* SHARE SECTION */}
+      <BlogShare title={blog.title} />
 
       {/* RELATED */}
       {related.length > 0 && (
@@ -320,6 +324,9 @@ export default async function SingleBlogPage({
           </div>
         </div>
       )}
+
+      {/* NEWSLETTER CTA */}
+      <NewsletterSection />
     </main>
   );
 }
