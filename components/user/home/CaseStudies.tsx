@@ -13,7 +13,7 @@ import FadeUpScroll from "../ui/FadeUpScroll";
 const slides = [
   {
     src: "/casestudies/building.webp",
-    title: "MODON",
+    title: "Manufacturing & Industrial Licenses",
     description:
       "MODON enables integrated industrial investment environments that support diversification and employment.",
   },
