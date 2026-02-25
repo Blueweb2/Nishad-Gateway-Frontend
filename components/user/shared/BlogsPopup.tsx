@@ -7,10 +7,10 @@ import { ArrowUpRight } from "lucide-react";
 
 type BlogItem = {
     id: string;
-    date: string; // "30.05"
+    date: string;
     title: string;
     image: string;
-    cityTag?: string; // "Riyadh"
+    cityTag?: string;
     typeTag?: "News" | "Articles";
     href: string;
 };
@@ -43,39 +43,50 @@ export default function BlogsPopup({
         return () => window.removeEventListener("keydown", onEsc);
     }, [onClose]);
 
-    //  Static UI items (no API)
-    const blogItems: BlogItem[] = useMemo(
-        () => [
-            {
-                id: "1",
-                date: "30.05",
-                title: "Ultimate Guide\nto Riyadh",
-                image: "/Olaya.webp",
-                cityTag: "Riyadh",
-                typeTag: "News",
-                href: "/blogs/ultimate-guide-to-riyadh",
-            },
-            {
-                id: "2",
-                date: "30.05",
-                title: "Jeddah Business\n& Lifestyle",
-                image: "/Olaya.webp",
-                cityTag: "Jeddah",
-                typeTag: "Articles",
-                href: "/blogs/jeddah-business-lifestyle",
-            },
-            {
-                id: "3",
-                date: "12.06",
-                title: "Saudi Arabia\nStartup Ecosystem",
-                image: "/Olaya.webp",
-                cityTag: "KSA",
-                typeTag: "Articles",
-                href: "/blogs/saudi-startup-ecosystem",
-            },
-        ],
-        []
-    );
+
+    const [blogItems, setBlogItems] = useState<BlogItem[]>([]);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (!open) return;
+
+        const fetchBlogs = async () => {
+            try {
+                setLoading(true);
+
+                const res = await fetch(
+                    `${process.env.NEXT_PUBLIC_API_URL}/blogs?page=1&limit=6`
+                );
+
+                if (!res.ok) return;
+
+                const result = await res.json();
+
+                const mapped: BlogItem[] = result.data.map((blog: any) => ({
+                    id: blog._id,
+                    date: blog.publishedAt
+                        ? new Date(blog.publishedAt)
+                            .toLocaleDateString("en-GB")
+                            .slice(0, 5)
+                        : "",
+                    title: blog.title,
+                    image: blog.coverImage?.url || "/placeholder.jpg",
+                    cityTag: blog.city || "KSA",
+                    typeTag: blog.category === "news" ? "News" : "Articles",
+                    href: `/blogs/${blog.slug}`,
+                }));
+
+                setBlogItems(mapped);
+            } catch (err) {
+                console.error("Failed to fetch blogs");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchBlogs();
+    }, [open]);
+
 
     // default filter like screenshot
     const [activeFilter, setActiveFilter] = useState<"All" | "Articles" | "News">(
@@ -138,7 +149,11 @@ export default function BlogsPopup({
 
                     {/* LIST */}
                     <div className="px-5 max-h-[520px] overflow-y-auto hide-scrollbar mt-5 pb-10">
-                        {filtered.length === 0 ? (
+                        {loading ? (
+                            <p className="text-sm text-gray-500 py-10 text-center">
+                                Loading blogs...
+                            </p>
+                        ) : filtered.length === 0 ? (
                             <p className="text-sm text-gray-500 py-10 text-center">
                                 No blogs found.
                             </p>
@@ -170,7 +185,7 @@ export default function BlogsPopup({
                                                 <Image
                                                     src={item.image}
                                                     alt={item.title}
-                                                    width={120}
+                                                    width={150}
                                                     height={150}
                                                     className="object-cover w-[120px] h-[150px]"
                                                     priority
