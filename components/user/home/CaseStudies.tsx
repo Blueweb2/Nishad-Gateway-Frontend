@@ -82,9 +82,8 @@ export default function CaseStudies() {
             <div>
               <FadeUpScroll delay={0.1}>
                 <h2 className="text-[36px] font-bold leading-tight mb-2">
-                  Real-World <br />
-                  Investment <br />
-                  Scenarios
+                  We're Trusted <br />
+                  by 2500+ Clients
                 </h2>
               </FadeUpScroll >
             </div>
