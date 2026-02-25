@@ -16,22 +16,55 @@ const slides = [
     title: "Manufacturing & Industrial Licenses",
     description:
       "MODON enables integrated industrial investment environments that support diversification and employment.",
+    link: "Browse Case Studies",
   },
   {
-    src: "/casestudies/building.webp",
-    title: "MODON",
+    src: "/consultantbg.webp",
+    title: "Commercial & Trade Permits",
     description:
-      "MODON enables integrated industrial investment environments that support diversification and employment.",
+      "Streamlined licensing solutions designed to accelerate business setup, ensure regulatory compliance, and support sustainable commercial growth.",
+    link: "Explore Permit Solutions",
   },
+  {
+    src: "/citiesbg.webp",
+    title: "Real Estate Development Approvals",
+    description:
+      "Comprehensive approval processes that facilitate property development projects while maintaining urban planning standards and legal requirements.",
+    link: "View Development Projects",
+  },
+  {
+    src: "/ksa-a.png",
+    title: "Environmental & Regulatory Clearances",
+    description:
+      "Efficient environmental assessment and regulatory clearance services to ensure responsible development aligned with national sustainability goals.",
+    link: "Discover Regulatory Services",
+  },
+  {
+    src: "/herobg.webp",
+    title: "Infrastructure & Public Sector Projects",
+    description:
+      "Strategic advisory and licensing support for large-scale infrastructure initiatives aligned with national development objectives.",
+    link: "Explore Infrastructure Solutions",
+  },
+  {
+    src: "/Olaya.webp",
+    title: "Foreign Investment & Business Setup",
+    description:
+      "End-to-end assistance for international investors seeking compliant market entry and long-term operational success.",
+    link: "Start Your Investment Journey",
+  }
 ];
 
 export default function CaseStudies() {
+
   const swiperRef = useRef<any>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
+  const activeSlide = slides[activeIndex];
+
   return (
     <section data-navbar="light" data-menu="dark-text"
- className="relative w-full bg-[#F5F5F5] text-black py-28 overflow-hidden">
+      className="relative w-full bg-[#F5F5F5] text-black py-28 overflow-hidden">
 
       {/* ================= FULL-WIDTH CONTROLS ================= */}
       <div className="absolute inset-x-0 top-0 h-full pointer-events-none">
@@ -45,21 +78,6 @@ export default function CaseStudies() {
               <span>{String(slides.length).padStart(2, "0")}</span>
             </div>
           </div>
-
-          {/* RIGHT — ARROWS */}
-          <div className="pointer-events-auto flex gap-6">
-            <OvalArrow
-              direction="left"
-              variant="gray"
-              onClick={() => swiperRef.current?.slidePrev()}
-            />
-            <OvalArrow
-              direction="right"
-              variant="gray"
-              onClick={() => swiperRef.current?.slideNext()}
-            />
-          </div>
-
         </div>
       </div>
 
@@ -77,22 +95,17 @@ export default function CaseStudies() {
           {/* LEFT COLUMN */}
           <div className="flex flex-col justify-between">
             <div>
-           <FadeUpScroll delay={0.1}>
-                <h2 className="text-[36px] font-bold leading-tight mb-16">
+              <FadeUpScroll delay={0.1}>
+                <h2 className="text-[36px] font-bold leading-tight mb-2">
                   Real-World <br />
                   Investment <br />
                   Scenarios
                 </h2>
-           </FadeUpScroll >
+              </FadeUpScroll >
+            </div>
 
-              <div className="lg:mt-32 ms-26">
-                <Image
-                  src="/casestudies/modon-logo.svg"
-                  alt="MODON"
-                  width={120}
-                  height={40}
-                />
-              </div>
+            <div className="flex items-center justify-items-start mt-8">
+              <h1 className="text-5xl font-medium">hello</h1>
             </div>
 
 
@@ -135,15 +148,31 @@ export default function CaseStudies() {
             </Swiper>
 
             <button className="mt-10 text-sm text-green-600 underline underline-offset-4 hover:text-green-700 transition">
-              Browse Case Studies
+              {activeSlide.link}
             </button>
           </div>
 
           {/* RIGHT COLUMN */}
           <div className="flex flex-col justify-between items-end text-left">
-            <p className="text-gray-500 leading-relaxed max-w-sm mt-56">
-              {slides[activeIndex].description}
-            </p>
+            <div className="flex">
+              <p className="text-gray-500 leading-relaxed max-w-sm mt-56">
+                {slides[activeIndex].description}
+              </p>
+
+              <div className="pointer-events-auto flex gap-6 relative mt-[65%]">
+                {/* RIGHT — ARROWS */}
+                <OvalArrow
+                  direction="left"
+                  variant="gray"
+                  onClick={() => swiperRef.current?.slidePrev()}
+                />
+                <OvalArrow
+                  direction="right"
+                  variant="gray"
+                  onClick={() => swiperRef.current?.slideNext()}
+                />
+              </div>
+            </div>
 
             <div className="w-full h-px bg-gray-200 mb-48" />
           </div>
