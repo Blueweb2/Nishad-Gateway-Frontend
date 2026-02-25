@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { motion } from "framer-motion";
 
 import { getServicesMenu } from "@/lib/api/public/services.api";
 
@@ -67,7 +68,15 @@ export default function ServicesPopup({
     fetchServicesMenu();
   }, [open]);
 
-  if (!render) return null;
+  useEffect(() => {
+    if (services.length > 0 && expanded === null) {
+      setExpanded(services[0]._id);
+    }
+  }, [services]);
+
+  if (!render) {
+    return null
+  };
 
   return (
     <>
@@ -130,16 +139,19 @@ export default function ServicesPopup({
                       <span className="text-xs text-gray-400 block">
                         {service.index}
                       </span>
-
-                      <h2
+                      <motion.h2
+                        initial={{ opacity: 0, y: 40 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, amount: 0.5 }} 
+                        transition={{ duration: 0.6, ease: "easeOut" }}
                         className={`
-                          text-[26px] font-semibold
+                          text-[20px] font-semibold
                           transition-colors pe-6
                           ${isOpen ? "text-teal-700" : "text-gray-900"}
                         `}
                       >
                         {service.title}
-                      </h2>
+                      </motion.h2>
                     </button>
 
                     {/* RIGHT ARROW = GO TO MAIN SERVICE PAGE */}
@@ -167,7 +179,11 @@ export default function ServicesPopup({
                     <ul className="pb-5 pl-1 space-y-2 text-sm">
                       {service.subServices?.length > 0 ? (
                         service.subServices.map((sub) => (
-                          <li
+                          <motion.li
+                            initial={{ opacity: 0, y: 40 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, amount: 0.5 }} 
+                            transition={{ duration: 0.6, ease: "easeOut" }}
                             key={sub._id}
                             onClick={() => {
                               onClose();
@@ -183,7 +199,7 @@ export default function ServicesPopup({
                             "
                           >
                             {sub.title}
-                          </li>
+                          </motion.li>
                         ))
                       ) : (
                         <li className="text-gray-400 text-sm">
@@ -199,4 +215,4 @@ export default function ServicesPopup({
       </div>
     </>
   );
-}
+};

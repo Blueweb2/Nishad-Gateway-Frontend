@@ -50,11 +50,6 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [pathname]);
 
-
-
-
-
-
   //  close popups on route change
   useEffect(() => {
     setOpenServices(false);
@@ -69,10 +64,10 @@ export default function Navbar() {
       {/* NAVBAR */}
       <header
         className={`
-fixed top-0 left-0 w-full z-[9999]
-transition-all duration-300
-${isLight ? "bg-white shadow-sm" : "bg-transparent"}
-`}
+        fixed top-0 left-0 w-full z-[9999]
+        transition-all duration-300
+        ${isLight ? "bg-white shadow-sm" : "bg-transparent"}
+        `}
       >
         <div className="w-full mx-auto px-6 pt-6">
           <nav className="flex items-center justify-between px-1 py-3 relative">
@@ -97,11 +92,11 @@ ${isLight ? "bg-white shadow-sm" : "bg-transparent"}
                   setOpenBlogs(false);
                 }}
                 className={`
-  flex items-center gap-2
-  px-4 py-2 rounded-full
-  text-sm font-medium
-  transition-all
-${isLight
+                  flex items-center gap-2
+                  px-4 py-2 rounded-full
+                  text-sm font-medium
+                  transition-all
+                  ${isLight
                     ? openServices
                       ? "bg-black text-white shadow-md"
                       : "bg-black/[0.04] text-black border border-black/10 hover:bg-black/[0.08]"
@@ -109,15 +104,11 @@ ${isLight
                       ? "bg-white text-gray-900 shadow-md"
                       : "bg-white/10 text-white border border-white/20 hover:bg-white/20"
                   }
-`}
-
+                `}
               >
                 Services
                 <span
-                  className={`
-                    text-lg leading-none transition-transform
-                    ${openServices ? "rotate-45" : ""}
-                  `}
+                  className={`text-lg leading-none transition-transform ${openServices ? "rotate-45" : ""}`}
                 >
                   +
                 </span>
@@ -130,11 +121,11 @@ ${isLight
                   setOpenServices(false);
                 }}
                 className={`
-  flex items-center gap-2
-  px-4 py-2 rounded-full
-  text-sm font-medium
-  transition-all
-${isLight
+                  flex items-center gap-2
+                  px-4 py-2 rounded-full
+                  text-sm font-medium
+                  transition-all
+                  ${isLight
                     ? openBlogs
                       ? "bg-black text-white shadow-md"
                       : "bg-black/[0.05] text-black border border-black/10 hover:bg-black/[0.08]"
@@ -142,16 +133,10 @@ ${isLight
                       ? "bg-white text-gray-900 shadow-md"
                       : "bg-white/10 text-white border border-white/20 hover:bg-white/20"
                   }
-`}
-
+                `}
               >
                 Blog
-                <span
-                  className={`
-                    text-lg leading-none transition-transform
-                    ${openBlogs ? "rotate-45" : ""}
-                  `}
-                >
+                <span className={`text-lg leading-none transition-transform ${openBlogs ? "rotate-45" : ""}`}>
                   +
                 </span>
               </button>
@@ -174,22 +159,21 @@ ${isLight
                   setOpenMenu(false);
                 }}
                 className={`
-  flex items-center gap-2
-  text-sm font-medium
-  px-5 py-2 rounded-full
-  transition
-  ${isLight
+                  flex items-center gap-2
+                  text-sm font-medium
+                  px-5 py-2 rounded-full
+                  transition
+                  ${isLight
                     ? "bg-black text-white hover:bg-gray-900"
                     : "bg-white text-green-600 hover:bg-gray-100"
                   }
-`}
+                `}
               >
                 Contact Us
                 <Mail size={16} />
               </button>
+
               <ContactPopup open={openContact} onClose={() => setOpenContact(false)} />
-
-
 
               {/* Hamburger / Close Button */}
               <button
@@ -199,16 +183,16 @@ ${isLight
                   setOpenBlogs(false);
                 }}
                 className={`
-  relative flex items-center justify-center
-  w-14 h-10 rounded-full
-  transition-all duration-300
-  ${openMenu
+                  relative flex items-center justify-center
+                  w-14 h-10 rounded-full
+                  transition-all duration-300
+                  ${openMenu
                     ? "bg-green-700 hover:bg-green-600"
                     : isLight
                       ? "bg-white/70 border border-black/10"
                       : "bg-black/30 border border-white/70 backdrop-blur-md"
                   }
-`}
+                `}
               >
                 {openMenu ? (
                   <span className="text-white text-xl font-semibold leading-none">×</span>
