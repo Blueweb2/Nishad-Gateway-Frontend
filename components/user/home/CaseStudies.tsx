@@ -12,7 +12,7 @@ import FadeUpScroll from "../ui/FadeUpScroll";
 
 const slides = [
   {
-    src: "/casestudies/building.webp",
+    src: "/casestudies/WhatsApp Image 2026-02-24 at 10.07.00 PM.jpeg",
     title: "Manufacturing & Industrial Licenses",
     description:
       "MODON enables integrated industrial investment environments that support diversification and employment.",
@@ -26,7 +26,7 @@ const slides = [
     link: "Explore Permit Solutions",
   },
   {
-    src: "/citiesbg.webp",
+    src: "/casestudies/building.webp",
     title: "Real Estate Development Approvals",
     description:
       "Comprehensive approval processes that facilitate property development projects while maintaining urban planning standards and legal requirements.",
@@ -105,7 +105,7 @@ export default function CaseStudies() {
             </div>
 
             <div className="flex items-center justify-items-start mt-8">
-              <h1 className="text-5xl font-medium">hello</h1>
+              <h1 className="text-3xl font-bold">Lorem ipsum dolor sit amet consectetur adipisicing elit.</h1>
             </div>
 
 
@@ -148,7 +148,7 @@ export default function CaseStudies() {
             </Swiper>
 
             <button className="mt-10 text-sm text-green-600 underline underline-offset-4 hover:text-green-700 transition">
-              {activeSlide.link}
+              Learn more...
             </button>
           </div>
 
@@ -156,7 +156,7 @@ export default function CaseStudies() {
           <div className="flex flex-col justify-between items-end text-left">
             <div className="flex">
               <p className="text-gray-500 leading-relaxed max-w-sm mt-56">
-                {slides[activeIndex].description}
+                {activeSlide.description}
               </p>
 
               <div className="pointer-events-auto flex gap-6 relative mt-[65%]">
