@@ -2,6 +2,24 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { ArrowRight } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { getServicesMenu } from "@/lib/api/public/services.api";
+
+type SubServiceItem = {
+  _id: string;
+  title: string;
+  slug: string;
+};
+
+type ServiceItem = {
+  _id: string;
+  index: string;
+  title: string;
+  slug: string;
+  subServices: SubServiceItem[];
+};
 
 type Props = {
   open: boolean;
@@ -18,6 +36,32 @@ export default function HamburgerMenu({ open, onClose }: Props) {
   const [render, setRender] = useState(open);
   const [useDarkText, setUseDarkText] = useState(false);
 
+  const pathname = usePathname();
+
+  const router = useRouter();
+const [services, setServices] = useState<ServiceItem[]>([]);
+const [expanded, setExpanded] = useState<string | null>(null);
+
+
+useEffect(() => {
+  if (!open) return;
+
+  const fetchServices = async () => {
+    try {
+      const res = await getServicesMenu();
+      const data = res?.data || [];
+      setServices(data);
+
+      if (data.length > 0) {
+        setExpanded(data[0]._id);
+      }
+    } catch (error) {
+      console.error("Failed to load services");
+    }
+  };
+
+  fetchServices();
+}, [open]);
   // Mount animation
   useEffect(() => {
     if (open) {
@@ -64,16 +108,7 @@ useEffect(() => {
   return () => window.removeEventListener("scroll", handleScroll);
 }, []);
 
-  const menu: MenuItem[] = [
-   
-    { title: "About us", href: "/about-us" },
-    { title: "Investment Sectors", href: "/investment-sectors" },
-    { title: "Cities & Economic Zones", href: "/cities-economic-zones" },
-    { title: "Life in Saudi Arabia", href: "/life-in-saudi-arabia" },
-    { title: "Tools & Resources", href: "/tools-resources" },
-    { title: "Blog", href: "/blogs" },
-    { title: "Contacts", href: "/contact" },
-  ];
+
 
   if (!render) return null;
 
@@ -109,7 +144,7 @@ useEffect(() => {
 
 
         <div className="px-6 py-8">
-          <div className="space-y-6">
+          {/* <div className="space-y-6">
             {menu.map((item, idx) => (
               <div key={idx}>
                 {item.href ? (
@@ -143,7 +178,102 @@ useEffect(() => {
                 )}
               </div>
             ))}
+          </div> */}
+
+          <div className="px-6 py-8">
+
+  {/* SERVICES SECTION */}
+  <div className="space-y-4">
+    {services.map((service) => {
+      const isOpen = expanded === service._id;
+
+      return (
+        <div key={service._id}>
+          {/* SERVICE HEADER */}
+          <div className="flex items-center justify-between">
+            <button
+              onClick={() => setExpanded(isOpen ? null : service._id)}
+              className="flex-1 text-left"
+            >
+              <span className="text-xs text-gray-400 block">
+                {service.index}
+              </span>
+
+              <h2
+                className={`text-[20px] font-semibold transition ${
+                  isOpen ? "text-teal-600" : textColor
+                }`}
+              >
+                {service.title}
+              </h2>
+            </button>
+
+            <button
+              onClick={() => {
+                onClose();
+                router.push(`/services/${service.slug}`);
+              }}
+              className="w-9 h-9 rounded-lg border border-white/30 flex items-center justify-center"
+            >
+              <ArrowRight size={16} />
+            </button>
           </div>
+
+          {/* SUB SERVICES */}
+          {isOpen && (
+            <ul className={`mt-3 space-y-2 text-sm ${subTextColor}`}>
+              {service.subServices?.map((sub) => (
+                <li
+                  key={sub._id}
+                  onClick={() => {
+                    onClose();
+                    router.push(
+                      `/services/${service.slug}/${sub.slug}`
+                    );
+                  }}
+                  className="cursor-pointer hover:text-teal-400 transition"
+                >
+                  {sub.title}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      );
+    })}
+  </div>
+
+  {/* DIVIDER */}
+  <div className={`my-8 border-t ${borderColor}`} />
+
+  {/* STATIC LINKS */}
+  <div className="space-y-5">
+    <Link
+      href="/about-us"
+      onClick={onClose}
+      className={`block text-[18px] font-semibold ${textColor} hover:opacity-70 transition`}
+    >
+      About us
+    </Link>
+
+    <Link
+      href="/blogs"
+      onClick={onClose}
+      className={`block text-[18px] font-semibold ${textColor} hover:opacity-70 transition`}
+    >
+      Blog
+    </Link>
+
+    <Link
+      href="/contact"
+      onClick={onClose}
+      className={`block text-[18px] font-semibold ${textColor} hover:opacity-70 transition`}
+    >
+      Contacts
+    </Link>
+  </div>
+
+</div>
         </div>
       </div>
     </div>
