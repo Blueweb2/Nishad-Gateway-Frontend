@@ -1,4 +1,5 @@
 import BlogCardsGrid from "@/components/user/blog/BlogCardsGrid";
+import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 
 type BlogResponse = {
   _id: string;
@@ -13,14 +14,13 @@ type BlogResponse = {
 
 async function getBlogs() {
   const res = await fetch(
-    `${process.env.API_URL}/blogs?page=1&limit=3`,
-    { next: { revalidate: 60 } } // better than no-store
+    `${process.env.API_URL}/blogs/featured`,
+    { next: { revalidate: 60 } }
   );
 
   if (!res.ok) return [];
 
   const result = await res.json();
-
   return result.data || [];
 }
 
@@ -29,7 +29,9 @@ export default async function Insights() {
 
   const mapped = blogs.map((blog) => ({
     id: blog.slug,
-    image: blog.coverImage?.url || "/placeholder.jpg",
+    image: blog.coverImage?.url
+      ? cloudinaryAutoWebp(blog.coverImage.url)
+      : "/placeholder.jpg",
     title: blog.title,
     tags: blog.tags?.slice(0, 2) || [],
     date: blog.publishedAt

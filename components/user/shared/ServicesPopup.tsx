@@ -94,13 +94,8 @@ export default function ServicesPopup({
       >
         {/* INNER – CARD */}
         <div className="bg-white rounded-[28px] shadow-2xl p-5">
-          {/* LOADING */}
-          {loading && (
-            <div className="py-10 text-center text-gray-500 text-sm">
-              Loading...
-            </div>
-          )}
-
+        
+  
           {/* EMPTY */}
           {!loading && services.length === 0 && (
             <div className="py-10 text-center text-gray-500 text-sm">

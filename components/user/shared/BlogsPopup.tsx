@@ -136,28 +136,26 @@ export default function BlogsPopup({
                         </button>
 
                         {/* right: All + arrow circle */}
-                        <button
-                            onClick={() => setActiveFilter("All")}
+                        <Link
+                            href="/blogs"
+                            onClick={onClose}
                             className="flex items-center gap-2 text-xs font-medium text-gray-700 hover:text-black transition"
                         >
                             All
                             <span className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center">
                                 <ArrowUpRight className="w-4 h-4" />
                             </span>
-                        </button>
+                        </Link>
                     </div>
 
                     {/* LIST */}
                     <div className="px-5 max-h-[520px] overflow-y-auto hide-scrollbar mt-5 pb-10">
-                        {loading ? (
-                            <p className="text-sm text-gray-500 py-10 text-center">
-                                Loading blogs...
-                            </p>
-                        ) : filtered.length === 0 ? (
+                        {filtered.length === 0 && !loading ? (
                             <p className="text-sm text-gray-500 py-10 text-center">
                                 No blogs found.
                             </p>
                         ) : (
+
                             <div className="space-y-6">
                                 {filtered.map((item) => (
                                     <div key={item.id} className="border-b border-gray-200 pb-6">

@@ -71,6 +71,8 @@ export type AdminBlogPayload = {
     publicId?: string; // ✅ Added for Cloudinary delete support
   };
 
+  featuredPosition: 1 | 2 | 3 | null;
+
   metaTitle?: string;
   metaDescription?: string;
   metaKeywords?: string[];

@@ -74,6 +74,8 @@ export default function CreateBlogPage() {
   const [tags, setTags] = useState("");
   const [status, setStatus] = useState<BlogStatus>("draft");
 
+ 
+
   const [galleryUploading, setGalleryUploading] = useState(false);
 
   /* ================= SEO ================= */
@@ -203,13 +205,17 @@ export default function CreateBlogPage() {
           excerpt,
           status,
           tags: tags.split(",").map((t) => t.trim()).filter(Boolean),
+
+
           coverImage: {
             url: coverImage?.url,
             alt: coverImage?.alt || title,
             publicId: coverImage?.publicId,
           },
+
           metaTitle: metaTitle || title,
           metaDescription: metaDescription || excerpt,
+
           blocks: blocks.map((b) => ({
             type: b.type,
             data: b,
@@ -263,13 +269,13 @@ export default function CreateBlogPage() {
         />
 
         {/* TAGS */}
-<Input
-  label="Tags (comma separated)"
-  value={tags}
-  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-    setTags(e.target.value)
-  }
-/>
+        <Input
+          label="Tags (comma separated)"
+          value={tags}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setTags(e.target.value)
+          }
+        />
 
 
         {/* COVER IMAGE */}
@@ -774,6 +780,7 @@ export default function CreateBlogPage() {
           <option value="draft">Draft</option>
           <option value="published">Published</option>
         </select>
+   
 
         <div className="pt-5">
           <button
