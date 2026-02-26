@@ -305,7 +305,7 @@ export default async function SingleBlogPage({
 )}
 
       {/* NEWSLETTER CTA */}
-      <NewsletterSection />
+      {/* <NewsletterSection /> */}
     </main>
   );
 }

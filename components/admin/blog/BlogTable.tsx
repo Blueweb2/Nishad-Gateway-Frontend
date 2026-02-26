@@ -7,7 +7,7 @@ import BlogStatusBadge from "./BlogStatusBadge";
 
 type BlogStatus = "draft" | "published";
 
-export type AdminBlog = {
+type AdminBlog = {
   _id: string;
   title: string;
   slug: string;
@@ -17,8 +17,10 @@ export type AdminBlog = {
   };
   tags: string[];
   status: BlogStatus;
+  isFeatured?: boolean;
+  featuredOrder?: number;
+  publishedAt?: string;
 };
-
 type Props = {
   blogs: AdminBlog[];
   onDelete: (id: string) => void;
