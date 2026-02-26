@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 type Props = {
   open: boolean;
@@ -15,8 +16,10 @@ type MenuItem = {
 };
 
 export default function HamburgerMenu({ open, onClose }: Props) {
+
   const [render, setRender] = useState(open);
   const [useDarkText, setUseDarkText] = useState(false);
+  const MotionLink = motion(Link);
 
   // Mount animation
   useEffect(() => {
@@ -38,34 +41,33 @@ export default function HamburgerMenu({ open, onClose }: Props) {
   }, [onClose]);
 
   // Detect background type
-useEffect(() => {
-  const handleScroll = () => {
-    const sections = document.querySelectorAll<HTMLElement>("[data-menu]");
-    const viewportMiddle = window.innerHeight / 2;
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = document.querySelectorAll<HTMLElement>("[data-menu]");
+      const viewportMiddle = window.innerHeight / 2;
 
-    let isDarkText = false;
+      let isDarkText = false;
 
-    sections.forEach((section) => {
-      const rect = section.getBoundingClientRect();
+      sections.forEach((section) => {
+        const rect = section.getBoundingClientRect();
 
-      if (rect.top <= viewportMiddle && rect.bottom >= viewportMiddle) {
-        const mode = section.getAttribute("data-menu");
-        if (mode === "dark-text") {
-          isDarkText = true;
+        if (rect.top <= viewportMiddle && rect.bottom >= viewportMiddle) {
+          const mode = section.getAttribute("data-menu");
+          if (mode === "dark-text") {
+            isDarkText = true;
+          }
         }
-      }
-    });
+      });
 
-    setUseDarkText(isDarkText);
-  };
+      setUseDarkText(isDarkText);
+    };
 
-  handleScroll();
-  window.addEventListener("scroll", handleScroll);
-  return () => window.removeEventListener("scroll", handleScroll);
-}, []);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const menu: MenuItem[] = [
-   
     { title: "About us", href: "/about-us" },
     { title: "Investment Sectors", href: "/investment-sectors" },
     { title: "Cities & Economic Zones", href: "/cities-economic-zones" },
@@ -91,61 +93,68 @@ useEffect(() => {
       `}
     >
       {/* GLASS PANEL */}
- <div
-  className="
-    relative
-    rounded-[36px]
-    border border-white/25
-    bg-gradient-to-b from-white/40 to-white/25
-    backdrop-blur-3xl
-    shadow-[0_30px_90px_rgba(0,0,0,0.35)]
-    overflow-hidden
-    will-change-transform
-    isolate
-  "
->
-
-
-
-
+      <div
+        className="
+          relative
+          rounded-[36px]
+          border border-white/25
+          bg-gradient-to-b from-white/40 to-white/25
+          backdrop-blur-3xl
+          shadow-[0_30px_90px_rgba(0,0,0,0.35)]
+          overflow-hidden
+          will-change-transform
+          isolate
+        "
+      >
         <div className="px-6 py-8">
-          <div className="space-y-6">
-            {menu.map((item, idx) => (
-              <div key={idx}>
-                {item.href ? (
-                  <Link
-                    href={item.href}
-                    onClick={onClose}
-                    className={`block text-[20px] font-semibold ${textColor} hover:opacity-70 transition`}
-                  >
-                    {item.title}
-                  </Link>
-                ) : (
-                  <p className={`text-[20px] font-semibold ${textColor}`}>
-                    {item.title}
-                  </p>
-                )}
+            <div className='space-y-6'>
+              {menu.map((item, idx) => (
+                <div key={idx} className="overflow-hidden">
+                  {item.href ? (
+                    <MotionLink
+                      initial={{ opacity: 0, y: 300 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, amount: 0.5 }} 
+                      transition={{ duration: 0.6, ease: "easeOut" }}
+                      href={item.href}
+                      onClick={onClose}
+                      className={`block text-[20px] font-semibold ${textColor} hover:opacity-70 transition`}
+                    >
+                      {item.title}
+                    </MotionLink>
+                  ) : (
+                    <motion.p 
+                      initial={{ opacity: 0, y: 40 }}
+                      whileInView={{ opacity: 3, y: 0 }}
+                      viewport={{ once: true, amount: 0.5 }} 
+                      transition={{ duration: 0.6, ease: "easeOut" }}
+                      onClick={onClose}
+                      className={`text-[20px] font-semibold ${textColor}`}
+                    >
+                      {item.title}
+                    </motion.p>
+                  )}
 
-                {item.children && (
-                  <ul className={`mt-2 space-y-1 text-sm ${subTextColor}`}>
-                    {item.children.map((c) => (
-                      <li key={c.href}>
-                        <Link
-                          href={c.href}
-                          onClick={onClose}
-                          className="hover:opacity-70 transition"
-                        >
-                          {c.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            ))}
+                  {item.children && (
+                    <ul className={`mt-2 space-y-1 text-sm ${subTextColor}`}>
+                      {item.children.map((c) => (
+                        <li key={c.href}>
+                          <Link
+                            href={c.href}
+                            onClick={onClose}
+                            className="hover:opacity-70 transition"
+                          >
+                            {c.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
       </div>
     </div>
   );
-}
+};
