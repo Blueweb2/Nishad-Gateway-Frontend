@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import OvalArrow from "@/components/user/ui/OvalArrow";
 import ParallaxImage from "../shared/ParallaxImage";
 
@@ -52,16 +52,18 @@ export default function Consultant() {
     <section className="relative w-full h-screen text-white overflow-hidden" data-navbar="light">
 
       {/* Background */}
- <div key={activeIndex + activeTab} className="absolute inset-0 z-0 transition-opacity duration-700">
-  <ParallaxImage
-    src={currentItem.image}
-    alt={currentItem.title}
-    className="w-full h-full object-cover"
-    priority
-    speed={160}
-  />
-</div>
-
+      <div className="absolute inset-0 z-0">
+        {activeContent.map((item, index) => (
+          <img
+            key={index}
+            src={item.image}
+            alt={item.title}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700
+              ${index === activeIndex ? "opacity-100" : "opacity-0"}
+            `}
+          />
+        ))}
+      </div>
 
       <div className="absolute inset-0 bg-black/55 z-10" />
 
@@ -126,10 +128,9 @@ export default function Consultant() {
 
         {/* CENTER CAPSULE */}
         <div className="relative flex items-center justify-center">
-
           <div className="absolute w-[26vw] h-[32vw] bg-white/10 backdrop-blur-xxl border border-white/10
-  rounded-[160px]" />
-
+           rounded-[160px]" 
+          />
           <h3 className="relative z-10 text-[2.2vw] font-semibold text-center max-w-[16vw] leading-tight">
             {currentItem.title}
           </h3>
@@ -159,3 +160,12 @@ export default function Consultant() {
     </section>
   );
 }
+
+
+{/* <ParallaxImage
+          src={currentItem.image}
+          alt={currentItem.title}
+          className="w-full h-full object-cover"
+          priority
+          speed={160}
+        /> */}
