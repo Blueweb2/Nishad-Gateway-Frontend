@@ -125,10 +125,11 @@ export default function BlogsPopup({
                 {/* INNER CARD */}
                 <div className="bg-white rounded-[28px] shadow-2xl border border-black/10 overflow-hidden flex flex-col max-h-full">
                     {/* TOP BAR */}
-                    <div className="flex items-center justify-between px-5 pt-5 pb-4 border-b border-gray-300">
+                    <div className={`flex items-center justify-between px-5 pt-5 pb-4 border-b border-gray-300 
+                        ${!open ? 'border-b-0' : ''}`}>
                         {/* left: Articles pill */}
                         <button
-                            className="px-4 py-2 rounded-full text-xs font-medium bg-gray-100 text-gray-800 hover:bg-gray-200 transition"
+                            className={`px-4 py-2 rounded-full text-xs font-medium bg-gray-100 text-gray-800 hover:bg-gray-200 transition ${!open && 'hidden'}`}
                             onClick={() =>
                                 setActiveFilter((p) => (p === "Articles" ? "All" : "Articles"))
                             }
@@ -140,7 +141,7 @@ export default function BlogsPopup({
                         <Link
                             href="/blogs"
                             onClick={onClose}
-                            className="flex items-center gap-2 text-xs font-medium text-gray-700 hover:text-black transition"
+                            className={`flex items-center gap-2 text-xs font-medium text-gray-700 hover:text-black transition ${!open && 'hidden'}`}
                         >
                             All
                             <span className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center">
@@ -159,19 +160,20 @@ export default function BlogsPopup({
 
                             <div className="space-y-6">
                                 {filtered.map((item) => (
-                                    <div key={item.id} className="border-b border-gray-200 pb-6">
+                                    <div key={item.id} className={`border-b border-gray-200 pb-6 
+                                    ${!open ? 'border-b-0' : ''}`}>
                                         {/* date + tags */}
                                         <div className="flex items-center justify-between mb-4">
-                                            <p className="text-xs text-gray-400">{item.date}</p>
+                                            <p className={`text-xs text-gray-400 ${!open && 'hidden'}`}>{item.date}</p>
 
                                             <div className="flex items-center gap-2">
                                                 {item.cityTag && (
-                                                    <span className="px-3 py-1 rounded-full text-[11px] bg-gray-100 text-gray-700">
+                                                    <span className={`px-3 py-1 rounded-full text-[11px] bg-gray-100 text-gray-700 ${!open && 'hidden'}`}>
                                                         {item.cityTag}
                                                     </span>
                                                 )}
                                                 {item.typeTag && (
-                                                    <span className="px-3 py-1 rounded-full text-[11px] bg-gray-100 text-gray-700">
+                                                    <span className={`px-3 py-1 rounded-full text-[11px] bg-gray-100 text-gray-700 ${!open && 'hidden'}`}>
                                                         {item.typeTag}
                                                     </span>
                                                 )}
@@ -192,7 +194,8 @@ export default function BlogsPopup({
                                                     alt={item.title}
                                                     width={150}
                                                     height={150}
-                                                    className="object-cover w-[120px] h-[150px]"
+                                                    className={`object-cover w-[120px] h-[150px] 
+                                                        ${!open && 'hidden'}`}
                                                     priority
                                                 />
                                             </motion.div>
@@ -202,7 +205,7 @@ export default function BlogsPopup({
                                         {/* title + arrow */}
                                         <div className="mt-5 flex items-center justify-between gap-4">
                                             <motion.h4 
-                                                className="text-sm font-semibold text-gray-900 leading-snug whitespace-pre-line"
+                                                className={`text-sm font-semibold text-gray-900 leading-snug whitespace-pre-line ${!open && 'hidden'}`}
                                                 initial={{ opacity: 0, y: 40 }}
                                                 whileInView={{ opacity: 1, y: 0 }}
                                                 viewport={{ once: true, amount: 0.5 }} 
@@ -214,7 +217,7 @@ export default function BlogsPopup({
                                             <Link
                                                 href={item.href}
                                                 onClick={onClose}
-                                                className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition"
+                                                className={`w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 ${!open && 'hidden'}`}
                                             >
                                                 <ArrowUpRight className="w-4 h-4 text-gray-900" />
                                             </Link>

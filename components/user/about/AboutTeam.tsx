@@ -86,7 +86,7 @@ export default function TeamSection() {
   const activeSlide = slides[activeIndex];
 
   return (
-    <section className="w-full bg-[#f3f3f3] py-24">
+    <section className="w-full bg-[#f3f3f3] py-24" data-menu="dark-text">
       <div className="max-w-7xl mx-auto px-8 relative">
 
         {/* Top Title */}

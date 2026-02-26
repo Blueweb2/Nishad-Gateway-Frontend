@@ -64,7 +64,7 @@ export default function CitiesSection() {
     <section className="relative" >
       {/* Slider Container */}
       <div
-        className="relative overflow-hidden h-[100vh]" data-menu="dark-text"
+        className="relative overflow-hidden h-[100vh]" data-menu=""
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >

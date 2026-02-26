@@ -97,7 +97,7 @@ xl: 768px   // Fold / Tablet */
 }
 
 .animate-sheetHide {
-  animation: sheetHide 0.55s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  animation: sheetHide 2s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
   transform-origin: top;
   will-change: transform;
 }

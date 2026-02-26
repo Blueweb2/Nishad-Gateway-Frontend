@@ -121,7 +121,7 @@ export default function HamburgerMenu({ open, onClose }: Props) {
     <div
       className={`
         fixed top-24 right-10 z-[9999]
-        w-[260px] sm:w-[300px]
+        w-[360px] 
         transition-all duration-400
         ${open ? "animate-menuIn" : "animate-menuOut"}
       `}
@@ -139,8 +139,8 @@ export default function HamburgerMenu({ open, onClose }: Props) {
           isolate
         "
       >
-        <div>
-          <div className="px-4 py-4 max-h-[70vh] overflow-y-auto mb-5 hide-scrollbar">
+        <div className="pt-6 ">
+          <div className="p-4 max-h-[70vh] overflow-y-auto mb-5 hide-scrollbar ">
             {/* SERVICES SECTION */}
             <div className="space-y-4">
               {services.map((service) => {
@@ -168,7 +168,7 @@ export default function HamburgerMenu({ open, onClose }: Props) {
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.6, ease: "easeOut" }}
                           className={`text-[20px] font-semibold transition ${
-                            isOpen ? "text-teal-600" : textColor
+                            isOpen ? "text-black" : textColor
                           }`}
                         >
                           {service.title}
@@ -182,7 +182,7 @@ export default function HamburgerMenu({ open, onClose }: Props) {
                         }}
                         className="w-9 h-9 rounded-lg border border-white/30 flex items-center justify-center"
                       >
-                        <ArrowRight size={16} />
+                        <ArrowRight size={16} className={`${ isOpen ? "text-black" : textColor}`}/>
                       </button>
                     </div>
 
