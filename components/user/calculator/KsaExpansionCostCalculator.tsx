@@ -3,6 +3,9 @@
 import { useMemo,  useRef,  useState   } from "react";
 import { X, Sparkles, ArrowRight } from "lucide-react";
 import toast from "react-hot-toast";
+import FAQSection from "../shared/FAQSection";
+
+
 
 type InvestorType = "Individual" | "Company" | "Startup" | "Investor";
 type ActivityType =
@@ -464,7 +467,7 @@ doc.text("KSA Expansion Cost Estimate", 14, 35);
       {/* HERO */}
      <div className="bg-gradient-to-b from-[#f7faf7] to-white border-b border-neutral-200">
 
-        <div className="max-w-6xl mx-auto px-4 py-12">
+        <div className="max-w-7xl mx-auto px-4 py-12">
           <p className="text-sm text-neutral-600">Nishad Gateway • Saudi Arabia</p>
 
           <h1 className="text-3xl md:text-5xl font-semibold mt-2 text-neutral-900">
@@ -479,16 +482,14 @@ doc.text("KSA Expansion Cost Estimate", 14, 35);
       </div>
 
       {/* FORM CARD */}
-      <div className="max-w-6xl mx-auto px-4 py-10">
+      <div className="max-w-7xl mx-auto px-4 py-10">
         <div className="rounded-3xl border border-neutral-200 shadow-sm p-6 md:p-10 bg-white">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <h2 className="text-xl md:text-2xl font-semibold text-neutral-900">
-                Expansion Cost Calculator
-              </h2>
-              <p className="text-neutral-600 mt-1">
+            
+              <h4 className="text-neutral-600 mt-1">
                 Fill the details below to get your estimated cost range.
-              </p>
+              </h4>
             </div>
 
             <button
@@ -512,7 +513,7 @@ doc.text("KSA Expansion Cost Estimate", 14, 35);
               aria-label="Reset form"
               title="Reset"
             >
-              <X className="w-5 h-5 text-neutral-500" />
+             
             </button>
           </div>
 
@@ -744,36 +745,35 @@ doc.text("KSA Expansion Cost Estimate", 14, 35);
 
         </div>
 
-        {/* SEO Content */}
-        <div className="mt-12 max-w-4xl">
-          <h2 className="text-2xl font-semibold text-neutral-900">
-            Saudi Arabia Business Setup Cost – What Affects the Price?
-          </h2>
-          <p className="text-neutral-600 mt-3 leading-relaxed">
-            The cost of expanding to Saudi Arabia depends on your business activity, preferred city,
-            visa requirements, and support services such as accounting, bank setup, and residency (VRO).
-            This calculator gives an approximate cost range to help you plan faster.
-          </p>
-
-          <h3 className="text-xl font-semibold text-neutral-900 mt-8">
-            Frequently Asked Questions
-          </h3>
-
-          <div className="mt-4 space-y-4">
-            <FAQ
-              q="Is this calculator 100% accurate?"
-              a="It provides an estimated cost range based on common setup requirements. Final cost may vary depending on approvals, documents, and government fees."
-            />
-            <FAQ
-              q="Which city is best for business expansion?"
-              a="Riyadh is ideal for corporate expansion, Jeddah for trade/logistics, and Dammam/Khobar for industrial and regional business."
-            />
-            <FAQ
-              q="How many visas should I plan for in Year 1?"
-              a="It depends on your activity and operations. Most businesses start with 1–5 visas and expand based on hiring needs."
-            />
-          </div>
-        </div>
+       <FAQSection
+  title="Frequently Asked Questions"
+  imageUrl="/faqimg.jpg"
+  ctaTitle="Need clarity on your entity type?"
+  ctaButtonText="Talk to an Advisor"
+  onCtaClick={() => window.location.href = "/contact"}
+  items={[
+    {
+      question: "Can a foreigner own 100% of a company in Saudi Arabia?",
+      answer:
+        "Yes, foreign investors can own 100% in many sectors depending on activity and approvals.",
+    },
+    {
+      question: "Do I need to be in Saudi Arabia to register a company?",
+      answer:
+        "No. Company formation can usually be completed remotely through authorized representatives.",
+    },
+    {
+      question: "How long does company setup take?",
+      answer:
+        "Typically 2–4 weeks depending on activity and documentation.",
+    },
+    {
+      question: "Is a Saudi partner mandatory?",
+      answer:
+        "Not in most sectors. 100% foreign ownership is allowed in many activities.",
+    },
+  ]}
+/>
       </div>
     </section>
   );
