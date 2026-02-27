@@ -23,7 +23,7 @@ export default function KeyServices() {
 
           <Card
             icon="/icons/sectors/manufacturing.svg"
-            title="Manufacturing & Industrial Licenses"
+            title="Industrial Growth"
             description="The government’s localization initiatives in Saudi Arabia are promoting local manufacturing, industrial licensing, and export-oriented manufacturing as part of Vision 2030."
           />
 
@@ -53,7 +53,7 @@ export default function KeyServices() {
 
           <Card
             icon="/icons/sectors/food.svg"
-            title="Restaurants, Cafes & Food Production"
+            title="Food & Beverage Growth"
             description="The Kingdom’s young population, lifestyle development, and tourism development are fueling food and beverage business setup in Saudi Arabia."
           />
 
@@ -125,19 +125,24 @@ function Card({
         />
       </div>
 
-      {/* Content */}
       <div className="mt-6 relative">
+
+        {/* First Title */}
         <p
           className="
-            text-2xl text-[20px] font-medium text-white
-            absolute bottom-2  left-0 leading-[26px]
-            transition-all duration-300
-            group-hover:translate-y-[-100px]
+            text-[14px] font-medium text-white
+            absolute bottom-2 left-0 leading-[16px] uppercase
+            transition-all 
+            opacity-100 translate-y-0
+            group-hover:opacity-5   0
+            group-hover:translate-y-5 2
           "
         >
           {title}
         </p>
-        <p
+
+        {/* Description Section */}
+        <div
           className="
             text-white text-sm leading-[16px]
             opacity-0 translate-y-4
@@ -146,9 +151,14 @@ function Card({
             group-hover:translate-y-0
           "
         >
-          {description}
-        </p>
+          <p className="text-[14px] font-medium pb-2.5 uppercase">
+            {title}
+          </p>
+          <p>{description}</p>
+        </div>
+
       </div>
+
     </div>
   );
 };
