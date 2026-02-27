@@ -68,9 +68,10 @@ export type AdminBlogPayload = {
   coverImage: {
     url: string;
     alt: string;
-    publicId?: string; // ✅ Added for Cloudinary delete support
+    publicId?: string; // For Cloudinary delete support
   };
 
+  // ✅ Allow null (important for removing featured)
   featuredPosition: 1 | 2 | 3 | null;
 
   metaTitle?: string;
@@ -87,7 +88,9 @@ export type AdminBlogPayload = {
 export const adminGetBlogs = async () => {
   try {
     const { data } = await adminAxios.get("/blogs/admin/all");
-    return data;
+
+    // ✅ Support both raw array and { data: [] } response formats
+    return data?.data ?? data;
   } catch (error: any) {
     throw new Error(
       error?.response?.data?.message || "Failed to fetch blogs"
@@ -102,7 +105,8 @@ export const adminGetBlogById = async (id: string) => {
 
   try {
     const { data } = await adminAxios.get(`/blogs/admin/${id}`);
-    return data;
+
+    return data?.data ?? data;
   } catch (error: any) {
     throw new Error(
       error?.response?.data?.message || "Failed to fetch blog"
@@ -120,7 +124,8 @@ export const adminCreateBlog = async (
       "/blogs/admin",
       payload
     );
-    return data;
+
+    return data?.data ?? data;
   } catch (error: any) {
     throw new Error(
       error?.response?.data?.message || "Blog creation failed"
@@ -141,7 +146,8 @@ export const adminUpdateBlog = async (
       `/blogs/admin/${id}`,
       payload
     );
-    return data;
+
+    return data?.data ?? data;
   } catch (error: any) {
     throw new Error(
       error?.response?.data?.message || "Blog update failed"
@@ -160,7 +166,8 @@ export const adminDeleteBlog = async (
     const { data } = await adminAxios.delete(
       `/blogs/admin/${id}`
     );
-    return data;
+
+    return data?.data ?? data;
   } catch (error: any) {
     throw new Error(
       error?.response?.data?.message || "Blog deletion failed"
