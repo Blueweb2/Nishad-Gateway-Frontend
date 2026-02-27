@@ -158,7 +158,7 @@ export default function HamburgerMenu({ open, onClose }: Props) {
                           initial={{ opacity: 0, y: 300 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.6, ease: "easeOut" }}
-                          className="text-xs text-gray-400 block"
+                          className={`text-xs text-gray-400 block ${!open && 'hidden'}`}
                         >
                           {service.index}
                         </motion.span>
@@ -167,9 +167,9 @@ export default function HamburgerMenu({ open, onClose }: Props) {
                           initial={{ opacity: 0, y: 300 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.6, ease: "easeOut" }}
-                          className={`text-[20px] font-semibold transition ${
-                            isOpen ? "text-black" : textColor
-                          }`}
+                          className={`text-[20px] font-semibold transition 
+                            ${isOpen ? "text-black" : textColor}
+                            ${!open && 'hidden'}`}
                         >
                           {service.title}
                         </motion.h2>
@@ -180,9 +180,9 @@ export default function HamburgerMenu({ open, onClose }: Props) {
                           onClose();
                           router.push(`/services/${service.slug}`);
                         }}
-                        className="w-9 h-9 rounded-lg border border-white/30 flex items-center justify-center"
+                        className={`w-9 h-9 rounded-lg border border-white/30 flex items-center justify-center ${!open && 'hidden'}`}
                       >
-                        <ArrowRight size={16} className={`${ isOpen ? "text-black" : textColor}`}/>
+                        <ArrowRight size={16} className={`${ isOpen ? "text-black" : textColor} `}/>
                       </button>
                     </div>
 
@@ -201,7 +201,7 @@ export default function HamburgerMenu({ open, onClose }: Props) {
                                 `/services/${service.slug}/${sub.slug}`
                               );
                             }}
-                            className="cursor-pointer hover:text-teal-400 transition"
+                            className={`cursor-pointer hover:text-teal-400 transition ${!open && 'hidden'}`}
                           >
                             {sub.title}
                           </motion.li>
@@ -214,7 +214,7 @@ export default function HamburgerMenu({ open, onClose }: Props) {
             </div>
 
             {/* DIVIDER */}
-            <div className={`my-8 border-t ${borderColor}`} />
+            <div className={`my-8 border-t ${borderColor} ${!open && 'hidden'}`} />
 
             {/* STATIC LINKS */}
             <div className="space-y-3">
@@ -227,7 +227,7 @@ export default function HamburgerMenu({ open, onClose }: Props) {
                 }}
                 href="/about-us"
                 onClick={onClose}
-                className={`block text-[18px] font-semibold ${textColor} hover:opacity-70 transition`}
+                className={`block text-[18px] font-semibold ${textColor} hover:opacity-70 transition ${!open && 'hidden'}`}
               >
                 About us
               </MotionLink>
@@ -241,7 +241,7 @@ export default function HamburgerMenu({ open, onClose }: Props) {
                 }}
                 href="/blogs"
                 onClick={onClose}
-                className={`block text-[18px] font-semibold ${textColor} hover:opacity-70 transition`}
+                className={`block text-[18px] font-semibold ${textColor} hover:opacity-70 transition ${!open && 'hidden'}`}
               >
                 Blog
               </MotionLink>
@@ -255,7 +255,7 @@ export default function HamburgerMenu({ open, onClose }: Props) {
                 }}
                 href="/contact"
                 onClick={onClose}
-                className={`block text-[18px] font-semibold ${textColor} hover:opacity-70 transition`}
+                className={`block text-[18px] font-semibold ${textColor} hover:opacity-70 transition ${!open && 'hidden'}`}
               >
                 Contacts
               </MotionLink>
