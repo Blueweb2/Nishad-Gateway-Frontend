@@ -8,9 +8,9 @@ import Link from "next/link";
 
 export default function FinalCTA() {
   return (
-    <section className="w-full bg-[#0b6a67] text-white min-h-screen flex flex-col justify-between">
+    <section className="w-full bg-[#0b6a67] text-white min-h-screen flex flex-col justify-evenly items-center">
       {/* ================= MAIN CONTENT ================= */}
-      <div className="max-w-[1320px] mx-auto mt-14 pt-10 flex items-center justify-center">
+      <div className="max-w-[1320px]  flex items-center justify-center mt-10">
 
         {/* LEFT TEXT */}
         <div className="w-[250px] text-white/100 leading-relaxed ">
@@ -72,7 +72,7 @@ export default function FinalCTA() {
       </div>
 
       {/* ================= FOOTER ================= */}
-      <div className="mx-auto px-6 pb-8 mt-10 w-full">
+      <div className="px-6  w-full mt-10">
 
         <div className="flex items-center text-xs text-white/70">
 
