@@ -120,7 +120,7 @@ export default function ServicesPopup({
               return (
                 <div
                   key={service._id}
-                  className="border-b border-gray-200 last:border-b-0"
+                className={`border-b border-gray-200 last:border-b-0 ${!open ? 'border-b-0' : ''}`}
                 >
                   {/* HEADER ROW */}
                   <div className="w-full flex items-center justify-between py-5">
@@ -131,7 +131,7 @@ export default function ServicesPopup({
                       }
                       className="flex-1 text-left group"
                     >
-                      <span className="text-xs text-gray-400 block">
+                      <span className={`text-xs text-gray-400 block ${!open && 'hidden'}`}>
                         {service.index}
                       </span>
                       <motion.h2
@@ -142,7 +142,7 @@ export default function ServicesPopup({
                         className={`
                           text-[20px] font-semibold
                           transition-colors pe-6
-                          ${isOpen ? "text-teal-700" : "text-gray-900"}
+                          ${isOpen ? "text-teal-700" : "text-gray-900"} ${!open && 'hidden'}
                         `}
                       >
                         {service.title}
@@ -163,6 +163,7 @@ export default function ServicesPopup({
                         transition-all duration-300
                         hover:border-gray-400
                         ${isOpen ? "rotate-90" : ""}
+                        ${!open && 'hidden'}
                       `}
                     >
                       <ArrowRight size={16} className="text-black" />
@@ -186,12 +187,10 @@ export default function ServicesPopup({
                                 `/services/${service.slug}/${sub.slug}`
                               );
                             }}
-                            className="
-                              cursor-pointer
+                            className={`cursor-pointer
                               text-gray-500
                               hover:text-teal-700
-                              transition-colors
-                            "
+                              transition-colors ${!open && 'hidden'}`}
                           >
                             {sub.title}
                           </motion.li>

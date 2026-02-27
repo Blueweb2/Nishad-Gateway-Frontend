@@ -55,6 +55,36 @@ xl: 768px   // Fold / Tablet */
   will-change: transform;
 }
 
+.animate-menuIn {
+  animation: sheetRevealOfHamburgerMenu 0.65s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  transform-origin: top;
+  will-change: transform;
+}
+
+@keyframes sheetRevealOfHamburgerMenu {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* cubic-bezier(0.22, 0.61, 0.36, 1) */
+.animate-menuOut {
+  animation: sheetRevealOfHamburgerMenuHide 2s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  transform-origin: top;
+  will-change: transform;
+}
+
+@keyframes sheetRevealOfHamburgerMenuHide {
+  from {
+    transform: scaleY(1);
+  }
+  to {
+    transform: scaleY(0);
+  }
+}
 
 /* reverse or closing animation of service pop up */
 @keyframes sheetHide {
@@ -67,7 +97,7 @@ xl: 768px   // Fold / Tablet */
 }
 
 .animate-sheetHide {
-  animation: sheetHide 0.55s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  animation: sheetHide 2s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
   transform-origin: top;
   will-change: transform;
 }

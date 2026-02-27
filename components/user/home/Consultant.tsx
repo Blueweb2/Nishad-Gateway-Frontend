@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import OvalArrow from "@/components/user/ui/OvalArrow";
-import ParallaxImage from "../shared/ParallaxImage";
+import { motion, AnimatePresence } from "framer-motion";
 
 const contentData = {
   western: [
-    { title: "Professional Work Culture", description: "Professional, relationship-driven, and fast-evolving, with a strong focus on results and Vision 2030 goals.", image: "/consultant/employment-opportunities-across-key-sectors.jpg" },
+    { title: "Professional Work Culture", description: "Professional, relationship-driven, and fast-evolving, with a strong focus on results and Vision 2030 goals.", image: "/consultant/Professional-Work-Culture.jpg.jpeg" },
     { title: "Dress Code & Cultural Etiquette ", description: "Modest and professional; expats enjoy flexibility while respecting local norms in public spaces.", image: "/consultant/Dress-Code.jpg" },
     { title: "Social Life, Entertainment & Lifestyle ", description: "A growing lifestyle scene with cafés, events, gyms, entertainment zones, and expat communities.", image: "/consultant/Social-Life.jpg" },
     { title: "Housing Options & Expat Communities ", description: "Wide options including expat compounds, gated communities, and modern city apartments.", image: "/consultant/Housing.jpg"  },
@@ -52,16 +52,18 @@ export default function Consultant() {
     <section className="relative w-full h-screen text-white overflow-hidden" data-navbar="light">
 
       {/* Background */}
- <div key={activeIndex + activeTab} className="absolute inset-0 z-0 transition-opacity duration-700">
-  <ParallaxImage
-    src={currentItem.image}
-    alt={currentItem.title}
-    className="w-full h-full object-cover"
-    priority
-    speed={160}
-  />
-</div>
-
+      <div className="absolute inset-0 z-0">
+        {activeContent.map((item, index) => (
+          <img
+            key={index}
+            src={item.image}
+            alt={item.title}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700
+              ${index === activeIndex ? "opacity-100" : "opacity-0"}
+            `}
+          />
+        ))}
+      </div>
 
       <div className="absolute inset-0 bg-black/55 z-10" />
 
@@ -102,45 +104,80 @@ export default function Consultant() {
         {/* LEFT COLUMN */}
         <div className="flex flex-col h-full justify-center">
 
-          <h2 className="text-[3vw] font-semibold leading-tight mb-[2vw] mt-[6vw]">
+          <motion.h2
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.2 }}
+            viewport={{ once: true, amount: 0.5 }}
+            className="text-[3vw] font-semibold leading-tight mb-[2vw] mt-[6vw]"
+          >
             Confidence <br />
             Beyond the <br />
             Investment
-          </h2>
+          </motion.h2>
+          
 
           {/* Bottom Left */}
-          <div className="mt-auto mb-[16vw]">
+          <div className="mt-auto mb-[16vw] relative overflow-hidden">
             <div className="flex items-center gap-[1vw] text-white/60 text-[1vw] mb-[1vw]">
               <span>{formattedCurrent}</span>
               <span>|</span>
               <span>{formattedTotal}</span>
             </div>
 
-            <p className="text-white/40 text-[1.4vw] mb-[1vw] w-[12vw] leading-tight">
-              {previousTitle}
-            </p>
+            <div className="relative w-[12vw] h-[3vw]">
+              <AnimatePresence mode="wait">
+                <motion.p
+                  key={activeIndex}
+                  initial={{ x: "100%", opacity: 0 }}
+                  animate={{ x: "0%", opacity: 1 }}
+                  exit={{ x: "-100%", opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="absolute w-full text-white/40 text-[1.4vw] leading-tight"
+                >
+                  {previousTitle}
+                </motion.p>
+              </AnimatePresence>
 
-            <div className="h-px bg-white/20 w-full" />
+            </div>
+
+            <div className="h-px bg-white/20 w-full mt-[3vw]" />
           </div>
         </div>
 
         {/* CENTER CAPSULE */}
         <div className="relative flex items-center justify-center">
-
           <div className="absolute w-[26vw] h-[32vw] bg-white/10 backdrop-blur-xxl border border-white/10
-  rounded-[160px]" />
-
-          <h3 className="relative z-10 text-[2.2vw] font-semibold text-center max-w-[16vw] leading-tight">
-            {currentItem.title}
-          </h3>
+           rounded-[160px]" 
+          />
+          <AnimatePresence mode="wait">
+            <motion.h3
+              key={activeIndex}
+              initial={{ opacity: 0, x: 100 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -100 }}
+              transition={{ duration: 0.5 }}
+              className="relative z-10 text-[2.2vw] font-semibold text-center max-w-[16vw] leading-tight"
+            >
+              {currentItem.title}
+            </motion.h3>
+          </AnimatePresence>
         </div>
 
         {/* RIGHT COLUMN */}
         <div className="flex flex-col justify-center items-start max-w-[28vw] ml-auto h-full mt-[10vw]">
-
-          <p className="text-white/80 text-[1vw] leading-tight mb-[2vw] w-[22vw]">
-            {currentItem.description}
-          </p>
+          <AnimatePresence mode="wait">
+            <motion.p
+              key={activeIndex}
+              initial={{ opacity: 0, x: 100 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -100 }}
+              transition={{ duration: 0.5 }}
+              className="text-white/80 text-[1vw] leading-tight mb-[2vw] w-[22vw]"
+            >
+              {currentItem.description}
+            </motion.p>
+          </AnimatePresence>
 
           <button className="text-[1vw] underline underline-offset-4 mb-[2vw]">
             Read More
@@ -158,4 +195,4 @@ export default function Consultant() {
       </div>
     </section>
   );
-}
+};
