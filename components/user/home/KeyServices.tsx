@@ -126,18 +126,18 @@ function Card({
       </div>
 
       {/* Content */}
-      <div className="mt-6 relative">
+      {/* <div className="mt-6">
         <p
           className="
             text-2xl text-[14px] font-medium text-white
             absolute bottom-2  left-0 leading-[16px]
             transition-all duration-300
-            group-hover:translate-y-[-100px]
+            group-hover:hidden
           "
         >
           {title}
         </p>
-        <p
+        <div
           className="
             text-white text-sm leading-[16px]
             opacity-0 translate-y-4
@@ -146,9 +146,49 @@ function Card({
             group-hover:translate-y-0
           "
         >
+          <p className="text-2xl text-[14px] font-medium text-white leading-[16px]  
+          pb-2.5 capitalize">
+            {title}</p>
           {description}
+        </div>
+      </div> */}
+
+      <div className="mt-6 relative">
+
+        {/* First Title */}
+        <p
+          className="
+            text-[14px] font-medium text-white
+            absolute bottom-2 left-0 leading-[16px] uppercase
+            transition-all 
+            opacity-100 translate-y-0
+            group-hover:opacity-5   0
+            group-hover:translate-y-5 2
+          "
+        >
+          {title}
         </p>
+
+        {/* Description Section */}
+        <div
+          className="
+            text-white text-sm leading-[16px]
+            opacity-0 translate-y-4
+            transition-all duration-300
+            group-hover:opacity-100
+            group-hover:translate-y-0
+          "
+        >
+          <p className="text-[14px] font-medium pb-2.5 uppercase">
+            {title}
+          </p>
+          <p>{description}</p>
+        </div>
+
       </div>
+
     </div>
   );
 };
+
+// group-hover:translate-y-[-100px]  absolute bottom-2  left-0
