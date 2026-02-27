@@ -129,8 +129,8 @@ function Card({
       <div className="mt-6 relative">
         <p
           className="
-            text-2xl text-[20px] font-medium text-white
-            absolute bottom-2  left-0 leading-[26px]
+            text-2xl text-[14px] font-medium text-white
+            absolute bottom-2  left-0 leading-[16px]
             transition-all duration-300
             group-hover:translate-y-[-100px]
           "
