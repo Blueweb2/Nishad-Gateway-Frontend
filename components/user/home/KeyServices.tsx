@@ -23,7 +23,7 @@ export default function KeyServices() {
 
           <Card
             icon="/icons/sectors/manufacturing.svg"
-            title="Manufacturing & Industrial Licenses"
+            title="Industrial Growth"
             description="The government’s localization initiatives in Saudi Arabia are promoting local manufacturing, industrial licensing, and export-oriented manufacturing as part of Vision 2030."
           />
 
@@ -53,7 +53,7 @@ export default function KeyServices() {
 
           <Card
             icon="/icons/sectors/food.svg"
-            title="Restaurants, Cafes & Food Production"
+            title="Food & Beverage Growth"
             description="The Kingdom’s young population, lifestyle development, and tourism development are fueling food and beverage business setup in Saudi Arabia."
           />
 
@@ -125,34 +125,6 @@ function Card({
         />
       </div>
 
-      {/* Content */}
-      {/* <div className="mt-6">
-        <p
-          className="
-            text-2xl text-[14px] font-medium text-white
-            absolute bottom-2  left-0 leading-[16px]
-            transition-all duration-300
-            group-hover:hidden
-          "
-        >
-          {title}
-        </p>
-        <div
-          className="
-            text-white text-sm leading-[16px]
-            opacity-0 translate-y-4
-            transition-all duration-300
-            group-hover:opacity-100
-            group-hover:translate-y-0
-          "
-        >
-          <p className="text-2xl text-[14px] font-medium text-white leading-[16px]  
-          pb-2.5 capitalize">
-            {title}</p>
-          {description}
-        </div>
-      </div> */}
-
       <div className="mt-6 relative">
 
         {/* First Title */}
@@ -190,5 +162,3 @@ function Card({
     </div>
   );
 };
-
-// group-hover:translate-y-[-100px]  absolute bottom-2  left-0
