@@ -51,23 +51,21 @@ async function getBlog(
   const res = await fetch(
     `${process.env.API_URL}/blogs/${slug}`,
     {
-      next: { revalidate: 60 }, // ISR
+      next: { revalidate: 60 },
     }
   );
 
   if (!res.ok) return null;
 
-  return res.json();
+  const result = await res.json();
+  return result.data ?? null;
 }
 
 /* ================= FETCH RELATED ================= */
 
-async function getRelated(
-  tags: string[],
-  currentId: string
-) {
+async function getRelated(slug: string) {
   const res = await fetch(
-    `${process.env.API_URL}/blogs?page=1&limit=20`,
+    `${process.env.API_URL}/blogs/${slug}/related`,
     {
       next: { revalidate: 60 },
     }
@@ -75,18 +73,8 @@ async function getRelated(
 
   if (!res.ok) return [];
 
-  const result: BlogListResponse =
-    await res.json();
-
-  return result.data
-    .filter(
-      (b) =>
-        b._id !== currentId &&
-        b.tags?.some((tag) =>
-          tags.includes(tag)
-        )
-    )
-    .slice(0, 3);
+  const result = await res.json();
+  return result.data ?? [];
 }
 
 /* ================= METADATA ================= */
@@ -239,10 +227,7 @@ export default async function SingleBlogPage({
 
   if (!blog) return notFound();
 
-  const related = await getRelated(
-    blog.tags,
-    blog._id
-  );
+ const related = await getRelated(slug);
 
   const coverImageUrl =
     blog.coverImage?.url || "/placeholder.jpg";
@@ -287,8 +272,12 @@ export default async function SingleBlogPage({
 
       {/* RELATED */}
 {/* RELATED */}
-{related.length > 0 && (
-  <div className="mt-32" data-navbar="light" data-menu="dark-text">
+{Array.isArray(related) && related.length > 0 && (
+  <div
+    className="mt-32"
+    data-navbar="light"
+    data-menu="dark-text"
+  >
     <h2 className="text-3xl font-semibold mb-14">
       Related Insights
     </h2>
@@ -296,9 +285,11 @@ export default async function SingleBlogPage({
     <BlogCardsGrid
       blogs={related.map((item) => ({
         id: item.slug,
-        image: item.coverImage?.url || "/placeholder.jpg",
+        image:
+          item.coverImage?.url ||
+          "/placeholder.jpg",
         title: item.title,
-        tags: item.tags?.slice(0, 2) || [],
+        tags: item.tags?.slice(0, 2) ?? [],
       }))}
     />
   </div>
