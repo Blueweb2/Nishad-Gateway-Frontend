@@ -14,7 +14,7 @@ export default function FinalCTA() {
         <div className="max-w-[1320px] w-full flex items-center justify-center">
 
           {/* LEFT TEXT */}
-          <div className="w-[250px] text-white/100 leading-relaxed ">
+          <div className="w-[280px] text-white/100 leading-relaxed">
             <p className="text-right pr-5">
               Company Formation in Saudi Arabia Starts Here. Expert guidance on business setup, foreign investment licensing, and ownership structuring in KSA.
             </p>
