@@ -55,7 +55,7 @@ export default function Stats() {
   ];
 
   return (
-    <section className="w-full bg-black text-white py-28">
+    <section className="w-full bg-black text-white py-28" data-navbar="light">
       <div className="max-w-[1320px] mx-auto px-6">
 
         {/* HEADER */}
