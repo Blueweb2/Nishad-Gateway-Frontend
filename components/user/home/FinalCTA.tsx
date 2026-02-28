@@ -16,8 +16,7 @@ export default function FinalCTA() {
           {/* LEFT TEXT */}
           <div className="w-[250px] text-white/100 leading-relaxed ">
             <p className="text-right pr-5">
-              If you’re considering Saudi Arabia  and want clarity 
-              before taking the next step…
+              Company Formation in Saudi Arabia Starts Here. Expert guidance on business setup, foreign investment licensing, and ownership structuring in KSA.
             </p>
           </div>
 
