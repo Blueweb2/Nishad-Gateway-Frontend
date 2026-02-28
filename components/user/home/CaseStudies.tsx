@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Parallax } from "swiper/modules";
+import { motion, AnimatePresence } from "framer-motion";
 import OvalArrow from "@/components/user/ui/OvalArrow";
 
 import "swiper/css";
@@ -89,9 +90,19 @@ export default function CaseStudies() {
             </div>
 
             <div className="flex items-center justify-items-start mt-10">
-              <h1 className="text-3xl font-bold">{activeSlide.title}</h1>
+              <AnimatePresence mode="wait">
+                <motion.h1 
+                  key={activeIndex}
+                  initial={{ opacity: 0, x: 100 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -100 }}
+                  transition={{ duration: 0.5 }}
+                  className="text-2xl font-medium text-[#287F7F] max-w-sm pr-24"
+                >
+                  {activeSlide.title}
+                </motion.h1>
+              </AnimatePresence>
             </div>
-
 
             <div className="w-full h-px bg-gray-200 mb-48" />
           </div>
@@ -139,9 +150,18 @@ export default function CaseStudies() {
           {/* RIGHT COLUMN */}
           <div className="flex flex-col justify-center gap-7 items-end text-left">
             <div className="flex">
-              <p className="text-gray-500 leading-relaxed max-w-sm mt-56">
-                {activeSlide.description}
-              </p>
+              <AnimatePresence mode="wait">
+                <motion.p 
+                  key={activeIndex}
+                  initial={{ opacity: 0, x: 100 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -100 }}
+                  transition={{ duration: 0.5 }}
+                  className="text-gray-500 leading-relaxed max-w-sm mt-56"
+                >
+                  {activeSlide.description}
+                </motion.p>
+              </AnimatePresence>
             </div>
             <div className="w-full h-px bg-gray-200 mb-48" />
           </div>
@@ -150,4 +170,4 @@ export default function CaseStudies() {
       </div>
     </section>
   );
-}
+};
