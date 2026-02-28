@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export type BlogHero = {
   id: string;
@@ -16,41 +16,48 @@ type Props = {
 };
 
 export default function BlogHeroCard({ blog }: Props) {
+
+  const router = useRouter();
+
+  const handleClick = (id:string) => {
+    router.push(`/blogs/${id}`);
+  };
+
   return (
-    <Link
-      href={`/blogs/${blog.id}`}
-      className="group block w-full h-[600px] overflow-hidden relative bg-white border-r border-gray-200"
+    <div 
+      onClick={()=>handleClick(blog.id)}
+      className="flex flex-col items-center justify-between px-3 pt-5 group border-r border-gray-200"
     >
-      <div className="relative w-full h-full bg-white">
-
-        <div className="">
-          <Image
-            src={blog.image}
-            alt={blog.title}
-            fill
-            priority
-            className="transition-all duration-700 scale-30 group-hover:scale-50 rounded-[170px] overflow-hidden"
-          />
-        </div>
-
-        <div className="absolute left-10 right-10 bottom-10">
-          <h2 className="text-black transition-colors duration-500 group-hover:text-gray-500">
-            {blog.title}
-          </h2>
-        </div>
-
-        <div className="absolute top-12 right-6 hidden md:flex gap-3">
-          {blog.tags.slice(0, 2).map((tag) => (
-            <span
-              key={tag}
-              className="px-4 py-2 rounded-full text-xs font-medium text-black  border border-gray-400 backdrop-blur-md "
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-
+      
+      {/* Tags */}
+      <div className="flex gap-2 mb-20 justify-end w-full">
+        {blog.tags?.map((tag, index) => (
+          <span
+            key={index}
+            className="text-[13px] font-medium px-3 py-0.5 rounded-full border border-gray-300 bg-white text-gray-700 transition"
+          >
+            {tag}
+          </span>
+        ))}
       </div>
-    </Link>
+
+      {/* Image */}
+      <div className="relative w-[220px] h-[280px] mb-20 overflow-hidden rounded-[80px]">
+        <Image
+          src={blog.image}
+          alt={blog.title}
+          fill
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+      </div>
+
+      {/* Title */}
+      <div className="w-full flex items-start justify-start mb-3">
+        <h3 className="pl-3 font-extrabold text-[18px] leading-5 w-[60%] text-gray-800 group-hover:text-gray-500    pb-3"
+        >
+          {blog.title}
+        </h3>
+      </div>
+    </div>
   );
 };

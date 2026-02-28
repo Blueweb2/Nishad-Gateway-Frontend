@@ -28,14 +28,14 @@ export default function Navbar() {
   useEffect(() => {
     const handleScroll = () => {
       const sections = document.querySelectorAll<HTMLElement>("[data-navbar]");
-      const viewportMiddle = window.innerHeight / 2;
+      const navbarHeight = 80;
 
       let currentTheme = "dark";
 
       sections.forEach((section) => {
         const rect = section.getBoundingClientRect();
 
-        if (rect.top <= viewportMiddle && rect.bottom >= viewportMiddle) {
+        if (rect.top <= navbarHeight && rect.bottom >= navbarHeight) {
           const theme = section.getAttribute("data-navbar");
           if (theme) currentTheme = theme;
         }

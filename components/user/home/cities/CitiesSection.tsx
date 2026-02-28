@@ -61,7 +61,7 @@ export default function CitiesSection() {
   };
 
   return (
-    <section className="relative" >
+    <section className="relative" data-navbar="light">
       {/* Slider Container */}
       <div
         className="relative overflow-hidden h-[100vh]" data-menu=""
