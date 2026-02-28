@@ -77,21 +77,17 @@ export const getBlogBySlug = async (
  * 🔍 Get related blogs (by tag)
  * You can improve backend later for better matching
  */
-export const getRelatedBlogs = async (
-  tag: string,
-  limit = 3
-): Promise<PublicBlog[]> => {
+async function getRelated(slug: string) {
   const res = await fetch(
-    `${API}/blogs?tag=${tag}&limit=${limit}`,
+    `${process.env.API_URL}/blogs/${slug}/related`,
     {
-      cache: "no-store",
+      next: { revalidate: 60 },
     }
   );
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch related blogs");
-  }
+  if (!res.ok) return [];
 
-  const data = await res.json();
-  return data.data || [];
-};
+  const result = await res.json();
+
+  return result.data ?? [];
+}

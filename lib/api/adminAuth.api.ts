@@ -7,8 +7,7 @@ export const adminLogin = (payload: {
   adminAxios.post("/admin/login", payload).then((res) => res.data);
 
 export const adminRefresh = () =>
-  adminAxios.post("/admin/refresh").then((res) => res.data);
-
+  adminAxios.post("/admin/refresh", {}).then((res) => res.data);
 export const adminLogout = () =>
   adminAxios.post("/admin/logout").then((res) => res.data);
 
