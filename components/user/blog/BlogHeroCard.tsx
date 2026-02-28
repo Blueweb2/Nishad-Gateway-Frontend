@@ -20,7 +20,7 @@ export default function BlogHeroCard({ blog }: Props) {
   const router = useRouter();
 
   const handleClick = (id:string) => {
-    router.push(`/blog/${id}`);
+    router.push(`/blogs/${id}`);
   };
 
   return (
