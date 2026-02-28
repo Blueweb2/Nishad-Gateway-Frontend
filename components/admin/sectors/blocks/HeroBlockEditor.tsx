@@ -24,7 +24,7 @@ export default function HeroBlockEditor({ data, onChange }: Props) {
 
       const uploaded = await uploadToCloudinarySigned(
         file,
-        "nishad-gateway/sectors/hero"
+        "nishad-gateway/cities/hero",
       );
 
       const imageUrl = cloudinaryAutoWebp(uploaded.secure_url);

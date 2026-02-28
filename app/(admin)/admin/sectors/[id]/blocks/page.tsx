@@ -1,14 +1,33 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import SectorBlocksEditor from "@/components/admin/sectors/SectorBlocksEditor";
 import { getSectorByIdAdmin } from "@/lib/api/admin/sectors.api";
+import toast from "react-hot-toast";
 
-interface Props {
-  params: {
-    id: string;
-  };
-}
+export default function SectorBlocksPage() {
+  const params = useParams();
+  const id = params?.id as string;
 
-export default async function SectorBlocksPage({ params }: Props) {
-  const sector = await getSectorByIdAdmin(params.id);
+  const [sector, setSector] = useState<any>(null);
+
+  useEffect(() => {
+    if (!id) return; // prevent undefined call
+
+    const fetchData = async () => {
+      try {
+        const data = await getSectorByIdAdmin(id);
+        setSector(data);
+      } catch {
+        toast.error("Failed to load sector");
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
+  if (!sector) return <p>Loading...</p>;
 
   return (
     <div>
