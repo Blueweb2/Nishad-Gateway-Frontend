@@ -30,11 +30,11 @@ export default function BlogHeroCard({ blog }: Props) {
     >
       
       {/* Tags */}
-      <div className="flex gap-3 mb-20 justify-end w-full">
+      <div className="flex gap-2 mb-20 justify-end w-full">
         {blog.tags?.map((tag, index) => (
           <span
             key={index}
-            className="text-[14px] font-bold px-3 py-0.5 rounded-full border border-gray-300 bg-white text-gray-700 transition"
+            className="text-[13px] font-medium px-3 py-0.5 rounded-full border border-gray-300 bg-white text-gray-700 transition"
           >
             {tag}
           </span>
@@ -42,7 +42,7 @@ export default function BlogHeroCard({ blog }: Props) {
       </div>
 
       {/* Image */}
-      <div className="relative w-[220px] h-[280px] mb-10 overflow-hidden rounded-[120px]">
+      <div className="relative w-[220px] h-[280px] mb-20 overflow-hidden rounded-[80px]">
         <Image
           src={blog.image}
           alt={blog.title}
