@@ -47,7 +47,7 @@ export default function WhySliderSection({
   return (
     <section
       data-navbar="light"
-      className="relative w-full bg-white text-black py-6 overflow-hidden"
+      className="relative w-full bg-white text-black py-6 overflow-hidden pt-24"
     >
       {/* ================= FULL WIDTH CONTROLS (TOP) ================= */}
       <div className="absolute inset-x-0 top-0 h-full pointer-events-none z-20">
@@ -90,17 +90,14 @@ export default function WhySliderSection({
             {/* counter + title row  */}
             <div className="mt-24 ">
               <div className="flex items-end gap-10">
-               
-               
-
                 {/* title */}
-                <h3 className="text-xl md:text-2xl font-medium text-teal-700 leading-snug">
+                <h3 className="text-xl md:text-2xl text-teal-700  text-[38px] font-bold leading-tight mr-6">
                   {current?.title || "Ownership Rights"}
                 </h3>
               </div>
 
               {/* divider */}
-              <div className="mt-16 border-t border-gray-200" />
+              <div className="mt-6 border-t border-gray-200" />
             </div>
           </div>
 
@@ -161,8 +158,8 @@ export default function WhySliderSection({
           </div>
 
           {/* RIGHT */}
-          <div className="lg:col-span-4 flex flex-col justify-start mt-26">
-            <p className="text-sm md:text-base text-gray-500 leading-relaxed max-w-sm mt-24">
+          <div className="lg:col-span-4 flex flex-col justify-start mt-28">
+            <p className="text-sm md:text-base text-gray-500 leading-relaxed max-w-xm mt-24 w-[75%] leading-relaxed description-text">
               {current?.description ||
                 "Slide description will appear here from backend."}
             </p>
@@ -171,7 +168,7 @@ export default function WhySliderSection({
            
 
             {/* divider */}
-            <div className="mt-10 border-t border-gray-200" />
+            <div className="mt-6 border-t border-gray-200" />
           </div>
         </div>
       </div>
