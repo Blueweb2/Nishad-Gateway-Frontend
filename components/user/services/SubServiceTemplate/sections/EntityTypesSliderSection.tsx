@@ -45,13 +45,7 @@ export default function EntityTypesSliderSection({
     setExpandedIndex((prev) => (prev === index ? null : index));
   };
 
-
-  const prevIndex = total ? (active - 1 + total) % total : 0;
-  const nextIndex = total ? (active + 1) % total : 0;
-
-  const leftSlide = total ? slides[prevIndex] : null;
   const centerSlide = total ? slides[active] : null;
-  const rightSlide = total ? slides[nextIndex] : null;
 
   const formatIndex = (i: number) => String(i).padStart(2, "0");
 
@@ -68,15 +62,6 @@ export default function EntityTypesSliderSection({
 
   const handleMouseLeave = () => {
     setCursor((p) => ({ ...p, show: false }));
-  };
-
-  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (total <= 1) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-
-    if (x < rect.width / 2) goPrev();
-    else goNext();
   };
 
   return (
@@ -104,11 +89,10 @@ export default function EntityTypesSliderSection({
       </div>
 
       {/* SLIDER */}
-      <div
-        className="mt-14 relative w-full cursor-none hidden md:block"
+      <div className="mt-14 relative w-full cursor-none hidden md:block"
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        onClick={handleClick}
+        
       >
         {/* Custom cursor */}
         {cursor.show && total > 1 && (
@@ -129,124 +113,66 @@ export default function EntityTypesSliderSection({
           </div>
         )}
 
-        <div className="relative w-full h-[520px]">
-          {/* LEFT SLIDE */}
-          {leftSlide && (
-            <div className="absolute left-0 top-0 h-full w-[46%]">
-              <div className="absolute left-[6%] top-0 h-full w-[62%] overflow-hidden rounded-[44px]">
+        {/* ///////////////////////// */}
+        <div className="relative w-full h-[520px] flex overflow-x-auto scroll-smooth gap-14 hide-scrollbar">
+          {slides.map((slide, index) => {
+            const isEven = index % 2 === 0;
+            return (
+            <div
+              key={index}
+              className="h-full min-w-[480px] flex-shrink-0 relative flex items-center justify-center"
+            >
+              {/* IMAGE */}
+              <div className="relative h-full w-[80%] overflow-hidden rounded-[44px]">
                 <Image
-                  src={cloudinaryAutoWebp(leftSlide.mainImage)}
-                  alt={leftSlide.title}
+                  src={cloudinaryAutoWebp(slide.mainImage)}
+                  alt={slide.title}
                   fill
                   className="object-cover"
-                  sizes="50vw"
                 />
               </div>
 
-              <div className="absolute left-[58%] top-[110px] h-[240px] w-[44%] overflow-hidden rounded-[34px]">
-                <Image
-                  src={cloudinaryAutoWebp(leftSlide.subImage)}
-                  alt={leftSlide.title}
-                  fill
-                  className="object-cover"
-                  sizes="25vw"
-                />
-              </div>
-
-              <div className="absolute left-[28%] top-1/2 -translate-y-1/2 z-10 w-[360px]">
+              {/* FLOATING CARD */}
+              <div className={`absolute ${isEven? "right-0 top-10" : "right-0 bottom-10"}  z-10 w-[300px]`}>
                 <div
-                  className="bg-white rounded-[28px] shadow-xl px-8 py-8 transition-all duration-500"
+                  className="bg-gray-100 rounded-[28px] shadow-xl px-8 py-8 transition-all duration-500"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <div className="flex items-start justify-between gap-6">
                     <div>
                       <p className="text-xs text-gray-400 mb-4">
-                        {formatIndex(prevIndex + 1)}
+                        {formatIndex(index + 1)}
                       </p>
                       <h3 className="text-lg font-medium text-gray-900 leading-snug max-w-[220px]">
-                        {leftSlide.title}
+                        {slide.title}
                       </h3>
                     </div>
 
                     <button
-                      onClick={() => toggleExpand(prevIndex)}
+                      onClick={() => toggleExpand(index)}
                       className="w-10 h-10 rounded-full border border-green-500 flex items-center justify-center transition-all duration-300"
                     >
                       <Plus
                         size={18}
-                        className={`text-green-600 transition-transform duration-300 ${expandedIndex === prevIndex ? "rotate-45" : ""
-                          }`}
+                        className={`text-green-600 transition-transform duration-300 ${
+                          expandedIndex === index ? "rotate-45" : ""
+                        }`}
                       />
                     </button>
                   </div>
 
-                  {expandedIndex === prevIndex && leftSlide.description && (
+                  {expandedIndex === index && slide.description && (
                     <div className="mt-6 text-sm text-gray-600 leading-relaxed">
-                      {leftSlide.description}
+                      {slide.description}
                     </div>
                   )}
                 </div>
               </div>
-
             </div>
-          )}
-
-          {/* RIGHT SLIDE (CURRENT) */}
-          {centerSlide && (
-            <div className="absolute right-0 top-0 h-full w-[46%]">
-              <div className="absolute right-[6%] top-0 h-full w-[62%] overflow-hidden rounded-[44px]">
-                <Image
-                  src={cloudinaryAutoWebp(centerSlide.mainImage)}
-                  alt={centerSlide.title}
-                  fill
-                  className="object-cover"
-                  sizes="50vw"
-                  priority
-                />
-              </div>
-
-              <div className="absolute right-[58%] top-[110px] h-[240px] w-[44%] overflow-hidden rounded-[34px]">
-                <Image
-                  src={cloudinaryAutoWebp(centerSlide.subImage)}
-                  alt={centerSlide.title}
-                  fill
-                  className="object-cover"
-                  sizes="25vw"
-                />
-              </div>
-
-              <div className="absolute right-[28%] top-1/2 -translate-y-1/2 z-10 w-[360px]">
-                <div className="bg-white rounded-[28px] shadow-xl px-8 py-8 flex items-start justify-between gap-6">
-                  <div>
-                    <p className="text-xs text-gray-400 mb-4">
-                      {formatIndex(active + 1)}
-                    </p>
-                    <h3 className="text-lg font-medium text-gray-900 leading-snug max-w-[220px]">
-                      {centerSlide.title}
-                    </h3>
-                  </div>
-
-                  <div className="w-10 h-10 rounded-full border border-green-500 flex items-center justify-center">
-                    <Plus size={18} className="text-green-600" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* NEXT PREVIEW */}
-          {total >= 3 && rightSlide && (
-            <div className="absolute -right-[18%] top-[70px] h-[380px] w-[320px] overflow-hidden rounded-[44px] opacity-95">
-              <Image
-                src={cloudinaryAutoWebp(rightSlide.mainImage)}
-                alt={rightSlide.title}
-                fill
-                className="object-cover"
-                sizes="20vw"
-              />
-            </div>
-          )}
+            )
+          })}
         </div>
+
       </div>
 
       {/* MOBILE */}
@@ -312,4 +238,4 @@ export default function EntityTypesSliderSection({
       </div>
     </section>
   );
-}
+};
