@@ -10,7 +10,7 @@ export type City = {
   cityName: string;
   citySlug: string;
   cityImage?: string;
-  bestSuitedFor?: string;
+  description?: string;
   tag?: "ARTICLE" | "FEATURED" | "TRENDING";
 };
 
@@ -111,15 +111,12 @@ export default function LocationsSliderSection({
                     </h3>
 
                     <p className="mt-2 text-sm text-gray-600 leading-snug">
-                      {city.bestSuitedFor ||
+                      {city.description ||
                         "Headquarters, government access, and corporate ecosystem."}
                     </p>
                   </div>
 
                   <div className="mt-6 flex items-center justify-between">
-                    <span className="text-[12px] font-medium tracking-wide text-gray-500 uppercase">
-                      {city.tag || "ARTICLE"}
-                    </span>
 
                     <Link
                       href={`/cities/${city.citySlug}`}
