@@ -5,6 +5,7 @@ import Image from "next/image";
 import { ArrowLeft, ArrowRight, Plus } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Mousewheel } from "swiper/modules";
+import { motion, AnimatePresence } from "framer-motion";
 import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 
 export type EntityTypeSlide = {
@@ -54,6 +55,13 @@ export default function EntityTypesSliderSection({
   const [cursor, setCursor] = useState({ x: 0, y: 0, show: false });
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLElement;
+
+    if (target.closest(".floating-card")) {
+      setCursor((prev) => ({ ...prev, show: false }));
+      return;
+    }
+
     const rect = e.currentTarget.getBoundingClientRect();
     setCursor({
       x: e.clientX - rect.left,
@@ -114,7 +122,6 @@ export default function EntityTypesSliderSection({
           </div>
         )}
 
-        {/* ///////////////////////// */}
         <Swiper 
           modules={[FreeMode, Mousewheel]}
           grabCursor={true}
@@ -142,7 +149,9 @@ export default function EntityTypesSliderSection({
               </div>
 
               {/* FLOATING CARD */}
-              <div className={`absolute ${isEven? "right-0 top-10" : "right-0 bottom-10"}  z-10 w-[300px]`}>
+              <div 
+                className={`absolute ${isEven? "right-0 top-10" : "right-0 bottom-10"}  z-10 w-[300px] cursor-auto floating-card`}
+              >
                 <div
                   className="bg-gray-100 rounded-[28px] shadow-xl px-8 py-8 transition-all duration-500"
                   onClick={(e) => e.stopPropagation()}
@@ -170,11 +179,20 @@ export default function EntityTypesSliderSection({
                     </button>
                   </div>
 
-                  {expandedIndex === index && slide.description && (
-                    <div className="mt-6 text-sm text-gray-600 leading-relaxed">
-                      {slide.description}
-                    </div>
-                  )}
+                  <AnimatePresence>
+                    {expandedIndex === index && slide.description && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 40 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 30 }}
+                        transition={{ duration: 0.4, ease: "easeOut" }}
+                        className="mt-6 text-sm text-gray-600 leading-relaxed"
+                      >
+                        {slide.description}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
                 </div>
               </div>
             </SwiperSlide>
