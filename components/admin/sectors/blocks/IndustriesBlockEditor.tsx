@@ -61,7 +61,7 @@ export default function IndustriesBlockEditor({ data, onChange }: Props) {
     try {
       const uploaded = await uploadToCloudinarySigned(
         file,
-        "nishad-gateway/sectors/industries"
+        "nishad-gateway/subservices"
       );
 
       const imageUrl = cloudinaryAutoWebp(uploaded.secure_url);

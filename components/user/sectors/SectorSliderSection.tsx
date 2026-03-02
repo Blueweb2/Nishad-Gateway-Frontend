@@ -1,97 +1,126 @@
 "use client";
 
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
 import { useRef } from "react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import SectorSliderCard from "./SectorSliderCard";
-
-interface CardItem {
-  id: number;
-  title: string;
-  description: string;
-  image: string;
-}
 
 interface Props {
-  sectionNumber: number;
-  totalSections: number;
   title: string;
-  subtitle: string;
-  cards: CardItem[];
+  description: string;
+  items: {
+    title: string;
+    description: string;
+    image: string;
+  }[];
 }
 
 export default function SectorSliderSection({
-  sectionNumber,
-  totalSections,
   title,
-  subtitle,
-  cards,
+  description,
+  items,
 }: Props) {
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const scroll = (direction: "left" | "right") => {
-    if (!containerRef.current) return;
-
-    const scrollAmount = 600;
-    containerRef.current.scrollBy({
-      left: direction === "right" ? scrollAmount : -scrollAmount,
-      behavior: "smooth",
-    });
-  };
+  const prevRef = useRef<HTMLButtonElement>(null);
+  const nextRef = useRef<HTMLButtonElement>(null);
 
   return (
-    <section className="bg-[#8e8b88] py-20 text-white overflow-hidden">
+    <section className="bg-[#8f8a86] py-24 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6">
 
-      {/* Header */}
-      <div className="max-w-7xl mx-auto px-6 flex justify-between items-start">
+        {/* Header */}
+        <div className="flex justify-between items-start mb-16">
 
-        <div>
-          <p className="text-sm opacity-70 mb-4">
-            {String(sectionNumber).padStart(2, "0")} |{" "}
-            {String(totalSections).padStart(2, "0")}
-          </p>
+          <div>
+            <div className="text-white/60 text-sm mb-4">
+              01 | {items.length.toString().padStart(2, "0")}
+            </div>
 
-          <h2 className="text-4xl font-semibold max-w-xl">
-            {title}
-          </h2>
-        </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-white max-w-xl leading-tight">
+              {title}
+            </h2>
+          </div>
 
-        <div className="max-w-md">
-          <p className="text-sm opacity-80 leading-6">
-            {subtitle}
-          </p>
+          <div className="max-w-md text-white/80 text-sm md:text-base leading-relaxed">
+            {description}
+          </div>
 
-          <div className="flex gap-4 mt-6 justify-end">
+          {/* Navigation */}
+          <div className="flex gap-3 ml-6">
             <button
-              onClick={() => scroll("left")}
-              className="w-10 h-10 rounded-full border border-white/40 flex items-center justify-center hover:bg-white/10 transition"
+              ref={prevRef}
+              className="w-10 h-10 border border-white/50 rounded-full text-white flex items-center justify-center"
             >
-              <ArrowLeft size={18} />
+              ←
             </button>
 
             <button
-              onClick={() => scroll("right")}
-              className="w-10 h-10 rounded-full border border-white/40 flex items-center justify-center hover:bg-white/10 transition"
+              ref={nextRef}
+              className="w-10 h-10 border border-white/50 rounded-full text-white flex items-center justify-center"
             >
-              <ArrowRight size={18} />
+              →
             </button>
           </div>
         </div>
-      </div>
 
-      {/* Cards */}
-      <div
-        ref={containerRef}
-        className="flex gap-8 mt-16 overflow-x-auto scrollbar-hide px-6"
-      >
-        {cards.map((card, index) => (
-          <SectorSliderCard
-            key={card.id}
-            index={index}
-            {...card}
-          />
-        ))}
-      </div>
+        {/* Slider */}
+        <Swiper
+          modules={[Navigation]}
+          spaceBetween={40}
+          slidesPerView={1.2}
+          onSwiper={(swiper) => {
+            setTimeout(() => {
+              if (
+                swiper.params.navigation &&
+                typeof swiper.params.navigation !== "boolean"
+              ) {
+                swiper.params.navigation.prevEl = prevRef.current;
+                swiper.params.navigation.nextEl = nextRef.current;
 
+                swiper.navigation.init();
+                swiper.navigation.update();
+              }
+            });
+          }}
+          navigation
+          breakpoints={{
+            768: { slidesPerView: 1.5 },
+            1024: { slidesPerView: 2 },
+          }}
+        >
+          {items.map((item, index) => (
+            <SwiperSlide key={index}>
+              <div className="bg-white rounded-[40px] p-8 flex flex-col md:flex-row items-center gap-8">
+
+                {/* Text */}
+                <div className="flex-1">
+                  <div className="text-gray-400 text-sm mb-3">
+                    {(index + 1).toString().padStart(2, "0")} /
+                  </div>
+
+                  <h3 className="text-2xl font-semibold mb-4">
+                    {item.title}
+                  </h3>
+
+                  <p className="text-gray-600 text-sm leading-relaxed">
+                    {item.description}
+                  </p>
+                </div>
+
+                {/* Image */}
+                {item.image && (
+                  <div className="flex-1">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="rounded-[30px] w-full h-64 object-cover"
+                    />
+                  </div>
+                )}
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+
+      </div>
     </section>
   );
 }

@@ -1,66 +1,56 @@
 "use client";
 
-import Image from "next/image";
+import Link from "next/link";
 
 interface Props {
-  sector: {
-    title: string;
-    excerpt: string;
-    coverImage: {
-      url: string;
-      alt: string;
-    };
-  };
+  title: string;
+  description: string;
+  backgroundImage: string;
 }
 
-export default function SectorHero({ sector }: Props) {
+export default function SectorHero({
+  title,
+  description,
+  backgroundImage,
+}: Props) {
   return (
-    <section className="px-6 pt-10">
-      <div className="relative w-full h-[620px] rounded-[30px] overflow-hidden">
+    <section className="px-6 pt-6">
+      <div className="relative rounded-[40px] overflow-hidden">
 
         {/* Background Image */}
-        <Image
-          src={sector.coverImage.url}
-          alt={sector.coverImage.alt}
-          fill
-          priority
-          className="object-cover"
+        <img
+          src={backgroundImage}
+          alt={title}
+          className="absolute inset-0 w-full h-full object-cover"
         />
 
         {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 bg-black/50" />
 
         {/* Content */}
-        <div className="absolute inset-0 flex flex-col justify-center px-14 text-white max-w-4xl">
-          
-          <h1 className="text-[56px] leading-[64px] font-semibold tracking-tight">
-            {sector.title}
+        <div className="relative z-10 max-w-6xl mx-auto px-6 py-32 text-white">
+          <h1 className="text-4xl md:text-6xl font-bold leading-tight">
+            {title}
           </h1>
 
-          <p className="mt-6 text-lg text-white/90 max-w-2xl">
-            {sector.excerpt}
+          <p className="mt-6 max-w-2xl text-lg text-gray-200">
+            {description}
           </p>
 
-          <button className="mt-8 bg-green-600 hover:bg-green-700 transition px-8 py-3 rounded-full text-sm font-medium w-fit">
+          <Link
+            href="/ksa-expansion-calculator"
+            className="inline-block mt-8 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-full font-medium transition"
+          >
             Calculate Your KSA Expansion Cost
-          </button>
+          </Link>
         </div>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/70 text-sm animate-bounce">
-          ⌄
+        {/* Optional Scroll Indicator */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white opacity-70">
+          <div className="w-6 h-10 border border-white rounded-full flex justify-center">
+            <div className="w-1 h-2 bg-white rounded-full mt-2 animate-bounce" />
+          </div>
         </div>
-
-        {/* Optional Top Right Badge */}
-        <div className="absolute top-6 right-6 w-12 h-12 rounded-full overflow-hidden border-2 border-white/60">
-          <Image
-            src="/images/city-badge.jpg"   // replace if dynamic
-            alt="City"
-            fill
-            className="object-cover"
-          />
-        </div>
-
       </div>
     </section>
   );
