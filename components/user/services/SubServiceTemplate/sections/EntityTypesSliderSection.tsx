@@ -3,6 +3,8 @@
 import { useMemo, useState } from "react";
 import Image from "next/image";
 import { ArrowLeft, ArrowRight, Plus } from "lucide-react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { FreeMode, Mousewheel } from "swiper/modules";
 import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 
 export type EntityTypeSlide = {
@@ -92,7 +94,6 @@ export default function EntityTypesSliderSection({
       <div className="mt-14 relative w-full cursor-none hidden md:block"
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        
       >
         {/* Custom cursor */}
         {cursor.show && total > 1 && (
@@ -114,13 +115,21 @@ export default function EntityTypesSliderSection({
         )}
 
         {/* ///////////////////////// */}
-        <div className="relative w-full h-[520px] flex overflow-x-auto scroll-smooth gap-14 hide-scrollbar">
+        <Swiper 
+          modules={[FreeMode, Mousewheel]}
+          grabCursor={true}
+          freeMode={true}
+          mousewheel={true}
+          slidesPerView="auto"
+          spaceBetween={56}
+          className="relative w-full h-[520px]"
+        >
           {slides.map((slide, index) => {
             const isEven = index % 2 === 0;
             return (
-            <div
+            <SwiperSlide
               key={index}
-              className="h-full min-w-[480px] flex-shrink-0 relative flex items-center justify-center"
+              className="!w-[480px] h-full relative flex items-center justify-center"
             >
               {/* IMAGE */}
               <div className="relative h-full w-[80%] overflow-hidden rounded-[44px]">
@@ -168,10 +177,10 @@ export default function EntityTypesSliderSection({
                   )}
                 </div>
               </div>
-            </div>
+            </SwiperSlide>
             )
           })}
-        </div>
+        </Swiper>
 
       </div>
 
