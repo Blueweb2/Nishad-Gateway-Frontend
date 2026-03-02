@@ -23,7 +23,6 @@ export type IndustriesItem = {
 };
 
 export type IndustriesBlock = {
-  sectionLabel: string;
   title: string;
   description: string;
   items: IndustriesItem[];
@@ -41,45 +40,44 @@ export type SectorBlock =
 export const getDefaultSectorBlock = (
   type: SectorBlock["type"]
 ): SectorBlock => {
-  switch (type) {
-    case "hero":
-      return {
-        type: "hero",
-        data: {
-          backgroundImage: "",
-          backgroundImagePublicId: "",
-          title: "",
-          description: "",
-        },
-      };
-
-    case "richContent":
-      return {
-        type: "richContent",
-        data: {
-          content: "",
-        },
-      };
-
-    case "industries":
-      return {
-        type: "industries",
-        data: {
-          sectionLabel: "01 | 05",
-          title: "",
-          description: "",
-          items: [
-            {
-              title: "",
-              description: "",
-              image: "",
-              imagePublicId: "",
-            },
-          ],
-        },
-      };
-
-    default:
-      throw new Error("Invalid sector block type");
+  if (type === "hero") {
+    return {
+      type: "hero",
+      data: {
+        backgroundImage: "",
+        backgroundImagePublicId: undefined,
+        title: "",
+        description: "",
+      },
+    };
   }
+
+  if (type === "richContent") {
+    return {
+      type: "richContent",
+      data: {
+        content: "",
+      },
+    };
+  }
+
+  if (type === "industries") {
+    return {
+      type: "industries",
+      data: {
+        title: "",
+        description: "",
+        items: [
+          {
+            title: "",
+            description: "",
+            image: "",
+            imagePublicId: undefined,
+          },
+        ],
+      },
+    };
+  }
+
+  throw new Error("Invalid sector block type");
 };

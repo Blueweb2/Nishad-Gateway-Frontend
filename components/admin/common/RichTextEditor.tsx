@@ -4,14 +4,6 @@ import { useEffect } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
-import Image from "@tiptap/extension-image";
-
-import { Table } from "@tiptap/extension-table";
-import { TableRow } from "@tiptap/extension-table-row";
-import { TableCell } from "@tiptap/extension-table-cell";
-import { TableHeader } from "@tiptap/extension-table-header";
-import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
-import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 
 type Props = {
   value: string;
@@ -30,16 +22,6 @@ export default function RichTextEditor({ value, onChange }: Props) {
         autolink: true,
         protocols: ["http", "https"],
       }),
-
-      Image.configure({
-        inline: false,
-        allowBase64: false,
-      }),
-
-      Table.configure({ resizable: true }),
-      TableRow,
-      TableCell,
-      TableHeader,
     ],
 
     content: value || "",
@@ -60,7 +42,6 @@ export default function RichTextEditor({ value, onChange }: Props) {
     },
   });
 
-  /* 🔄 Sync external value changes */
   useEffect(() => {
     if (!editor) return;
 
@@ -80,7 +61,6 @@ export default function RichTextEditor({ value, onChange }: Props) {
         : "bg-white/10 text-white hover:bg-white/20"
     }`;
 
-  /* 🔐 Safe Link Insert */
   const handleLink = () => {
     if (editor.isActive("link")) {
       editor.chain().focus().unsetLink().run();
@@ -176,67 +156,6 @@ export default function RichTextEditor({ value, onChange }: Props) {
           className={btn(editor.isActive("link"))}
         >
           Link
-        </button>
-
-        <button
-          type="button"
-          onClick={() =>
-            editor
-              .chain()
-              .focus()
-              .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
-              .run()
-          }
-          className={btn(false)}
-        >
-          Table
-        </button>
-
-        <button
-          type="button"
-          onClick={async () => {
-            const input = document.createElement("input");
-            input.type = "file";
-            input.accept = "image/*";
-
-            input.onchange = async () => {
-              const file = input.files?.[0];
-              if (!file) return;
-
-              try {
-                const uploaded = await uploadToCloudinarySigned(
-                  file,
-                  "nishad-gateway/blogs/content"
-                );
-
-                if (
-                  !uploaded?.secure_url?.startsWith(
-                    "https://res.cloudinary.com"
-                  )
-                ) {
-                  alert("Invalid image source.");
-                  return;
-                }
-
-                const optimized = cloudinaryAutoWebp(
-                  uploaded.secure_url
-                );
-
-                editor.chain().focus().setImage({
-                  src: optimized,
-                  alt: file.name,
-                }).run();
-
-              } catch (err) {
-                alert("Image upload failed.");
-              }
-            };
-
-            input.click();
-          }}
-          className={btn(false)}
-        >
-          Image
         </button>
       </div>
 

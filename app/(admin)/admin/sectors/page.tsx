@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getAdminSectors } from "@/lib/api/admin/sectors.api";
 import toast from "react-hot-toast";
+import { deleteSectorAdmin } from "@/lib/api/admin/sectors.api";
 
 interface Sector {
   _id: string;
@@ -14,6 +15,7 @@ interface Sector {
 
 export default function AdminSectorsPage() {
   const [sectors, setSectors] = useState<Sector[]>([]);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,6 +30,33 @@ export default function AdminSectorsPage() {
     fetchData();
   }, []);
 
+  const handleDelete = async (id: string) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this sector?"
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      setDeletingId(id);
+
+      await deleteSectorAdmin(id);
+
+      // Remove from state immediately
+      setSectors((prev) =>
+        prev.filter((sector) => sector._id !== id)
+      );
+
+      toast.success("Sector deleted successfully");
+    } catch (error: any) {
+      toast.error(
+        error?.response?.data?.message ||
+        "Failed to delete sector"
+      );
+    } finally {
+      setDeletingId(null);
+    }
+  };
   return (
     <div>
       <div className="flex justify-between mb-6">
@@ -54,18 +83,31 @@ export default function AdminSectorsPage() {
               </p>
             </div>
 
-            <Link
-              href={`/admin/sectors/${sector._id}/edit`}
-              className="text-green-400 text-sm"
-            >
-              Edit
-            </Link>
+            <div className="flex gap-4 items-center">
               <Link
-    href={`/admin/sectors/${sector._id}/blocks`}
-    className="text-blue-400 text-sm"
-  >
-    Manage Blocks
-  </Link>
+                href={`/admin/sectors/${sector._id}/edit`}
+                className="text-green-400 text-sm"
+              >
+                Edit
+              </Link>
+
+              <Link
+                href={`/admin/sectors/${sector._id}/blocks`}
+                className="text-blue-400 text-sm"
+              >
+                Manage Blocks
+              </Link>
+
+              <button
+                onClick={() => handleDelete(sector._id)}
+                disabled={deletingId === sector._id}
+                className="text-red-400 text-sm hover:text-red-500"
+              >
+                {deletingId === sector._id
+                  ? "Deleting..."
+                  : "Delete"}
+              </button>
+            </div>
           </div>
         ))}
       </div>
