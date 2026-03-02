@@ -124,7 +124,7 @@ export default function DocumentsRequiredSection({
                   <button
                     key={tab.value}
                     onClick={() => setActiveTab(tab.value)}
-                    className={`w-full flex gap-3 px-3 py-2 rounded-full border ${
+                    className={`w-full flex gap-3 px-3 py-2 rounded-full border items-center ${
                       isActive
                         ? "border-green-600"
                         : "border-gray-200 hover:bg-gray-50"
@@ -140,7 +140,7 @@ export default function DocumentsRequiredSection({
                       {String(idx + 1).padStart(2, "0")}
                     </span>
 
-                    <span className="text-sm font-medium">
+                    <span className={`text-sm font-medium text-black ${isActive && "text-green-600"}`}>
                       {tab.label}
                     </span>
                   </button>
@@ -155,11 +155,11 @@ export default function DocumentsRequiredSection({
                   No document cards added for this entity.
                 </p>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="flex md:flex-nowrap flex-wrap gap-6 overflow-x-auto scroll-smooth hide-scrollbar">
                   {activeCards.map((card, i) => (
                     <div
                       key={i}
-                      className="bg-[#f6f6f6] rounded-[28px] p-8"
+                      className="min-w-[280px] md:min-w-[310px] flex-shrink-0 bg-[#f6f6f6] rounded-[28px] p-8"
                     >
                       <div className="w-10 h-10 mb-5">
                         {card.icon ? (
