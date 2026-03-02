@@ -68,7 +68,7 @@ export default function OwnershipSliderEditor({
       />
 
       {/* Tab Labels */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <input
           value={ownershipTabOneLabel || ""}
           onChange={(e) => updateField("ownershipTabOneLabel", e.target.value)}
@@ -82,7 +82,7 @@ export default function OwnershipSliderEditor({
           placeholder="Tab 2 Label (ex: Capital Reality)"
           className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
         />
-      </div>
+      </div> */}
 
       {/* Slides */}
       {ownershipSlides.length === 0 ? (

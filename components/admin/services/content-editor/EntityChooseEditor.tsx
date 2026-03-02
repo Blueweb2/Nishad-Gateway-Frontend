@@ -95,8 +95,8 @@ export default function EntityChooseEditor({
                 placeholder="Question text (ex: Do you want 100% ownership?)"
                 className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
               />
-
-              {/* Know More Label */}
+{/* 
+              Know More Label
               <input
                 value={q.knowMoreLabel || ""}
                 onChange={(e) =>
@@ -108,17 +108,17 @@ export default function EntityChooseEditor({
                 }
                 placeholder='Link Label (ex: "Know more")'
                 className="w-full px-4 py-2 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
-              />
+              /> */}
 
               {/* Know More URL */}
-              <input
+              {/* <input
                 value={q.knowMoreUrl || ""}
                 onChange={(e) =>
                   updateChooseQuestion(index, "knowMoreUrl", e.target.value)
                 }
                 placeholder="Link URL (ex: /services/entity-types)"
                 className="w-full px-4 py-2 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
-              />
+              /> */}
             </div>
           ))}
         </div>

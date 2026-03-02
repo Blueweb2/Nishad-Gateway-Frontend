@@ -168,7 +168,7 @@ export default function EntityTypesSliderEditor({
               </div>
 
               {/* SUB IMAGE Upload */}
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <label className="text-xs text-gray-400">
                   Sub Image (Small Image - Cloudinary Signed)
                 </label>
@@ -213,7 +213,7 @@ export default function EntityTypesSliderEditor({
                   placeholder="Sub Image URL"
                   className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
                 />
-              </div>
+              </div> */}
             </div>
           ))}
         </div>
