@@ -47,6 +47,7 @@ export default function EntityTableEditor({
   removeEntityRow,
   updateColumnLabel,
 }: Props) {
+
   return (
     <div className="space-y-6">
       {/* HEADER */}

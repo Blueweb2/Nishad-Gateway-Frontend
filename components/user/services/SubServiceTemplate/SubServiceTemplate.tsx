@@ -90,7 +90,7 @@ type City = {
   cityName: string;
   citySlug: string;
   cityImage?: string;
-  bestSuitedFor?: string;
+  description?: string;
   tag?: "ARTICLE" | "FEATURED" | "TRENDING";
 };
 

@@ -478,17 +478,57 @@ export default function SubServiceContentEditor({ subId }: Props) {
     }));
   };
 
-  const handleSave = async () => {
-    try {
-      setSaving(true);
-      await adminSaveSubServiceContent(subId, form);
-      toast.success("Content saved successfully ");
-    } catch (err: any) {
-      toast.error(err?.response?.data?.message || "Save failed");
-    } finally {
-      setSaving(false);
-    }
-  };
+
+  const cleanEntityRows = (rows: EntityRow[]) => {
+  return rows
+    .map((row) => {
+      const cleanedRow: Partial<EntityRow> = { id: row.id };
+
+      Object.entries(row).forEach(([key, value]) => {
+        if (
+          key !== "id" &&
+          value !== "" &&
+          value !== null &&
+          value !== undefined
+        ) {
+          cleanedRow[key as keyof EntityRow] =
+            value as string;
+        }
+      });
+
+      return cleanedRow;
+    })
+    // remove rows that have only id
+    .filter((row) => Object.keys(row).length > 1);
+};
+const handleSave = async () => {
+  try {
+    setSaving(true);
+
+    const cleanedRows = cleanEntityRows(
+      form.entityTableRows
+    );
+
+    const cleanedForm = {
+      ...form,
+      entityTableRows: cleanedRows,
+    };
+
+    await adminSaveSubServiceContent(
+      subId,
+      cleanedForm
+    );
+
+    toast.success("Content saved successfully ");
+  } catch (err: any) {
+    toast.error(
+      err?.response?.data?.message ||
+        "Save failed"
+    );
+  } finally {
+    setSaving(false);
+  }
+};
 
   if (loading) return <p className="text-gray-400">Loading content editor...</p>;
 
