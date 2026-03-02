@@ -116,7 +116,7 @@ export default function LocationsSliderSection({
                     </p>
                   </div>
 
-                  <div className="mt-6 flex items-center justify-between">
+                  <div className="mt-6 flex items-center justify-end">
 
                     <Link
                       href={`/cities/${city.citySlug}`}
