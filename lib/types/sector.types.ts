@@ -1,3 +1,11 @@
+import { v4 as uuid } from "uuid";
+
+/* ================= BASE BLOCK ================= */
+
+export interface BaseSectorBlock {
+  _id: string; // stable id for React key & reordering
+}
+
 /* ================= HERO BLOCK ================= */
 
 export type HeroBlock = {
@@ -31,17 +39,22 @@ export type IndustriesBlock = {
 /* ================= SECTOR BLOCK UNION ================= */
 
 export type SectorBlock =
-  | { type: "hero"; data: HeroBlock }
-  | { type: "richContent"; data: RichContentBlock }
-  | { type: "industries"; data: IndustriesBlock };
+  | (BaseSectorBlock & { type: "hero"; data: HeroBlock })
+  | (BaseSectorBlock & { type: "richContent"; data: RichContentBlock })
+  | (BaseSectorBlock & { type: "industries"; data: IndustriesBlock });
 
 /* ================= DEFAULT BLOCK FACTORY ================= */
 
 export const getDefaultSectorBlock = (
   type: SectorBlock["type"]
 ): SectorBlock => {
+  const base = {
+    _id: uuid(),
+  };
+
   if (type === "hero") {
     return {
+      ...base,
       type: "hero",
       data: {
         backgroundImage: "",
@@ -54,6 +67,7 @@ export const getDefaultSectorBlock = (
 
   if (type === "richContent") {
     return {
+      ...base,
       type: "richContent",
       data: {
         content: "",
@@ -63,6 +77,7 @@ export const getDefaultSectorBlock = (
 
   if (type === "industries") {
     return {
+      ...base,
       type: "industries",
       data: {
         title: "",

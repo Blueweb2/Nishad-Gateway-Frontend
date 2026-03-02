@@ -28,26 +28,22 @@ export default function SectorBlocksEditor({
   const [saving, setSaving] = useState(false);
 
   /* ================= UPDATE BLOCK ================= */
-const updateBlock = (
-  index: number,
-  updatedData: any
-) => {
-    const updated = [...blocks];
-    updated[index] = {
-      ...updated[index],
-      data: updatedData,
-    };
-    setBlocks(updated);
+  const updateBlock = (index: number, updatedData: any) => {
+    setBlocks((prev) =>
+      prev.map((block, i) =>
+        i === index ? { ...block, data: updatedData } : block
+      )
+    );
   };
 
   /* ================= REMOVE BLOCK ================= */
   const removeBlock = (index: number) => {
-    setBlocks(blocks.filter((_, i) => i !== index));
+    setBlocks((prev) => prev.filter((_, i) => i !== index));
   };
 
   /* ================= ADD BLOCK ================= */
   const addBlock = (type: SectorBlock["type"]) => {
-    setBlocks([...blocks, getDefaultSectorBlock(type)]);
+    setBlocks((prev) => [...prev, getDefaultSectorBlock(type)]);
   };
 
   /* ================= SAVE ================= */
@@ -57,68 +53,58 @@ const updateBlock = (
       await updateSectorAdmin(sectorId, { blocks });
       toast.success("Blocks updated successfully");
     } catch (error: any) {
-      toast.error(
-        error?.message || "Failed to update blocks"
-      );
+      toast.error(error?.message || "Failed to update blocks");
     } finally {
       setSaving(false);
     }
   };
 
+  /* ================= BLOCK RENDER MAP ================= */
+  const blockRenderers: Record<
+    SectorBlock["type"],
+    React.FC<any>
+  > = {
+    hero: HeroBlockEditor,
+    richContent: RichContentBlockEditor,
+    industries: IndustriesBlockEditor,
+  };
+
   return (
     <div className="space-y-8">
+      {blocks.map((block, index) => {
+        const BlockComponent = blockRenderers[block.type];
 
-      {/* ================= BLOCK LIST ================= */}
-      {blocks.map((block, index) => (
-        <div
-          key={index}
-          className="border border-gray-700 rounded-lg p-6 space-y-4 bg-[#111]"
-        >
-          {/* Header */}
-          <div className="flex justify-between items-center">
-            <h3 className="text-sm uppercase tracking-wide text-gray-400">
-              {block.type} Block
-            </h3>
+        return (
+          <div
+            key={index}
+            className="border border-gray-700 rounded-lg p-6 space-y-4 bg-[#111]"
+          >
+            {/* Header */}
+            <div className="flex justify-between items-center">
+              <h3 className="text-sm uppercase tracking-wide text-gray-400">
+                {index + 1}. {block.type} Block
+              </h3>
 
-            <button
-              onClick={() => removeBlock(index)}
-              className="text-red-400 text-xs hover:text-red-500"
-            >
-              Remove
-            </button>
+              <button
+                onClick={() => removeBlock(index)}
+                className="text-red-400 text-xs hover:text-red-500"
+              >
+                Remove
+              </button>
+            </div>
+
+            {/* Dynamic Block */}
+            <BlockComponent
+              data={block.data}
+              onChange={(updatedData: any) =>
+                updateBlock(index, updatedData)
+              }
+            />
           </div>
+        );
+      })}
 
-          {/* ================= RENDER BLOCK TYPE ================= */}
-          {block.type === "hero" && (
-            <HeroBlockEditor
-              data={block.data}
-              onChange={(updatedData) =>
-                updateBlock(index, updatedData)
-              }
-            />
-          )}
-
-          {block.type === "richContent" && (
-            <RichContentBlockEditor
-              data={block.data}
-              onChange={(updatedData) =>
-                updateBlock(index, updatedData)
-              }
-            />
-          )}
-
-          {block.type === "industries" && (
-            <IndustriesBlockEditor
-              data={block.data}
-              onChange={(updatedData) =>
-                updateBlock(index, updatedData)
-              }
-            />
-          )}
-        </div>
-      ))}
-
-      {/* ================= ADD BUTTONS ================= */}
+      {/* ADD BUTTONS */}
       <div className="flex flex-wrap gap-4">
         <button
           onClick={() => addBlock("hero")}
@@ -142,7 +128,7 @@ const updateBlock = (
         </button>
       </div>
 
-      {/* ================= SAVE ================= */}
+      {/* SAVE */}
       <div>
         <button
           onClick={saveBlocks}

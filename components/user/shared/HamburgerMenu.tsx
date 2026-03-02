@@ -36,7 +36,7 @@ export default function HamburgerMenu({ open, onClose }: Props) {
 
   const [render, setRender] = useState(open);
   const [useDarkText, setUseDarkText] = useState(false);
-  const MotionLink = motion(Link);
+  const MotionLink = motion.create(Link);
 
   const hasAnimated = useRef(false);
 
