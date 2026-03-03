@@ -1,9 +1,10 @@
 "use client";
 
+import RichTextEditor from "@/components/admin/common/RichTextEditor";
+
 type EntityChooseQuestion = {
   question: string;
-  knowMoreLabel?: string;
-  knowMoreUrl?: string;
+  linkUrl: string;
 };
 
 type Props = {
@@ -32,97 +33,81 @@ export default function EntityChooseEditor({
   removeChooseQuestion,
 }: Props) {
   return (
-    <div className="space-y-5 border border-gray-800 rounded-2xl p-6 bg-black/20">
-      {/* Header */}
-      <div className="flex items-center justify-between gap-4">
+    <div className="space-y-6 border border-gray-800 rounded-2xl p-6 bg-black/20">
+
+      <div className="flex justify-between items-center">
         <h3 className="text-lg font-semibold text-white">
-          Entity Type Chooser (Cards)
+          Entity Type Chooser (Questions Only)
         </h3>
 
         <button
           onClick={addChooseQuestion}
-          className="px-4 py-2 rounded-lg bg-green-600 hover:bg-green-700 transition text-sm font-semibold"
+          className="px-4 py-2 rounded-lg bg-green-600 hover:bg-green-700 text-sm font-semibold"
         >
-          + Add Card
+          + Add Question
         </button>
       </div>
 
       {/* Heading */}
       <input
         value={entityChooseHeading}
-        onChange={(e) => updateField("entityChooseHeading", e.target.value)}
-        placeholder="Heading (ex: How to Choose the Right Entity Type)"
-        className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
+        onChange={(e) =>
+          updateField("entityChooseHeading", e.target.value)
+        }
+        placeholder="Section Heading"
+        className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white"
       />
 
       {/* Subheading */}
       <input
         value={entityChooseSubheading}
-        onChange={(e) => updateField("entityChooseSubheading", e.target.value)}
-        placeholder="Subheading (small text under heading)"
-        className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
+        onChange={(e) =>
+          updateField("entityChooseSubheading", e.target.value)
+        }
+        placeholder="Section Subheading"
+        className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white"
       />
 
       {/* Questions */}
-      {entityChooseQuestions.length === 0 ? (
-        <p className="text-sm text-gray-400">No cards added yet.</p>
-      ) : (
-        <div className="space-y-5">
-          {entityChooseQuestions.map((q, index) => (
-            <div
-              key={index}
-              className="border border-gray-800 rounded-2xl p-5 space-y-4 bg-black/30"
-            >
-              <div className="flex items-center justify-between">
-                <p className="text-sm font-semibold text-gray-200">
-                  Card {index + 1}
-                </p>
+      <div className="space-y-8">
+        {entityChooseQuestions.map((q, index) => (
+          <div
+            key={index}
+            className="border border-gray-800 rounded-2xl p-6 space-y-4 bg-black/30"
+          >
+            <div className="flex justify-between items-center">
+              <p className="text-sm font-semibold text-gray-300">
+                Question {index + 1}
+              </p>
 
-                <button
-                  onClick={() => removeChooseQuestion(index)}
-                  className="text-xs px-3 py-1 rounded-lg bg-red-800 hover:bg-red-700 transition"
-                >
-                  Remove
-                </button>
-              </div>
-
-              {/* Question */}
-              <input
-                value={q.question}
-                onChange={(e) =>
-                  updateChooseQuestion(index, "question", e.target.value)
-                }
-                placeholder="Question text (ex: Do you want 100% ownership?)"
-                className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
-              />
-{/* 
-              Know More Label
-              <input
-                value={q.knowMoreLabel || ""}
-                onChange={(e) =>
-                  updateChooseQuestion(
-                    index,
-                    "knowMoreLabel",
-                    e.target.value
-                  )
-                }
-                placeholder='Link Label (ex: "Know more")'
-                className="w-full px-4 py-2 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
-              /> */}
-
-              {/* Know More URL */}
-              {/* <input
-                value={q.knowMoreUrl || ""}
-                onChange={(e) =>
-                  updateChooseQuestion(index, "knowMoreUrl", e.target.value)
-                }
-                placeholder="Link URL (ex: /services/entity-types)"
-                className="w-full px-4 py-2 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
-              /> */}
+              <button
+                onClick={() => removeChooseQuestion(index)}
+                className="text-xs px-3 py-1 rounded-lg bg-red-800 hover:bg-red-700"
+              >
+                Remove
+              </button>
             </div>
-          ))}
-        </div>
-      )}
+
+            {/* Rich Text Question */}
+            <RichTextEditor
+              value={q.question}
+              onChange={(value) =>
+                updateChooseQuestion(index, "question", value)
+              }
+            />
+
+            {/* Link URL */}
+            <input
+              value={q.linkUrl}
+              onChange={(e) =>
+                updateChooseQuestion(index, "linkUrl", e.target.value)
+              }
+              placeholder="Link URL (ex: /services/free-zone-company)"
+              className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white"
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

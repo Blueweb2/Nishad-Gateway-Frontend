@@ -5,7 +5,7 @@ import OvalArrow from "@/components/user/ui/OvalArrow";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectFade, Autoplay } from "swiper/modules";
 import { useRef, useState } from "react";
-
+import Link from "next/link";
 import "swiper/css";
 import "swiper/css/effect-fade";
 import FadeUpScroll from "../ui/FadeUpScroll";
@@ -16,40 +16,45 @@ const slides = [
     alt: "Company Formation Overview",
     title: "Company Formation Overview",
     description:
-      "Understand the end-to-end process of company formation in Saudi Arabia, from foreign investor licensing to Commercial Registration (CR), municipality approvals, banking, and visa activation.",
+      "Understand the end-to-end process of company formation in Saudi Arabia...",
     linkText: "Understand Business Setup",
+    link: "/services/company-formation",
   },
   {
     src: "/buisnessgrowth/Types-of-Licenses.jpg",
     alt: "Types of Licenses",
     title: "Types of Business Licenses",
     description:
-      "Saudi Arabia provides various types of licenses: LLC, Branch Office, Entrepreneur, and Professional licenses, designed for different business structures and market entry strategies.",
+      "Saudi Arabia provides various types of licenses...",
     linkText: "Explore License Types",
+    link: "/services/company-formation/licensing-approvals",
   },
   {
     src: "/buisnessgrowth/Ownership-and-Capital-Rules.jpg",
     alt: "Ownership & Capital Rules",
     title: "Ownership & Capital Rules",
     description:
-      "Understand the implications of ownership structures and capital on control, licensing, banking, and visas.",
+      "Understand the implications of ownership structures...",
     linkText: "View Ownership Rules",
+    link: "/services/company-formation/ownership-&-capital",
   },
   {
     src: "/buisnessgrowth/business-tax-compliance-meeting.jpg",
     alt: "Taxes & Compliance",
     title: "Taxes & Compliance (Zakat, VAT, CT)",
     description:
-      "Understand Saudi tax requirements, Zakat for Saudi companies, VAT compliance, and Corporate Tax obligations.",
+      "Understand Saudi tax requirements...",
     linkText: "Understand Tax Structure",
+    link: "/services/saudi-business-advisory/tax-regulatory-advisory",
   },
   {
     src: "/buisnessgrowth/Setup-Timeline.jpg",
     alt: "Setup Timeline",
     title: "Setup Timeline (Step-by-Step)",
     description:
-      "A step-by-step guide on how long each process takes, from approvals and licensing to banking and visas.",
+      "A step-by-step guide on how long each process takes...",
     linkText: "View Setup Timeline",
+    link: "/services/company-formation/setup-timeline",
   },
 ];
 
@@ -91,15 +96,15 @@ export default function BusinessGrowth() {
 
       {/* ================= CONSTRAINED CONTENT ================= */}
       <div className="relative z-10 max-w-[1320px] mx-auto  w-full ">
-        
+
         {/* HEADING */}
-<FadeUpScroll delay={0.2}>
-  <div className="max-w-3xl mx-auto mt-18 text-center mb-12">
-    <h2 className="text-[38px] font-bold leading-tight">
-      How Business Works in Saudi Arabia
-    </h2>
-  </div>
-</FadeUpScroll>
+        <FadeUpScroll delay={0.2}>
+          <div className="max-w-3xl mx-auto mt-18 text-center mb-12">
+            <h2 className="text-[38px] font-bold leading-tight">
+              How Business Works in Saudi Arabia
+            </h2>
+          </div>
+        </FadeUpScroll>
 
         <div className="grid grid-cols-3 gap-12 items-center">
 
@@ -141,15 +146,18 @@ export default function BusinessGrowth() {
               {slides.map((slide, index) => (
                 <SwiperSlide key={index}>
                   <div className="relative w-[380px] h-[500px] rounded-[150px] overflow-hidden">
-                    <img src={slide.src} alt={slide.alt} className="w-full h-full"/>
+                    <img src={slide.src} alt={slide.alt} className="w-full h-full" />
                   </div>
                 </SwiperSlide>
               ))}
             </Swiper>
 
-            <button className=" text-sm text-green-600 underline underline-offset-4 pt-6">
+            <Link
+              href={activeSlide.link}
+              className="text-sm text-green-600 underline underline-offset-4 pt-6 inline-block"
+            >
               {activeSlide.linkText}
-            </button>
+            </Link>
           </div>
 
           {/* RIGHT COLUMN */}

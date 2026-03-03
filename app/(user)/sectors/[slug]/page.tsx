@@ -2,10 +2,14 @@ import { notFound } from "next/navigation";
 import { getSectorBySlugPublic } from "@/lib/api/public/sectors.api";
 import SectorBlockRenderer from "@/components/user/sectors/SectorBlockRenderer";
 import { SectorBlock } from "@/lib/types/sector.types";
+import Stats from "@/components/user/home/Stats";
+import LocationsSliderSection from "@/components/user/ui/LocationsSliderSection";
+import SubServiceTemplate from "@/components/user/services/SubServiceTemplate/SubServiceTemplate";
 
 interface Props {
   params: Promise<{ slug: string }>;
 }
+
 
 /* ================= SEO ================= */
 
@@ -35,14 +39,15 @@ export async function generateMetadata({ params }: Props) {
 
 /* ================= PAGE ================= */
 
-export default async function SectorDetailPage({
-  params,
-}: Props) {
-  const { slug } = await params; // 👈 unwrap first
+export default async function SectorDetailPage({ params }: Props) {
+  const { slug } = await params;
 
   const sector = await getSectorBySlugPublic(slug);
   if (!sector) notFound();
 
+
+
+  // Default block rendering
   return (
     <main className="bg-white">
       {sector.blocks?.map((block: SectorBlock) => (
@@ -53,4 +58,8 @@ export default async function SectorDetailPage({
       ))}
     </main>
   );
+}
+
+function getPublicCities() {
+  throw new Error("Function not implemented.");
 }
