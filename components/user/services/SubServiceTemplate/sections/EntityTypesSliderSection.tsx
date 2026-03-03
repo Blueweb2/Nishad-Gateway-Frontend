@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import { ArrowLeft, ArrowRight, Plus } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { FreeMode, Mousewheel, Autoplay } from "swiper/modules";
+import { Mousewheel, Autoplay } from "swiper/modules";
 import { motion, AnimatePresence } from "framer-motion";
 import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 

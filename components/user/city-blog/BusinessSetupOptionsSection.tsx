@@ -28,7 +28,7 @@ export default function BusinessSetupOptionsSection({
         </p>
 
         {/* Cards */}
-        <div className="flex gap-[clamp(16px,2vw,32px)] overflow-x-auto pb-6 snap-x snap-mandatory scrollbar-hide">
+        <div className="flex gap-[clamp(16px,2vw,32px)] overflow-x-auto pb-6 snap-x snap-mandatory hide-scrollbar">
 
           {options.map((item, i) => (
             <Link
@@ -43,11 +43,10 @@ export default function BusinessSetupOptionsSection({
                 bg-white
                 shadow-md
                 transition-all
-                duration-300
+                duration-700
                 hover:bg-teal-700
                 hover:text-white
                 hover:shadow-xl
-                hover:scale-105
                 flex
                 flex-col
                 items-start
