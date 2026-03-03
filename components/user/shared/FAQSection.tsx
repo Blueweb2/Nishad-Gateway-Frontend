@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, X } from "lucide-react";
+import { Link, Plus, X } from "lucide-react";
 
 export type FAQItem = {
   question: string;
@@ -34,36 +34,39 @@ export default function FAQSection({
       <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
         
         {/* LEFT IMAGE BLOCK */}
-        {imageUrl && (
-          <div className="relative rounded-3xl overflow-hidden">
-            <img
-              src={imageUrl}
-              alt={imageAlt}
-              className="w-full h-full object-cover"
-            />
+ {/* LEFT IMAGE BLOCK */}
+{imageUrl && (
+  <div className="relative w-full h-[720px] rounded-[32px] overflow-hidden">
 
-            {/* CTA Card */}
-            {ctaTitle && (
-              <div className="absolute bottom-6 left-6 bg-white rounded-2xl shadow-lg p-6 max-w-xs">
-                <p className="text-xs text-neutral-500 mb-2 uppercase tracking-wide">
-                  Contact Us
-                </p>
-                <h4 className="text-lg font-semibold text-neutral-900">
-                  {ctaTitle}
-                </h4>
+    <img
+      src={imageUrl}
+      alt={imageAlt}
+      className="w-full h-full object-cover"
+    />
 
-                {ctaButtonText && (
-                  <button
-                    onClick={onCtaClick}
-                    className="mt-4 px-4 py-2 rounded-full bg-green-700 text-white text-sm font-medium hover:bg-green-800 transition"
-                  >
-                    {ctaButtonText}
-                  </button>
-                )}
-              </div>
-            )}
-          </div>
-        )}
+    {/* CTA CARD */}
+    {ctaTitle && (
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 bg-white rounded-2xl shadow-xl px-8 py-6 w-[85%] max-w-md">
+
+        <p className="text-[10px] tracking-widest text-neutral-400 uppercase mb-3">
+          Contact Us
+        </p>
+
+        <div className="flex items-center justify-between gap-6">
+          <h4 className="text-xl font-semibold text-neutral-900 leading-snug">
+            {ctaTitle}
+          </h4>
+
+          {ctaButtonText && (
+<button className="bg-[#0E7C2F] hover:bg-[#0b6a27] text-white text-sm font-medium px-6 py-2.5 rounded-full transition-all duration-300 shadow-sm hover:shadow-md">
+  Talk to an Advisor
+</button>
+          )}
+        </div>
+      </div>
+    )}
+  </div>
+)}
 
         {/* RIGHT FAQ */}
         <div>

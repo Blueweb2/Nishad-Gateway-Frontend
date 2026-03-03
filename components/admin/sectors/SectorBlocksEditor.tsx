@@ -7,6 +7,7 @@ import { updateSectorAdmin } from "@/lib/api/admin/sectors.api";
 import HeroBlockEditor from "./blocks/HeroBlockEditor";
 import RichContentBlockEditor from "./blocks/RichContentBlockEditor";
 import IndustriesBlockEditor from "./blocks/IndustriesBlockEditor";
+import FAQBlockEditor from "./blocks/FAQBlockEditor";
 
 import {
   SectorBlock,
@@ -66,6 +67,7 @@ export default function SectorBlocksEditor({
     hero: HeroBlockEditor,
     richContent: RichContentBlockEditor,
     industries: IndustriesBlockEditor,
+    faq: FAQBlockEditor,
   };
 
   return (
@@ -127,6 +129,12 @@ if (!BlockComponent) return null;
           + Add Industries Section
         </button>
       </div>
+      <button
+  onClick={() => addBlock("faq")}
+  className="bg-pink-600 px-4 py-2 rounded text-white"
+>
+  + Add FAQ Section
+</button>
 
       {/* SAVE */}
       <div>
