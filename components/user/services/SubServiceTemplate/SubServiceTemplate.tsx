@@ -12,12 +12,15 @@ import EntityChooseSection from "@/components/user/services/SubServiceTemplate/s
 import DocumentsRequiredSection from "@/components/user/services/SubServiceTemplate/sections/DocumentsRequiredSection";
 import LocationsSliderSection from "@/components/user/ui/LocationsSliderSection";
 import FaqSection from "./sections/FaqSection";
-import { EntityChooseQuestion } from "@/lib/types/entityChoose.types";
 
 
 /* ============================
    TYPES
 ============================ */
+type EntityChooseQuestion = {
+  description: string;
+  linkUrl: string;
+};
 
 type Section = {
   heading: string;
@@ -269,17 +272,17 @@ export default function SubServiceTemplate({ content, cities }: Props) {
         }
         return null;
 
-      case "entityChoose":
-        if (hasArray(content.entityChooseQuestions)) {
-          return (
-            <EntityChooseSection
-              entityChooseHeading={content.entityChooseHeading}
-              entityChooseSubheading={content.entityChooseSubheading}
-              entityChooseQuestions={content.entityChooseQuestions}
-            />
-          );
-        }
-        return null;
+      // case "entityChoose":
+      //   if (hasArray(content.entityChooseQuestions)) {
+      //     return (
+      //       <EntityChooseSection
+      //         entityChooseHeading={content.entityChooseHeading}
+      //         entityChooseSubheading={content.entityChooseSubheading}
+      //         entityChooseQuestions={content.entityChooseQuestions}
+      //       />
+      //     );
+      //   }
+      //   return null;
 
       case "documents":
         if (hasArray(content.documentGroups)) {
