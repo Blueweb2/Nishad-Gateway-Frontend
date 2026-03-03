@@ -2,6 +2,8 @@
 
 import { useMemo, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { motion } from "framer-motion";
+import Image from "next/image";
 import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 
 export type OwnershipSlide = {
@@ -44,17 +46,24 @@ export default function OwnershipSliderSection({
 
   return (
     <section className="w-full bg-black text-white">
-      <div className="relative w-full h-[820px] overflow-hidden">
+      <div className="relative w-full h-[620px] overflow-hidden">
         {/* Background */}
-        {current?.image ? (
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{
-              backgroundImage: `url(${cloudinaryAutoWebp(current.image)})`,
-            }}
-          />
-        ) : (
-          <div className="absolute inset-0 bg-neutral-900" />
+        {current?.image && (
+          <motion.div
+            key={current.image}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            className="absolute inset-0"
+          >
+            <Image
+              src={cloudinaryAutoWebp(current.image)}
+              alt="slide background"
+              fill
+              priority
+              className="object-cover"
+            />
+          </motion.div>
         )}
 
         {/* Dark tint */}
@@ -80,17 +89,17 @@ export default function OwnershipSliderSection({
                 {ownershipHeading || "Ownership & Capital Rules"}
               </h2>
 
-              <div className="mt-12 flex items-center gap-2 text-white/70 text-sm">
-                <span>{String(active + 1).padStart(2, "0")}</span>
-                <span>|</span>
-                <span>{String(total || 1).padStart(2, "0")}</span>
-              </div>
-
               {/* Left text */}
               {current?.leftText && (
-                <p className="mt-6 text-white/45 text-lg font-medium leading-snug">
+                <motion.p 
+                  key={active}
+                  initial={{ y: 40, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
+                  className="mt-6 text-white/45 text-lg font-medium leading-snug"
+                >
                   {current.leftText}
-                </p>
+                </motion.p>
               )}
 
               <div className="mt-10 h-[1px] w-full bg-white/25" />
@@ -98,11 +107,17 @@ export default function OwnershipSliderSection({
 
             {/* CAPSULE */}
             <div className="flex-1 flex items-center justify-center">
-              <div className="relative w-[360px] md:w-[420px] h-[640px] rounded-[200px] border border-white/25">
+              <div className="relative w-[360px] md:w-[400px] h-[500px] rounded-[200px] border border-white/25">
                 <div className="absolute inset-0 flex items-center justify-center px-12 text-center">
-                  <h3 className="text-2xl md:text-3xl font-semibold leading-snug text-white">
+                  <motion.h3
+                    key={active}
+                    initial={{ y: 40, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.6, ease: "easeOut" }}
+                    className="text-2xl md:text-3xl font-semibold leading-snug text-white"
+                  >
                     {current?.title || "No Capsule Text"}
-                  </h3>
+                  </motion.h3>
                 </div>
               </div>
             </div>
@@ -121,32 +136,46 @@ export default function OwnershipSliderSection({
 
               {/* Right text */}
               {current?.rightText && (
-                <p className="mt-8 text-white/45 text-lg font-medium leading-snug text-right">
+                <motion.p 
+                  key={active}
+                  initial={{ y: 40, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
+                  className="mt-8 mr-5 pr-5 text-white/45 text-lg font-medium leading-snug text-right"
+                >
                   {current.rightText}
-                </p>
+                </motion.p>
               )}
 
-              {/* Arrows */}
-              {total > 1 && (
-                <div className="mt-10 flex items-center gap-2">
-                  <button
-                    onClick={prev}
-                    className="w-9 h-9 rounded-full border border-white/25 flex items-center justify-center hover:bg-white/10 transition"
-                  >
-                    <ChevronLeft className="w-4 h-4" />
-                  </button>
-
-                  <button
-                    onClick={next}
-                    className="w-9 h-9 rounded-full border border-white/25 flex items-center justify-center hover:bg-white/10 transition"
-                  >
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
-                </div>
-              )}
+              <div className="mt-10 h-[1px] w-full bg-white/25 mr-10" />
             </div>
           </div>
         </div>
+
+        <div className="absolute left-2 top-1/2 flex items-center gap-2 text-white/70 text-sm">
+          <span>{String(active + 1).padStart(2, "0")}</span>
+          <span>|</span>
+          <span>{String(total || 1).padStart(2, "0")}</span>
+        </div> 
+
+        {/* Arrows */}
+        {total > 1 && (
+          <div className=" absolute right-2 top-1/2 flex items-center gap-2 z-20">
+            <button
+              onClick={prev}
+              className="w-9 h-9 rounded-full border border-white/25 flex items-center justify-center hover:bg-white/10 transition"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+
+            <button
+              onClick={next}
+              className="w-9 h-9 rounded-full border border-white/25 flex items-center justify-center hover:bg-white/10 transition"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+        )}
 
       </div>
     </section>
