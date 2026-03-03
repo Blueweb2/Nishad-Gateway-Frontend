@@ -237,8 +237,9 @@ export default async function SingleBlogPage({
       className="max-w-8xl mx-auto px-6 py-28 bg-white"
       data-navbar="light" data-menu="light"
     >
+
       {/* COVER IMAGE */}
-      <div className="relative h-[700px] rounded-2xl overflow-hidden mb-12">
+      <div className="relative h-[450px] w-[1000px] rounded-2xl overflow-hidden mb-12 ">
         <Image
           src={coverImageUrl}
           alt={
@@ -251,52 +252,56 @@ export default async function SingleBlogPage({
         />
       </div>
 
-      {/* TITLE */}
-      <h1 className="text-4xl font-semibold mb-6">
-        {blog.title}
-      </h1>
+      <div className="px-60 flex">
 
-      {/* EXCERPT */}
-      <p className="text-gray-600 mb-10">
-        {blog.excerpt}
-      </p>
+        {/* SHARE SECTION */}
+          <BlogShare title={blog.title} />
 
-      {/* BLOCK CONTENT */}
-      <div>
-        {blog.blocks?.map((blockObj, i) =>
-          renderBlock(blockObj?.data, i)
-        )}
+        <div>
+          {/* TITLE */}
+          <h1 className="text-4xl font-semibold mb-6">
+            {blog.title}
+          </h1>
+
+          {/* EXCERPT */}
+          <p className="text-gray-600 mb-10">
+            {blog.excerpt}
+          </p>
+
+          {/* BLOCK CONTENT */}
+          <div>
+            {blog.blocks?.map((blockObj, i) =>
+              renderBlock(blockObj?.data, i)
+            )}
+          </div>
+        </div>
+
       </div>
-      {/* SHARE SECTION */}
-      <BlogShare title={blog.title} />
 
       {/* RELATED */}
-{/* RELATED */}
-{Array.isArray(related) && related.length > 0 && (
-  <div
-    className="mt-32"
-    data-navbar="light"
-    data-menu="dark-text"
-  >
-    <h2 className="text-3xl font-semibold mb-14">
-      Related Insights
-    </h2>
+      {Array.isArray(related) && related.length > 0 && (
+        <div
+          className="mt-32"
+          data-navbar="light"
+          data-menu="dark-text"
+        >
+          <h2 className="text-3xl font-semibold mb-14">
+            Related Insights
+          </h2>
 
-    <BlogCardsGrid
-      blogs={related.map((item) => ({
-        id: item.slug,
-        image:
-          item.coverImage?.url ||
-          "/placeholder.jpg",
-        title: item.title,
-        tags: item.tags?.slice(0, 2) ?? [],
-      }))}
-    />
-  </div>
-)}
+          <BlogCardsGrid
+            blogs={related.map((item) => ({
+              id: item.slug,
+              image:
+                item.coverImage?.url ||
+                "/placeholder.jpg",
+              title: item.title,
+              tags: item.tags?.slice(0, 2) ?? [],
+            }))}
+          />
+        </div>
+      )}
 
-      {/* NEWSLETTER CTA */}
-      {/* <NewsletterSection /> */}
     </main>
   );
 }
