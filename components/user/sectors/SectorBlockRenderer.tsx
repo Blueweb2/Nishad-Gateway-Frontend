@@ -22,12 +22,19 @@ export default function SectorBlockRenderer({ block, cities }: Props) {
       return <SectorSliderSection {...block.data} />;
 
     case "locations":
-      if (!cities?.length) return null;
+      // 🔥 Important safeguard
+      if (!cities || cities.length === 0) return null;
 
       return (
         <LocationsSliderSection
-          locationsHeading={block.data?.locationsHeading}
-          locationsSubheading={block.data?.locationsSubheading}
+          locationsHeading={
+            block.data?.locationsHeading ||
+            "Start Your Business Anywhere in Saudi Arabia"
+          }
+          locationsSubheading={
+            block.data?.locationsSubheading ||
+            "Entity selection and licensing can be completed regardless of your chosen city or economic zone."
+          }
           cities={cities}
         />
       );
