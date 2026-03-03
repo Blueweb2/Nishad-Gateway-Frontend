@@ -66,7 +66,7 @@ export default function Navbar() {
         className={`
         fixed top-0 left-0 w-full z-[9999]
         transition-all duration-300
-        ${isLight ? "bg-white shadow-sm" : "bg-transparent"}
+        ${isLight ? "bg-white" : "bg-transparent"}
         `}
       >
         <div className="w-full mx-auto px-6 pt-6">

@@ -235,21 +235,23 @@ export default async function SingleBlogPage({
   return (
     <main
       className="max-w-8xl mx-auto px-6 py-28 bg-white"
-      data-navbar="light" data-menu="light"
+      data-navbar="light" data-menu="light" 
     >
 
       {/* COVER IMAGE */}
-      <div className="relative h-[450px] w-[1000px] rounded-2xl overflow-hidden mb-12 ">
-        <Image
-          src={coverImageUrl}
-          alt={
-            blog.coverImage?.alt ||
-            blog.title
-          }
-          fill
-          priority
-          className="object-cover"
-        />
+      <div className="flex items-center justify-center">
+        <div className="relative h-[450px] w-[1000px] rounded-2xl overflow-hidden mb-12">
+          <Image
+            src={coverImageUrl}
+            alt={
+              blog.coverImage?.alt ||
+              blog.title
+            }
+            fill
+            priority
+            className="object-cover"
+          />
+        </div>
       </div>
 
       <div className="px-60 flex">
