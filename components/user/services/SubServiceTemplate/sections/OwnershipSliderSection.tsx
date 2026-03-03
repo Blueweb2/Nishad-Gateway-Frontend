@@ -98,7 +98,7 @@ export default function OwnershipSliderSection({
                   initial={{ y: 40, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.6, ease: "easeOut" }}
-                  className="mt-16 text-white/45 text-lg font-medium leading-snug"
+                  className="mt-16 text-white text-lg font-medium leading-snug"
                 >
                   {current.leftText}
                 </motion.p>
@@ -110,7 +110,7 @@ export default function OwnershipSliderSection({
 
             {/* CAPSULE */}
             <div className="flex-1 flex items-center justify-center">
-              <div className="relative w-[360px] md:w-[400px] h-[500px] rounded-[200px] border border-white/25">
+              <div className="relative w-[26vw] h-[32vw] rounded-[200px] border border-white/25">
                 <div className="absolute inset-0 flex items-center justify-center px-12 text-center">
                   <motion.h3
                     key={active}
@@ -127,16 +127,6 @@ export default function OwnershipSliderSection({
 
             {/* RIGHT */}
             <div className="w-[320px] flex flex-col items-end">
-              {/* Tabs */}
-              <div className="flex items-center gap-6 text-xs">
-                <button className="text-green-500 font-medium">
-                  {ownershipTabOneLabel}
-                </button>
-                <button className="text-white/50 hover:text-white/70 transition">
-                  {ownershipTabTwoLabel}
-                </button>
-              </div>
-
               {/* Right text */}
               {current?.rightText && (
                 <motion.p 
@@ -144,7 +134,7 @@ export default function OwnershipSliderSection({
                   initial={{ y: 40, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.6, ease: "easeOut" }}
-                  className="mt-8 mr-5 pr-5 text-white/45 text-lg font-medium leading-snug text-right"
+                  className="mt-8 mr-10 pr-5 w-full text-white text-lg font-medium leading-snug"
                 >
                   {current.rightText}
                 </motion.p>
