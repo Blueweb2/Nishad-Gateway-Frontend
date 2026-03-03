@@ -86,9 +86,9 @@ export default function OwnershipSliderSection({
           <div className="w-full flex items-center justify-between gap-10">
 
             {/* LEFT */}
-            <div className="w-[320px] h-[485px] flex flex-col">
+            <div className="w-[320px] min-h-[485px] flex flex-col">
   
-              <h2 className="text-3xl md:text-4xl font-bold leading-tight">
+              <h2 className="text-3xl md:text-4xl font-bold leading-tight h-[200px]">
                 {ownershipHeading || "Ownership & Capital Rules"}
               </h2>
 
@@ -98,7 +98,7 @@ export default function OwnershipSliderSection({
                   initial={{ y: 40, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.6, ease: "easeOut" }}
-                  className="mt-20 text-white/45 text-lg font-medium leading-snug"
+                  className="mt-16 text-white/45 text-lg font-medium leading-snug"
                 >
                   {current.leftText}
                 </motion.p>
