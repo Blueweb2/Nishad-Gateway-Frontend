@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import { ArrowLeft, ArrowRight, Plus } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { FreeMode, Mousewheel } from "swiper/modules";
+import { FreeMode, Mousewheel, Autoplay } from "swiper/modules";
 import { motion, AnimatePresence } from "framer-motion";
 import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 
@@ -27,8 +27,8 @@ export default function EntityTypesSliderSection({
   entityTypesSlides,
 }: Props) {
   const slides = useMemo(() => entityTypesSlides || [], [entityTypesSlides]);
+  
   const [active, setActive] = useState(0);
-
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
 
@@ -51,28 +51,6 @@ export default function EntityTypesSliderSection({
   const centerSlide = total ? slides[active] : null;
 
   const formatIndex = (i: number) => String(i).padStart(2, "0");
-
-  const [cursor, setCursor] = useState({ x: 0, y: 0, show: false });
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const target = e.target as HTMLElement;
-
-    if (target.closest(".floating-card")) {
-      setCursor((prev) => ({ ...prev, show: false }));
-      return;
-    }
-
-    const rect = e.currentTarget.getBoundingClientRect();
-    setCursor({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-      show: true,
-    });
-  };
-
-  const handleMouseLeave = () => {
-    setCursor((p) => ({ ...p, show: false }));
-  };
 
   return (
     <section className="w-full bg-white py-20 overflow-hidden">
@@ -99,34 +77,19 @@ export default function EntityTypesSliderSection({
       </div>
 
       {/* SLIDER */}
-      <div className="mt-14 relative w-full cursor-none hidden md:block"
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
+      <div className="mt-14 relative w-full cursor-none hidden md:block px-4"
+        
       >
-        {/* Custom cursor */}
-        {cursor.show && total > 1 && (
-          <div
-            className="absolute z-50 pointer-events-none"
-            style={{
-              left: cursor.x,
-              top: cursor.y,
-              transform: "translate(-50%, -50%)",
-            }}
-          >
-            <div className="w-[74px] h-[96px] rounded-[160px] border border-black/20 bg-white/90 backdrop-blur-sm flex items-center justify-center text-gray-500 shadow-sm">
-              <div className="flex items-center gap-2">
-                <ArrowLeft size={16} />
-                <ArrowRight size={16} />
-              </div>
-            </div>
-          </div>
-        )}
-
         <Swiper 
-          modules={[FreeMode, Mousewheel]}
+          modules={[Autoplay, Mousewheel]}
           grabCursor={true}
+          loop={true}
+          autoplay={{
+            delay: 0,
+            disableOnInteraction: false,
+          }}
+          speed={6000}
           freeMode={true}
-          mousewheel={true}
           slidesPerView="auto"
           spaceBetween={56}
           className="relative w-full h-[520px]"
