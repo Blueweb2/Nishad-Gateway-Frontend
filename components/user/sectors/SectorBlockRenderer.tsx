@@ -13,6 +13,7 @@ export default function SectorBlockRenderer({ block }: Props) {
       return <SectorHero {...block.data} />;
 
     case "richContent":
+      console.log("Rich block data:", block.data);
       return <SectorIntro {...block.data} />;
 
     case "industries":

@@ -10,7 +10,7 @@ import EntityTypesSliderSection from "@/components/user/services/SubServiceTempl
 import OwnershipSliderSection from "@/components/user/services/SubServiceTemplate/sections/OwnershipSliderSection";
 import EntityChooseSection from "@/components/user/services/SubServiceTemplate/sections/EntityChooseSection";
 import DocumentsRequiredSection from "@/components/user/services/SubServiceTemplate/sections/DocumentsRequiredSection";
-import LocationsSliderSection from "@/components/user/services/SubServiceTemplate/sections/LocationsSliderSection";
+import LocationsSliderSection from "@/components/user/ui/LocationsSliderSection";
 import FaqSection from "./sections/FaqSection";
 
 /* ============================
