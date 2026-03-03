@@ -7,6 +7,8 @@ import toast from "react-hot-toast";
 import { UploadCloud, Trash2 } from "lucide-react";
 import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
 import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
+import RichContentBlockEditor from "@/components/admin/sectors/blocks/RichContentBlockEditor";
+import RichTextEditor from "@/components/admin/common/RichTextEditor";
 
 type BlogStatus = "draft" | "published";
 
@@ -74,7 +76,7 @@ export default function CreateBlogPage() {
   const [tags, setTags] = useState("");
   const [status, setStatus] = useState<BlogStatus>("draft");
 
- 
+
 
   const [galleryUploading, setGalleryUploading] = useState(false);
 
@@ -262,12 +264,13 @@ export default function CreateBlogPage() {
         />
 
         {/* EXCERPT */}
-        <Textarea
-          label="Excerpt *"
-          value={excerpt}
-          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setExcerpt(e.target.value)}
-        />
+        <div>
 
+          <RichTextEditor
+            value={excerpt}
+            onChange={(val: string) => setExcerpt(val)}
+          />
+        </div>
         {/* TAGS */}
         <Input
           label="Tags (comma separated)"
@@ -387,18 +390,14 @@ export default function CreateBlogPage() {
                   />
                 </>
               )}
-
               {block.type === "paragraph" && (
-                <textarea
+                <RichTextEditor
                   value={block.text}
-                  onChange={(e) =>
-                    updateBlock(i, { ...block, text: e.target.value })
+                  onChange={(val: string) =>
+                    updateBlock(i, { ...block, text: val })
                   }
-                  placeholder="Paragraph"
-                  className="w-full bg-black border p-2"
                 />
               )}
-
               {block.type === "gallery" && (
                 <div className="space-y-4">
 
@@ -780,7 +779,7 @@ export default function CreateBlogPage() {
           <option value="draft">Draft</option>
           <option value="published">Published</option>
         </select>
-   
+
 
         <div className="pt-5">
           <button

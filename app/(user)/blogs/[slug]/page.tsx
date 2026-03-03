@@ -122,12 +122,13 @@ function renderBlock(block: Block | undefined, index: number) {
           {block.text}
         </h3>
       );
-
     case "paragraph":
       return (
-        <p key={index} className="text-gray-700 leading-relaxed mb-6">
-          {block.text}
-        </p>
+        <div
+          key={index}
+          className="prose max-w-none prose-gray mb-8"
+          dangerouslySetInnerHTML={{ __html: block.text }}
+        />
       );
 
     case "image":
@@ -227,7 +228,7 @@ export default async function SingleBlogPage({
 
   if (!blog) return notFound();
 
- const related = await getRelated(slug);
+  const related = await getRelated(slug);
 
   const coverImageUrl =
     blog.coverImage?.url || "/placeholder.jpg";
@@ -235,7 +236,7 @@ export default async function SingleBlogPage({
   return (
     <main
       className="max-w-8xl mx-auto px-6 py-28 bg-white"
-      data-navbar="light" data-menu="light" 
+      data-navbar="light" data-menu="light"
     >
 
       {/* COVER IMAGE */}
@@ -257,7 +258,7 @@ export default async function SingleBlogPage({
       <div className="px-60 flex">
 
         {/* SHARE SECTION */}
-          <BlogShare title={blog.title} />
+        <BlogShare title={blog.title} />
 
         <div>
           {/* TITLE */}
@@ -266,9 +267,10 @@ export default async function SingleBlogPage({
           </h1>
 
           {/* EXCERPT */}
-          <p className="text-gray-600 mb-10">
-            {blog.excerpt}
-          </p>
+          <div
+            className="prose max-w-none prose-gray mb-10"
+            dangerouslySetInnerHTML={{ __html: blog.excerpt }}
+          />
 
           {/* BLOCK CONTENT */}
           <div>

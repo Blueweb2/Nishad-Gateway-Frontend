@@ -2,21 +2,17 @@ import { notFound } from "next/navigation";
 import { getSectorBySlugPublic } from "@/lib/api/public/sectors.api";
 import SectorBlockRenderer from "@/components/user/sectors/SectorBlockRenderer";
 import { SectorBlock } from "@/lib/types/sector.types";
-import Stats from "@/components/user/home/Stats";
 import { getCities } from "@/lib/api/public/city.api";
 import { City } from "@/lib/types/city";
 
 interface Props {
-  params: Promise<{ slug: string }>;
+  params: { slug: string };
 }
-
 
 /* ================= SEO ================= */
 
 export async function generateMetadata({ params }: Props) {
-  const { slug } = await params; // 👈 unwrap first
-
-  const sector = await getSectorBySlugPublic(slug);
+  const sector = await getSectorBySlugPublic(params.slug);
   if (!sector) return {};
 
   return {
@@ -38,19 +34,22 @@ export async function generateMetadata({ params }: Props) {
 }
 
 /* ================= PAGE ================= */
-export default async function SectorDetailPage({ params }: Props) {
-  const { slug } = await params;
 
-  const [sector, cities]: [any, City[]] = await Promise.all([
-    getSectorBySlugPublic(slug),
+export default async function SectorDetailPage({ params }: Props) {
+  const [sectorRes, citiesRes] = await Promise.all([
+    getSectorBySlugPublic(params.slug),
     getCities(),
   ]);
 
-  if (!sector) notFound();
+  if (!sectorRes) notFound();
+
+  const cities: City[] = citiesRes || [];
+
+  console.log("SECTOR CITIES:", cities);
 
   return (
     <main className="bg-white">
-      {sector.blocks?.map((block: SectorBlock) => (
+      {sectorRes.blocks?.map((block: SectorBlock) => (
         <SectorBlockRenderer
           key={block._id}
           block={block}
@@ -60,6 +59,3 @@ export default async function SectorDetailPage({ params }: Props) {
     </main>
   );
 }
-// function getPublicCities() {
-//   throw new Error("Function not implemented.");
-// }

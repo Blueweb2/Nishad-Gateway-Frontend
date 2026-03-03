@@ -1,4 +1,4 @@
-export type EntityChooseQuestion ={
-  description: "",
-  linkUrl: ""
-}
+type EntityChooseQuestion = {
+  description: string;
+  linkUrl: string;
+};

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import RichTextEditor from "../common/RichTextEditor";
 
 /* ================= TYPES ================= */
 
@@ -242,21 +243,17 @@ export default function BlogForm({
                 />
               </>
             )}
-
-            {block.type === "paragraph" && (
-              <textarea
-                value={block.text}
-                onChange={(
-                  e: React.ChangeEvent<HTMLTextAreaElement>
-                ) =>
-                  updateBlock(i, {
-                    ...block,
-                    text: e.target.value,
-                  })
-                }
-                className="w-full bg-black border border-white/10 px-3 py-2 rounded text-white"
-              />
-            )}
+{block.type === "paragraph" && (
+  <RichTextEditor
+    value={block.text}
+    onChange={(val) =>
+      updateBlock(i, {
+        ...block,
+        text: val,
+      })
+    }
+  />
+)}
 
             {block.type === "image" && (
               <>

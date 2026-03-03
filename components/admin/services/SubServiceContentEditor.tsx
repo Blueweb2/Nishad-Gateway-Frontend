@@ -31,8 +31,10 @@ import DocumentsRequiredEditor from "@/components/admin/services/content-editor/
 import FaqEditor from "@/components/admin/services/content-editor/FaqEditor";
 import AdminAccordion from "../ui/AdminAccordion";
 
-import { EntityChooseQuestion } from "@/lib/types/entityChoose.types";
-
+type EntityChooseQuestion = {
+  description: string;
+  linkUrl: string;
+};
 type Section = {
   heading: string;
   text: string;

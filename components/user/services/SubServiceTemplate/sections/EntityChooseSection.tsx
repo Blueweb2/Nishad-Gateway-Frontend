@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { EntityChooseQuestion } from "@/lib/types/entityChoose.types";
-
+type EntityChooseQuestion = {
+  description: string;
+  linkUrl: string;
+};
 type Props = {
   entityChooseHeading: string;
   entityChooseSubheading: string;

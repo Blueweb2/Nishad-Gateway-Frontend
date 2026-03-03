@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import Image from "next/image";
 import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
 import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
+import RichTextEditor from "@/components/admin/common/RichTextEditor";
 
 type BlogStatus = "draft" | "published";
 
@@ -328,11 +329,13 @@ export default function EditBlogPage() {
         />
 
         {/* EXCERPT */}
-        <Textarea
-          label="Excerpt *"
-          value={excerpt}
-          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setExcerpt(e.target.value)}
-        />
+         <div>
+   
+             <RichTextEditor
+               value={excerpt}
+               onChange={(val: string) => setExcerpt(val)}
+             />
+           </div>
 
         {/* TAGS */}
         <Input
@@ -454,16 +457,14 @@ export default function EditBlogPage() {
                 </>
               )}
 
-              {block.type === "paragraph" && (
-                <textarea
-                  value={block.text}
-                  onChange={(e) =>
-                    updateBlock(i, { ...block, text: e.target.value })
-                  }
-                  placeholder="Paragraph"
-                  className="w-full bg-black border p-2"
-                />
-              )}
+                     {block.type === "paragraph" && (
+                       <RichTextEditor
+                         value={block.text}
+                         onChange={(val: string) =>
+                           updateBlock(i, { ...block, text: val })
+                         }
+                       />
+                     )}
 
               {block.type === "gallery" && (
                 <div className="space-y-4">

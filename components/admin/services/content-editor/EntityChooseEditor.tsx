@@ -1,8 +1,10 @@
 "use client";
 
 import RichTextEditor from "@/components/admin/common/RichTextEditor";
-import { EntityChooseQuestion } from "@/lib/types/entityChoose.types";
-
+type EntityChooseQuestion = {
+  description: string;
+  linkUrl: string;
+};
 type Props = {
   entityChooseHeading: string;
   entityChooseSubheading: string;
