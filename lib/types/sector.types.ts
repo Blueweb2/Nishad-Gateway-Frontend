@@ -36,12 +36,20 @@ export type IndustriesBlock = {
   items: IndustriesItem[];
 };
 
+
+/* ================= LOCATIONS BLOCK ================= */
+
+export type LocationsBlock = {
+  locationsHeading?: string;
+  locationsSubheading?: string;
+};
 /* ================= SECTOR BLOCK UNION ================= */
 
 export type SectorBlock =
   | (BaseSectorBlock & { type: "hero"; data: HeroBlock })
   | (BaseSectorBlock & { type: "richContent"; data: RichContentBlock })
-  | (BaseSectorBlock & { type: "industries"; data: IndustriesBlock });
+  | (BaseSectorBlock & { type: "industries"; data: IndustriesBlock })
+  | (BaseSectorBlock & { type: "locations"; data: LocationsBlock });
 
 /* ================= DEFAULT BLOCK FACTORY ================= */
 
@@ -94,5 +102,16 @@ export const getDefaultSectorBlock = (
     };
   }
 
-  throw new Error("Invalid sector block type");
-};
+if (type === "locations") {
+  return {
+    ...base,
+    type: "locations",
+    data: {
+      locationsHeading: "",
+      locationsSubheading: "",
+    },
+  };
+}
+
+throw new Error("Invalid sector block type");
+}

@@ -31,15 +31,12 @@ import DocumentsRequiredEditor from "@/components/admin/services/content-editor/
 import FaqEditor from "@/components/admin/services/content-editor/FaqEditor";
 import AdminAccordion from "../ui/AdminAccordion";
 
+import { EntityChooseQuestion } from "@/lib/types/entityChoose.types";
+
 type Section = {
   heading: string;
   text: string;
   image?: string;
-};
-type EntityChooseQuestion = {
-  question: string;
-  knowMoreLabel?: string;
-  knowMoreUrl?: string;
 };
 
 type EntityTableColumn = {
@@ -68,14 +65,14 @@ const DEFAULT_SECTION_ORDER = [
   "faq",
 ] as const;
 
-  const DEFAULT_ENTITY_COLUMNS: EntityTableColumn[] = [
-    { key: "entityType", label: "Entity Type" },
-    { key: "ownership", label: "Ownership" },
-    { key: "bestFor", label: "Best For" },
-    { key: "capital", label: "Capital" },
-    { key: "regulatoryBody", label: "Regulatory Body" },
-    { key: "timeToSetup", label: "Time to Setup" },
-  ];
+const DEFAULT_ENTITY_COLUMNS: EntityTableColumn[] = [
+  { key: "entityType", label: "Entity Type" },
+  { key: "ownership", label: "Ownership" },
+  { key: "bestFor", label: "Best For" },
+  { key: "capital", label: "Capital" },
+  { key: "regulatoryBody", label: "Regulatory Body" },
+  { key: "timeToSetup", label: "Time to Setup" },
+];
 
 
 export default function SubServiceContentEditor({ subId }: Props) {
@@ -110,7 +107,7 @@ export default function SubServiceContentEditor({ subId }: Props) {
     ownershipSlides: [] as OwnershipSlide[],
 
 
-  
+
 
     // ENTITY TABLE
     entityTableHeading: "",
@@ -417,6 +414,7 @@ export default function SubServiceContentEditor({ subId }: Props) {
   };
 
   //  ENTITY CHOOSE HANDLERS 
+  // ENTITY CHOOSE HANDLERS
 
   const addChooseQuestion = () => {
     setForm((prev) => ({
@@ -424,9 +422,8 @@ export default function SubServiceContentEditor({ subId }: Props) {
       entityChooseQuestions: [
         ...(prev.entityChooseQuestions || []),
         {
-          question: "",
-          knowMoreLabel: "Know more",
-          knowMoreUrl: "",
+          description: "",
+          linkUrl: "",
         },
       ],
     }));
@@ -444,15 +441,15 @@ export default function SubServiceContentEditor({ subId }: Props) {
     });
   };
 
-  const removeChooseQuestion = (index: number) => {
-    setForm((prev) => ({
-      ...prev,
-      entityChooseQuestions: prev.entityChooseQuestions.filter(
-        (_, i) => i !== index
-      ),
-    }));
-  };
 
+  const removeChooseQuestion = (index: number) => {
+  setForm((prev) => ({
+    ...prev,
+    entityChooseQuestions: prev.entityChooseQuestions.filter(
+      (_, i) => i !== index
+    ),
+  }));
+};
 
 
   // FAQ HANDLERS
@@ -480,55 +477,55 @@ export default function SubServiceContentEditor({ subId }: Props) {
 
 
   const cleanEntityRows = (rows: EntityRow[]) => {
-  return rows
-    .map((row) => {
-      const cleanedRow: Partial<EntityRow> = { id: row.id };
+    return rows
+      .map((row) => {
+        const cleanedRow: Partial<EntityRow> = { id: row.id };
 
-      Object.entries(row).forEach(([key, value]) => {
-        if (
-          key !== "id" &&
-          value !== "" &&
-          value !== null &&
-          value !== undefined
-        ) {
-          cleanedRow[key as keyof EntityRow] =
-            value as string;
-        }
-      });
+        Object.entries(row).forEach(([key, value]) => {
+          if (
+            key !== "id" &&
+            value !== "" &&
+            value !== null &&
+            value !== undefined
+          ) {
+            cleanedRow[key as keyof EntityRow] =
+              value as string;
+          }
+        });
 
-      return cleanedRow;
-    })
-    // remove rows that have only id
-    .filter((row) => Object.keys(row).length > 1);
-};
-const handleSave = async () => {
-  try {
-    setSaving(true);
+        return cleanedRow;
+      })
+      // remove rows that have only id
+      .filter((row) => Object.keys(row).length > 1);
+  };
+  const handleSave = async () => {
+    try {
+      setSaving(true);
 
-    const cleanedRows = cleanEntityRows(
-      form.entityTableRows
-    );
+      const cleanedRows = cleanEntityRows(
+        form.entityTableRows
+      );
 
-    const cleanedForm = {
-      ...form,
-      entityTableRows: cleanedRows,
-    };
+      const cleanedForm = {
+        ...form,
+        entityTableRows: cleanedRows,
+      };
 
-    await adminSaveSubServiceContent(
-      subId,
-      cleanedForm
-    );
+      await adminSaveSubServiceContent(
+        subId,
+        cleanedForm
+      );
 
-    toast.success("Content saved successfully ");
-  } catch (err: any) {
-    toast.error(
-      err?.response?.data?.message ||
+      toast.success("Content saved successfully ");
+    } catch (err: any) {
+      toast.error(
+        err?.response?.data?.message ||
         "Save failed"
-    );
-  } finally {
-    setSaving(false);
-  }
-};
+      );
+    } finally {
+      setSaving(false);
+    }
+  };
 
   if (loading) return <p className="text-gray-400">Loading content editor...</p>;
 

@@ -12,6 +12,8 @@ import EntityChooseSection from "@/components/user/services/SubServiceTemplate/s
 import DocumentsRequiredSection from "@/components/user/services/SubServiceTemplate/sections/DocumentsRequiredSection";
 import LocationsSliderSection from "@/components/user/ui/LocationsSliderSection";
 import FaqSection from "./sections/FaqSection";
+import { EntityChooseQuestion } from "@/lib/types/entityChoose.types";
+
 
 /* ============================
    TYPES
@@ -58,11 +60,7 @@ type EntityTypeSlide = {
   description?: string;
 };
 
-type EntityChooseQuestion = {
-  question: string;
-  options: { label: string; value: string }[];
-  selectedValue?: string;
-};
+
 
 type FAQ = {
   q: string;

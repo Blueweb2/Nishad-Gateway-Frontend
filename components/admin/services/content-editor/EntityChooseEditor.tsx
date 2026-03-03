@@ -1,11 +1,7 @@
 "use client";
 
 import RichTextEditor from "@/components/admin/common/RichTextEditor";
-
-type EntityChooseQuestion = {
-  question: string;
-  linkUrl: string;
-};
+import { EntityChooseQuestion } from "@/lib/types/entityChoose.types";
 
 type Props = {
   entityChooseHeading: string;
@@ -37,14 +33,14 @@ export default function EntityChooseEditor({
 
       <div className="flex justify-between items-center">
         <h3 className="text-lg font-semibold text-white">
-          Entity Type Chooser (Questions Only)
+          Entity Choose Section
         </h3>
 
         <button
           onClick={addChooseQuestion}
           className="px-4 py-2 rounded-lg bg-green-600 hover:bg-green-700 text-sm font-semibold"
         >
-          + Add Question
+          + Add Card
         </button>
       </div>
 
@@ -68,7 +64,7 @@ export default function EntityChooseEditor({
         className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white"
       />
 
-      {/* Questions */}
+      {/* Cards */}
       <div className="space-y-8">
         {entityChooseQuestions.map((q, index) => (
           <div
@@ -77,7 +73,7 @@ export default function EntityChooseEditor({
           >
             <div className="flex justify-between items-center">
               <p className="text-sm font-semibold text-gray-300">
-                Question {index + 1}
+                Card {index + 1}
               </p>
 
               <button
@@ -88,13 +84,13 @@ export default function EntityChooseEditor({
               </button>
             </div>
 
-            {/* Rich Text Question */}
-            <RichTextEditor
-              value={q.question}
-              onChange={(value) =>
-                updateChooseQuestion(index, "question", value)
-              }
-            />
+            {/* Description (Rich Text) */}
+         <RichTextEditor
+  value={q.description}
+  onChange={(value) =>
+    updateChooseQuestion(index, "description", value)
+  }
+/>
 
             {/* Link URL */}
             <input

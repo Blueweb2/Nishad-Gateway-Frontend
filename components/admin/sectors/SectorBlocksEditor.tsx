@@ -60,10 +60,9 @@ export default function SectorBlocksEditor({
   };
 
   /* ================= BLOCK RENDER MAP ================= */
-  const blockRenderers: Record<
-    SectorBlock["type"],
-    React.FC<any>
-  > = {
+ const blockRenderers: Partial<
+  Record<SectorBlock["type"], React.FC<any>>
+> = {
     hero: HeroBlockEditor,
     richContent: RichContentBlockEditor,
     industries: IndustriesBlockEditor,
@@ -72,8 +71,9 @@ export default function SectorBlocksEditor({
   return (
     <div className="space-y-8">
       {blocks.map((block, index) => {
-        const BlockComponent = blockRenderers[block.type];
+const BlockComponent = blockRenderers[block.type];
 
+if (!BlockComponent) return null;
         return (
           <div
             key={index}
