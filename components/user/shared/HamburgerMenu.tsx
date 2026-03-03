@@ -26,24 +26,17 @@ type Props = {
   onClose: () => void;
 };
 
-type MenuItem = {
-  title: string;
-  href?: string;
-  children?: { label: string; href: string }[];
-};
-
 export default function HamburgerMenu({ open, onClose }: Props) {
 
   const [render, setRender] = useState(open);
-  const [useDarkText, setUseDarkText] = useState(false);
   const MotionLink = motion.create(Link);
 
   const hasAnimated = useRef(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const router = useRouter();
   const [services, setServices] = useState<ServiceItem[]>([]);
   const [expanded, setExpanded] = useState<string | null>(null);
-
 
   useEffect(() => {
     if (!open) return;
@@ -64,6 +57,7 @@ export default function HamburgerMenu({ open, onClose }: Props) {
 
     fetchServices();
   }, [open]);
+
   // Mount animation
   useEffect(() => {
     if (open) {
@@ -74,48 +68,25 @@ export default function HamburgerMenu({ open, onClose }: Props) {
     }
   }, [open]);
 
-  // ESC close
+  // out side click time close
   useEffect(() => {
-    const onEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target as Node)
+      ) {
+        onClose();
+      }
     };
-    window.addEventListener("keydown", onEsc);
-    return () => window.removeEventListener("keydown", onEsc);
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, [onClose]);
 
-  // Detect background type
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = document.querySelectorAll<HTMLElement>("[data-menu]");
-      const viewportMiddle = window.innerHeight / 2;
-
-      let isDarkText = false;
-
-      sections.forEach((section) => {
-        const rect = section.getBoundingClientRect();
-
-        if (rect.top <= viewportMiddle && rect.bottom >= viewportMiddle) {
-          const mode = section.getAttribute("data-menu");
-          if (mode === "dark-text") {
-            isDarkText = true;
-          }
-        }
-      });
-
-      setUseDarkText(isDarkText);
-    };
-
-    handleScroll();
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-
   if (!render) return null;
-
-  const textColor = useDarkText ? "text-black" : "text-white";
-  const subTextColor = useDarkText ? "text-black/70" : "text-white/80";
-  const borderColor = useDarkText ? "border-black/10" : "border-white/20";
 
   return (
     <div
@@ -125,6 +96,7 @@ export default function HamburgerMenu({ open, onClose }: Props) {
         transition-all duration-400
         ${open ? "animate-menuIn" : "animate-menuOut"}
       `}
+      ref={menuRef}
     >
       {/* GLASS PANEL */}
       <div
@@ -158,7 +130,7 @@ export default function HamburgerMenu({ open, onClose }: Props) {
                           initial={{ opacity: 0, y: 300 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.6, ease: "easeOut" }}
-                          className={`text-xs text-gray-400 block ${!open && 'hidden'}`}
+                          className={`text-xs text-gray-700 block ${!open && 'hidden'}`}
                         >
                           {service.index}
                         </motion.span>
@@ -167,8 +139,7 @@ export default function HamburgerMenu({ open, onClose }: Props) {
                           initial={{ opacity: 0, y: 300 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.6, ease: "easeOut" }}
-                          className={`text-[20px] font-semibold transition 
-                            ${isOpen ? "text-black" : textColor}
+                          className={`text-[20px] font-semibold transition text-black
                             ${!open && 'hidden'}`}
                         >
                           {service.title}
@@ -182,13 +153,13 @@ export default function HamburgerMenu({ open, onClose }: Props) {
                         }}
                         className={`w-9 h-9 rounded-lg border border-white/30 flex items-center justify-center ${!open && 'hidden'}`}
                       >
-                        <ArrowRight size={16} className={`${ isOpen ? "text-black" : textColor} `}/>
+                        <ArrowRight size={16} className='text-black'/>
                       </button>
                     </div>
 
                     {/* SUB SERVICES */}
                     {isOpen && (
-                      <ul className={`mt-3 space-y-2 text-sm ${subTextColor}`}>
+                      <ul className="mt-3 space-y-2 text-sm text-black">
                         {service.subServices?.map((sub) => (
                           <motion.li
                             initial={{ opacity: 0, y: 300 }}
@@ -214,7 +185,7 @@ export default function HamburgerMenu({ open, onClose }: Props) {
             </div>
 
             {/* DIVIDER */}
-            <div className={`my-8 border-t ${borderColor} ${!open && 'hidden'}`} />
+            <div className={`my-8 border-t text-gray-300 ${!open && 'hidden'}`} />
 
             {/* STATIC LINKS */}
             <div className="space-y-3">
@@ -227,7 +198,7 @@ export default function HamburgerMenu({ open, onClose }: Props) {
                 }}
                 href="/about-us"
                 onClick={onClose}
-                className={`block text-[18px] font-semibold ${textColor} hover:opacity-70 transition ${!open && 'hidden'}`}
+                className={`block text-[18px] font-semibold text-black hover:opacity-70 transition ${!open && 'hidden'}`}
               >
                 About us
               </MotionLink>
@@ -241,7 +212,7 @@ export default function HamburgerMenu({ open, onClose }: Props) {
                 }}
                 href="/blogs"
                 onClick={onClose}
-                className={`block text-[18px] font-semibold ${textColor} hover:opacity-70 transition ${!open && 'hidden'}`}
+                className={`block text-[18px] font-semibold text-black hover:opacity-70 transition ${!open && 'hidden'}`}
               >
                 Blog
               </MotionLink>
@@ -255,7 +226,7 @@ export default function HamburgerMenu({ open, onClose }: Props) {
                 }}
                 href="/contact"
                 onClick={onClose}
-                className={`block text-[18px] font-semibold ${textColor} hover:opacity-70 transition ${!open && 'hidden'}`}
+                className={`block text-[18px] font-semibold text-black hover:opacity-70 transition ${!open && 'hidden'}`}
               >
                 Contacts
               </MotionLink>

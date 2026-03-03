@@ -18,7 +18,7 @@ export default function HeroSection({ content }: Props) {
       data-navbar="light"
     >
       {/* Container with rounded hero like screenshot */}
-      <div className="relative w-full max-w-[1600px] mx-auto px-6">
+      <div className="relative w-full mx-auto px-6">
         <div className="relative h-[80vh] rounded-[32px] overflow-hidden">
 
           {/* Background Image */}
@@ -32,13 +32,13 @@ export default function HeroSection({ content }: Props) {
           />
 
           {/* Dark gradient overlay (left fade like screenshot) */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-black/20" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-black/20 to-black/10" />
 
           {/* Content */}
           <div className="relative z-10 h-full flex items-center">
             <div className="max-w-2xl px-12">
 
-              <h1 className="text-5xl md:text-6xl font-semibold leading-tight mb-6">
+              <h1 className="text-5xl md:text-6xl font-semibold leading-tight mb-6 text-white">
                 {content.heading}
               </h1>
 
@@ -52,14 +52,14 @@ export default function HeroSection({ content }: Props) {
                     href={content.ctaLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-10 inline-flex items-center bg-green-600 hover:bg-green-500 transition px-8 py-4 rounded-full text-base font-medium"
+                    className="mt-10 inline-flex items-center bg-green-600 hover:bg-green-500 transition px-8 py-4 rounded-full text-base font-medium text-white"
                   >
                     {content.ctaText}
                   </a>
                 ) : (
                   <Link
                     href={content.ctaLink}
-                    className="mt-10 inline-flex items-center bg-green-600 hover:bg-green-500 transition px-8 py-4 rounded-full text-base font-medium"
+                    className="mt-10 inline-flex items-center bg-green-600 hover:bg-green-500 transition px-8 py-4 rounded-full text-base font-medium text-white"
                   >
                     {content.ctaText}
                   </Link>
