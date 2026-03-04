@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import { ArrowLeft, ArrowRight, Plus } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Mousewheel, Autoplay } from "swiper/modules";
+import { Mousewheel } from "swiper/modules";
 import { motion, AnimatePresence } from "framer-motion";
 import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 
@@ -80,87 +80,80 @@ export default function InvestmentHighlightsSection({
       <div className="mt-14 relative w-full cursor-none hidden md:block px-4"
         
       >
-        <Swiper 
-          modules={[Autoplay, Mousewheel]}
+        <Swiper
+          modules={[ Mousewheel]}
           grabCursor={true}
           loop={true}
-          autoplay={{
-            delay: 0,
-            disableOnInteraction: false,
-          }}
-          speed={6000}
-          freeMode={true}
           slidesPerView="auto"
-          spaceBetween={56}
           className="relative w-full h-[520px]"
         >
-          {slides.map((slide, index) => {
-            const isEven = index % 2 === 0;
-            return (
-            <SwiperSlide
-              key={index}
-              className="!w-[480px] h-full relative flex items-center justify-center"
-            >
-              {/* IMAGE */}
-              <div className="relative h-full w-[80%] overflow-hidden rounded-[44px]">
-                <Image
-                  src={cloudinaryAutoWebp(slide.mainImage)}
-                  alt={slide.title}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-
-              {/* FLOATING CARD */}
-              <div 
-                className={`absolute ${isEven? "right-0 top-10" : "right-0 bottom-10"}  z-10 w-[300px] cursor-auto floating-card`}
+            {slides.map((slide, index) => {
+              const isEven = index % 2 === 0;
+              return (
+              <SwiperSlide
+                key={index}
+                className="!w-[480px] h-full relative flex items-center justify-center"
               >
-                <div
-                  className="bg-gray-100 rounded-[28px] shadow-xl px-8 py-8 transition-all duration-500"
-                  onClick={(e) => e.stopPropagation()}
+                {/* IMAGE */}
+                <div className="relative h-full w-[80%] overflow-hidden rounded-[44px]">
+                  <Image
+                    src={cloudinaryAutoWebp(slide.mainImage)}
+                    alt={slide.title}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+
+                {/* FLOATING CARD */}
+                <div 
+                  className={`absolute ${isEven? "right-0 top-10" : "right-0 bottom-10"}  z-10 w-[300px] cursor-auto floating-card`}
                 >
-                  <div className="flex items-start justify-between gap-6">
-                    <div>
-                      <p className="text-xs text-gray-400 mb-4">
-                        {formatIndex(index + 1)}
-                      </p>
-                      <h3 className="text-lg font-medium text-gray-900 leading-snug max-w-[220px]">
-                        {slide.title}
-                      </h3>
+                  <div
+                    className="bg-gray-100 rounded-[28px] shadow-xl px-8 py-8 transition-all duration-500"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <div className="flex items-start justify-between gap-6">
+                      <div>
+                        <p className="text-xs text-gray-400 mb-4">
+                          {formatIndex(index + 1)}
+                        </p>
+                        <h3 className="text-lg font-medium text-gray-900 leading-snug max-w-[220px]">
+                          {slide.title}
+                        </h3>
+                      </div>
+
+                      <button
+                        onClick={() => toggleExpand(index)}
+                        className="w-10 h-10 rounded-full border border-green-500 flex items-center justify-center transition-all duration-300"
+                      >
+                        <Plus
+                          size={18}
+                          className={`text-green-600 transition-transform duration-300 ${
+                            expandedIndex === index ? "rotate-45" : ""
+                          }`}
+                        />
+                      </button>
                     </div>
 
-                    <button
-                      onClick={() => toggleExpand(index)}
-                      className="w-10 h-10 rounded-full border border-green-500 flex items-center justify-center transition-all duration-300"
-                    >
-                      <Plus
-                        size={18}
-                        className={`text-green-600 transition-transform duration-300 ${
-                          expandedIndex === index ? "rotate-45" : ""
-                        }`}
-                      />
-                    </button>
+                    <AnimatePresence>
+                      {expandedIndex === index && slide.subText && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 40 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 30 }}
+                          transition={{ duration: 0.4, ease: "easeOut" }}
+                          className="mt-6 text-sm text-gray-600 leading-relaxed"
+                        >
+                          {slide.subText}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+
                   </div>
-
-                  <AnimatePresence>
-                    {expandedIndex === index && slide.subText && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 40 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 30 }}
-                        transition={{ duration: 0.4, ease: "easeOut" }}
-                        className="mt-6 text-sm text-gray-600 leading-relaxed"
-                      >
-                        {slide.subText}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-
                 </div>
-              </div>
-            </SwiperSlide>
-            )
-          })}
+              </SwiperSlide>
+              )
+            })}
         </Swiper>
 
       </div>
