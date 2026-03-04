@@ -61,7 +61,7 @@ export default async function BlogPage({
 
         {/* Content */}
         <div
-          className="prose prose-lg max-w-none prose-headings:font-semibold prose-a:text-emerald-600"
+          className="rich-text prose-lg max-w-none prose-headings:font-semibold prose-a:text-emerald-600"
           dangerouslySetInnerHTML={{ __html: blog.content }}
         />
       </section>

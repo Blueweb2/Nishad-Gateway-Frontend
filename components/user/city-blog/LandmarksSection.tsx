@@ -79,8 +79,7 @@ export default function LandmarksSection({ content }: Props) {
                         text-black/60
                         max-w-xl
                         leading-relaxed
-                        prose
-                        prose-sm
+                        rich-text
                         max-w-none
                       "
                       dangerouslySetInnerHTML={{

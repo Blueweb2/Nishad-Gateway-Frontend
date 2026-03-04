@@ -50,7 +50,7 @@ export default async function MinistryPage({ params }: Props) {
         {/* RICH CONTENT */}
         {ministry.content && (
           <div
-            className="prose max-w-none"
+            className="rich-text max-w-none"
             dangerouslySetInnerHTML={{ __html: ministry.content }}
           />
         )}
