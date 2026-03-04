@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 
 import { getServiceBySlug } from "@/lib/api/public/subservices.api";
 import { getSubServicesByService } from "@/lib/api/public/subservices.api";
+import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 
 type ServiceItem = {
   _id: string;
@@ -76,9 +77,9 @@ export default function CategoryPage() {
 
   return (
     <div className="min-h-screen bg-white" data-navbar="light">
-<div  className="h-[2px] w-full" />
+      <div className="h-[2px] w-full" />
 
-<div className="max-w-7xl mx-auto px-6 pt-28 pb-8">
+      <div className="max-w-7xl mx-auto px-6 pt-28 pb-8">
         {/* Back Button */}
         <button
           onClick={() => router.back()}
@@ -88,7 +89,7 @@ export default function CategoryPage() {
           <span className="text-sm">Back</span>
         </button>
 
-        {/* Header Section */}
+        {/* Header */}
         <div className="flex justify-between items-start mb-12">
           <h1 className="text-5xl font-bold text-gray-800 leading-tight max-w-md">
             {service.title}
@@ -101,18 +102,18 @@ export default function CategoryPage() {
             </div>
           </div>
         </div>
+{/* Intro */}
+<div className="flex justify-end mb-16">
+  <div className="max-w-xs">
+    <p className="text-gray-500 text-sm leading-relaxed">
+        Explore our {service.title} services designed to help businesses
+        establish and operate smoothly. Choose the right option that
+        fits your requirements and start your journey with confidence.
+    </p>
+  </div>
+</div>
 
-        {/* Intro Text - Right Aligned */}
-        <div className="flex justify-end mb-16">
-          <div className="max-w-xs">
-            <p className="text-gray-500 text-sm leading-relaxed">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard
-            </p>
-          </div>
-        </div>
-
-        {/* Sub-services List */}
+        {/* Subservices */}
         <div className="space-y-6">
           {subservices.map((sub) => (
             <div key={sub._id} className="border-t border-gray-200 p-6">
@@ -124,7 +125,7 @@ export default function CategoryPage() {
                   columnGap: "24px",
                 }}
               >
-                {/* Left Letter */}
+                {/* Letter */}
                 <div className="text-gray-300 font-light text-lg">
                   {(sub.title?.[0] || "S").toUpperCase()}
                 </div>
@@ -132,7 +133,7 @@ export default function CategoryPage() {
                 {/* Thumbnail */}
                 <div>
                   <img
-                    src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${sub.thumbnail}`}
+                    src={cloudinaryAutoWebp(sub.thumbnail)}
                     alt={sub.title}
                     style={{
                       width: "40px",
@@ -148,7 +149,6 @@ export default function CategoryPage() {
                   <h2 className="text-2xl font-semibold text-gray-900 leading-tight">
                     {sub.title}
                   </h2>
-
                 </div>
 
                 {/* Description */}
@@ -161,28 +161,20 @@ export default function CategoryPage() {
                 {/* Arrow */}
                 <div style={{ display: "flex", justifyContent: "flex-end" }}>
                   <button
-                    onClick={() => router.push(`/services/${service.slug}/${sub.slug}`)}
-                    className="
-  w-12 h-32 rounded-[160px]
-  border border-gray-200
-  shadow-sm
-  flex items-center justify-center
-  bg-white hover:bg-gray-50
-  transition-all duration-200
-"
-
+                    onClick={() =>
+                      router.push(`/services/${service.slug}/${sub.slug}`)
+                    }
+                    className="w-12 h-32 rounded-[160px] border border-gray-200 shadow-sm flex items-center justify-center bg-white hover:bg-gray-50 transition-all duration-200"
                   >
                     <ArrowRight className="w-5 h-5 text-gray-800" />
                   </button>
                 </div>
-
               </div>
             </div>
           ))}
         </div>
 
-
-        {/* Empty State */}
+        {/* Empty */}
         {subservices.length === 0 && (
           <p className="text-gray-400 text-sm mt-10">
             No subservices available.

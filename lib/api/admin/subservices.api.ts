@@ -3,14 +3,11 @@ import { adminAxios } from "@/lib/http/adminAxios";
 // ➕ Create subservice
 export const adminCreateSubService = async (
   serviceId: string,
-  formData: FormData
+  payload: any
 ) => {
   const { data } = await adminAxios.post(
     `/services/${serviceId}/subservices`,
-    formData,
-    {
-      headers: { "Content-Type": "multipart/form-data" },
-    }
+    payload
   );
 
   return data;
@@ -19,14 +16,11 @@ export const adminCreateSubService = async (
 // ✏ Update subservice
 export const adminUpdateSubService = async (
   subId: string,
-  formData: FormData
+  payload: any
 ) => {
   const { data } = await adminAxios.put(
     `/subservices/${subId}`,
-    formData,
-    {
-      headers: { "Content-Type": "multipart/form-data" },
-    }
+    payload
   );
 
   return data;

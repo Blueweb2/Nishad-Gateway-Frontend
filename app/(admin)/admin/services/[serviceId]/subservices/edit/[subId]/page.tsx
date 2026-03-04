@@ -30,13 +30,14 @@ export default function EditSubServicePage() {
     try {
       setLoading(true);
 
-     const list: SubService[] = await adminGetSubServices(serviceId);
-     console.log("list of subservices", list);
-     
+    const res = await adminGetSubServices(serviceId);
+const list: SubService[] = res?.data || [];
 
+console.log("list of subservices", list);
 
-      const found = list.find((s) => s._id === subId);
-
+const found = list.find((s) => String(s._id) === String(subId));
+console.log("subId from URL:", subId);
+console.log("list ids:", list.map((s) => s._id));
       if (!found) {
         toast.error("Subservice not found");
         setSubservice(null);

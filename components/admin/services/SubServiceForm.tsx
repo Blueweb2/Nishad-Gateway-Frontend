@@ -8,6 +8,7 @@ import {
   adminCreateSubService,
   adminUpdateSubService,
 } from "@/lib/api/admin/subservices.api";
+import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
 
 type SubServiceFormProps = {
   mode: "create" | "edit";
@@ -107,7 +108,7 @@ useEffect(() => {
 
   //  Backend URL for edit mode image preview
   const BACKEND_URL =
-    process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
+    process.env.NEXT_PUBLIC_BACKEND_URL ;
 
   const thumbnailSrc = thumbnailFile
     ? previewUrl
@@ -137,52 +138,64 @@ useEffect(() => {
     toast.success("Image selected  (will upload on submit)");
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    if (!form.title.trim()) return toast.error("Title is required");
-    if (!form.slug.trim()) return toast.error("Slug is required");
+  if (!form.title.trim()) return toast.error("Title is required");
+  if (!form.slug.trim()) return toast.error("Slug is required");
 
-    // create mode requires thumbnail
-    if (mode === "create" && !thumbnailFile && !form.thumbnail) {
-      return toast.error("Thumbnail is required");
-    }
+  if (mode === "create" && !thumbnailFile && !form.thumbnail) {
+    return toast.error("Thumbnail is required");
+  }
 
-    try {
-      setLoading(true);
+  try {
+    setLoading(true);
 
-      //  ONE REQUEST: send form data + file
-      const formData = new FormData();
-      formData.append("title", form.title.trim());
-      formData.append("slug", form.slug.trim());
-      formData.append("shortDesc", form.shortDesc.trim());
-      formData.append("order", String(form.order));
-      formData.append("isActive", String(form.isActive));
+    let thumbnailUrl = form.thumbnail;
 
-      //  file fieldname must match backend: "thumbnail"
-      if (thumbnailFile) {
-        formData.append("thumbnail", thumbnailFile);
-      }
+    // Upload to Cloudinary if new image selected
+    if (thumbnailFile) {
+      toast.loading("Uploading image...", { id: "upload" });
 
-      if (mode === "create") {
-        await adminCreateSubService(serviceId, formData);
-        toast.success("Subservice created successfully ");
-      } else {
-        if (!subId) return toast.error("Missing subservice id");
-        await adminUpdateSubService(subId, formData);
-        toast.success("Subservice updated successfully ");
-      }
-
-      router.push(`/admin/services/${serviceId}/subservices`);
-      router.refresh();
-    } catch (err: any) {
-      toast.error(
-        err?.response?.data?.message || err?.message || "Something went wrong"
+      const upload = await uploadToCloudinarySigned(
+        thumbnailFile,
+        "nishad-gateway/subservices"
       );
-    } finally {
-      setLoading(false);
+
+      thumbnailUrl = upload.secure_url;
+
+      toast.success("Image uploaded", { id: "upload" });
     }
-  };
+
+    const payload = {
+      title: form.title.trim(),
+      slug: form.slug.trim(),
+      shortDesc: form.shortDesc.trim(),
+      thumbnail: thumbnailUrl,
+      order: form.order,
+      isActive: form.isActive,
+    };
+
+    if (mode === "create") {
+      await adminCreateSubService(serviceId, payload);
+      toast.success("Subservice created successfully");
+    } else {
+      if (!subId) return toast.error("Missing subservice id");
+
+      await adminUpdateSubService(subId, payload);
+      toast.success("Subservice updated successfully");
+    }
+
+    router.push(`/admin/services/${serviceId}/subservices`);
+    router.refresh();
+  } catch (err: any) {
+    toast.error(
+      err?.response?.data?.message || err?.message || "Something went wrong"
+    );
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <form
