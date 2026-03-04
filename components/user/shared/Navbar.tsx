@@ -65,7 +65,7 @@ export default function Navbar() {
       <header
         className={`
         fixed top-0 left-0 w-full z-[9999]
-        transition-all duration-300 border-b border-amber-500
+        transition-all duration-300
         ${isLight ? "bg-white" : "bg-transparent"}
         `}
       >
