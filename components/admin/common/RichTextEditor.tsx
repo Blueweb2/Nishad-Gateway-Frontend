@@ -2,8 +2,10 @@
 
 import { useEffect } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
+
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
+import Placeholder from "@tiptap/extension-placeholder";
 
 type Props = {
   value: string;
@@ -11,6 +13,7 @@ type Props = {
 };
 
 export default function RichTextEditor({ value, onChange }: Props) {
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -22,9 +25,14 @@ export default function RichTextEditor({ value, onChange }: Props) {
         autolink: true,
         protocols: ["http", "https"],
       }),
+
+      Placeholder.configure({
+        placeholder: "Start writing content...",
+      }),
     ],
 
     content: value || "",
+
     immediatelyRender: false,
 
     editorProps: {
@@ -42,13 +50,13 @@ export default function RichTextEditor({ value, onChange }: Props) {
     },
   });
 
+  /* Sync external value */
+
   useEffect(() => {
     if (!editor) return;
 
     if (editor.getHTML() !== value) {
-      editor.commands.setContent(value || "", {
-        emitUpdate: false,
-      });
+      editor.commands.setContent(value || "", { emitUpdate: false });
     }
   }, [value, editor]);
 
@@ -60,6 +68,8 @@ export default function RichTextEditor({ value, onChange }: Props) {
         ? "bg-emerald-600 text-white"
         : "bg-white/10 text-white hover:bg-white/20"
     }`;
+
+  /* Handle links */
 
   const handleLink = () => {
     if (editor.isActive("link")) {
@@ -96,8 +106,13 @@ export default function RichTextEditor({ value, onChange }: Props) {
 
   return (
     <div className="border border-white/10 rounded-lg bg-black/40 overflow-hidden">
+
       {/* Toolbar */}
+
       <div className="flex flex-wrap gap-2 p-3 border-b border-white/10">
+
+        {/* Bold */}
+
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleBold().run()}
@@ -106,6 +121,8 @@ export default function RichTextEditor({ value, onChange }: Props) {
           Bold
         </button>
 
+        {/* Italic */}
+
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleItalic().run()}
@@ -113,6 +130,8 @@ export default function RichTextEditor({ value, onChange }: Props) {
         >
           Italic
         </button>
+
+        {/* Headings */}
 
         <button
           type="button"
@@ -134,6 +153,8 @@ export default function RichTextEditor({ value, onChange }: Props) {
           H3
         </button>
 
+        {/* Lists */}
+
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleBulletList().run()}
@@ -150,6 +171,8 @@ export default function RichTextEditor({ value, onChange }: Props) {
           Ordered
         </button>
 
+        {/* Link */}
+
         <button
           type="button"
           onClick={handleLink}
@@ -157,12 +180,45 @@ export default function RichTextEditor({ value, onChange }: Props) {
         >
           Link
         </button>
+
+        {/* Undo */}
+
+        <button
+          type="button"
+          onClick={() => editor.chain().focus().undo().run()}
+          className="px-3 py-1 rounded bg-white/10 hover:bg-white/20 text-sm"
+        >
+          Undo
+        </button>
+
+        {/* Redo */}
+
+        <button
+          type="button"
+          onClick={() => editor.chain().focus().redo().run()}
+          className="px-3 py-1 rounded bg-white/10 hover:bg-white/20 text-sm"
+        >
+          Redo
+        </button>
+
+        {/* Clear */}
+
+        <button
+          type="button"
+          onClick={() => editor.chain().focus().clearNodes().run()}
+          className="px-3 py-1 rounded bg-white/10 hover:bg-white/20 text-sm"
+        >
+          Clear
+        </button>
+
       </div>
 
       {/* Editor */}
+
       <div className="p-4">
         <EditorContent editor={editor} />
       </div>
+
     </div>
   );
 }
