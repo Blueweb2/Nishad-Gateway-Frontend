@@ -28,7 +28,7 @@ export default function Navbar() {
   useEffect(() => {
     const handleScroll = () => {
       const sections = document.querySelectorAll<HTMLElement>("[data-navbar]");
-      const navbarHeight = 80;
+      const navbarHeight = 90;
 
       let currentTheme = "dark";
 

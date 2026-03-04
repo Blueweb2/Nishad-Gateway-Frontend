@@ -14,12 +14,11 @@ export default function HeroSection({ content }: Props) {
 
   return (
     <section
-      className="relative min-h-screen flex items-center pt-20 pb-10"
-      data-navbar="light"
+      className="relative flex justify-center"
     >
       {/* Container with rounded hero like screenshot */}
-      <div className="relative w-full mx-auto px-6">
-        <div className="relative h-[80vh] rounded-[32px] overflow-hidden">
+      <div className="relative w-full mx-auto px-3">
+        <div className="relative h-[80vh] rounded-b-[32px] overflow-hidden">
 
           {/* Background Image */}
           <Image

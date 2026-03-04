@@ -46,7 +46,7 @@ export default function OwnershipSliderSection({
 
   return (
     <section className="w-full bg-black text-white">
-      <div className="relative w-full h-[620px] overflow-hidden">
+      <div className="relative w-full h-screen overflow-hidden">
         {/* Background */}
         {current?.image && (
           <motion.div
@@ -68,6 +68,7 @@ export default function OwnershipSliderSection({
 
         {/* Dark tint */}
         <div className="absolute inset-0 bg-black/60" />
+        {/* <div className="absolute top-[65%] h-[1px] w-full bg-white/25" /> */}
 
         {/* Capsule cut-out (remove tint inside capsule) */}
         <div
@@ -98,7 +99,7 @@ export default function OwnershipSliderSection({
                   initial={{ y: 40, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.6, ease: "easeOut" }}
-                  className="mt-16 text-white text-lg font-medium leading-snug"
+                  className="mt-16 text-white text-lg font-medium leading-none w-[90px]"
                 >
                   {current.leftText}
                 </motion.p>
@@ -134,7 +135,7 @@ export default function OwnershipSliderSection({
                   initial={{ y: 40, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.6, ease: "easeOut" }}
-                  className="mt-8 mr-10 pr-5 w-full text-white text-lg font-medium leading-snug"
+                  className="mt-8 mr-10 pr-5 lg:pr-0 w-full text-white text-lg font-medium leading-snug text-[1vw]"
                 >
                   {current.rightText}
                 </motion.p>
