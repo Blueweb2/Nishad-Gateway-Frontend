@@ -44,7 +44,7 @@ export default function LandmarksSection({ content }: Props) {
                   justify-between
                   items-start
                   gap-6
-                  py-6
+                  py-6 px-6
                   border-b
                   border-black/10
                   transition-all
@@ -55,8 +55,8 @@ export default function LandmarksSection({ content }: Props) {
                 {/* LEFT CONTENT */}
                 <div className="flex gap-6">
                   {/* Number */}
-                  <span className="text-sm text-black/50 mt-1">
-                    {String(index + 1).padStart(2, "0")} /
+                  <span className="text-sm text-black/50 mt-1 w-10 flex">
+                    / {String(index + 1).padStart(2, "0")}
                   </span>
 
                   {/* Text */}
