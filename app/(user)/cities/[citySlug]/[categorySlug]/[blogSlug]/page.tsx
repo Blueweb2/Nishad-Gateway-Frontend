@@ -6,17 +6,15 @@ import { getCategoryBlog } from "@/lib/api/public/categoryBlogs.api";
 export default async function BlogPage({
   params,
 }: {
-  params: {
+  params: Promise<{
     citySlug: string;
     categorySlug: string;
     blogSlug: string;
-  };
+  }>;
 }) {
-  const data = await getCategoryBlog(
-    params.citySlug,
-    params.categorySlug,
-    params.blogSlug
-  );
+  const { citySlug, categorySlug, blogSlug } = await params;
+
+  const data = await getCategoryBlog(citySlug, categorySlug, blogSlug);
 
   if (!data) notFound();
 
@@ -25,35 +23,35 @@ export default async function BlogPage({
   return (
     <main className="bg-[#f6f7f5] min-h-screen">
 
-      {/* ================= HERO SECTION ================= */}
+      {/* HERO */}
       <section className="max-w-5xl mx-auto pt-16 px-6">
 
         {/* Breadcrumb */}
         <div className="text-sm text-gray-500 mb-6">
           <Link href="/">Ultimate Guide</Link> {" > "}
-          <Link href={`/cities/${params.citySlug}`}>
-            {params.citySlug}
+          <Link href={`/cities/${citySlug}`}>
+            {citySlug}
           </Link>{" "}
           {" > "}
           <span className="text-gray-800">
-            {params.categorySlug}
+            {categorySlug}
           </span>
         </div>
 
-        {/* Hero Image */}
+        {/* Image */}
         <div className="relative w-full h-[480px] rounded-3xl overflow-hidden mb-10">
           <Image
             src={blog.coverImage || "/placeholder.jpg"}
             alt={blog.title}
             fill
-            className="object-cover"
             priority
+            className="object-cover"
           />
         </div>
 
-        {/* Category Label */}
+        {/* Category */}
         <p className="text-xs uppercase tracking-widest text-gray-500 mb-3">
-          {params.categorySlug.replace("-", " ")}
+          {categorySlug.replace("-", " ")}
         </p>
 
         {/* Title */}
@@ -63,13 +61,12 @@ export default async function BlogPage({
 
         {/* Content */}
         <div
-          className="prose prose-lg max-w-none prose-headings:font-semibold prose-a:text-emerald-600"
+          className="rich-text prose-lg max-w-none prose-headings:font-semibold prose-a:text-emerald-600"
           dangerouslySetInnerHTML={{ __html: blog.content }}
         />
-
       </section>
 
-      {/* ================= RECOMMENDED READS ================= */}
+      {/* RECOMMENDED */}
       {recommended.length > 0 && (
         <section className="max-w-6xl mx-auto px-6 py-20">
           <h2 className="text-2xl font-semibold mb-10">
@@ -80,7 +77,7 @@ export default async function BlogPage({
             {recommended.map((item: any) => (
               <Link
                 key={item._id}
-                href={`/cities/${params.citySlug}/${params.categorySlug}/${item.slug}`}
+                href={`/cities/${citySlug}/${categorySlug}/${item.slug}`}
                 className="group"
               >
                 <div className="relative h-56 rounded-2xl overflow-hidden mb-4">
@@ -91,6 +88,7 @@ export default async function BlogPage({
                     className="object-cover group-hover:scale-105 transition"
                   />
                 </div>
+
                 <h3 className="font-medium group-hover:text-emerald-600 transition">
                   {item.title}
                 </h3>
@@ -100,7 +98,7 @@ export default async function BlogPage({
         </section>
       )}
 
-      {/* ================= RELATED TOPICS ================= */}
+      {/* RELATED */}
       {related.length > 0 && (
         <section className="max-w-5xl mx-auto px-6 pb-20">
           <h2 className="text-xl font-semibold mb-6">
@@ -111,7 +109,7 @@ export default async function BlogPage({
             {related.map((item: any) => (
               <Link
                 key={item._id}
-                href={`/cities/${params.citySlug}/${params.categorySlug}/${item.slug}`}
+                href={`/cities/${citySlug}/${categorySlug}/${item.slug}`}
                 className="px-4 py-2 rounded-full bg-white shadow-sm text-sm hover:bg-emerald-50 transition"
               >
                 {item.title}
@@ -120,7 +118,6 @@ export default async function BlogPage({
           </div>
         </section>
       )}
-
     </main>
   );
 }

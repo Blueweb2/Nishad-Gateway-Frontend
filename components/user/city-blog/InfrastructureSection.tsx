@@ -93,7 +93,7 @@ export default function InfrastructureSection({ content }: Props) {
 
           {/* 🔥 Rich Description */}
           <div
-            className="text-white/70 max-w-md text-sm leading-relaxed prose prose-invert mt-10 "
+            className="text-white/70 max-w-md text-sm leading-relaxed rich-text mt-10 "
             dangerouslySetInnerHTML={{
               __html: content.description || "",
             }}
@@ -137,7 +137,7 @@ export default function InfrastructureSection({ content }: Props) {
 
                   {/* 🔥 Rich Slide Text */}
                   <div
-                    className="text-gray-600 text-sm leading-relaxed max-w-sm prose prose-sm max-w-none"
+                    className="text-gray-600 text-sm leading-relaxed max-w-sm rich-text max-w-none"
                     dangerouslySetInnerHTML={{
                       __html: slide.text || "",
                     }}

@@ -186,6 +186,27 @@ xl: 768px   // Fold / Tablet */
   transform: scaleX(1);
 }
 
+.rich-text h1,
+.rich-text h2,
+.rich-text h3 {
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.rich-text p {
+  margin-bottom: 1rem;
+  line-height: 1.7;
+}
+
+.rich-text ul,
+.rich-text ol {
+  margin: 1rem 0;
+}
+
+.rich-text li {
+  margin-bottom: 0.4rem;
+}
+
 
 /* Swiper customizations  of humburger of navbar */
 @keyframes menuIn {

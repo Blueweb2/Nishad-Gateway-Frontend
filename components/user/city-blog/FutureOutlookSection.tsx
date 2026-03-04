@@ -90,7 +90,7 @@ export default function FutureOutlookSection({ content }: Props) {
 
             {/* 🔥 Rich Description */}
             <div
-              className="text-gray-600 leading-relaxed mb-10 prose prose-sm max-w-none"
+              className="text-gray-600 leading-relaxed mb-10 rich-text max-w-none"
               dangerouslySetInnerHTML={{
                 __html: slide.description || "",
               }}
