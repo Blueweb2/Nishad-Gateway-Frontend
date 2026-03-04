@@ -76,7 +76,7 @@ export default function InfrastructureSection({ content }: Props) {
   };
 
   return (
-    <section className="pt-24 pb-14 bg-[#7f7b77] text-white">
+    <section className="pt-24 pb-14 bg-[#7f7b77] text-white" data-navbar="light">
       <div className="max-w-8xl mx-auto px-6">
 
         {/* HEADER */}

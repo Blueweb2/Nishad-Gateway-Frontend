@@ -8,7 +8,7 @@ type Props = {
 
 export default function LandmarksSection({ content }: Props) {
   return (
-    <section className="py-[clamp(60px,8vw,120px)] bg-[#f3f3f3]">
+    <section className="py-[clamp(60px,8vw,120px)] bg-[#f3f3f3]" data-navbar="light">
       <div className=" grid grid-cols-1 lg:grid-cols-2 max-w-[1400px] mx-auto px-[clamp(16px,4vw,40px)] gap-[clamp(32px,6vw,80px)]">
 
         {/* LEFT SIDE */}

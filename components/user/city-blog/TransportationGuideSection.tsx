@@ -18,7 +18,7 @@ export default function TransportationGuideSection({ content }: Props) {
   const activeSlide = content.slides[activeIndex];
 
   return (
-    <section className="relative w-full h-[100vh] text-white overflow-hidden">
+    <section className="relative w-full h-[100vh] text-white overflow-hidden" data-navbar="light">
 
       {/* Background */}
       <Image

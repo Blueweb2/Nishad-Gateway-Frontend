@@ -53,7 +53,7 @@ export default function InvestmentHighlightsSection({
 
 
   return (
-    <section className="w-full bg-white py-20 overflow-hidden">
+    <section className="w-full bg-white py-20 overflow-hidden" data-navbar="light">
       {/* TOP CONTENT */}
       <div className="w-full max-w-8xl mx-auto px-6 md:px-10">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-10">

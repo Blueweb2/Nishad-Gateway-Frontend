@@ -48,7 +48,7 @@ export default function VisionSection({
   }, [router]);
 
   return (
-    <section className="bg-black py-24 text-white">
+    <section className="bg-black py-24 text-white" data-navbar="light">
       <div className="max-w-8xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
 
         {/* LEFT */}

@@ -19,7 +19,7 @@ export default function CategoriesSection({
   categories,
 }: Props) {
   return (
-    <section className="bg-white py-[clamp(60px,8vw,120px)]">
+    <section className="bg-white py-[clamp(60px,8vw,120px)]" data-navbar="light">
       <div className="max-w-[1400px] mx-auto px-[clamp(16px,4vw,40px)] grid md:grid-cols-2 gap-[clamp(32px,6vw,80px)]">
 
         {/* LEFT SIDE */}
