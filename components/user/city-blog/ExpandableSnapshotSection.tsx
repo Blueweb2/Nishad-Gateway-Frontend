@@ -62,9 +62,11 @@ export default function ExpandableSnapshotSection({
                 <div className="absolute inset-0 bg-black/30" />
 
                 {/* Caption */}
-                <div className="absolute bottom-[3vh] left-[2vw] text-white text-[1vw] transition-opacity duration-500">
+                <div className="absolute bottom-[3vh] left-[2vw] right-[2vw] w-40 text-white text-[1vw] transition-opacity duration-500 z-20">
                   {card.caption}
                 </div>
+
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/30 to-black/10" />
               </div>
             );
           })}
