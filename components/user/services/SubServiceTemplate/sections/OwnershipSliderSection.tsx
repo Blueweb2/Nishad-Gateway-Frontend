@@ -11,6 +11,7 @@ export type OwnershipSlide = {
   leftText?: string; // Left text (Universal 100% rules)
   rightText?: string; // Right text (Sector exceptions)
   image: string;
+  _id: string;
 };
 
 type Props = {
@@ -43,6 +44,10 @@ export default function OwnershipSliderSection({
     if (total <= 1) return;
     setActive((prev) => (prev - 1 + total) % total);
   };
+
+  const ids = ["69a6663219788cce90ea9cb9", "69a6663219788cce90ea9cba", "69a6663219788cce90ea9cbb", "69a6663219788cce90ea9cbc", "69a6663219788cce90ea9cbd", "69a6663219788cce90ea9cbe","69a6663219788cce90ea9cbf","69a6663219788cce90ea9cc0"];
+
+  const stageIndex = ids.indexOf(current?._id ?? "");
 
   return (
     <section className="w-full bg-black text-white">
@@ -118,8 +123,13 @@ export default function OwnershipSliderSection({
                     initial={{ y: 40, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.6, ease: "easeOut" }}
-                    className="text-2xl md:text-3xl font-semibold leading-snug text-white"
+                    className="text-2xl md:text-3xl font-semibold leading-snug text-white flex flex-col"
                   >
+                    {stageIndex !== -1 && (
+                      <span className="text-green-400 font-medium text-[12px] mr-2 uppercase">
+                        Stage {stageIndex + 1}
+                      </span>
+                    )}
                     {current?.title || "No Capsule Text"}
                   </motion.h3>
                 </div>
@@ -135,13 +145,13 @@ export default function OwnershipSliderSection({
                   initial={{ y: 40, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.6, ease: "easeOut" }}
-                  className="mt-8 mr-10 pr-5 lg:pr-0 w-full text-white text-lg font-medium leading-snug text-[1vw]"
+                  className="mt-8  lg:pr-0 w-full text-white text-lg font-medium leading-snug text-[1vw]"
                 >
                   {current.rightText}
                 </motion.p>
               )}
 
-              <div className="mt-10 h-[1px] w-full bg-white/25 mr-10" />
+              <div className="mt-10 h-[1px] w-full bg-white/25" />
             </div>
           </div>
         </div>
