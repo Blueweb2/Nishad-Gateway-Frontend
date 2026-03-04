@@ -10,7 +10,7 @@ type Props = {
 
 export default function InfrastructureSection({ content }: Props) {
   return (
-    <section className="py-24 bg-[#7f7b77] text-white">
+    <section className="pt-24 pb-14 bg-[#7f7b77] text-white">
       <div className="max-w-8xl mx-auto px-6">
 
         {/* HEADER */}
@@ -35,7 +35,7 @@ export default function InfrastructureSection({ content }: Props) {
         </div>
 
         {/* SLIDES */}
-        <div className="flex gap-10 overflow-x-auto pb-6 scrollbar-hide">
+        <div className="flex gap-10 overflow-x-auto pb-6 hide-scrollbar">
           {content.slides.map((slide, index) => {
             const imageSrc =
               slide.imageUrl &&
