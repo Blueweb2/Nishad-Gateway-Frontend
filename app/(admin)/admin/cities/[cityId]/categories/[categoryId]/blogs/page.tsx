@@ -28,6 +28,8 @@ export default function CategoryBlogsPage() {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
 
+  const [categoryName, setCategoryName] = useState("");
+
   /* ================= FETCH BLOGS ================= */
 
   useEffect(() => {
@@ -60,6 +62,35 @@ export default function CategoryBlogsPage() {
     fetchBlogs();
   }, [API_URL, cityId, categoryId]);
 
+
+  useEffect(() => {
+    const fetchCategory = async () => {
+      try {
+        if (!API_URL) return;
+
+        const res = await fetch(
+          `${API_URL}/admin/cities/${cityId}/categories`,
+          { credentials: "include" }
+        );
+
+        const data = await res.json();
+
+        if (!res.ok) return;
+
+        const category = data.categories?.find(
+          (c: any) => c._id === categoryId
+        );
+
+        if (category) setCategoryName(category.name);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    if (cityId && categoryId) {
+      fetchCategory();
+    }
+  }, [API_URL, cityId, categoryId]);
   /* ================= FILTER ================= */
 
   const filteredBlogs = useMemo(() => {
@@ -111,7 +142,7 @@ export default function CategoryBlogsPage() {
               Category Blogs
             </h1>
             <p className="text-sm text-white/60 mt-2">
-              Manage blogs under this category.
+              Category: <span className="text-emerald-400 font-medium">{categoryName}</span>
             </p>
           </div>
 
@@ -208,14 +239,13 @@ export default function CategoryBlogsPage() {
                     <Trash2 className="w-4 h-4" />
                     Delete
                   </button>
-
+{/* 
                   <Link
-                    href={`/cities/${cityId}/${categoryId}/${blog.slug}`}
-                    target="_blank"
+                    href={`/cities/${citySlug}/${categorySlug}/${blog.slug}`} target="_blank"
                     className="px-3 py-1.5 rounded-lg text-xs font-semibold border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/20 transition"
                   >
                     Preview
-                  </Link>
+                  </Link> */}
                 </div>
               </div>
             ))

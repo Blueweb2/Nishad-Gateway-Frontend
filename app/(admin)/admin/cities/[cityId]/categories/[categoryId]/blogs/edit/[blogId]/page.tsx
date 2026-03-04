@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import { UploadCloud, Save } from "lucide-react";
+import RichTextEditor from "@/components/admin/common/RichTextEditor";
 
 function generateSlug(title: string) {
   return title
@@ -238,11 +239,10 @@ export default function EditCategoryBlogPage() {
             <label className="block text-sm text-white/70 mb-2">
               Content
             </label>
-            <textarea
+
+            <RichTextEditor
               value={content}
-              onChange={(e) => setContent(e.target.value)}
-              rows={10}
-              className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white outline-none"
+              onChange={(html) => setContent(html)}
             />
           </div>
 
