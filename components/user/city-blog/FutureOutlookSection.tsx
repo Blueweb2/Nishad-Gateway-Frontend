@@ -47,7 +47,7 @@ export default function FutureOutlookSection({ content }: Props) {
     slide.ctaLink.trim() !== "";
 
   return (
-    <section className="bg-[#efefef] py-24">
+    <section className="bg-[#efefef] py-24" data-navbar="light">
       <div className="max-w-7xl mx-auto px-6">
 
         <div className="grid lg:grid-cols-3 items-center gap-16">

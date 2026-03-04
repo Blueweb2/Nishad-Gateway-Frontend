@@ -16,7 +16,7 @@ const slides = [
     alt: "Company Formation Overview",
     title: "Company Formation Overview",
     description:
-      "Understand the end-to-end process of company formation in Saudi Arabia...",
+      "The company formation in Saudi Arabia process begins with securing a foreign investor license from the Ministry of Investment of Saudi Arabia followed by Commercial Registration (CR) from the Ministry of Commerce. Businesses commonly establish operations in major commercial hubs like Riyadh and Jeddah depending on their industry and expansion strategy.",
     linkText: "Understand Business Setup",
     link: "/services/company-formation",
   },
@@ -25,7 +25,7 @@ const slides = [
     alt: "Types of Licenses",
     title: "Types of Business Licenses",
     description:
-      "Saudi Arabia provides various types of licenses...",
+      "Saudi company registration offers structures such as LLC, Branch Office, Entrepreneur License, and Professional License depending on ownership structure and market entry strategy.",
     linkText: "Explore License Types",
     link: "/services/company-formation/licensing-approvals",
   },
@@ -34,7 +34,7 @@ const slides = [
     alt: "Ownership & Capital Rules",
     title: "Ownership & Capital Rules",
     description:
-      "Understand the implications of ownership structures...",
+      "Ownership structure and capital requirements influence shareholder control, banking eligibility, and visa quotas. Many sectors allow 100% foreign ownership under current investment regulations.",
     linkText: "View Ownership Rules",
     link: "/services/company-formation/ownership-&-capital",
   },
@@ -43,7 +43,7 @@ const slides = [
     alt: "Taxes & Compliance",
     title: "Taxes & Compliance (Zakat, VAT, CT)",
     description:
-      "Understand Saudi tax requirements...",
+      "Businesses must comply with VAT, Zakat, and corporate tax obligations regulated by the Zakat, Tax and Customs Authority.",
     linkText: "Understand Tax Structure",
     link: "/services/saudi-business-advisory/tax-regulatory-advisory",
   },
@@ -52,7 +52,7 @@ const slides = [
     alt: "Setup Timeline",
     title: "Setup Timeline (Step-by-Step)",
     description:
-      "A step-by-step guide on how long each process takes...",
+      "The Saudi company registration timeline includes licensing approval, CR issuance, tax registration, bank account setup, and visa processing through government portals.",
     linkText: "View Setup Timeline",
     link: "/services/company-formation/setup-timeline",
   },

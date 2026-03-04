@@ -132,17 +132,17 @@ export default function CityBlogRenderer({
               );
             }
 
-            case "FOOD_GUIDE": {
-              const content =
-                section.content as FoodGuideSectionContent;
+            // case "FOOD_GUIDE": {
+            //   const content =
+            //     section.content as FoodGuideSectionContent;
 
-              return (
-                <FoodGuideSection
-                  key={section.id}
-                  content={content}
-                />
-              );
-            }
+            //   return (
+            //     <FoodGuideSection
+            //       key={section.id}
+            //       content={content}
+            //     />
+            //   );
+            // }
 
             case "TRANSPORTATION_GUIDE": {
               const content =

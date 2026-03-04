@@ -21,7 +21,7 @@ export default function ExpandableSnapshotSection({
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <section className="bg-[#efefef] py-[8vh]">
+    <section className="bg-[#efefef] py-[8vh]" data-navbar="light">
       <div className="w-[90vw] mx-auto">
 
         {/* HEADING */}

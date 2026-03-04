@@ -8,8 +8,8 @@ type Props = {
 
 export default function LandmarksSection({ content }: Props) {
   return (
-    <section className="py-28 bg-[#f3f3f3]">
-      <div className="max-w-8xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-20">
+    <section className="py-[clamp(60px,8vw,120px)] bg-[#f3f3f3]" data-navbar="light">
+      <div className=" grid grid-cols-1 lg:grid-cols-2 max-w-[1400px] mx-auto px-[clamp(16px,4vw,40px)] gap-[clamp(32px,6vw,80px)]">
 
         {/* LEFT SIDE */}
         <div className="flex flex-col justify-between">
@@ -44,7 +44,7 @@ export default function LandmarksSection({ content }: Props) {
                   justify-between
                   items-start
                   gap-6
-                  py-6
+                  py-6 px-6
                   border-b
                   border-black/10
                   transition-all
@@ -55,8 +55,8 @@ export default function LandmarksSection({ content }: Props) {
                 {/* LEFT CONTENT */}
                 <div className="flex gap-6">
                   {/* Number */}
-                  <span className="text-sm text-black/50 mt-1">
-                    {String(index + 1).padStart(2, "0")} /
+                  <span className="text-sm text-black/50 mt-1 w-10 flex">
+                    / {String(index + 1).padStart(2, "0")}
                   </span>
 
                   {/* Text */}

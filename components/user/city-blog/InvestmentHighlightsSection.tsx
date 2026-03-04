@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import { ArrowLeft, ArrowRight, Plus } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Mousewheel, Autoplay } from "swiper/modules";
+import { Mousewheel } from "swiper/modules";
 import { motion, AnimatePresence } from "framer-motion";
 import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 
@@ -53,7 +53,7 @@ export default function InvestmentHighlightsSection({
 
 
   return (
-    <section className="w-full bg-white py-20 overflow-hidden">
+    <section className="w-full bg-white py-20 overflow-hidden" data-navbar="light">
       {/* TOP CONTENT */}
       <div className="w-full max-w-8xl mx-auto px-6 md:px-10">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-10">
@@ -77,21 +77,17 @@ export default function InvestmentHighlightsSection({
       </div>
 
       {/* SLIDER */}
-      <div className="mt-14 relative w-full cursor-none hidden md:block px-4"
-        
-      >
-        <Swiper 
-          modules={[Autoplay, Mousewheel]}
-          grabCursor={true}
-          loop={true}
-          autoplay={{
-            delay: 0,
-            disableOnInteraction: false,
+      <div className="mt-14 relative w-full cursor-none hidden md:block px-4">
+        <Swiper
+          modules={[ Mousewheel]}
+          direction="horizontal"
+          mousewheel={{
+            forceToAxis: true,
+            sensitivity: 1,
           }}
-          speed={6000}
-          freeMode={true}
+          loop={true}
           slidesPerView="auto"
-          spaceBetween={56}
+          grabCursor
           className="relative w-full h-[520px]"
         >
           {slides.map((slide, index) => {
@@ -99,7 +95,7 @@ export default function InvestmentHighlightsSection({
             return (
             <SwiperSlide
               key={index}
-              className="!w-[480px] h-full relative flex items-center justify-center"
+              className="!w-[480px] h-full relative flex items-center justify-center mr-10"
             >
               {/* IMAGE */}
               <div className="relative h-full w-[80%] overflow-hidden rounded-[44px]">

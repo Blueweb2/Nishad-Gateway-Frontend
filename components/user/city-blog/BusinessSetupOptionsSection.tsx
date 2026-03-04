@@ -14,7 +14,7 @@ export default function BusinessSetupOptionsSection({
   bottomText,
 }: Props) {
   return (
-    <section className="py-[clamp(60px,8vw,120px)] bg-[#f4f4f4] text-center">
+    <section className="py-[clamp(60px,8vw,120px)] bg-[#f4f4f4] text-center" data-navbar="light">
       <div className="max-w-[1400px] mx-auto px-[clamp(16px,4vw,40px)]">
 
         {/* Heading */}
