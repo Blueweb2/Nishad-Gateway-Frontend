@@ -28,7 +28,7 @@ export default function Navbar() {
   useEffect(() => {
     const handleScroll = () => {
       const sections = document.querySelectorAll<HTMLElement>("[data-navbar]");
-      const navbarHeight = 80;
+      const navbarHeight = 90;
 
       let currentTheme = "dark";
 
@@ -65,7 +65,7 @@ export default function Navbar() {
       <header
         className={`
         fixed top-0 left-0 w-full z-[9999]
-        transition-all duration-300
+        transition-all duration-300 border-b border-amber-500
         ${isLight ? "bg-white" : "bg-transparent"}
         `}
       >

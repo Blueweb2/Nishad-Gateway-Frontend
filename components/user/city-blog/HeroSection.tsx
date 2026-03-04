@@ -14,7 +14,7 @@ export default function HeroSection({ content }: Props) {
 
   return (
     <section
-      className="relative min-h-screen flex items-center pt-20 pb-10"
+      className="relative min-h-screen flex items-center mt-80 pb-10 border border-black"
       data-navbar="light"
     >
       {/* Container with rounded hero like screenshot */}
