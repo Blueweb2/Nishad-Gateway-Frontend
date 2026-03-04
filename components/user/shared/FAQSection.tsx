@@ -33,7 +33,6 @@ export default function FAQSection({
     <section className="w-full bg-white py-16">
       <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
         
-        {/* LEFT IMAGE BLOCK */}
  {/* LEFT IMAGE BLOCK */}
 {imageUrl && (
   <div className="relative w-full h-[720px] rounded-[32px] overflow-hidden">

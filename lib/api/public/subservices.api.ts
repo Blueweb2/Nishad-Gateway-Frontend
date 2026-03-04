@@ -1,6 +1,21 @@
+// import { publicAxios } from "@/lib/http/publicAxios";
+
+// // 📦 Get subservices by service (public)
+// export const getSubServicesByService = async (serviceId: string) => {
+//   const { data } = await publicAxios.get(
+//     `/services/${serviceId}/subservices`
+//   );
+//   return data;
+// };
+
+// // 📦 Get single service by slug (public)
+// export const getServiceBySlug = async (slug: string) => {
+//   const { data } = await publicAxios.get(`/services/slug/${slug}`);
+//   return data;
+// };
 import { publicAxios } from "@/lib/http/publicAxios";
 
-// 📦 Get subservices by service (public)
+// 📦 Get subservices by service
 export const getSubServicesByService = async (serviceId: string) => {
   const { data } = await publicAxios.get(
     `/services/${serviceId}/subservices`
@@ -8,7 +23,7 @@ export const getSubServicesByService = async (serviceId: string) => {
   return data;
 };
 
-// 📦 Get single service by slug (public)
+// 📦 Get single service by slug
 export const getServiceBySlug = async (slug: string) => {
   const { data } = await publicAxios.get(`/services/slug/${slug}`);
   return data;
