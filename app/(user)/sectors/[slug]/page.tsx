@@ -42,10 +42,21 @@ export default async function SectorDetailPage({ params }: Props) {
   ]);
 
   if (!sectorRes) notFound();
+  // 🔥 Separate FAQ block
+  const faqBlock = sectorRes.blocks?.find(
+    (block: SectorBlock) => block.type === "faq"
+  );
+
+  const otherBlocks = sectorRes.blocks?.filter(
+    (block: SectorBlock) => block.type !== "faq"
+  );
+  console.log("BLOCKS:", sectorRes.blocks);
 
 return (
   <main className="bg-white">
-    {sectorRes.blocks?.map((block: SectorBlock) => (
+
+    {/* 🔹 Render all blocks except FAQ */}
+    {otherBlocks?.map((block: SectorBlock) => (
       <SectorBlockRenderer
         key={block._id}
         block={block}
@@ -53,7 +64,7 @@ return (
       />
     ))}
 
-    {/* 🔥 Always show locations section */}
+    {/* 🔹 Always show locations section */}
     {cities.length > 0 && (
       <LocationsSliderSection
         locationsHeading="Start Your Business Anywhere in Saudi Arabia"
@@ -61,7 +72,18 @@ return (
         cities={cities}
       />
     )}
+
     <Stats />
+
+    {/* 🔹 Render FAQ always at bottom */}
+    {faqBlock && (
+      <SectorBlockRenderer
+        key={faqBlock._id}
+        block={faqBlock}
+        cities={cities}
+      />
+    )}
+
   </main>
 );
 }

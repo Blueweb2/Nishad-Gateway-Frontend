@@ -43,13 +43,27 @@ export type LocationsBlock = {
   locationsHeading?: string;
   locationsSubheading?: string;
 };
+
+/* ================= FAQ BLOCK ================= */
+
+export type FAQItem = {
+  question: string;
+  answer: string;
+};
+
+export type FAQBlock = {
+  items: FAQItem[];
+  imageUrl?: string;
+  imageAlt?: string;
+};
 /* ================= SECTOR BLOCK UNION ================= */
 
 export type SectorBlock =
   | (BaseSectorBlock & { type: "hero"; data: HeroBlock })
   | (BaseSectorBlock & { type: "richContent"; data: RichContentBlock })
   | (BaseSectorBlock & { type: "industries"; data: IndustriesBlock })
-  | (BaseSectorBlock & { type: "locations"; data: LocationsBlock });
+  | (BaseSectorBlock & { type: "locations"; data: LocationsBlock })
+  | (BaseSectorBlock & { type: "faq"; data: FAQBlock });;
 
 /* ================= DEFAULT BLOCK FACTORY ================= */
 
@@ -109,6 +123,18 @@ if (type === "locations") {
     data: {
       locationsHeading: "",
       locationsSubheading: "",
+    },
+  };
+}
+
+if (type === "faq") {
+  return {
+    ...base,
+    type: "faq",
+    data: {
+      items: [{ question: "", answer: "" }],
+      imageUrl: "",
+      imageAlt: "",
     },
   };
 }
