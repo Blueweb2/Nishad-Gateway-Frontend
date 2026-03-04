@@ -272,18 +272,6 @@ export default function SubServiceTemplate({ content, cities }: Props) {
         }
         return null;
 
-      // case "entityChoose":
-      //   if (hasArray(content.entityChooseQuestions)) {
-      //     return (
-      //       <EntityChooseSection
-      //         entityChooseHeading={content.entityChooseHeading}
-      //         entityChooseSubheading={content.entityChooseSubheading}
-      //         entityChooseQuestions={content.entityChooseQuestions}
-      //       />
-      //     );
-      //   }
-      //   return null;
-
       case "documents":
         if (hasArray(content.documentGroups)) {
           return (

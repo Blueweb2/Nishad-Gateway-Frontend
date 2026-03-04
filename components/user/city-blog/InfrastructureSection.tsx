@@ -14,7 +14,7 @@ export default function InfrastructureSection({ content }: Props) {
       <div className="max-w-8xl mx-auto px-6">
 
         {/* HEADER */}
-        <div className="flex justify-between items-start mb-20 gap-16">
+        <div className="flex justify-items-start items-start mb-20 gap-16">
           <div>
             <span className="text-white/60 text-sm mb-4 block">
               01 | {String(content.slides.length).padStart(2, "0")}
@@ -27,7 +27,7 @@ export default function InfrastructureSection({ content }: Props) {
 
           {/* 🔥 Rich Description */}
           <div
-            className="text-white/70 max-w-md text-sm leading-relaxed prose prose-invert max-w-none"
+            className="text-white/70 max-w-md text-sm leading-relaxed prose prose-invert mt-10"
             dangerouslySetInnerHTML={{
               __html: content.description || "",
             }}
