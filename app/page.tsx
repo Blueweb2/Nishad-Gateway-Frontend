@@ -10,6 +10,7 @@ import Insights from "@/components/user/home/Insights";
 import PreloaderProvider from "@/components/user/shared/PreloaderProvider";
 import Navbar from "@/components/user/shared/Navbar";
 import CitiesSection from "@/components/user/home/cities/CitiesSection";
+import MinistriesSection from "@/components/user/home/MinistriesSection";
 
 export default function Page() {
   return (
@@ -23,6 +24,7 @@ export default function Page() {
         <KeyServices />
         <Consultant />
         <Stats />
+        <MinistriesSection/>
         <CaseStudies />
         <Insights />
         <FinalCTA />

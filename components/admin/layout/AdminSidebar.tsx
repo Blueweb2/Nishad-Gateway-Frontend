@@ -14,6 +14,7 @@ import {
   Shield,
   Trash2,
   Building2,
+  Landmark,
 } from "lucide-react";
 
 import { adminMe, adminLogout } from "@/lib/api";
@@ -48,6 +49,7 @@ export default function AdminSidebar() {
     { name: "Cities", href: "/admin/cities", icon: MapPin },
     { name: "Services", href: "/admin/services", icon: Briefcase },
      { name: "Sectors", href: "/admin/sectors", icon: Building2  },
+     { name: "Ministries", href: "/admin/ministries", icon: Landmark },
   ];
 
   const links =
