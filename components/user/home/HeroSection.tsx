@@ -22,7 +22,7 @@ export default function HeroSection() {
       <WaterTouchHover className="z-[5]" strength={1.5} />
 
       {/* Content */}
-      <div className="relative z-10 min-h-dvh flex flex-col px-4 sm:px-6 lg:px-6 py-20 md:py-0">
+      <div className="relative z-10 min-h-dvh flex flex-col px-4 sm:px-6 lg:px-6 py-14 md:py-0">
         <div className="mt-auto mb-[10px] text-center">
 
           <FadeUpMount delay={0.3}>
@@ -32,7 +32,7 @@ export default function HeroSection() {
           </FadeUpMount>
 
           <FadeUpMount delay={0.6}>
-            <h2 className="text-white font-extrabold leading-[0.85] text-center text-[56px] sm:text-[16vw] 
+            <h2 className="text-white font-extrabold leading-[0.85] text-center text-[58px] sm:text-[16vw] 
               md:text-[40px] lg:text-[16vw] whitespace-nowrap"
             >
               Saudi Arabia
