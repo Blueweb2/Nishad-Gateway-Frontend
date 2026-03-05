@@ -2,7 +2,7 @@ import { City } from "@/lib/types/city";
 
 export const getCities = async (): Promise<City[]> => {
   const res = await fetch(
-    `${process.env.API_URL}/cities`,
+    `${process.env.NEXT_PUBLIC_API_URL}/cities`,
     { cache: "no-store" }
   );
 
