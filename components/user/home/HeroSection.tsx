@@ -6,7 +6,7 @@ import FadeUpMount from "../ui/FadeUpMount";
 
 export default function HeroSection() {
   return (
-    <section className="relative w-full min-h-screen overflow-hidden">
+    <section className="relative w-full min-h-dvh overflow-hidden">
 
       {/* Background Image */}
       <Image
@@ -22,7 +22,7 @@ export default function HeroSection() {
       <WaterTouchHover className="z-[5]" strength={1.5} />
 
       {/* Content */}
-      <div className="relative z-10 min-h-screen flex flex-col px-4 sm:px-6 lg:px-6">
+      <div className="relative z-10 min-h-dvh flex flex-col px-4 sm:px-6 lg:px-6 py-20 md:py-0">
         <div className="mt-auto mb-[10px] text-center">
 
           <FadeUpMount delay={0.3}>
@@ -32,8 +32,9 @@ export default function HeroSection() {
           </FadeUpMount>
 
           <FadeUpMount delay={0.6}>
-            <h2 className="text-white font-extrabold leading-[0.85] text-center text-[20vw] sm:text-[18vw] 
-            md:text-[17vw] lg:text-[16vw] whitespace-normal lg:whitespace-nowrap">
+            <h2 className="text-white font-extrabold leading-[0.85] text-center text-[40px] sm:text-[16vw] 
+              md:text-[40px] lg:text-[16vw] whitespace-nowrap"
+            >
               Saudi Arabia
             </h2>
           </FadeUpMount>
