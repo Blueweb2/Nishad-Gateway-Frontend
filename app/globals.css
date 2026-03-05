@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "swiper/css";
 @import "swiper/css/parallax";
+@import "swiper/css/navigation";
 
 
 /* Global font */
@@ -191,6 +192,9 @@ xl: 768px   // Fold / Tablet */
 .rich-text h3 {
   margin-top: 2rem;
   margin-bottom: 0.75rem;
+   font-weight: 700;
+  color: #111;
+  line-height: 1.2;
 }
 
 .rich-text p {
@@ -207,6 +211,38 @@ xl: 768px   // Fold / Tablet */
   margin-bottom: 0.4rem;
 }
 
+
+.rich-text h1 {
+  font-size: 2.5rem;
+}
+
+.rich-text h2 {
+  font-size: 2rem;
+}
+
+.rich-text h3 {
+  font-size: 1.5rem;
+}
+
+.rich-text p {
+  font-size: 1rem;
+  color: #4b5563; /* gray-600 */
+}
+
+.rich-text strong {
+  color: #15803d; /* green-700 */
+  font-weight: 600;
+}
+
+.rich-text ul {
+  padding-left: 1.2rem;
+  list-style: disc;
+}
+
+.rich-text ol {
+  padding-left: 1.2rem;
+  list-style: decimal;
+}
 
 /* Swiper customizations  of humburger of navbar */
 @keyframes menuIn {
@@ -293,44 +329,4 @@ xl: 768px   // Fold / Tablet */
 }
 
 
-/* ================= Rich Text Base ================= */
 
-.rich-text h1,
-.rich-text h2,
-.rich-text h3 {
-  font-weight: 700;
-  color: #111;
-  line-height: 1.2;
-}
-
-.rich-text h1 {
-  font-size: 2.5rem;
-}
-
-.rich-text h2 {
-  font-size: 2rem;
-}
-
-.rich-text h3 {
-  font-size: 1.5rem;
-}
-
-.rich-text p {
-  font-size: 1rem;
-  color: #4b5563; /* gray-600 */
-}
-
-.rich-text strong {
-  color: #15803d; /* green-700 */
-  font-weight: 600;
-}
-
-.rich-text ul {
-  padding-left: 1.2rem;
-  list-style: disc;
-}
-
-.rich-text ol {
-  padding-left: 1.2rem;
-  list-style: decimal;
-}

@@ -56,13 +56,13 @@ return (
   <main className="bg-white">
 
     {/* 🔹 Render all blocks except FAQ */}
-    {otherBlocks?.map((block: SectorBlock) => (
-      <SectorBlockRenderer
-        key={block._id}
-        block={block}
-        cities={cities}
-      />
-    ))}
+{otherBlocks?.map((block: SectorBlock, index: number) => (
+  <SectorBlockRenderer
+    key={block._id ?? `block-${index}`}
+    block={block}
+    cities={cities}
+  />
+))}
 
     {/* 🔹 Always show locations section */}
     {cities.length > 0 && (

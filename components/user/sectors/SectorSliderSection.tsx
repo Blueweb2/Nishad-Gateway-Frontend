@@ -69,14 +69,14 @@ export default function SectorSliderSection({
           onSwiper={(swiper) => {
             setTimeout(() => {
               if (
-                swiper.params.navigation &&
+                swiper?.params?.navigation &&
                 typeof swiper.params.navigation !== "boolean"
               ) {
                 swiper.params.navigation.prevEl = prevRef.current;
                 swiper.params.navigation.nextEl = nextRef.current;
 
-                swiper.navigation.init();
-                swiper.navigation.update();
+                swiper.navigation?.init();
+                swiper.navigation?.update();
               }
             });
           }}
