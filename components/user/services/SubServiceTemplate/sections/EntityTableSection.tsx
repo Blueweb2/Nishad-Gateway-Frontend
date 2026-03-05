@@ -54,7 +54,7 @@ const cols = baseColumns.filter((col) =>
 );
 
 return (
-  <section className="w-full bg-black text-white py-20">
+  <section className="w-full bg-black text-white py-20" data-navbar="light">
     <div className="w-full max-w-7xl mx-auto px-6 md:px-10">
       {/* Heading */}
       <div className="text-center">

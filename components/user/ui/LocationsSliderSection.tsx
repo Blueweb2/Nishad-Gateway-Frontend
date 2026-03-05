@@ -44,7 +44,7 @@ export default function LocationsSliderSection({
   const translateX = activeIndex * cardWidth;
 
   return (
-    <section className="w-full bg-[#0b6b67] text-white py-16 overflow-hidden">
+    <section className="w-full bg-[#0b6b67] text-white py-16 overflow-hidden" data-navbar="light">
       <div className="w-full max-w-7xl mx-auto px-6 md:px-10">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">

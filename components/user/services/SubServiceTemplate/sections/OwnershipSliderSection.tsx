@@ -50,7 +50,7 @@ export default function OwnershipSliderSection({
   const stageIndex = ids.indexOf(current?._id ?? "");
 
   return (
-    <section className="w-full bg-black text-white">
+    <section className="w-full bg-black text-white" data-navbar="light">
       <div className="relative w-full h-screen overflow-hidden">
         {/* Background */}
         {current?.image && (

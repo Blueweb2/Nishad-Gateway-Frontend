@@ -28,7 +28,7 @@ export default function FaqSection({
   if (!faqs || faqs.length === 0) return null;
 
   return (
-<section className="w-full pt-32 pb-20 bg-[#f5f5f5] relative z-10">
+<section className="w-full pt-32 pb-20 bg-[#f5f5f5] relative z-10" data-navbar="light">
       <div className="max-w-7xl mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
 
         {/* LEFT SIDE */}
