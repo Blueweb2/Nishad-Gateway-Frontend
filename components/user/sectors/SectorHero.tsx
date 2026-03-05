@@ -14,8 +14,8 @@ export default function SectorHero({
   backgroundImage,
 }: Props) {
   return (
-    <section className="px-6 pt-6">
-      <div className="relative rounded-[40px] overflow-hidden">
+    <section className="px-3">
+      <div className="relative rounded-b-[40px] overflow-hidden">
 
         {/* Background Image */}
         <img
