@@ -103,7 +103,7 @@ export default function OwnershipSliderSection({
                   initial={{ y: 40, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.6, ease: "easeOut" }}
-                  className="mt-16 text-white text-lg font-medium leading-none w-[90px]"
+                  className="mt-16 text-white text-lg font-medium leading-none w-[100px]"
                 >
                   {current.leftText}
                 </motion.p>
@@ -116,7 +116,7 @@ export default function OwnershipSliderSection({
             {/* CAPSULE */}
             <div className="flex-1 flex items-center justify-center">
               <div className="relative w-[26vw] h-[32vw] rounded-[200px] border border-white/25">
-                <div className="absolute inset-0 flex items-center justify-center px-12 text-center">
+                <div className="absolute inset-0 flex items-center justify-center px-15 text-center">
                   <motion.h3
                     key={active}
                     initial={{ y: 40, opacity: 0 }}
