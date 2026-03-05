@@ -32,7 +32,7 @@ export default function HeroSection() {
           </FadeUpMount>
 
           <FadeUpMount delay={0.6}>
-            <h2 className="text-white font-extrabold leading-[0.85] text-center text-[40px] sm:text-[16vw] 
+            <h2 className="text-white font-extrabold leading-[0.85] text-center text-[56px] sm:text-[16vw] 
               md:text-[40px] lg:text-[16vw] whitespace-nowrap"
             >
               Saudi Arabia
