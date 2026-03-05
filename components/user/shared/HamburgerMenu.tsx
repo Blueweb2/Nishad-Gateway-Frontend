@@ -91,8 +91,15 @@ export default function HamburgerMenu({ open, onClose }: Props) {
   return (
     <div
       className={`
-        fixed top-24 right-10 z-[9999]
-        w-[360px] 
+        fixed 
+        top-20 sm:top-24
+        right-3 sm:right-6 lg:right-10
+        z-[9999]
+
+        w-[92%] 
+        sm:w-[340px] 
+        lg:w-[360px]
+        sm:hidden
         transition-all duration-400
         ${open ? "animate-menuIn" : "animate-menuOut"}
       `}
@@ -102,7 +109,7 @@ export default function HamburgerMenu({ open, onClose }: Props) {
       <div
         className="
           relative
-          rounded-[36px]
+          rounded-[26px] sm:rounded-[30px] lg:rounded-[36px]
           border border-white/25
           bg-gradient-to-b from-white/40 to-white/25
           backdrop-blur-3xl
@@ -111,17 +118,20 @@ export default function HamburgerMenu({ open, onClose }: Props) {
           isolate
         "
       >
-        <div className="pt-6 ">
-          <div className="p-4 max-h-[70vh] overflow-y-auto mb-5 hide-scrollbar ">
-            {/* SERVICES SECTION */}
+        <div className="pt-5 sm:pt-6">
+          <div className="p-4 sm:p-5 max-h-[65vh] sm:max-h-[70vh] overflow-y-auto mb-5 hide-scrollbar">
+
+            {/* SERVICES */}
             <div className="space-y-4">
               {services.map((service) => {
                 const isOpen = expanded === service._id;
 
                 return (
                   <div key={service._id} className="overflow-hidden">
-                    {/* SERVICE HEADER */}
-                    <div className="flex items-center justify-between ">
+
+                    {/* HEADER */}
+                    <div className="flex items-center justify-between gap-3">
+
                       <button
                         onClick={() => setExpanded(isOpen ? null : service._id)}
                         className="flex-1 text-left"
@@ -130,7 +140,7 @@ export default function HamburgerMenu({ open, onClose }: Props) {
                           initial={{ opacity: 0, y: 300 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.6, ease: "easeOut" }}
-                          className={`text-xs text-gray-700 block ${!open && 'hidden'}`}
+                          className={`text-[10px] sm:text-xs text-gray-700 block ${!open && "hidden"}`}
                         >
                           {service.index}
                         </motion.span>
@@ -139,8 +149,7 @@ export default function HamburgerMenu({ open, onClose }: Props) {
                           initial={{ opacity: 0, y: 300 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.6, ease: "easeOut" }}
-                          className={`text-[20px] font-semibold transition text-black
-                            ${!open && 'hidden'}`}
+                          className={`text-[16px] sm:text-[18px] lg:text-[20px] font-semibold text-black transition ${!open && "hidden"}`}
                         >
                           {service.title}
                         </motion.h2>
@@ -151,28 +160,29 @@ export default function HamburgerMenu({ open, onClose }: Props) {
                           onClose();
                           router.push(`/services/${service.slug}`);
                         }}
-                        className={`w-9 h-9 rounded-lg border border-white/30 flex items-center justify-center ${!open && 'hidden'}`}
+                        className={`w-8 h-8 sm:w-9 sm:h-9 rounded-lg border border-white/30 flex items-center justify-center ${!open && "hidden"}`}
                       >
-                        <ArrowRight size={16} className='text-black'/>
+                        <ArrowRight size={16} className="text-black" />
                       </button>
+
                     </div>
 
                     {/* SUB SERVICES */}
                     {isOpen && (
-                      <ul className="mt-3 space-y-2 text-sm text-black">
+                      <ul className="mt-3 space-y-2 text-xs sm:text-sm text-black">
                         {service.subServices?.map((sub) => (
                           <motion.li
+                            key={sub._id}
                             initial={{ opacity: 0, y: 300 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, ease: "easeOut" }}
-                            key={sub._id}
                             onClick={() => {
                               onClose();
                               router.push(
                                 `/services/${service.slug}/${sub.slug}`
                               );
                             }}
-                            className={`cursor-pointer hover:text-teal-400 transition ${!open && 'hidden'}`}
+                            className={`cursor-pointer hover:text-teal-400 transition ${!open && "hidden"}`}
                           >
                             {sub.title}
                           </motion.li>
@@ -185,51 +195,35 @@ export default function HamburgerMenu({ open, onClose }: Props) {
             </div>
 
             {/* DIVIDER */}
-            <div className={`my-8 border-t text-gray-300 ${!open && 'hidden'}`} />
+            <div className={`my-6 sm:my-8 border-t text-gray-300 ${!open && "hidden"}`} />
 
             {/* STATIC LINKS */}
             <div className="space-y-3">
+
               <MotionLink
-                initial={!hasAnimated.current ? { opacity: 0, y: 300 } : false}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-                onAnimationComplete={() => {
-                  hasAnimated.current = true;
-                }}
                 href="/about-us"
                 onClick={onClose}
-                className={`block text-[18px] font-semibold text-black hover:opacity-70 transition ${!open && 'hidden'}`}
+                className={`block text-[16px] sm:text-[18px] font-semibold text-black hover:opacity-70 transition ${!open && "hidden"}`}
               >
                 About us
               </MotionLink>
 
               <MotionLink
-                initial={!hasAnimated.current ? { opacity: 0, y: 300 } : false}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-                onAnimationComplete={() => {
-                  hasAnimated.current = true;
-                }}
                 href="/blogs"
                 onClick={onClose}
-                className={`block text-[18px] font-semibold text-black hover:opacity-70 transition ${!open && 'hidden'}`}
+                className={`block text-[16px] sm:text-[18px] font-semibold text-black hover:opacity-70 transition ${!open && "hidden"}`}
               >
                 Blog
               </MotionLink>
 
               <MotionLink
-                initial={!hasAnimated.current ? { opacity: 0, y: 300 } : false}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-                onAnimationComplete={() => {
-                  hasAnimated.current = true;
-                }}
                 href="/contact"
                 onClick={onClose}
-                className={`block text-[18px] font-semibold text-black hover:opacity-70 transition ${!open && 'hidden'}`}
+                className={`block text-[16px] sm:text-[18px] font-semibold text-black hover:opacity-70 transition ${!open && "hidden"}`}
               >
                 Contacts
               </MotionLink>
+
             </div>
 
           </div>
