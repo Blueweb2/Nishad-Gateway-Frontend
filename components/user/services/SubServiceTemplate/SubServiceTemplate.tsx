@@ -39,6 +39,7 @@ type OwnershipSlide = {
   leftText?: string;
   rightText?: string;
   image: string;
+  _id: string;
 };
 
 type EntityRow = {

@@ -16,7 +16,7 @@ const slides = [
     alt: "Company Formation Overview",
     title: "Company Formation Overview",
     description:
-      "The company formation in Saudi Arabia process begins with securing a foreign investor license from the Ministry of Investment of Saudi Arabia followed by Commercial Registration (CR) from the Ministry of Commerce. Businesses commonly establish operations in major commercial hubs like Riyadh and Jeddah depending on their industry and expansion strategy.",
+      "Company formation in Saudi Arabia starts with an investment license from the Ministry of Investment, followed by Commercial Registration (CR) from the Ministry of Commerce, with many businesses establishing operations in Riyadh or Jeddah.",
     linkText: "Understand Business Setup",
     link: "/services/company-formation",
   },

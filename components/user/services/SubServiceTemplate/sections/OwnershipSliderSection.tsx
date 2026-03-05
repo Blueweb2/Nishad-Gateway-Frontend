@@ -11,6 +11,7 @@ export type OwnershipSlide = {
   leftText?: string; // Left text (Universal 100% rules)
   rightText?: string; // Right text (Sector exceptions)
   image: string;
+  _id: string;
 };
 
 type Props = {
@@ -44,6 +45,10 @@ export default function OwnershipSliderSection({
     setActive((prev) => (prev - 1 + total) % total);
   };
 
+  const ids = ['69a806bdceba1146875a98d9','69a806bdceba1146875a98da','69a806bdceba1146875a98db','69a806bdceba1146875a98dc','69a806bdceba1146875a98dd','69a806bdceba1146875a98de','69a806bdceba1146875a98df','69a806bdceba1146875a98e0'];
+
+  const stageIndex = ids.indexOf(current?._id ?? "");
+
   return (
     <section className="w-full bg-black text-white">
       <div className="relative w-full h-screen overflow-hidden">
@@ -68,7 +73,6 @@ export default function OwnershipSliderSection({
 
         {/* Dark tint */}
         <div className="absolute inset-0 bg-black/60" />
-        {/* <div className="absolute top-[65%] h-[1px] w-full bg-white/25" /> */}
 
         {/* Capsule cut-out (remove tint inside capsule) */}
         <div
@@ -99,7 +103,7 @@ export default function OwnershipSliderSection({
                   initial={{ y: 40, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.6, ease: "easeOut" }}
-                  className="mt-16 text-white text-lg font-medium leading-none w-[90px]"
+                  className="mt-16 text-white text-lg font-medium leading-none w-[100px]"
                 >
                   {current.leftText}
                 </motion.p>
@@ -112,14 +116,19 @@ export default function OwnershipSliderSection({
             {/* CAPSULE */}
             <div className="flex-1 flex items-center justify-center">
               <div className="relative w-[26vw] h-[32vw] rounded-[200px] border border-white/25">
-                <div className="absolute inset-0 flex items-center justify-center px-12 text-center">
+                <div className="absolute inset-0 flex items-center justify-center px-15 text-center">
                   <motion.h3
                     key={active}
                     initial={{ y: 40, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.6, ease: "easeOut" }}
-                    className="text-2xl md:text-3xl font-semibold leading-snug text-white"
+                    className="text-2xl md:text-3xl font-semibold leading-snug text-white flex flex-col"
                   >
+                    {stageIndex !== -1 && (
+                      <span className="text-green-400 font-medium text-[12px] mr-2 uppercase">
+                        Stage {stageIndex + 1}
+                      </span>
+                    )}
                     {current?.title || "No Capsule Text"}
                   </motion.h3>
                 </div>
@@ -135,13 +144,13 @@ export default function OwnershipSliderSection({
                   initial={{ y: 40, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.6, ease: "easeOut" }}
-                  className="mt-8 mr-10 pr-5 lg:pr-0 w-full text-white text-lg font-medium leading-snug text-[1vw]"
+                  className="mt-8  lg:pr-0 w-full text-white text-lg font-medium leading-snug text-[1vw]"
                 >
                   {current.rightText}
                 </motion.p>
               )}
 
-              <div className="mt-10 h-[1px] w-full bg-white/25 mr-10" />
+              <div className="mt-10 h-[1px] w-full bg-white/25" />
             </div>
           </div>
         </div>
