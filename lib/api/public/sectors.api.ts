@@ -22,7 +22,7 @@ export const getPublicSectors = async () => {
 export const getSectorBySlugPublic = async (slug: string) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/sectors/${slug}`,
+      `${process.env.API_URL}/sectors/${slug}`,
       { next: { revalidate: 60 } }
     );
 
