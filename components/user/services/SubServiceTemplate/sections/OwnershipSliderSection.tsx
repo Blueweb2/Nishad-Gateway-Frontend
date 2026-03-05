@@ -45,7 +45,7 @@ export default function OwnershipSliderSection({
     setActive((prev) => (prev - 1 + total) % total);
   };
 
-  const ids = ["69a6663219788cce90ea9cb9", "69a6663219788cce90ea9cba", "69a6663219788cce90ea9cbb", "69a6663219788cce90ea9cbc", "69a6663219788cce90ea9cbd", "69a6663219788cce90ea9cbe","69a6663219788cce90ea9cbf","69a6663219788cce90ea9cc0"];
+  const ids = ['69a806bdceba1146875a98d9','69a806bdceba1146875a98da','69a806bdceba1146875a98db','69a806bdceba1146875a98dc','69a806bdceba1146875a98dd','69a806bdceba1146875a98de','69a806bdceba1146875a98df','69a806bdceba1146875a98e0'];
 
   const stageIndex = ids.indexOf(current?._id ?? "");
 
@@ -73,7 +73,6 @@ export default function OwnershipSliderSection({
 
         {/* Dark tint */}
         <div className="absolute inset-0 bg-black/60" />
-        {/* <div className="absolute top-[65%] h-[1px] w-full bg-white/25" /> */}
 
         {/* Capsule cut-out (remove tint inside capsule) */}
         <div
