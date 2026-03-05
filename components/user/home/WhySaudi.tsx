@@ -133,7 +133,7 @@ export default function WhySaudi() {
                   {slides[index].title}
                 </h3>
 
-                <p className="text-gray-600 leading-tight text-base md:text-lg">
+                <p className="text-gray-600 leading-tight text-base md:text-lg h-[90px] md:h-auto">
                   {slides[index].content}
                 </p>
               </div>
