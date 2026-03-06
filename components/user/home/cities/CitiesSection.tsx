@@ -66,7 +66,7 @@ export default function CitiesSection() {
 
       {/* Slider Container */}
       <div
-        className="relative overflow-hidden min-h-dvh"
+        className="relative overflow-hidden min-h-[77dvh] md:min-h-dvh"
         data-menu=""
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
@@ -96,11 +96,11 @@ export default function CitiesSection() {
         flex items-center gap-6
         md:flex-col md:items-center
         md:right-10 md:left-auto md:top-1/2 md:-translate-y-1/2 md:translate-x-0
-        "
+        w-full md:w-auto px-[4vw] md:px-0"
       >
 
         {/* Counter */}
-        <div className="text-white flex items-start gap-1">
+        <div className="text-white hidden md:flex items-start gap-1">
           <span className="text-[22px] md:text-[28px] font-bold leading-none">
             {current}
           </span>
@@ -110,7 +110,7 @@ export default function CitiesSection() {
         </div>
 
         {/* Arrows */}
-        <div className="flex md:flex-col items-center gap-4">
+        <div className="hidden md:flex md:flex-col items-center gap-4">
           <OvalArrow
             direction="left"
             onClick={prev}
@@ -121,6 +121,34 @@ export default function CitiesSection() {
             onClick={next}
             className="w-[26px] h-[40px] md:w-[32px] md:h-[48px] transition-transform hover:scale-110 active:scale-95"
           />
+        </div>
+
+        {/* Counter and Arrows ( ONLY SHOW IN MOBILE ) */}
+        <div className="md:hidden relative w-full">
+            {/* Counter */}
+          <div className="text-white flex items-start justify-center gap-1 absolute left-1/2 top-1/2 
+          -translate-x-1/2 -translate-y-1/2">
+            <span className="text-[22px] md:text-[28px] font-bold leading-none">
+              {current}
+            </span>
+            <span className="text-white/60 text-sm md:text-lg leading-none pt-[2px]">
+              /{total}
+            </span>
+          </div>
+
+          {/* Arrows */}
+          <div className="flex items-center justify-between gap-4">
+            <OvalArrow
+              direction="left"
+              onClick={prev}
+              className="w-[26px] h-[40px] md:w-[32px] md:h-[48px] transition-transform hover:scale-110 active:scale-95"
+            />
+            <OvalArrow
+              direction="right"
+              onClick={next}
+              className="w-[26px] h-[40px] md:w-[32px] md:h-[48px] transition-transform hover:scale-110 active:scale-95"
+            />
+          </div>
         </div>
 
       </div>

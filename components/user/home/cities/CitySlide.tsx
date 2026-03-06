@@ -44,7 +44,7 @@ export default function CitySlide({ city }: Props) {
       {/* Overlay */}
       <div className="absolute inset-0 z-10 bg-black/40" />
 
-      <div className="relative z-20  mx-auto  h-full flex flex-col pt-[6vw] px-[4vw] max-w-[91.6vw]">
+      <div className="relative z-20  mx-auto  h-full flex flex-col pt-12 md:pt-[6vw]  max-w-[91.6vw]">
 
         {/* Section Title */}
         <motion.h2
@@ -57,7 +57,7 @@ export default function CitySlide({ city }: Props) {
         </motion.h2>
 
         {/* Heading + Description*/}
-        <div className="grid md:grid-cols-3 gap-8 items-start mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-8 items-end mb-6">
 
           {/* Heading */}
           <motion.h4
@@ -75,7 +75,7 @@ export default function CitySlide({ city }: Props) {
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="text-white/90 text-sm md:text-base lg:text-[1vw] leading-relaxed max-w-lg md:max-w-[20vw] text-left"
+              className="text-white/90 text-sm md:text-base lg:text-[1vw] leading-tight md:leading-relaxed max-w-lg md:max-w-[20vw] text-left"
             >
               {city.description}
             </motion.p>
