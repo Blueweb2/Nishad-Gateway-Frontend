@@ -80,7 +80,7 @@ export default function Navbar() {
                 width={220}
                 height={80}
                 priority
-                className="cursor-pointer transition-opacity duration-300 w-[140px] sm:w-[180px] lg:w-[220px] h-auto"
+                className="cursor-pointer transition-opacity duration-300 w-[160px] sm:w-[180px] lg:w-[220px] h-auto"
               />
             </Link>
 

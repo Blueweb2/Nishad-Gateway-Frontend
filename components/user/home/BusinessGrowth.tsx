@@ -64,22 +64,27 @@ export default function BusinessGrowth() {
 
   const activeSlide = slides[activeIndex];
 
+
   return (
-    <section data-navbar="light" data-menu="dark-text"
-      className="relative w-full  bg-white text-black overflow-hidden flex flex-col justify-center pb-10"
+    <section
+      data-navbar="light"
+      data-menu="dark-text"
+      className="relative w-full bg-white text-black overflow-hidden flex flex-col justify-center pb-3 md:pb-12 pt-12 md:py-16"
     >
+
       {/* ================= FULL-WIDTH CONTROLS ================= */}
-      <div className="absolute inset-x-0 top-0 h-full pointer-events-none z-20">
-        <div className="w-full h-full flex items-center justify-between px-10">
+      <div className="absolute inset-x-0 top-20 md:top-0 h-full pointer-events-none z-20">
+        <div className="w-full h-full flex items-start sm:items-center justify-between px-2 sm:px-6 md:px-10">
+          
           <div className="pointer-events-auto">
-            <div className="flex items-center gap-2 text-sm text-gray-400">
+            <div className="flex items-center gap-2 text-xs md:text-sm text-gray-400">
               <span>{String(activeIndex + 1).padStart(2, "0")}</span>
               <span>|</span>
               <span>{String(slides.length).padStart(2, "0")}</span>
             </div>
           </div>
 
-          <div className="pointer-events-auto flex gap-6">
+          <div className="pointer-events-auto flex gap-3 md:gap-6">
             <OvalArrow
               direction="left"
               variant="gray"
@@ -91,33 +96,33 @@ export default function BusinessGrowth() {
               onClick={() => swiperRef.current?.slideNext()}
             />
           </div>
+
         </div>
       </div>
 
-      {/* ================= CONSTRAINED CONTENT ================= */}
-      <div className="relative z-10 max-w-[1320px] mx-auto  w-full ">
+      {/* ================= CONTENT ================= */}
+      <div className="relative z-10 max-w-[1320px] mx-auto w-full px-4 sm:px-6">
 
-        {/* HEADING */}
+        {/* HEADING mx-auto*/}
         <FadeUpScroll delay={0.2}>
-          <div className="max-w-3xl mx-auto mt-18 text-center mb-12">
-            <h2 className="text-[38px] font-bold leading-tight">
+          <div className="max-w-3xl mx-20 md:mx-auto text-center mb-10 md:mb-16">
+            <h2 className="text-2xl sm:text-3xl md:text-[38px] font-bold leading-tight">
               How Business Works in Saudi Arabia
             </h2>
           </div>
         </FadeUpScroll>
 
-        <div className="grid grid-cols-3 gap-12 items-center">
+        {/* GRID */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-12 items-center">
 
-          {/* LEFT COLUMN */}
-          <div className="relative min-h-[480px] ">
+          {/* LEFT COLUMN ( NOT MOBAIL VIEW ) */}
+          <div className="relative hidden md:block sm:h-[80px] md:min-h-[480px] text-center md:text-right">
 
-            {/* Center Divider */}
-            <div className="absolute left-0 right-0 top-1/2 h-px bg-gray-200" />
+            <div className="hidden md:block absolute left-0 right-0 top-1/2 h-px bg-gray-200" />
 
-            {/* Text above divider */}
-            <div className="absolute top-1/2 right-0 -translate-y-full pb-6  w-[100%]">
+            <div className="md:absolute md:top-1/2 md:right-0 md:-translate-y-full md:pb-6 w-full">
               <FadeUpScroll delay={0.3} key={activeIndex}>
-                <p className="text-[36px] font-medium text-[#287F7F] max-w-sm pr-24 leading-snug">
+                <p className="text-xl sm:text-2xl md:text-[36px] font-medium text-[#287F7F] md:max-w-sm md:pr-24 leading-snug text-center md:text-left">
                   {activeSlide.title}
                 </p>
               </FadeUpScroll>
@@ -126,7 +131,8 @@ export default function BusinessGrowth() {
           </div>
 
           {/* CENTER SLIDER */}
-          <div className="flex flex-col items-center self-start">
+          <div className="flex flex-col items-center">
+
             <Swiper
               modules={[EffectFade, Autoplay]}
               effect="fade"
@@ -141,12 +147,16 @@ export default function BusinessGrowth() {
               }}
               onSwiper={(swiper) => (swiperRef.current = swiper)}
               onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
-              className="w-[380px] h-[500px]"
+              className="w-full max-w-[280px] sm:max-w-[340px] md:max-w-[380px] h-[360px] sm:h-[420px] md:h-[500px]"
             >
               {slides.map((slide, index) => (
                 <SwiperSlide key={index}>
-                  <div className="relative w-[380px] h-[500px] rounded-[150px] overflow-hidden">
-                    <img src={slide.src} alt={slide.alt} className="w-full h-full" />
+                  <div className="relative w-full h-full rounded-[120px] md:rounded-[150px] overflow-hidden">
+                    <img
+                      src={slide.src}
+                      alt={slide.alt}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                 </SwiperSlide>
               ))}
@@ -154,22 +164,36 @@ export default function BusinessGrowth() {
 
             <Link
               href={activeSlide.link}
-              className="text-sm text-green-600 underline underline-offset-4 pt-6 inline-block"
+              className="hidden md:inline-block text-sm text-green-600 underline underline-offset-4 pt-6 "
             >
               {activeSlide.linkText}
             </Link>
+
+              {/* HEADING (ONLY IN MOBILE) */}
+            <div className="relative  md:hidden sm:h-[80px] md:min-h-[480px] text-center md:text-right pt-6">
+
+              <div className="hidden md:block absolute left-0 right-0 top-1/2 h-px bg-gray-200" />
+
+              <div className="md:absolute md:top-1/2 md:right-0 md:-translate-y-full md:pb-6 w-full">
+                <FadeUpScroll delay={0.3} key={activeIndex}>
+                  <p className="text-xl sm:text-2xl md:text-[36px] font-medium text-[#287F7F] md:max-w-sm md:pr-24 leading-snug text-center md:text-center">
+                    {activeSlide.title}
+                  </p>
+                </FadeUpScroll>
+              </div>
+
+            </div>
+
           </div>
 
           {/* RIGHT COLUMN */}
-          <div className="relative min-h-[480px]">
+          <div className="relative min-h-[120px] md:min-h-[480px] text-center md:text-left">
 
-            {/* Center Divider */}
-            <div className="absolute left-0 right-0 top-1/2 h-px bg-gray-200" />
+            <div className="hidden md:block absolute left-0 right-0 top-1/2 h-px bg-gray-200" />
 
-            {/* Text above divider */}
-            <div className="absolute top-1/2 -translate-y-full pb-6 w-[75%]">
+            <div className="md:absolute md:top-1/2 md:-translate-y-full md:pb-6 w-full md:w-[75%]">
               <FadeUpScroll delay={0.4} key={activeIndex + "desc"}>
-                <p className="text-gray-500 leading-relaxed max-w-sm description-text">
+                <p className="text-gray-500 leading-relaxed max-w-md mx-auto md:mx-0 description-text">
                   {activeSlide.description}
                 </p>
               </FadeUpScroll>
@@ -177,7 +201,16 @@ export default function BusinessGrowth() {
 
           </div>
 
+          {/* LINK (ONLY DISPLAY IN MOBILE) */}
+          <Link
+            href={activeSlide.link}
+            className="inline-block md:hidden text-sm text-green-600 underline underline-offset-4 text-center"
+          >
+            {activeSlide.linkText}
+          </Link>
+
         </div>
+
       </div>
     </section>
   );
