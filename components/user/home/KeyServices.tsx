@@ -36,10 +36,10 @@ export default function KeyServices() {
       data-navbar="light"
       data-menu="dark-text"
     >
-      <div className="max-w-8xl mx-auto px-6 py-24">
+      <div className="max-w-8xl mx-auto pl-6 pr-0 lg:px-6 py-12 lg:py-24">
 
         {/* HEADER */}
-        <div className="flex items-center justify-between mb-16">
+        <div className="flex items-center justify-between mb-8 lg:mb-16">
           <FadeUpScroll delay={0.1}>
             <h2 className="text-[30px] font-semibold">
               Top Investment Sectors in Saudi Arabia
@@ -48,15 +48,19 @@ export default function KeyServices() {
         </div>
 
         {/* GRID */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-6 gap-y-8">
+        <div 
+          className="flex md:flex overflow-x-auto gap-6 lg:grid lg:grid-cols-4 xl:grid-cols-5 lg:overflow-visible hide-scrollbar"
+        >
           {sectors.map((sector) => (
-            <Card
-              key={sector._id}
-              slug={sector.slug}
-              icon={sector.coverImage?.url}
-              title={sector.title}
-              description={sector.excerpt}
-            />
+            <div className="min-w-[260px] lg:min-w-0" key={sector._id}>
+              <Card
+                key={sector._id}
+                slug={sector.slug}
+                icon={sector.coverImage?.url}
+                title={sector.title}
+                description={sector.excerpt}
+              />
+            </div>
           ))}
         </div>
       </div>
@@ -118,6 +122,7 @@ function Card({
               opacity-100 translate-y-0
               group-hover:opacity-5
               group-hover:translate-y-5
+              hidden lg:block
             "
           >
             {title}
@@ -125,14 +130,22 @@ function Card({
 
           {/* Hover Description */}
           <div
-            className="
+            className=" 
               text-white text-sm leading-[16px]
-              opacity-0 translate-y-4
+              lg:opacity-0 lg:translate-y-4
               transition-all duration-300
-              group-hover:opacity-100
-              group-hover:translate-y-0
+              lg:group-hover:opacity-100
+              lg:group-hover:translate-y-0
             "
           >
+              {/* text-white text-sm leading-[16px]
+
+    opacity-100 translate-y-0
+    lg:opacity-0 lg:translate-y-4
+
+    transition-all duration-300
+    lg:group-hover:opacity-100
+    lg:group-hover:translate-y-0 */}
             <p className="text-[14px] font-medium pb-2.5 uppercase">
               {title}
             </p>
