@@ -3,6 +3,7 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { useRef } from "react";
+import OvalArrow from "@/components/user/ui/OvalArrow";
 
 interface Props {
   title: string;
@@ -19,21 +20,17 @@ export default function SectorSliderSection({
   description,
   items,
 }: Props) {
-  const prevRef = useRef<HTMLButtonElement>(null);
-  const nextRef = useRef<HTMLButtonElement>(null);
+  const prevRef = useRef<HTMLDivElement>(null);
+  const nextRef = useRef<HTMLDivElement>(null);
 
   return (
-    <section className="bg-[#8f8a86] py-24 overflow-hidden">
+    <section className="bg-[#8f8a86] py-24 overflow-hidden" data-navbar="light">
       <div className="max-w-7xl mx-auto px-6">
 
         {/* Header */}
         <div className="flex justify-between items-start mb-16">
 
           <div>
-            <div className="text-white/60 text-sm mb-4">
-              01 | {items.length.toString().padStart(2, "0")}
-            </div>
-
             <h2 className="text-4xl md:text-5xl font-bold text-white max-w-xl leading-tight">
               {title}
             </h2>
@@ -44,21 +41,16 @@ export default function SectorSliderSection({
           </div>
 
           {/* Navigation */}
-          <div className="flex gap-3 ml-6">
-            <button
-              ref={prevRef}
-              className="w-10 h-10 border border-white/50 rounded-full text-white flex items-center justify-center"
-            >
-              ←
-            </button>
+          <div className="flex gap-3">
+            <div ref={prevRef}>
+              <OvalArrow direction="left" variant="gray" />
+            </div>
 
-            <button
-              ref={nextRef}
-              className="w-10 h-10 border border-white/50 rounded-full text-white flex items-center justify-center"
-            >
-              →
-            </button>
+            <div ref={nextRef}>
+              <OvalArrow direction="right" variant="gray" />
+            </div>
           </div>
+
         </div>
 
         {/* Slider */}
@@ -80,7 +72,7 @@ export default function SectorSliderSection({
               }
             });
           }}
-          navigation
+          navigation={false}
           breakpoints={{
             768: { slidesPerView: 1.5 },
             1024: { slidesPerView: 2 },

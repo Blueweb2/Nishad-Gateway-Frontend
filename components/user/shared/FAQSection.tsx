@@ -31,7 +31,7 @@ export default function FAQSection({
 
   return (
     <section className="w-full bg-white py-16">
-      <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
+      <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-12 items-center" data-navbar="light">
         
  {/* LEFT IMAGE BLOCK */}
 {imageUrl && (

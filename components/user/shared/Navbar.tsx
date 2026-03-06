@@ -64,13 +64,14 @@ export default function Navbar() {
       {/* NAVBAR */}
       <header
         className={`
-        fixed top-0 left-0 w-full z-[9999]
-        transition-all duration-300
-        ${isLight ? "bg-white" : "bg-transparent"}
+          fixed top-0 left-0 w-screen z-[9999]
+          transition-all duration-300
+          ${isLight ? "bg-white" : "bg-transparent"}
         `}
       >
-        <div className="w-full mx-auto px-6 pt-6">
-          <nav className="flex items-center justify-between px-1 py-3 relative">
+        <div className="w-full mx-auto px-4 sm:px-6 lg:px-10 pt-4 sm:pt-6">
+          <nav className="flex items-center justify-between py-2 sm:py-3 relative">
+
             {/* LEFT — LOGO */}
             <Link href="/" aria-label="Go to Home">
               <Image
@@ -79,13 +80,14 @@ export default function Navbar() {
                 width={220}
                 height={80}
                 priority
-                className="cursor-pointer transition-opacity duration-300"
+                className="cursor-pointer transition-opacity duration-300 w-[160px] sm:w-[180px] lg:w-[220px] h-auto"
               />
             </Link>
 
             {/* CENTER — SERVICES + BLOG */}
-            <div className="hidden md:flex items-center gap-5 absolute left-1/2 -translate-x-1/2">
-              {/*  Services Button */}
+            <div className="hidden md:flex items-center gap-3 lg:gap-5 absolute left-1/2 -translate-x-1/2">
+
+              {/* Services */}
               <button
                 onClick={() => {
                   setOpenServices((prev) => !prev);
@@ -93,28 +95,30 @@ export default function Navbar() {
                 }}
                 className={`
                   flex items-center gap-2
-                  px-4 py-2 rounded-full
-                  text-sm font-medium
+                  px-3 lg:px-4 py-2 rounded-full
+                  text-xs lg:text-sm font-medium
                   transition-all
                   ${isLight
                     ? openServices
                       ? "bg-black text-white shadow-md"
                       : "bg-black/[0.04] text-black border border-black/10 hover:bg-black/[0.08]"
                     : openServices
-                      ? "bg-white text-gray-900 shadow-md"
-                      : "bg-white/10 text-white border border-white/20 hover:bg-white/20"
+                    ? "bg-white text-gray-900 shadow-md"
+                    : "bg-white/10 text-white border border-white/20 hover:bg-white/20"
                   }
                 `}
               >
                 Services
                 <span
-                  className={`text-lg leading-none transition-transform ${openServices ? "rotate-45" : ""}`}
+                  className={`text-lg leading-none transition-transform ${
+                    openServices ? "rotate-45" : ""
+                  }`}
                 >
                   +
                 </span>
               </button>
 
-              {/*  Blog Button */}
+              {/* Blog */}
               <button
                 onClick={() => {
                   setOpenBlogs((prev) => !prev);
@@ -122,35 +126,43 @@ export default function Navbar() {
                 }}
                 className={`
                   flex items-center gap-2
-                  px-4 py-2 rounded-full
-                  text-sm font-medium
+                  px-3 lg:px-4 py-2 rounded-full
+                  text-xs lg:text-sm font-medium
                   transition-all
                   ${isLight
                     ? openBlogs
                       ? "bg-black text-white shadow-md"
                       : "bg-black/[0.05] text-black border border-black/10 hover:bg-black/[0.08]"
                     : openBlogs
-                      ? "bg-white text-gray-900 shadow-md"
-                      : "bg-white/10 text-white border border-white/20 hover:bg-white/20"
+                    ? "bg-white text-gray-900 shadow-md"
+                    : "bg-white/10 text-white border border-white/20 hover:bg-white/20"
                   }
                 `}
               >
                 Blog
-                <span className={`text-lg leading-none transition-transform ${openBlogs ? "rotate-45" : ""}`}>
+                <span
+                  className={`text-lg leading-none transition-transform ${
+                    openBlogs ? "rotate-45" : ""
+                  }`}
+                >
                   +
                 </span>
               </button>
             </div>
 
-            {/* RIGHT — PHONE + CTA + MENU */}
-            <div className="flex items-center gap-10">
+            {/* RIGHT */}
+            <div className="flex items-center gap-3 sm:gap-5 lg:gap-8">
+
               {/* Phone */}
-              <span className={`hidden md:block text-sm ${isLight ? "text-black" : "text-white"}`}>
+              <span
+                className={`hidden lg:block text-sm ${
+                  isLight ? "text-black" : "text-white"
+                }`}
+              >
                 +966 55 123 4567
               </span>
 
-
-              {/* Contact Us */}
+              {/* Contact */}
               <button
                 onClick={() => {
                   setOpenContact(true);
@@ -160,8 +172,8 @@ export default function Navbar() {
                 }}
                 className={`
                   flex items-center gap-2
-                  text-sm font-medium
-                  px-5 py-2 rounded-full
+                  text-xs sm:text-sm font-medium
+                  px-3 sm:px-4 lg:px-5 py-2 rounded-full
                   transition
                   ${isLight
                     ? "bg-black text-white hover:bg-gray-900"
@@ -169,13 +181,13 @@ export default function Navbar() {
                   }
                 `}
               >
-                Contact Us
-                <Mail size={16} />
+                <span className="hidden sm:inline">Contact Us</span>
+                <Mail className="w-5 h-5" />
               </button>
 
               <ContactPopup open={openContact} onClose={() => setOpenContact(false)} />
 
-              {/* Hamburger / Close Button */}
+              {/* MENU BUTTON */}
               <button
                 onClick={() => {
                   setOpenMenu((prev) => !prev);
@@ -184,27 +196,34 @@ export default function Navbar() {
                 }}
                 className={`
                   relative flex items-center justify-center
-                  w-14 h-10 rounded-full
+                  w-10 sm:w-12 lg:w-14
+                  h-9 sm:h-10
+                  rounded-full
                   transition-all duration-300
-                  ${openMenu
-                    ? "bg-green-700 hover:bg-green-600"
-                    : isLight
+                  ${
+                    openMenu
+                      ? "bg-green-700 hover:bg-green-600"
+                      : isLight
                       ? "bg-white/70 border border-black/10"
                       : "bg-black/30 border border-white/70 backdrop-blur-md"
                   }
                 `}
               >
                 {openMenu ? (
-                  <span className="text-white text-xl font-semibold leading-none">×</span>
+                  <span className="text-white text-lg sm:text-xl font-semibold leading-none">
+                    ×
+                  </span>
                 ) : (
                   <div className="flex flex-col gap-1">
                     <span
-                      className={`w-5 h-[2px] rounded-full ${isLight ? "bg-black" : "bg-white"
-                        }`}
+                      className={`w-4 sm:w-5 h-[2px] rounded-full ${
+                        isLight ? "bg-black" : "bg-white"
+                      }`}
                     />
                     <span
-                      className={`w-5 h-[2px] rounded-full ${isLight ? "bg-black" : "bg-white"
-                        }`}
+                      className={`w-4 sm:w-5 h-[2px] rounded-full ${
+                        isLight ? "bg-black" : "bg-white"
+                      }`}
                     />
                   </div>
                 )}
@@ -219,8 +238,8 @@ export default function Navbar() {
       {/* SERVICES POPUP */}
       <ServicesPopup open={openServices} onClose={() => setOpenServices(false)} />
 
-      {/*  BLOGS POPUP */}
+      {/* BLOGS POPUP */}
       <BlogsPopup open={openBlogs} onClose={() => setOpenBlogs(false)} />
     </>
-  );
+  )
 }

@@ -6,7 +6,7 @@ import FadeUpMount from "../ui/FadeUpMount";
 
 export default function HeroSection() {
   return (
-    <section className="relative w-full h-screen overflow-hidden">
+    <section className="relative w-full min-h-dvh overflow-hidden">
 
       {/* Background Image */}
       <Image
@@ -15,33 +15,33 @@ export default function HeroSection() {
         fill
         priority
         className="object-cover"
+        sizes="100vw"
       />
 
       {/* Water Effect */}
       <WaterTouchHover className="z-[5]" strength={1.5} />
 
-      {/* Gradient Overlay */}
-      {/* <div className="absolute inset-0 z-[6] pointer-events-none bg-gradient-to-b from-black/60 via-black/30 to-black/60" /> */}
-
       {/* Content */}
-      <div className="relative z-10 h-full flex flex-col px-6">
+      <div className="relative z-10 min-h-dvh flex flex-col px-4 sm:px-6 lg:px-6 py-14 md:py-0">
         <div className="mt-auto mb-[10px] text-center">
 
           <FadeUpMount delay={0.3}>
-            <p className="text-white text-[35px] lg:text-[40px] mb-1">
+            <p className="text-white text-[20px] sm:text-[26px] md:text-[30px] lg:text-[35px] xl:text-[40px] mb-1">
               Your Gateway to
             </p>
           </FadeUpMount>
 
           <FadeUpMount delay={0.6}>
-            <h2 className="text-white font-extrabold text-[16vw] leading-[0.85] text-center whitespace-nowrap">
+            <h2 className="text-white font-extrabold leading-[0.85] text-center text-[58px] sm:text-[16vw] 
+              md:text-[40px] lg:text-[16vw] whitespace-nowrap"
+            >
               Saudi Arabia
             </h2>
           </FadeUpMount>
 
-
         </div>
       </div>
+
     </section>
   );
-}
+};

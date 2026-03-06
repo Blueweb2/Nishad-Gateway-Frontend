@@ -7,7 +7,7 @@ interface Props {
 export default function SectorIntro({ content }: Props) {
   const cleanedContent = content.replace(/<p><\/p>/g, "");
   return (
-    <section className="bg-white py-24">
+    <section className="bg-white py-24" data-navbar="light">
       <div className="max-w-5xl mx-auto px-6">
 
         <div

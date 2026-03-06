@@ -119,7 +119,7 @@ export default function BlogsPopup({
             {/* POPUP – OUTER */}
             <div
                 onClick={(e) => e.stopPropagation()}
-                className={`fixed top-20 left-1/2 w-[340px] sm:w-[360px] z-50
+                className={`fixed top-20 left-1/2 w-[340px] sm:w-[360px] z-50 sm:hidden md:block
                 ${open ? "animate-sheetReveal" : "animate-sheetHide"}`}
             >
                 {/* INNER CARD */}

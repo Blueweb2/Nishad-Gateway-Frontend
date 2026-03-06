@@ -85,16 +85,17 @@ export default function WhySaudi() {
   return (
     <section
       className="relative w-full bg-green-50 text-black
-                 py-12 md:py-12 px-6 md:px-16" data-menu="dark-text" data-navbar="light"
+                py-12 px-6 md:px-16"
+      data-menu="dark-text"
+      data-navbar="light"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-
       {/* Grid Layout */}
-      <div className="grid md:grid-cols-3 gap-12 items-center">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12 items-center">
 
-        {/* Left Static Title */}
-        <div>
+        {/* Left Title */}
+        <div className="text-center md:text-left">
           <p className="text-lg md:text-2xl font-semibold">Why</p>
           <h2 className="text-3xl md:text-5xl font-bold leading-tight">
             Saudi Arabia
@@ -102,7 +103,7 @@ export default function WhySaudi() {
         </div>
 
         {/* Slide Content */}
-        <div className=" min-h-[220px] relative">
+        <div className="relative min-h-[240px] flex justify-center md:block">
 
           <AnimatePresence custom={direction} mode="wait">
             <motion.div
@@ -113,26 +114,26 @@ export default function WhySaudi() {
               animate="center"
               exit="exit"
               transition={{ duration: 0.5, ease: "easeInOut" }}
-              className="flex flex-col gap-8 items-start"
+              className="flex flex-col gap-6 md:gap-8 items-center md:items-start text-center md:text-left"
             >
               {/* Image */}
-              <div className="w-40 h-40 md:w-48 md:h-48 flex items-center justify-start mb-8">
+              <div className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 flex items-center justify-center md:justify-start">
                 <Image
                   src={slides[index].image}
                   alt={slides[index].title}
-                  width={110}
-                  height={110}
-                  className="object-contain md:w-[130px] md:h-[130px]"
+                  width={130}
+                  height={130}
+                  className="object-contain"
                 />
               </div>
 
               {/* Text */}
-              <div className="max-w-md">
+              <div className="max-w-sm md:max-w-md">
                 <h3 className="text-lg md:text-2xl font-semibold mb-3">
                   {slides[index].title}
                 </h3>
 
-                <p className="text-gray-600 leading-tight text-base md:text-lg">
+                <p className="text-gray-600 leading-tight text-base md:text-lg h-[90px] md:h-auto">
                   {slides[index].content}
                 </p>
               </div>
@@ -141,9 +142,10 @@ export default function WhySaudi() {
 
         </div>
 
-        <div className="h-full w-full relative mt-8 pt-6">
+        {/* Right Image */}
+        <div className="h-full w-full relative mt-8 md:mt-0 pt-6">
           <div className="flex justify-end items-center gap-6 absolute top-5 right-0">
-            
+
             <span className="text-sm text-gray-500">
               {index + 1} /
               <span className="text-black font-semibold ml-1">
@@ -155,12 +157,17 @@ export default function WhySaudi() {
               <OvalArrow direction="left" variant="gray" onClick={prevSlide} />
               <OvalArrow direction="right" variant="gray" onClick={nextSlide} />
             </div>
-            
+
           </div>
-          <img src="/why-saudi-arabia.svg" alt="saudi arabia" />
-          
+
+          <img
+            src="/why-saudi-arabia.svg"
+            alt="saudi arabia"
+            className="w-full max-w-[380px] md:max-w-none mx-auto md:mx-0"
+          />
         </div>
+
       </div>
     </section>
   );
-}
+};
