@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Mail } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { usePathname } from "next/navigation";
 
 import ServicesPopup from "./ServicesPopup";
@@ -22,6 +22,8 @@ export default function Navbar() {
   const [useColoredLogo, setUseColoredLogo] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
   const [openContact, setOpenContact] = useState(false);
+
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
 
   //  change navbar color based on white sections
@@ -189,6 +191,7 @@ export default function Navbar() {
 
               {/* MENU BUTTON */}
               <button
+                ref={buttonRef}
                 onClick={() => {
                   setOpenMenu((prev) => !prev);
                   setOpenServices(false);
@@ -229,7 +232,7 @@ export default function Navbar() {
                 )}
               </button>
 
-              <HamburgerMenu open={openMenu} onClose={() => setOpenMenu(false)} />
+              <HamburgerMenu buttonRef={buttonRef} open={openMenu} onClose={() => setOpenMenu(false)} />
             </div>
           </nav>
         </div>

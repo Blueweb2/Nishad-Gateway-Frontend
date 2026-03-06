@@ -24,9 +24,10 @@ type ServiceItem = {
 type Props = {
   open: boolean;
   onClose: () => void;
+  buttonRef: React.RefObject<HTMLButtonElement | null>;
 };
 
-export default function HamburgerMenu({ open, onClose }: Props) {
+export default function HamburgerMenu({ open, onClose, buttonRef }: Props) {
 
   const [render, setRender] = useState(open);
   const MotionLink = motion.create(Link);
@@ -71,9 +72,13 @@ export default function HamburgerMenu({ open, onClose }: Props) {
   // out side click time close
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+
       if (
         menuRef.current &&
-        !menuRef.current.contains(event.target as Node)
+        !menuRef.current.contains(target) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(target)
       ) {
         onClose();
       }
@@ -84,7 +89,7 @@ export default function HamburgerMenu({ open, onClose }: Props) {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [onClose]);
+  }, [onClose, buttonRef]);
 
   if (!render) return null;
 
@@ -95,11 +100,9 @@ export default function HamburgerMenu({ open, onClose }: Props) {
         top-20 sm:top-24
         right-3 sm:right-6 lg:right-10
         z-[9999]
-
         w-[92%] 
         sm:w-[340px] 
         lg:w-[360px]
-        sm:hidden
         transition-all duration-400
         ${open ? "animate-menuIn" : "animate-menuOut"}
       `}
