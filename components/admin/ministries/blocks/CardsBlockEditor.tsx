@@ -1,6 +1,6 @@
 "use client";
 
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, Upload } from "lucide-react";
 import toast from "react-hot-toast";
 
 import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
@@ -23,11 +23,13 @@ export default function CardsBlockEditor({
   const cards: CardItem[] = block.cards || [];
 
   const updateBlock = (data: Partial<CardsBlock>) => {
-    const updated = blocks.map((b) =>
-      b.id === block.id ? { ...b, ...data } : b
-    ) as MinistryBlock[];
-
-    setBlocks(updated);
+    setBlocks((prev) =>
+      prev.map((b) =>
+        b.id === block.id && b.type === "cards"
+          ? { ...b, ...data }
+          : b
+      )
+    );
   };
 
   const updateCards = (newCards: CardItem[]) => {
@@ -37,7 +39,12 @@ export default function CardsBlockEditor({
   const addCard = () => {
     updateCards([
       ...cards,
-      { iconSvg: "", description: "" }
+      {
+        iconSvg: "",
+        iconPublicId: "",
+        description: "",
+        alt: "",
+      },
     ]);
   };
 
@@ -52,9 +59,10 @@ export default function CardsBlockEditor({
   ) => {
     const updated = [...cards];
     updated[index][field] = value;
-
     updateCards(updated);
   };
+
+  /* ---------- Upload Icon ---------- */
 
   const handleUpload = async (file: File, index: number) => {
     try {
@@ -64,12 +72,47 @@ export default function CardsBlockEditor({
         "nishad-gateway/ministries/cards"
       );
 
-      updateField(index, "iconSvg", upload.secure_url);
+      const updated = [...cards];
+
+      updated[index].iconSvg = upload.secure_url;
+      updated[index].iconPublicId = upload.public_id;
+
+      updateCards(updated);
 
       toast.success("Icon uploaded");
 
     } catch {
       toast.error("Upload failed");
+    }
+  };
+
+  /* ---------- Delete Icon ---------- */
+
+  const deleteIcon = async (index: number) => {
+
+    const publicId = cards[index]?.iconPublicId;
+    if (!publicId) return;
+
+    try {
+
+      await fetch("/api/delete-cloudinary", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ publicId }),
+      });
+
+      const updated = [...cards];
+      updated[index].iconSvg = "";
+      updated[index].iconPublicId = "";
+
+      updateCards(updated);
+
+      toast.success("Icon deleted");
+
+    } catch {
+      toast.error("Delete failed");
     }
   };
 
@@ -81,6 +124,7 @@ export default function CardsBlockEditor({
       </h3>
 
       {/* Heading */}
+
       <input
         type="text"
         placeholder="Main Heading"
@@ -92,6 +136,7 @@ export default function CardsBlockEditor({
       />
 
       {/* Sub text */}
+
       <input
         type="text"
         placeholder="Sub text"
@@ -103,67 +148,116 @@ export default function CardsBlockEditor({
       />
 
       {/* Cards */}
+<div className="space-y-4">
 
-      <div className="space-y-4">
+  {cards.map((card, index) => (
+    <div
+      key={index}
+      className="border border-green-700/20 rounded-xl p-5 bg-[#0f150f] space-y-4"
+    >
 
-        {cards.map((card, index) => (
-          <div
-            key={index}
-            className="border border-green-700/20 rounded-lg p-4 space-y-3"
-          >
+      {/* Header */}
 
-            {/* Upload icon */}
+      <div className="flex justify-between items-center">
 
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                if (file) handleUpload(file, index);
-              }}
-              className="input"
-            />
+        <span className="text-sm text-green-400 font-medium">
+          Card {index + 1}
+        </span>
 
-            {/* Icon preview */}
-
-            {card.iconSvg && (
-              <img
-                src={cloudinaryAutoWebp(card.iconSvg)}
-                className="w-14 h-14 object-contain"
-              />
-            )}
-
-            {/* Description */}
-
-            <textarea
-              placeholder="Card description"
-              value={card.description}
-              onChange={(e) =>
-                updateField(
-                  index,
-                  "description",
-                  e.target.value
-                )
-              }
-              rows={2}
-              className="input"
-            />
-
-            {/* Remove */}
-
-            <button
-              type="button"
-              onClick={() => removeCard(index)}
-              className="flex items-center gap-2 text-red-400 text-sm"
-            >
-              <Trash2 size={14} />
-              Remove Card
-            </button>
-
-          </div>
-        ))}
+        <button
+          type="button"
+          onClick={() => removeCard(index)}
+          className="flex items-center gap-1 text-red-400 text-xs hover:text-red-300"
+        >
+          <Trash2 size={14} />
+          Remove
+        </button>
 
       </div>
+
+      {/* Icon Row */}
+
+      <div className="flex items-center gap-4">
+
+        {/* Icon preview */}
+
+        <div className="w-16 h-16 flex items-center justify-center border border-green-700/30 rounded-lg bg-black/30">
+
+          {card.iconSvg ? (
+            <img
+              src={cloudinaryAutoWebp(card.iconSvg)}
+              alt={card.alt || "Card icon"}
+              className="w-10 h-10 object-contain"
+            />
+          ) : (
+            <span className="text-xs text-gray-500">
+              No Icon
+            </span>
+          )}
+
+        </div>
+
+        {/* Upload */}
+
+        <label className="flex items-center gap-2 px-4 py-2 border border-green-700/40 rounded-lg cursor-pointer hover:bg-green-900/20 text-sm">
+
+          <Upload size={16} />
+          Upload Icon
+
+          <input
+            type="file"
+            accept="image/svg+xml,image/png,image/webp"
+            className="hidden"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) handleUpload(file, index);
+            }}
+          />
+
+        </label>
+
+        {/* Delete icon */}
+
+        {card.iconSvg && (
+          <button
+            type="button"
+            onClick={() => deleteIcon(index)}
+            className="text-red-400 text-sm hover:text-red-300"
+          >
+            Delete
+          </button>
+        )}
+
+      </div>
+
+      {/* Alt text */}
+
+      <input
+        type="text"
+        placeholder="Icon alt text"
+        value={card.alt || ""}
+        onChange={(e) =>
+          updateField(index, "alt", e.target.value)
+        }
+        className="input"
+      />
+
+      {/* Description */}
+
+      <textarea
+        placeholder="Card description"
+        value={card.description}
+        onChange={(e) =>
+          updateField(index, "description", e.target.value)
+        }
+        rows={2}
+        className="input"
+      />
+
+    </div>
+  ))}
+
+</div>
 
       {/* Add card */}
 

@@ -29,7 +29,9 @@ export default function BlockRenderer({
 
   const renderBlock = () => {
 
+    
     if (block.type === "content") {
+      
       return (
         <ContentBlockEditor
           block={block}
