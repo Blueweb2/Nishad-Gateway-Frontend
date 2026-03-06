@@ -1,114 +1,129 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { EffectFade } from "swiper/modules";
+
+import "swiper/css";
+import "swiper/css/effect-fade";
+
+import OvalArrow from "@/components/user/ui/OvalArrow";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+
 import { SliderBlock as SliderBlockType } from "@/lib/types/ministry";
 import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 
 type Props = {
-  block: SliderBlockType;
+    block: SliderBlockType;
 };
 
 export default function SliderBlock({ block }: Props) {
-  const [current, setCurrent] = useState(0);
+    const swiperRef = useRef<any>(null);
+    const [activeIndex, setActiveIndex] = useState(0);
 
-  const slides = block.slides || [];
+    const slides = block.slides || [];
+    const activeSlide = slides[activeIndex];
 
-  const next = () => {
-    setCurrent((prev) => (prev + 1) % slides.length);
-  };
+    if (!slides.length) return null;
 
-  const prev = () => {
-    setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
-  };
+    return (
+        <section className="relative py-20">
 
-  const slide = slides[current];
+            {/* CONTROLS */}
+            <div className="absolute inset-x-0 top-0 z-20 flex justify-between items-center px-6">
 
-  if (!slide) return null;
+                <div className="text-sm text-gray-400">
+                    {String(activeIndex + 1).padStart(2, "0")} |{" "}
+                    {String(slides.length).padStart(2, "0")}
+                </div>
 
-  return (
-    <section className="py-16 border-t border-gray-200">
+                <div className="flex gap-4">
+                    <OvalArrow
+                        direction="left"
+                        variant="gray"
+                        onClick={() => swiperRef.current?.slidePrev()}
+                    />
+                    <OvalArrow
+                        direction="right"
+                        variant="gray"
+                        onClick={() => swiperRef.current?.slideNext()}
+                    />
+                </div>
 
-      <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-10 items-center">
+            </div>
 
-        {/* LEFT */}
-        <div className="space-y-6">
+            <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-10 items-center">
 
-          {block.heading && (
-            <h2 className="text-3xl font-semibold leading-snug">
-              {block.heading}
-            </h2>
-          )}
+                {/* LEFT */}
+                <div className="space-y-6">
 
-          <div className="flex items-center gap-4 text-sm text-gray-500">
-            <span>
-              {String(current + 1).padStart(2, "0")} | {String(slides.length).padStart(2, "0")}
-            </span>
-          </div>
+                    {block.heading && (
+                        <h2 className="text-3xl font-semibold">
+                            {block.heading}
+                        </h2>
+                    )}
 
-          <h3 className="text-lg font-medium text-teal-600">
-            {slide.title}
-          </h3>
+                    <h3 className="text-2xl text-[#287F7F] font-medium">
+                        {activeSlide?.title}
+                    </h3>
 
-        </div>
+                </div>
 
-        {/* CENTER IMAGE */}
-        <div className="flex justify-center">
+                {/* CENTER SLIDER */}
+                <div className="flex justify-center">
 
-          {slide.image && (
-            <Image
-              src={cloudinaryAutoWebp(slide.image)}
-              alt={slide.alt || slide.title}
-              width={420}
-              height={520}
-              className="rounded-[120px] object-cover"
-            />
-          )}
+                    <Swiper
+                        modules={[EffectFade]}
+                        effect="fade"
+                        fadeEffect={{ crossFade: true }}
+                        speed={800}
+                        slidesPerView={1}
+                        onSwiper={(swiper) => (swiperRef.current = swiper)}
+                        onSlideChange={(swiper) =>
+                            setActiveIndex(swiper.realIndex)
+                        }
+                        className="w-[360px] h-[480px]"
+                    >
+                        {slides.map((slide, index) => (
+                            <SwiperSlide key={index}>
+                                <div className="relative w-full h-full rounded-[160px] overflow-hidden">
+                                    <Image
+                                        src={cloudinaryAutoWebp(slide.image)}
+                                        alt={slide.alt || slide.title}
+                                        fill
+                                        className="object-cover"
+                                    />
+                                </div>
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
 
-        </div>
+                </div>
 
-        {/* RIGHT */}
-        <div className="space-y-6">
+                {/* RIGHT */}
+                <div className="space-y-6">
 
-          {slide.description && (
-            <p className="text-gray-500 leading-relaxed">
-              {slide.description}
-            </p>
-          )}
+                    {activeSlide?.description && (
+                        <p className="text-gray-500 leading-relaxed">
+                            {activeSlide.description}
+                        </p>
+                    )}
 
-          <div className="flex gap-3">
+                </div>
 
-            <button
-              onClick={prev}
-              className="w-10 h-10 border rounded-full flex items-center justify-center hover:bg-gray-100"
-            >
-              <ArrowLeft size={18} />
-            </button>
+            </div>
 
-            <button
-              onClick={next}
-              className="w-10 h-10 border rounded-full flex items-center justify-center hover:bg-gray-100"
-            >
-              <ArrowRight size={18} />
-            </button>
+            {/* CTA */}
+            <div className="text-center mt-12">
+                <a
+                    href="#"
+                    className="text-green-600 underline text-sm hover:text-green-700"
+                >
+                    Calculate Expansion Cost
+                </a>
+            </div>
 
-          </div>
-
-        </div>
-
-      </div>
-
-      {/* CTA */}
-      <div className="text-center mt-10">
-        <a
-          href="#"
-          className="text-green-600 text-sm underline hover:text-green-700"
-        >
-          Calculate Expansion Cost
-        </a>
-      </div>
-
-    </section>
-  );
+        </section>
+    );
 }
