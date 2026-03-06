@@ -60,11 +60,14 @@ export default function CitiesSection() {
     setIndex((i) => (i === total - 1 ? 0 : i + 1));
   };
 
+
   return (
-    <section className="relative" data-navbar="light">
+    <section className="relative w-full" data-navbar="light">
+
       {/* Slider Container */}
       <div
-        className="relative overflow-hidden h-[100vh]" data-menu=""
+        className="relative overflow-hidden min-h-dvh"
+        data-menu=""
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
@@ -76,7 +79,7 @@ export default function CitiesSection() {
             exit={{ x: direction > 0 ? "-100%" : "100%" }}
             transition={{
               duration: 0.9,
-              ease: [0.22, 1, 0.36, 1], // premium easing
+              ease: [0.22, 1, 0.36, 1],
             }}
             className="absolute inset-0"
           >
@@ -85,33 +88,43 @@ export default function CitiesSection() {
         </AnimatePresence>
       </div>
 
-      {/* Right Navigation */}
-      <div className="absolute right-16 top-1/2 -translate-y-1/2 z-40 flex flex-col items-center gap-8">
+      {/* Navigation */}
+      <div
+        className="
+        absolute z-40
+        bottom-6 left-1/2 -translate-x-1/2
+        flex items-center gap-6
+        md:flex-col md:items-center
+        md:right-10 md:left-auto md:top-1/2 md:-translate-y-1/2 md:translate-x-0
+        "
+      >
 
         {/* Counter */}
-        <div className="text-white flex items-start gap-0.5 mt-5">
-          <span className="text-[28px] font-bold leading-none">
+        <div className="text-white flex items-start gap-1">
+          <span className="text-[22px] md:text-[28px] font-bold leading-none">
             {current}
           </span>
-          <span className="text-white/60 text-lg leading-none pt-1">
+          <span className="text-white/60 text-sm md:text-lg leading-none pt-[2px]">
             /{total}
           </span>
         </div>
 
         {/* Arrows */}
-        <div className="flex flex-col items-center gap-4">
+        <div className="flex md:flex-col items-center gap-4">
           <OvalArrow
             direction="left"
             onClick={prev}
-            className="w-[32px] h-[48px] transition-transform hover:scale-110 active:scale-95"
+            className="w-[26px] h-[40px] md:w-[32px] md:h-[48px] transition-transform hover:scale-110 active:scale-95"
           />
           <OvalArrow
             direction="right"
             onClick={next}
-            className="w-[32px] h-[48px] transition-transform hover:scale-110 active:scale-95"
+            className="w-[26px] h-[40px] md:w-[32px] md:h-[48px] transition-transform hover:scale-110 active:scale-95"
           />
         </div>
+
       </div>
+
     </section>
   );
-}
+};

@@ -204,7 +204,7 @@ export default function BusinessGrowth() {
           {/* LINK (ONLY DISPLAY IN MOBILE) */}
           <Link
             href={activeSlide.link}
-            className="inline-block md:hidden text-sm text-green-600 underline underline-offset-4 text-center"
+            className="inline-block md:hidden text-sm text-green-600 underline underline-offset-4 text-center mb-3"
           >
             {activeSlide.linkText}
           </Link>
