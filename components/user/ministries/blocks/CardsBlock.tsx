@@ -7,49 +7,69 @@ type Props = {
 };
 
 export default function CardsBlock({ block }: Props) {
-
   return (
-    <div className="space-y-8">
+    <section className="py-20 bg-[#f7f7f7]">
+      <div className="max-w-7xl mx-auto px-6 text-center space-y-12">
 
-      {block.heading && (
-        <h2 className="text-2xl font-semibold">
-          {block.heading}
-        </h2>
-      )}
+        {/* Heading */}
+        {block.heading && (
+          <h2 className="text-5xl font-semibold">
+            {block.heading}
+          </h2>
+        )}
 
-      <div className="grid md:grid-cols-3 gap-6">
+        {/* Sub Text */}
+        {block.subText && (
+          <p className="text-gray-600 max-w-xl mx-auto">
+            {block.subText}
+          </p>
+        )}
 
-        {block.cards?.map((card, i) => (
-          <div
-            key={i}
-            className="p-6 border rounded-xl space-y-4"
-          >
+        {/* Cards */}
+        <div className="grid md:grid-cols-3 gap-8">
 
-            {card.iconSvg && (
-              <Image
-                src={cloudinaryAutoWebp(card.iconSvg)}
-                alt={card.alt || ""}
-                width={40}
-                height={40}
-              />
-            )}
+          {block.cards?.map((card, i) => {
 
-            <p className="text-gray-600">
-              {card.description}
-            </p>
+            const isMiddle = i === 1;
 
-          </div>
-        ))}
+            return (
+              <div
+                key={i}
+                className={`rounded-3xl p-10 flex flex-col items-center text-center transition
+                ${isMiddle
+                    ? "bg-[#176b67] text-white shadow-xl scale-105"
+                    : "bg-white text-gray-700 shadow-sm"
+                  }`}
+              >
+
+                {card.iconSvg && (
+                  <Image
+                    src={cloudinaryAutoWebp(card.iconSvg)}
+                    alt={card.alt || ""}
+                    width={50}
+                    height={50}
+                    className="mb-6"
+                  />
+                )}
+
+                <p className="text-lg leading-relaxed max-w-xs">
+                  {card.description}
+                </p>
+
+              </div>
+            );
+          })}
+
+        </div>
+
+        {/* Bottom Text */}
+        {block.bottomText && (
+          <p className="text-gray-600 text-sm max-w-3xl mx-auto">
+            {block.bottomText}
+          </p>
+        )}
 
       </div>
-
-      {block.bottomText && (
-        <p className="text-gray-500 text-sm">
-          {block.bottomText}
-        </p>
-      )}
-
-    </div>
+    </section>
   );
-
 }

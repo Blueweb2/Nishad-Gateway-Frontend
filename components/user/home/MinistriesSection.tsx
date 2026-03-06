@@ -1,12 +1,12 @@
 import FadeUpScroll from "../ui/FadeUpScroll";
 import MinistriesSlider from "@/components/user/home/ministries/MinistriesSlider";
 import { getMinistries } from "@/lib/api/public/ministries.api";
+import { Ministry } from "@/lib/types/ministry";
 
 export const revalidate = 60;
 
 export default async function MinistriesSection() {
-  let ministries = [];
-
+let ministries: Ministry[] = [];
   try {
     ministries = await getMinistries();
   } catch (error) {
@@ -16,7 +16,7 @@ export default async function MinistriesSection() {
   if (!ministries?.length) return null;
 
   return (
-    <section className="w-full bg-black text-white py-28" data-navbar="light">
+    <section  id="ministries" className="w-full bg-black text-white py-28" data-navbar="light">
       <div className="max-w-[1320px] mx-auto px-6">
 
         {/* HEADER */}
