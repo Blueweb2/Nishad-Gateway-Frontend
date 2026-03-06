@@ -2,7 +2,7 @@ import FadeUpScroll from "../ui/FadeUpScroll";
 import MinistriesSlider from "@/components/user/home/ministries/MinistriesSlider";
 import { getMinistries } from "@/lib/api/public/ministries.api";
 
-export const revalidate = 60; // ISR → re-fetch every 60s
+export const revalidate = 60;
 
 export default async function MinistriesSection() {
   let ministries = [];
@@ -21,6 +21,7 @@ export default async function MinistriesSection() {
 
         {/* HEADER */}
         <div className="text-center mb-20">
+
           <FadeUpScroll delay={0.1}>
             <h2 className="text-[42px] font-semibold mb-3">
               Ministries & Authorities
@@ -33,6 +34,7 @@ export default async function MinistriesSection() {
               policy, regulation, and execution in Saudi Arabia.
             </p>
           </FadeUpScroll>
+
         </div>
 
         {/* SLIDER */}

@@ -6,21 +6,12 @@ import toast from "react-hot-toast";
 import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
 import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 
-type Card = {
-  icon: string;
-  description: string;
-};
+import { CardsBlock, MinistryBlock, CardItem } from "@/lib/types/ministry";
 
 type Props = {
-  block: {
-    type: "cards";
-    heading: string;
-    subText?: string;
-    bottomText?: string;
-    cards: Card[];
-  };
-  blocks: any[];
-  setBlocks: (blocks: any[]) => void;
+  block: CardsBlock;
+  blocks: MinistryBlock[];
+  setBlocks: React.Dispatch<React.SetStateAction<MinistryBlock[]>>;
 };
 
 export default function CardsBlockEditor({
@@ -29,23 +20,24 @@ export default function CardsBlockEditor({
   setBlocks,
 }: Props) {
 
-  const cards = block.cards || [];
+  const cards: CardItem[] = block.cards || [];
 
-  const updateBlock = (data: any) => {
+  const updateBlock = (data: Partial<CardsBlock>) => {
     const updated = blocks.map((b) =>
-      b === block ? { ...b, ...data } : b
-    );
+      b.id === block.id ? { ...b, ...data } : b
+    ) as MinistryBlock[];
+
     setBlocks(updated);
   };
 
-  const updateCards = (newCards: Card[]) => {
+  const updateCards = (newCards: CardItem[]) => {
     updateBlock({ cards: newCards });
   };
 
   const addCard = () => {
     updateCards([
       ...cards,
-      { icon: "", description: "" },
+      { iconSvg: "", description: "" }
     ]);
   };
 
@@ -55,7 +47,7 @@ export default function CardsBlockEditor({
 
   const updateField = (
     index: number,
-    field: keyof Card,
+    field: keyof CardItem,
     value: string
   ) => {
     const updated = [...cards];
@@ -66,14 +58,16 @@ export default function CardsBlockEditor({
 
   const handleUpload = async (file: File, index: number) => {
     try {
+
       const upload = await uploadToCloudinarySigned(
         file,
-        "ministries/cards"
+        "nishad-gateway/ministries/cards"
       );
 
-      updateField(index, "icon", upload.secure_url);
+      updateField(index, "iconSvg", upload.secure_url);
 
       toast.success("Icon uploaded");
+
     } catch {
       toast.error("Upload failed");
     }
@@ -132,9 +126,9 @@ export default function CardsBlockEditor({
 
             {/* Icon preview */}
 
-            {card.icon && (
+            {card.iconSvg && (
               <img
-                src={cloudinaryAutoWebp(card.icon)}
+                src={cloudinaryAutoWebp(card.iconSvg)}
                 className="w-14 h-14 object-contain"
               />
             )}
@@ -165,8 +159,10 @@ export default function CardsBlockEditor({
               <Trash2 size={14} />
               Remove Card
             </button>
+
           </div>
         ))}
+
       </div>
 
       {/* Add card */}

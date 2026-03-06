@@ -20,7 +20,9 @@ type Props = {
     slug?: string;
     shortDesc?: string;
     logo?: string;
+    logoAlt?: string;
     coverImage?: string;
+    coverAlt?: string;
     isActive?: boolean;
   };
 };
@@ -38,7 +40,9 @@ export default function MinistryForm({
     slug: "",
     shortDesc: "",
     logo: "",
+    logoAlt: "",
     coverImage: "",
+    coverAlt: "",
     isActive: true,
   });
 
@@ -56,7 +60,9 @@ export default function MinistryForm({
         slug: defaultValues.slug || "",
         shortDesc: defaultValues.shortDesc || "",
         logo: defaultValues.logo || "",
+        logoAlt: defaultValues.logoAlt || "",
         coverImage: defaultValues.coverImage || "",
+        coverAlt: defaultValues.coverAlt || "",
         isActive: defaultValues.isActive ?? true,
       });
     }
@@ -65,6 +71,7 @@ export default function MinistryForm({
   /* ---------------- Auto slug ---------------- */
 
   useEffect(() => {
+
     if (mode !== "create") return;
 
     const slug = form.title
@@ -85,10 +92,7 @@ export default function MinistryForm({
 
     setForm((prev) => ({
       ...prev,
-      [name]:
-        name === "isActive"
-          ? value === "true"
-          : value,
+      [name]: name === "isActive" ? value === "true" : value,
     }));
   };
 
@@ -121,25 +125,19 @@ export default function MinistryForm({
       let logoUrl = form.logo;
       let coverUrl = form.coverImage;
 
-      /* Upload logo */
-
       if (logoFile) {
         const upload = await uploadToCloudinarySigned(
           logoFile,
-          "ministries/logos"
+          "nishad-gateway/ministries/logos"
         );
-
         logoUrl = upload.secure_url;
       }
-
-      /* Upload cover */
 
       if (coverFile) {
         const upload = await uploadToCloudinarySigned(
           coverFile,
-          "ministries/covers"
+          "nishad-gateway/ministries/covers"
         );
-
         coverUrl = upload.secure_url;
       }
 
@@ -174,120 +172,194 @@ export default function MinistryForm({
   };
 
   return (
+
     <form
       onSubmit={handleSubmit}
-      className="w-full max-w-[750px] bg-[#0b0f0b] border border-green-700/30 rounded-2xl p-6 space-y-5"
+      className="w-full max-w-4xl mx-auto bg-[#0b0f0b] border border-green-700/30 rounded-2xl p-8 space-y-6"
     >
 
-      <h2 className="text-xl font-semibold text-green-300">
+      <h2 className="text-2xl font-semibold text-green-300">
         {mode === "create" ? "Create Ministry" : "Edit Ministry"}
       </h2>
 
-      {/* Title */}
+      {/* Grid Layout */}
 
-      <input
-        name="title"
-        value={form.title}
-        onChange={handleChange}
-        placeholder="Title"
-        className="input"
-      />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-      {/* Slug */}
+        {/* Title */}
 
-      <input
-        name="slug"
-        value={form.slug}
-        onChange={handleChange}
-        placeholder="Slug"
-        className="input"
-      />
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-medium text-gray-300">
+            Title
+          </label>
 
-      {/* Short Description */}
-
-      <textarea
-        name="shortDesc"
-        value={form.shortDesc}
-        onChange={handleChange}
-        rows={3}
-        placeholder="Short description"
-        className="input"
-      />
-
-      {/* Logo Upload */}
-
-      <div>
-        <label className="text-sm text-gray-300">Logo</label>
-
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) =>
-            setLogoFile(e.target.files?.[0] || null)
-          }
-          className="input"
-        />
-
-        {(logoFile || form.logo) && (
-          <img
-            src={
-              logoFile
-                ? logoPreview
-                : cloudinaryAutoWebp(form.logo)
-            }
-            className="w-20 h-20 object-contain mt-2"
+          <input
+            name="title"
+            value={form.title}
+            onChange={handleChange}
+            placeholder="Enter ministry title"
+            className="input"
           />
-        )}
-      </div>
+        </div>
 
-      {/* Cover Image */}
+        {/* Slug */}
 
-      <div>
-        <label className="text-sm text-gray-300">
-          Cover Image
-        </label>
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-medium text-gray-300">
+            Slug
+          </label>
 
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) =>
-            setCoverFile(e.target.files?.[0] || null)
-          }
-          className="input"
-        />
-
-        {(coverFile || form.coverImage) && (
-          <img
-            src={
-              coverFile
-                ? coverPreview
-                : cloudinaryAutoWebp(form.coverImage)
-            }
-            className="w-full max-w-[300px] mt-3 rounded-xl"
+          <input
+            name="slug"
+            value={form.slug}
+            onChange={handleChange}
+            placeholder="ministry-slug"
+            className="input"
           />
-        )}
+        </div>
+
+        {/* Short Description */}
+
+        <div className="flex flex-col gap-2 md:col-span-2">
+          <label className="text-sm font-medium text-gray-300">
+            Short Description
+          </label>
+
+          <textarea
+            name="shortDesc"
+            value={form.shortDesc}
+            onChange={handleChange}
+            rows={3}
+            placeholder="Brief ministry description"
+            className="input"
+          />
+        </div>
+
+        {/* Logo */}
+
+        <div className="flex flex-col gap-2">
+
+          <label className="text-sm font-medium text-gray-300">
+            Logo
+          </label>
+
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) =>
+              setLogoFile(e.target.files?.[0] || null)
+            }
+            className="text-sm text-gray-300
+            file:mr-4 file:py-2 file:px-4
+            file:rounded-lg file:border-0
+            file:bg-green-600 file:text-white
+            hover:file:bg-green-500"
+          />
+
+          {(logoFile || form.logo) && (
+            <img
+              src={
+                logoFile
+                  ? logoPreview
+                  : cloudinaryAutoWebp(form.logo)
+              }
+              className="w-20 h-20 object-contain mt-2"
+            />
+          )}
+
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-medium text-gray-300">
+            Logo Alt Text
+          </label>
+
+          <input
+            name="logoAlt"
+            value={form.logoAlt}
+            onChange={handleChange}
+            placeholder="Describe the logo"
+            className="input"
+          />
+        </div>
+
+        {/* Cover Image */}
+
+        <div className="flex flex-col gap-2">
+
+          <label className="text-sm font-medium text-gray-300">
+            Cover Image
+          </label>
+
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) =>
+              setCoverFile(e.target.files?.[0] || null)
+            }
+            className="text-sm text-gray-300
+            file:mr-4 file:py-2 file:px-4
+            file:rounded-lg file:border-0
+            file:bg-green-600 file:text-white
+            hover:file:bg-green-500"
+          />
+
+          {(coverFile || form.coverImage) && (
+            <img
+              src={
+                coverFile
+                  ? coverPreview
+                  : cloudinaryAutoWebp(form.coverImage)
+              }
+              className="w-full max-w-[280px] mt-2 rounded-xl"
+            />
+          )}
+
+        </div>
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-medium text-gray-300">
+            Cover Image Alt Text
+          </label>
+
+          <input
+            name="coverAlt"
+            value={form.coverAlt}
+            onChange={handleChange}
+            placeholder="Describe the cover image"
+            className="input"
+          />
+        </div>
+
       </div>
 
       {/* Status */}
 
-      <select
-        name="isActive"
-        value={String(form.isActive)}
-        onChange={handleChange}
-        className="input"
-      >
-        <option value="true">Active</option>
-        <option value="false">Inactive</option>
-      </select>
+      <div className="flex flex-col gap-2 w-[220px]">
+
+        <label className="text-sm font-medium text-gray-300">
+          Status
+        </label>
+
+        <select
+          name="isActive"
+          value={String(form.isActive)}
+          onChange={handleChange}
+          className="input"
+        >
+          <option value="true">Active</option>
+          <option value="false">Inactive</option>
+        </select>
+
+      </div>
 
       {/* Buttons */}
 
-      <div className="flex gap-3 pt-3">
+      <div className="flex gap-4 pt-6 border-t border-green-900/40">
 
         <button
           type="submit"
           disabled={loading}
-          className="px-5 py-3 bg-green-600 rounded-lg"
+          className="px-6 py-3 bg-green-600 hover:bg-green-500 rounded-lg font-medium"
         >
           {loading ? "Saving..." : "Save Ministry"}
         </button>
@@ -295,7 +367,7 @@ export default function MinistryForm({
         <button
           type="button"
           onClick={() => router.push("/admin/ministries")}
-          className="px-5 py-3 border border-gray-700 rounded-lg"
+          className="px-6 py-3 border border-gray-700 rounded-lg hover:bg-gray-800"
         >
           Cancel
         </button>
