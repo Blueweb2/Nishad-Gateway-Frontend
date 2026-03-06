@@ -36,7 +36,7 @@ export default function KeyServices() {
       data-navbar="light"
       data-menu="dark-text"
     >
-      <div className="max-w-8xl mx-auto px-6 py-12 lg:py-24">
+      <div className="max-w-8xl mx-auto pl-6 pr-0 lg:px-6 py-12 lg:py-24">
 
         {/* HEADER */}
         <div className="flex items-center justify-between mb-8 lg:mb-16">
@@ -49,7 +49,7 @@ export default function KeyServices() {
 
         {/* GRID */}
         <div 
-          className="flex md:flex overflow-x-auto gap-6 lg:grid lg:grid-cols-4 xl:grid-cols-5 lg:overflow-visible"
+          className="flex md:flex overflow-x-auto gap-6 lg:grid lg:grid-cols-4 xl:grid-cols-5 lg:overflow-visible hide-scrollbar"
         >
           {sectors.map((sector) => (
             <div className="min-w-[260px] lg:min-w-0" key={sector._id}>

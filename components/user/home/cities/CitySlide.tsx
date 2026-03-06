@@ -44,20 +44,20 @@ export default function CitySlide({ city }: Props) {
       {/* Overlay */}
       <div className="absolute inset-0 z-10 bg-black/40" />
 
-      <div className="relative z-20  mx-auto  h-full flex flex-col pt-12 md:pt-[6vw]  max-w-[91.6vw]">
+      <div className="relative z-20  mx-auto  h-full flex flex-col pt-12 lg:pt-[6vw]  max-w-[91.6vw]">
 
         {/* Section Title */}
         <motion.h2
           initial={{ opacity: 0, y: 60 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1 }}
-          className="text-center text-2xl md:text-3xl lg:text-[2.9vw] font-semibold mb-10 md:mb-16"
+          className="text-center text-2xl md:text-3xl lg:text-[2.9vw] font-semibold mb-10 lg:mb-16"
         >
           Cities & Zones in Saudi Arabia
         </motion.h2>
 
         {/* Heading + Description*/}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-8 items-end mb-6">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-8 items-end mb-6">
 
           {/* Heading */}
           <motion.h4
@@ -70,12 +70,12 @@ export default function CitySlide({ city }: Props) {
           </motion.h4>
 
           {/* Description */}
-          <div className="md:col-span-2 md:flex md:justify-center">
+          <div className="lg:col-span-2 lg:flex lg:justify-center">
             <motion.p
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="text-white/90 text-sm md:text-base lg:text-[1vw] leading-tight md:leading-relaxed max-w-lg md:max-w-[20vw] text-left"
+              className="text-white/90 text-sm md:text-base lg:text-[1vw] leading-tight md:leading-relaxed max-w-lg lg:max-w-[20vw] text-left"
             >
               {city.description}
             </motion.p>
@@ -92,8 +92,8 @@ export default function CitySlide({ city }: Props) {
         />
 
         {/* City Name + Arrow */}
-        <div className="mb-10 md:mb-[4vw] md:mt-5">
-          <div className="flex items-center gap-4 md:gap-8">
+        <div className="mb-10 lg:mb-[4vw] lg:mt-5">
+          <div className="flex items-center gap-4 lg:gap-8">
 
             <motion.h3
               initial={{ opacity: 0, y: 60 }}
@@ -121,7 +121,7 @@ export default function CitySlide({ city }: Props) {
         </div>
 
         {/* CTA */}
-        <div className="md:mt-5">
+        <div className="lg:mt-5">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}

@@ -66,7 +66,7 @@ export default function CitiesSection() {
 
       {/* Slider Container */}
       <div
-        className="relative overflow-hidden min-h-[77dvh] md:min-h-dvh"
+        className="relative overflow-hidden min-h-[77dvh] lg:min-h-dvh"
         data-menu=""
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
@@ -94,44 +94,44 @@ export default function CitiesSection() {
         absolute z-40
         bottom-6 left-1/2 -translate-x-1/2
         flex items-center gap-6
-        md:flex-col md:items-center
-        md:right-10 md:left-auto md:top-1/2 md:-translate-y-1/2 md:translate-x-0
-        w-full md:w-auto px-[4vw] md:px-0"
+        lg:flex-col lg:items-center
+        lg:right-10 lg:left-auto lg:top-1/2 lg:-translate-y-1/2 lg:translate-x-0
+        w-full lg:w-auto px-[4vw] lg:px-0"
       >
 
         {/* Counter */}
-        <div className="text-white hidden md:flex items-start gap-1">
-          <span className="text-[22px] md:text-[28px] font-bold leading-none">
+        <div className="text-white hidden lg:flex items-start gap-1">
+          <span className="text-[22px] lg:text-[28px] font-bold leading-none">
             {current}
           </span>
-          <span className="text-white/60 text-sm md:text-lg leading-none pt-[2px]">
+          <span className="text-white/60 text-sm lg:text-lg leading-none pt-[2px]">
             /{total}
           </span>
         </div>
 
         {/* Arrows */}
-        <div className="hidden md:flex md:flex-col items-center gap-4">
+        <div className="hidden lg:flex lg:flex-col items-center gap-4">
           <OvalArrow
             direction="left"
             onClick={prev}
-            className="w-[26px] h-[40px] md:w-[32px] md:h-[48px] transition-transform hover:scale-110 active:scale-95"
+            className="w-[26px] h-[40px] lg:w-[32px] lg:h-[48px] transition-transform hover:scale-110 active:scale-95"
           />
           <OvalArrow
             direction="right"
             onClick={next}
-            className="w-[26px] h-[40px] md:w-[32px] md:h-[48px] transition-transform hover:scale-110 active:scale-95"
+            className="w-[26px] h-[40px] lg:w-[32px] lg:h-[48px] transition-transform hover:scale-110 active:scale-95"
           />
         </div>
 
         {/* Counter and Arrows ( ONLY SHOW IN MOBILE ) */}
-        <div className="md:hidden relative w-full">
+        <div className="lg:hidden relative w-full">
             {/* Counter */}
           <div className="text-white flex items-start justify-center gap-1 absolute left-1/2 top-1/2 
           -translate-x-1/2 -translate-y-1/2">
             <span className="text-[22px] md:text-[28px] font-bold leading-none">
               {current}
             </span>
-            <span className="text-white/60 text-sm md:text-lg leading-none pt-[2px]">
+            <span className="text-white/60 text-sm leading-none pt-[2px]">
               /{total}
             </span>
           </div>
@@ -141,12 +141,12 @@ export default function CitiesSection() {
             <OvalArrow
               direction="left"
               onClick={prev}
-              className="w-[26px] h-[40px] md:w-[32px] md:h-[48px] transition-transform hover:scale-110 active:scale-95"
+              className="w-[26px] h-[40px] transition-transform hover:scale-110 active:scale-95"
             />
             <OvalArrow
               direction="right"
               onClick={next}
-              className="w-[26px] h-[40px] md:w-[32px] md:h-[48px] transition-transform hover:scale-110 active:scale-95"
+              className="w-[26px] h-[40px] transition-transform hover:scale-110 active:scale-95"
             />
           </div>
         </div>
