@@ -3,7 +3,7 @@ import { publicAxios } from "@/lib/http/publicAxios";
 // 🌍 Get ministry blog by slug
 export const getMinistryBySlug = async (slug: string) => {
   const { data } = await publicAxios.get(
-    `/ministries/slug/${slug}`
+    `/ministries/${slug}`
   );
 
   return data;

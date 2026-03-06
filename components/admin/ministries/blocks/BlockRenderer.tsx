@@ -1,65 +1,85 @@
-// "use client";
-// import ContentBlockEditor from "./ContentBlockEditor";
-// import SliderBlockEditor from "./SliderBlockEditor";
-// import CardsBlockEditor from "./CardsBlockEditor";
+"use client";
 
-// import {
-//   MinistryBlock,
-//   ContentBlock,
-//   SliderBlock,
-//   CardsBlock,
-// } from "@/lib/types/ministry";
+import ContentBlockEditor from "./ContentBlockEditor";
+import SliderBlockEditor from "./SliderBlockEditor";
+import CardsBlockEditor from "./CardsBlockEditor";
+import FAQBlockEditor from "./FAQBlockEditor";
+import SortableBlock from "./SortableBlock";
 
-// type Props = {
-//   block: MinistryBlock;
-//   blocks: MinistryBlock[];
-//   setBlocks: React.Dispatch<React.SetStateAction<MinistryBlock[]>>;
-// };
+import { MinistryBlock } from "@/lib/types/ministry";
 
-// export default function BlockRenderer({ block, blocks, setBlocks }: Props) {
+type Props = {
+  block: MinistryBlock;
+  index: number;
+  blocks: MinistryBlock[];
+  setBlocks: React.Dispatch<React.SetStateAction<MinistryBlock[]>>;
+};
 
-//   if (block.type === "content") {
-//     const contentBlock: ContentBlock = block;
+export default function BlockRenderer({
+  block,
+  index,
+  blocks,
+  setBlocks,
+}: Props) {
 
-//     return (
-//       <ContentBlockEditor
-//         block={contentBlock}
-//         blocks={blocks}
-//         setBlocks={setBlocks}
-//       />
-//     );
-//   }
+  const deleteBlock = () => {
+    const updated = blocks.filter((_, i) => i !== index);
+    setBlocks(updated);
+  };
 
-//   if (block.type === "slider") {
-//     const sliderBlock: SliderBlock = block;
+  const renderBlock = () => {
 
-//     return (
-//       <SliderBlockEditor
-//         block={sliderBlock}
-//         blocks={blocks}
-//         setBlocks={setBlocks}
-//       />
-//     );
-//   }
+    if (block.type === "content") {
+      return (
+        <ContentBlockEditor
+          block={block}
+          index={index}
+          blocks={blocks}
+          setBlocks={setBlocks}
+        />
+      );
+    }
 
-//   if (block.type === "cards") {
-//     const cardsBlock: CardsBlock = block;
+    if (block.type === "slider") {
+      return (
+        <SliderBlockEditor
+          block={block}
+          blocks={blocks}
+          setBlocks={setBlocks}
+        />
+      );
+    }
 
-//     return (
-//       <CardsBlockEditor
-//         block={cardsBlock}
-//         blocks={blocks}
-//         setBlocks={setBlocks}
-//       />
-//     );
-//   }
+    if (block.type === "cards") {
+      return (
+        <CardsBlockEditor
+          block={block}
+          blocks={blocks}
+          setBlocks={setBlocks}
+        />
+      );
+    }
 
-//   return null;
-// }
-import React from 'react'
+    if (block.type === "faq") {
+      return (
+        <FAQBlockEditor
+          block={block}
+          blocks={blocks}
+          setBlocks={setBlocks}
+        />
+      );
+    }
 
-export default function BlockRenderer() {
+    return null;
+  };
+
   return (
-    <div>BlockRenderer</div>
-  )
+    <SortableBlock
+      id={block.id}
+      blockType={block.type}
+      onDelete={deleteBlock}
+    >
+      {renderBlock()}
+    </SortableBlock>
+  );
 }

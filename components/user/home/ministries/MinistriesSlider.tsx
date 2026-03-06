@@ -5,14 +5,7 @@ import { Autoplay } from "swiper/modules";
 import "swiper/css";
 
 import MinistryCard from "./MinistryCard";
-
-type Ministry = {
-  _id: string;
-  title: string;
-  slug: string;
-  shortDesc?: string;
-  logo?: string;
-};
+import { Ministry } from "@/lib/types/ministry";
 
 export default function MinistriesSlider({
   ministries,

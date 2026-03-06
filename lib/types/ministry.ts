@@ -3,10 +3,17 @@ export type Ministry = {
   title: string;
   slug: string;
   shortDesc?: string;
+
   logo?: string;
+  logoAlt?: string;
+
   coverImage?: string;
+  coverAlt?: string;
+
   blocks?: MinistryBlock[];
+
   isActive: boolean;
+
   createdAt?: string;
   updatedAt?: string;
 };
@@ -14,16 +21,17 @@ export type Ministry = {
 export type MinistryBlock =
   | ContentBlock
   | SliderBlock
-  | CardsBlock;
+  | CardsBlock
+  | FAQBlock;
 
 export type ContentBlock = {
-  id?: string;
+  id: string;
   type: "content";
   content: string;
 };
 
 export type SliderBlock = {
-  id?: string;
+  id: string;
   type: "slider";
 
   heading?: string;
@@ -36,10 +44,11 @@ export type SlideItem = {
   title: string;
   description?: string;
   image: string;
+  alt?: string;
 };
 
 export type CardsBlock = {
-  id?: string;
+  id: string;
   type: "cards";
 
   heading?: string;
@@ -50,6 +59,22 @@ export type CardsBlock = {
 };
 
 export type CardItem = {
-  icon?: string;
+  iconSvg?: string;
   description: string;
+  alt?: string;
+};
+
+export type FAQBlock = {
+  id: string;
+  type: "faq";
+
+  faqImage?: string;
+  faqImageAlt?: string;
+
+  faqs: FAQItem[];
+};
+
+export type FAQItem = {
+  q: string;
+  a: string;
 };

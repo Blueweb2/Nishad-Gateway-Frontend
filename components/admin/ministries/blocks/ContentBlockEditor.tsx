@@ -1,4 +1,3 @@
-import RichContentBlockEditor from "@/components/admin/sectors/blocks/RichContentBlockEditor";
 import RichTextEditor from "../../common/RichTextEditor";
 
 export default function ContentBlockEditor({

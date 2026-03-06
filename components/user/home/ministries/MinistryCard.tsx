@@ -1,21 +1,12 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
-
-type Ministry = {
-  _id: string;
-  title: string;
-  slug: string;
-  shortDesc?: string;
-  logo?: string;
-};
+import { Ministry } from "@/lib/types/ministry";
 
 export default function MinistryCard({ ministry }: { ministry: Ministry }) {
-  const router = useRouter();
-
   return (
     <div
       className="
@@ -25,14 +16,16 @@ export default function MinistryCard({ ministry }: { ministry: Ministry }) {
         transition-all duration-300 overflow-hidden
       "
     >
+
       {/* LOGO */}
       {ministry.logo && (
         <div className="mb-6 py-6">
           <Image
             src={cloudinaryAutoWebp(ministry.logo)}
-            alt={ministry.title}
+            alt={ministry.logoAlt || ministry.title}
             width={120}
             height={120}
+            className="object-contain"
           />
         </div>
       )}
@@ -41,12 +34,16 @@ export default function MinistryCard({ ministry }: { ministry: Ministry }) {
       <div className="w-1.5 h-1.5 rounded-full bg-[#0fb9b1] mb-6" />
 
       {/* TITLE */}
-      <h3 className="text-sm font-medium mb-4">{ministry.title}</h3>
+      <h3 className="text-sm font-medium mb-4">
+        {ministry.title}
+      </h3>
 
       {/* DESCRIPTION */}
-      <p className="text-xs text-white/60 leading-relaxed">
-        {ministry.shortDesc}
-      </p>
+      {ministry.shortDesc && (
+        <p className="text-xs text-white/60 leading-relaxed">
+          {ministry.shortDesc}
+        </p>
+      )}
 
       {/* ARROW */}
       <div
@@ -58,8 +55,8 @@ export default function MinistryCard({ ministry }: { ministry: Ministry }) {
         group-hover:translate-y-0
       "
       >
-        <button
-          onClick={() => router.push(`/ministries/${ministry.slug}`)}
+        <Link
+          href={`/ministries/${ministry.slug}`}
           className="
             w-10 h-10 rounded-full
             border border-white/30
@@ -68,8 +65,9 @@ export default function MinistryCard({ ministry }: { ministry: Ministry }) {
           "
         >
           <ArrowRight size={16} />
-        </button>
+        </Link>
       </div>
+
     </div>
   );
 }

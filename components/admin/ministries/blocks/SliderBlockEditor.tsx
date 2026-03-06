@@ -1,25 +1,21 @@
 "use client";
 
-import { useState } from "react";
 import { Trash2, Plus } from "lucide-react";
 import toast from "react-hot-toast";
 
 import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
 import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 
-type Slide = {
-  title: string;
-  description: string;
-  image: string;
-};
+import {
+  SliderBlock,
+  SlideItem,
+  MinistryBlock,
+} from "@/lib/types/ministry";
 
 type Props = {
-  block: {
-    type: "slider";
-    slides: Slide[];
-  };
-  blocks: any[];
-  setBlocks: (blocks: any[]) => void;
+  block: SliderBlock;
+  blocks: MinistryBlock[];
+  setBlocks: React.Dispatch<React.SetStateAction<MinistryBlock[]>>;
 };
 
 export default function SliderBlockEditor({
@@ -27,12 +23,14 @@ export default function SliderBlockEditor({
   blocks,
   setBlocks,
 }: Props) {
-  const slides = block.slides || [];
 
-  const updateSlides = (newSlides: Slide[]) => {
+  const slides: SlideItem[] = block.slides || [];
+
+  const updateSlides = (newSlides: SlideItem[]) => {
+
     const updated = blocks.map((b) =>
-      b === block ? { ...b, slides: newSlides } : b
-    );
+      b.id === block.id ? { ...b, slides: newSlides } : b
+    ) as MinistryBlock[];
 
     setBlocks(updated);
   };
@@ -50,10 +48,12 @@ export default function SliderBlockEditor({
 
   const updateField = (
     index: number,
-    field: keyof Slide,
+    field: keyof SlideItem,
     value: string
   ) => {
-    const updated = [...slides];
+
+    const updated = [...slides] as SlideItem[];
+
     updated[index][field] = value;
 
     updateSlides(updated);
@@ -63,18 +63,24 @@ export default function SliderBlockEditor({
     file: File,
     index: number
   ) => {
+
     try {
+
       const upload = await uploadToCloudinarySigned(
         file,
-        "ministries/slides"
+        "nishad-gateway/ministries/slides"
       );
 
       updateField(index, "image", upload.secure_url);
 
       toast.success("Image uploaded");
+
     } catch {
+
       toast.error("Upload failed");
+
     }
+
   };
 
   return (
@@ -104,7 +110,7 @@ export default function SliderBlockEditor({
           {/* Description */}
           <textarea
             placeholder="Slide Description"
-            value={slide.description}
+            value={slide.description || ""}
             onChange={(e) =>
               updateField(index, "description", e.target.value)
             }
@@ -140,6 +146,7 @@ export default function SliderBlockEditor({
             <Trash2 size={14} />
             Remove Slide
           </button>
+
         </div>
       ))}
 
@@ -152,6 +159,7 @@ export default function SliderBlockEditor({
         <Plus size={16} />
         Add Slide
       </button>
+
     </div>
   );
 }
