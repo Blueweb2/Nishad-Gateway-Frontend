@@ -1,15 +1,17 @@
 import BlocksEditor from "@/components/admin/ministries/blocks/BlockEditor";
 
 type Props = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
-export default function MinistryBlocksPage({ params }: Props) {
+export default async function MinistryBlocksPage({ params }: Props) {
+  const { id } = await params;
+
   return (
     <div className="p-8">
-      <BlocksEditor ministryId={params.id} />
+      <BlocksEditor ministryId={id} />
     </div>
   );
 }

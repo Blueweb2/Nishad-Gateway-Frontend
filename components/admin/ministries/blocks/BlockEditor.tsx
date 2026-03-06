@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DndContext, closestCenter } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -19,57 +19,71 @@ type Props = {
 
 export default function BlocksEditor({ ministryId }: Props) {
   const [blocks, setBlocks] = useState<MinistryBlock[]>([]);
+  const [saving, setSaving] = useState(false);
+   const [loading, setLoading] = useState(true);
 
-  const addBlock = (type: string) => {
-    if (type === "content") {
-      setBlocks([
-        ...blocks,
-        {
-          id: Date.now().toString(),
-          type: "content",
-          content: "",
-        },
-      ]);
-    }
+    // ⭐ Load existing blocks
+  useEffect(() => {
+    const loadBlocks = async () => {
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/ministries/id/${ministryId}`,
+          {
+            credentials: "include",
+          }
+        );
 
-    if (type === "slider") {
-      setBlocks([
-        ...blocks,
-        {
-          id: Date.now().toString(),
-          type: "slider",
-          slides: [],
-        },
-      ]);
-    }
+        const data = await res.json();
 
-    if (type === "cards") {
-      setBlocks([
-        ...blocks,
-        {
-          id: Date.now().toString(),
-          type: "cards",
-          heading: "",
-          subText: "",
-          bottomText: "",
-          cards: [],
-        },
-      ]);
-    }
+        if (data?.data?.blocks) {
+          setBlocks(data.data.blocks);
+        }
+      } catch {
+        toast.error("Failed to load blocks");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    if (type === "faq") {
-      setBlocks([
-        ...blocks,
-        {
-          id: Date.now().toString(),
-          type: "faq",
-          faqImage: "",
-          faqImageAlt: "",
-          faqs: [],
-        },
-      ]);
-    }
-  };
+    loadBlocks();
+  }, [ministryId]);
+
+const addBlock = (type: string) => {
+  let newBlock: MinistryBlock;
+
+  if (type === "content") {
+    newBlock = {
+      id: Date.now().toString(),
+      type: "content",
+      content: "",
+    };
+  } else if (type === "slider") {
+    newBlock = {
+      id: Date.now().toString(),
+      type: "slider",
+      slides: [],
+    };
+  } else if (type === "cards") {
+    newBlock = {
+      id: Date.now().toString(),
+      type: "cards",
+      heading: "",
+      subText: "",
+      bottomText: "",
+      cards: [],
+    };
+  } else {
+    newBlock = {
+      id: Date.now().toString(),
+      type: "faq",
+      faqImage: "",
+      faqImageAlt: "",
+      faqs: [],
+    };
+  }
+
+  setBlocks((prev) => [...prev, newBlock]);
+};
 
   const handleDragEnd = (event: any) => {
     const { active, over } = event;
@@ -82,47 +96,43 @@ export default function BlocksEditor({ ministryId }: Props) {
     setBlocks(arrayMove(blocks, oldIndex, newIndex));
   };
 
-  const saveBlocks = async () => {
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/ministries/${ministryId}`,
-        {
-          method: "PUT", // ✅ must be PUT
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ blocks }),
-        }
-      );
+const saveBlocks = async () => {
+  try {
+    setSaving(true);
 
-      if (!res.ok) throw new Error();
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/ministries/${ministryId}`,
+      {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ blocks }),
+      }
+    );
 
-      toast.success("Blocks saved");
-    } catch {
-      toast.error("Failed to save blocks");
-    }
-  };
+    if (!res.ok) throw new Error();
 
+    toast.success("Blocks saved");
+  } catch {
+    toast.error("Failed to save blocks");
+  } finally {
+    setSaving(false);
+  }
+};
+
+if (loading) {
+  return (
+    <div className="text-gray-400 text-sm">
+      Loading blocks...
+    </div>
+  );
+}
   return (
     <div className="space-y-6">
-      <div className="flex gap-3">
-        <button onClick={() => addBlock("content")} className="btn">
-          + Content
-        </button>
-
-        <button onClick={() => addBlock("slider")} className="btn">
-          + Slider
-        </button>
-
-        <button onClick={() => addBlock("cards")} className="btn">
-          + Cards
-        </button>
-
-        <button onClick={() => addBlock("faq")} className="btn">
-          + FAQ
-        </button>
-      </div>
-
+      
+   
       <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <SortableContext
           items={blocks.map((b) => b.id)}
@@ -140,12 +150,32 @@ export default function BlocksEditor({ ministryId }: Props) {
         </SortableContext>
       </DndContext>
 
-      <button
-        onClick={saveBlocks}
-        className="px-5 py-2 bg-green-600 rounded-lg"
-      >
-        Save Blocks
-      </button>
+         <div className="flex gap-3">
+        <button onClick={() => addBlock("content")} className="btn">
+          + Content
+        </button>
+
+        <button onClick={() => addBlock("slider")} className="btn">
+          + Slider
+        </button>
+
+        <button onClick={() => addBlock("cards")} className="btn">
+          + Cards
+        </button>
+
+        <button onClick={() => addBlock("faq")} className="btn">
+          + FAQ
+        </button>
+      </div>
+
+
+<button
+  onClick={saveBlocks}
+  disabled={saving}
+  className="px-5 py-2 bg-green-600 rounded-lg"
+>
+  {saving ? "Saving..." : "Save Blocks"}
+</button>
     </div>
   );
 }

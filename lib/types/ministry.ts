@@ -5,9 +5,11 @@ export type Ministry = {
   shortDesc?: string;
 
   logo?: string;
+  logoPublicId?: string;
   logoAlt?: string;
 
   coverImage?: string;
+  coverImagePublicId?: string;
   coverAlt?: string;
 
   blocks?: MinistryBlock[];
@@ -43,7 +45,10 @@ export type SliderBlock = {
 export type SlideItem = {
   title: string;
   description?: string;
+
   image: string;
+  imagePublicId?: string;
+
   alt?: string;
 };
 
@@ -60,6 +65,8 @@ export type CardsBlock = {
 
 export type CardItem = {
   iconSvg?: string;
+  iconPublicId?: string;
+
   description: string;
   alt?: string;
 };
@@ -69,6 +76,8 @@ export type FAQBlock = {
   type: "faq";
 
   faqImage?: string;
+  faqImagePublicId?: string;
+
   faqImageAlt?: string;
 
   faqs: FAQItem[];
