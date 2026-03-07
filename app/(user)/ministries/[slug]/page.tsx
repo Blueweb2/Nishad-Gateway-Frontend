@@ -20,9 +20,8 @@ export default async function MinistryPage({ params }: Props) {
 
   return (
 
-    <div className="max-w-8xl mx-auto px-6 py-28 space-y-10" data-navbar="light">
-
-      {/* Breadcrumb */}
+    <div className="max-w-8xl mx-auto px-6 pt-28 space-y-10" data-navbar="light">
+<div className="max-w-5xl mx-auto px-6 space-y-10">
       {/* Breadcrumb */}
       <div className="text-sm text-gray-500 flex items-center gap-2">
         <Link href="/" className="hover:text-gray-900">
@@ -43,18 +42,45 @@ export default async function MinistryPage({ params }: Props) {
       </div>
 
       {/* Cover Image */}
-      {ministry.coverImage && (
-        <div className="w-full overflow-hidden rounded-3xl">
-          <Image
-            src={cloudinaryAutoWebp(ministry.coverImage)}
-            alt={ministry.coverAlt || ministry.title}
-            width={1400}
-            height={600}
-            className="w-full h-[420px] object-cover"
-            priority
-          />
-        </div>
-      )}
+    {/* Cover Image with Title + Logo Overlay */}
+{ministry.coverImage && (
+  <div className="relative w-full overflow-hidden rounded-3xl">
+
+    {/* Cover Image */}
+    <Image
+      src={cloudinaryAutoWebp(ministry.coverImage)}
+      alt={ministry.coverAlt || ministry.title}
+      width={1400}
+      height={600}
+      className="w-full h-[420px] object-cover"
+      priority
+    />
+
+    {/* Gradient overlay for readability */}
+    <div className="absolute inset-0 " />
+
+    {/* Title bottom left */}
+    <div className="absolute bottom-6 left-6">
+      <h1 className="text-3xl md:text-4xl font-semibold text-white max-w-2xl">
+        {ministry.title}
+      </h1>
+    </div>
+
+    {/* Logo bottom right */}
+    {ministry.logo && (
+      <div className="absolute bottom-6 right-6 bg-black/90 backdrop-blur rounded-xl p-3">
+        <Image
+          src={cloudinaryAutoWebp(ministry.logo)}
+          alt={ministry.logoAlt || ministry.title}
+          width={150}
+          height={60}
+          className="object-contain"
+        />
+      </div>
+    )}
+
+  </div>
+)}
 
       {/* Title */}
       {/* <h1 className="text-4xl font-semibold">
@@ -67,6 +93,7 @@ export default async function MinistryPage({ params }: Props) {
           {ministry.shortDesc}
         </p>
       )}
+      </div>
 
       {/* Dynamic Blocks */}
       {ministry.blocks?.map((block, index) => (
