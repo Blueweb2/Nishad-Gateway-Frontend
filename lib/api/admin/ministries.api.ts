@@ -6,6 +6,12 @@ export const adminGetMinistries = async () => {
   return data.data;
 };
 
+// 📄 Get single ministry by id (for edit page)
+export const getMinistryById = async (ministryId: string) => {
+  const { data } = await adminAxios.get(`/ministries/id/${ministryId}`);
+  return data.data;
+};
+
 // ➕ Create ministry
 export const adminCreateMinistry = async (payload: any) => {
   const { data } = await adminAxios.post("/ministries", payload);

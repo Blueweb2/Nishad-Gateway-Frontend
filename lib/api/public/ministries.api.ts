@@ -1,12 +1,18 @@
-import { cache } from "react";
 import { publicAxios } from "@/lib/http/publicAxios";
+import { Ministry } from "@/lib/types/ministry";
 
-export const getMinistryBySlug = cache(async (slug: string) => {
+// 🌍 Get ministry by slug
+export const getMinistryBySlug = async (
+  slug: string
+): Promise<Ministry | null> => {
   const { data } = await publicAxios.get(`/ministries/${slug}`);
-  return data;
-});
 
-export const getMinistries = cache(async () => {
+  return data?.data || null;
+};
+
+// 🌍 Get all ministries (cards)
+export const getMinistries = async (): Promise<Ministry[]> => {
   const { data } = await publicAxios.get("/ministries");
+
   return data?.data || [];
-});
+};

@@ -8,7 +8,7 @@ export default function ContentBlock({ block }: Props) {
 
   return (
     <div
-      className="rich-text max-w-none"
+      className="rich-text max-w-7xl"
       dangerouslySetInnerHTML={{ __html: block.content }}
     />
   );

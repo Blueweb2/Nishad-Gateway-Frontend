@@ -34,6 +34,14 @@ export default function SliderBlockEditor({
     );
   };
 
+  const updateHeading = (value: string) => {
+  setBlocks((prev) =>
+    prev.map((b) =>
+      b.id === block.id ? { ...b, heading: value } : b
+    )
+  );
+};
+
   const addSlide = () => {
     updateSlides([
       ...slides,
@@ -111,11 +119,29 @@ export default function SliderBlockEditor({
         Slider Block
       </h3>
 
+          {/* Slider Heading */}
+    <div className="space-y-1">
+      <label className="text-xs text-green-400">
+        Slider Heading
+      </label>
+
+      <input
+        type="text"
+        placeholder="Enter section heading"
+        value={block.heading || ""}
+        onChange={(e) => updateHeading(e.target.value)}
+        className="input w-full"
+      />
+    </div>
+
+
       {slides.map((slide, index) => (
         <div
           key={index}
           className="border border-green-700/20 rounded-lg p-5 bg-[#0f150f] space-y-4"
         >
+
+
 
           {/* Slide Header */}
           <div className="flex justify-between items-center">
