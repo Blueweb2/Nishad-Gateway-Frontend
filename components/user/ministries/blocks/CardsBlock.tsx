@@ -28,37 +28,30 @@ export default function CardsBlock({ block }: Props) {
         {/* Cards */}
         <div className="grid md:grid-cols-3 gap-8">
 
-          {block.cards?.map((card, i) => {
+          {block.cards?.map((card, i) => (
+            <div
+              key={i}
+              className="group rounded-3xl p-10 flex flex-col items-center text-center transition-all duration-300 bg-white text-gray-700 shadow-sm hover:bg-[#176b67] hover:text-white hover:shadow-xl hover:scale-105"
+            >
 
-            const isMiddle = i === 1;
+              {/* Icon */}
+              {card.iconSvg && (
+                <Image
+                  src={cloudinaryAutoWebp(card.iconSvg)}
+                  alt={card.alt || ""}
+                  width={50}
+                  height={50}
+                  className="mb-6 transition filter invert group-hover:invert-0"
+                />
+              )}
 
-            return (
-              <div
-                key={i}
-                className={`rounded-3xl p-10 flex flex-col items-center text-center transition
-                ${isMiddle
-                    ? "bg-[#176b67] text-white shadow-xl scale-105"
-                    : "bg-white text-gray-700 shadow-sm"
-                  }`}
-              >
+              {/* Description */}
+              <p className="text-lg leading-relaxed max-w-xs">
+                {card.description}
+              </p>
 
-                {card.iconSvg && (
-                  <Image
-                    src={cloudinaryAutoWebp(card.iconSvg)}
-                    alt={card.alt || ""}
-                    width={50}
-                    height={50}
-                    className="mb-6"
-                  />
-                )}
-
-                <p className="text-lg leading-relaxed max-w-xs">
-                  {card.description}
-                </p>
-
-              </div>
-            );
-          })}
+            </div>
+          ))}
 
         </div>
 

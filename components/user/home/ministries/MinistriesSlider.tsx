@@ -14,28 +14,51 @@ export default function MinistriesSlider({
 }) {
   return (
     <Swiper
-      className="!overflow-visible cursor-grab active:cursor-grabbing"
       modules={[Autoplay]}
-      loop
+      className="!overflow-visible cursor-grab active:cursor-grabbing"
+      loop={true}
       speed={900}
-      grabCursor
-      slidesPerView={4.15}
-      spaceBetween={40}
+      grabCursor={true}
+      centeredSlides={true}
+
       autoplay={{
         delay: 2500,
         disableOnInteraction: false,
         pauseOnMouseEnter: true,
       }}
+
       breakpoints={{
-        0: { slidesPerView: 1.2, spaceBetween: 20 },
-        640: { slidesPerView: 2.2, spaceBetween: 25 },
-        1024: { slidesPerView: 3.2, spaceBetween: 30 },
-        1280: { slidesPerView: 4.15, spaceBetween: 40 },
+        0: {
+          slidesPerView: 1,
+          spaceBetween: 20,
+          centeredSlides: true,
+        },
+
+        640: {
+          slidesPerView: 2,
+          spaceBetween: 24,
+          centeredSlides: false,
+        },
+
+        1024: {
+          slidesPerView: 3,
+          spaceBetween: 30,
+          centeredSlides: false,
+        },
+
+        1280: {
+          slidesPerView: 4,
+          spaceBetween: 40,
+          centeredSlides: false,
+        },
       }}
     >
-      {ministries.map((item) => (
-        <SwiperSlide key={item._id} className="flex justify-center">
-          <MinistryCard ministry={item} />
+      {ministries.map((ministry) => (
+        <SwiperSlide
+          key={ministry._id}
+          className="flex justify-center items-stretch"
+        >
+          <MinistryCard ministry={ministry} />
         </SwiperSlide>
       ))}
     </Swiper>
