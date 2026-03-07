@@ -48,10 +48,15 @@ export default function Consultant() {
       ? activeContent[activeContent.length - 1].title
       : activeContent[activeIndex - 1].title;
 
-  return (
-    <section className="relative w-full h-screen text-white overflow-hidden" data-navbar="light">
 
-      {/* Background */}
+
+  return (
+    <section
+      data-navbar="light"
+      className="relative w-full min-h-[90dvh] lg:min-h-screen text-white overflow-hidden flex flex-col justify-center py-16"
+    >
+
+      {/* BACKGROUND */}
       <div className="absolute inset-0 z-0">
         {activeContent.map((item, index) => (
           <img
@@ -59,140 +64,206 @@ export default function Consultant() {
             src={item.image}
             alt={item.title}
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700
-              ${index === activeIndex ? "opacity-100" : "opacity-0"}
-            `}
+            ${index === activeIndex ? "opacity-100" : "opacity-0"}`}
           />
         ))}
       </div>
 
-      <div className="absolute inset-0 bg-black/55 z-10" />
+      {/* TOP BAR (ONLY SHOW IN MOBILE) */}
+      <div className="w-full lg:hidden z-20 absolute top-12 flex flex-col gap-3 items-center justify-center">
+        <h2
+          className="block w-full font-semibold text-3xl text-center"
+        >
+          Confidence Beyond the Investment
+        </h2>
 
-      {/* Top Right Tabs */}
-      <div className="absolute top-[6vw] right-[10vw] z-30 flex gap-[2vw] text-[0.9vw]">
-        <button
-          onClick={() => {
+        <div className="flex justify-center gap-6 text-xm leading-snug">
+
+          <button
+            onClick={() => {
             setActiveTab("western");
             setActiveIndex(0);
-          }}
-          className={`pb-[0.3vw] border-b transition ${
+            }}
+            className={`pb-1 border-b transition ${
             activeTab === "western"
-              ? "border-green-400 text-green-400"
-              : "border-transparent text-white/50 hover:text-white"
-          }`}
-        >
-          For Americans & Europeans
-        </button>
+            ? "border-green-400 text-green-400"
+            : "border-transparent text-white/50 hover:text-white"
+            }`}
+          >
+            For Americans & Europeans
+          </button>
 
-        <button
-          onClick={() => {
+          <button
+            onClick={() => {
             setActiveTab("asian");
             setActiveIndex(0);
-          }}
-          className={`pb-[0.3vw] border-b transition ${
+            }}
+            className={`pb-1 border-b transition ${
             activeTab === "asian"
-              ? "border-green-400 text-green-400"
-              : "border-transparent text-white/50 hover:text-white"
-          }`}
-        >
-          For Asians
-        </button>
+            ? "border-green-400 text-green-400"
+            : "border-transparent text-white/50 hover:text-white"
+            }`}
+          >
+            For Asians
+          </button>
+
+        </div>
       </div>
 
-      {/* Main Grid */}
-      <div className="relative z-20 h-full px-[5vw] grid grid-cols-3 items-center">
 
-        {/* LEFT COLUMN */}
-        <div className="flex flex-col h-full justify-center">
+      <div className="absolute inset-0 bg-black/55 z-10" />
 
-          <motion.h2
-            initial={{ opacity: 0, y: 60 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.2 }}
-            viewport={{ once: true, amount: 0.5 }}
-            className="text-[3vw] font-semibold leading-tight mb-[2vw] mt-[6vw]"
+      {/* ================= CONTENT WRAPPER ================= */}
+      <div className="relative z-20 max-w-[1320px] mx-auto w-full px-6 mt-[60%] lg:mt-0">
+
+        {/* TOP TABS */}
+        <div className="hidden lg:flex lg:justify-end gap-6 text-sm md:text-[0.9vw] mb-12">
+
+          <button
+            onClick={() => {
+            setActiveTab("western");
+            setActiveIndex(0);
+            }}
+            className={`pb-1 border-b transition ${
+            activeTab === "western"
+            ? "border-green-400 text-green-400"
+            : "border-transparent text-white/50 hover:text-white"
+            }`}
           >
-            Confidence <br />
-            Beyond the <br />
-            Investment
-          </motion.h2>
-          
+            For Americans & Europeans
+          </button>
 
-          {/* Bottom Left */}
-          <div className="mt-auto mb-[16vw] relative overflow-hidden">
-            <div className="flex items-center gap-[1vw] text-white/60 text-[1vw] mb-[1vw]">
+          <button
+            onClick={() => {
+            setActiveTab("asian");
+            setActiveIndex(0);
+            }}
+            className={`pb-1 border-b transition ${
+            activeTab === "asian"
+            ? "border-green-400 text-green-400"
+            : "border-transparent text-white/50 hover:text-white"
+            }`}
+          >
+            For Asians
+          </button>
+
+        </div>
+
+
+        {/* ================= GRID ================= */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-12 items-center">
+
+          {/* LEFT COLUMN */}
+          <div className="hidden lg:flex flex-col text-center lg:text-left h-full">
+
+            <motion.h2
+              initial={{ opacity: 0, y: 60 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="text-3xl md:text-4xl lg:text-[3vw] font-semibold  leading-tight mb-10 lg:mt-[-139px]"
+            >
+              Confidence <br />
+              Beyond the <br />
+              Investment
+            </motion.h2>
+
+            {/* COUNTER md:justify-start*/}
+            <div className="flex justify-center lg:justify-start items-center gap-3 text-white/60 text-sm mb-4">
               <span>{formattedCurrent}</span>
               <span>|</span>
               <span>{formattedTotal}</span>
             </div>
 
-            <div className="relative w-[12vw] h-[3vw]">
+
+            {/* PREVIOUS TITLE */}
+            <div className="relative min-h-[48px] max-w-[220px] mx-auto md:mx-0">
+
               <AnimatePresence mode="wait">
                 <motion.p
-                  key={activeIndex}
-                  initial={{ x: "100%", opacity: 0 }}
-                  animate={{ x: "0%", opacity: 1 }}
-                  exit={{ x: "-100%", opacity: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="absolute w-full text-white/40 text-[1.4vw] leading-tight"
+                key={activeIndex}
+                initial={{ x: "100%", opacity: 0 }}
+                animate={{ x: "0%", opacity: 1 }}
+                exit={{ x: "-100%", opacity: 0 }}
+                transition={{ duration: 0.5 }}
+                className="absolute w-full text-white/40 text-lg leading-snug"
                 >
-                  {previousTitle}
+                {previousTitle}
                 </motion.p>
               </AnimatePresence>
 
             </div>
 
-            <div className="h-px bg-white/20 w-full mt-[3vw]" />
-          </div>
-        </div>
+            {/* md:block */}
+            <div className="hidden lg:block h-px bg-white/20 w-full mt-6" />
 
-        {/* CENTER CAPSULE */}
-        <div className="relative flex items-center justify-center">
-          <div className="absolute w-[26vw] h-[32vw] bg-white/10 backdrop-blur-xxl border border-white/10
-           rounded-[160px]" 
-          />
-          <AnimatePresence mode="wait">
-            <motion.h3
+          </div>
+
+          {/* CENTER CAPSULE */}
+          <div className="flex justify-center h-full">
+
+            <div className="relative flex items-center justify-center">
+
+            <div className="absolute w-[240px] h-[320px] sm:w-[280px] sm:h-[360px] md:w-[300px] md:h-[420px] lg:w-[26vw] lg:h-[32vw]
+            bg-white/10 backdrop-blur-xxl border-white/10 rounded-[160px]" />
+
+              <AnimatePresence mode="wait">
+                <motion.h3
+                key={activeIndex}
+                initial={{ opacity: 0, x: 100 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -100 }}
+                transition={{ duration: 0.5 }}
+                className="relative z-10 text-xl sm:text-2xl lg:text-[2.2vw] font-semibold text-center max-w-[240px] lg:max-w-[16vw] h-[70px] lg:h-auto"
+                >
+                  {currentItem.title}
+                </motion.h3>
+              </AnimatePresence>
+
+            </div>
+
+          </div>
+
+          {/* RIGHT COLUMN 25%*/}
+          <div className="flex flex-col items-center justify-end lg:items-start text-center lg:text-left max-w-lg mx-auto lg:mx-0 h-full mt-[25%] lg:mt-auto">
+
+            <AnimatePresence mode="wait">
+              <motion.p
               key={activeIndex}
               initial={{ opacity: 0, x: 100 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -100 }}
               transition={{ duration: 0.5 }}
-              className="relative z-10 text-[2.2vw] font-semibold text-center max-w-[16vw] leading-tight"
-            >
-              {currentItem.title}
-            </motion.h3>
-          </AnimatePresence>
-        </div>
+              className="text-white/80 text-sm md:text-base lg:text-[1vw] leading-relaxed mb-6 h-[70px] lg:h-auto"
+              >
+                {currentItem.description}
+              </motion.p>
+            </AnimatePresence>
 
-        {/* RIGHT COLUMN */}
-        <div className="flex flex-col justify-center items-start max-w-[28vw] ml-auto h-full mt-[10vw]">
-          <AnimatePresence mode="wait">
-            <motion.p
-              key={activeIndex}
-              initial={{ opacity: 0, x: 100 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -100 }}
-              transition={{ duration: 0.5 }}
-              className="text-white/80 text-[1vw] leading-tight mb-[2vw] w-[22vw]"
-            >
-              {currentItem.description}
-            </motion.p>
-          </AnimatePresence>
+            <button className="text-sm md:text-base pb-10 lg:pb-0 underline underline-offset-4 ">
+               Read More
+            </button>
 
-          <button className="text-[1vw] underline underline-offset-4 mb-[2vw]">
-            Read More
-          </button>
+            <div className="hidden md:block h-px bg-white/20 w-full mt-5 mb-6" />
 
-          <div className="h-px bg-white/20 w-full mb-[3vw]" />
+            {/* ARROWS FOR LARGE DIVICE */}
+            <div className="hidden lg:flex gap-4 justify-center md:justify-start mb-[-67px]">
+              <OvalArrow direction="left" variant="white" onClick={prevSlide} />
+              <OvalArrow direction="right" variant="white" onClick={nextSlide} />
+            </div>
 
-          {/* Arrows */}
-          <div className="flex gap-[1.5vw]">
-            <OvalArrow direction="left" variant="white" onClick={prevSlide} />
-            <OvalArrow direction="right" variant="white" onClick={nextSlide} />
           </div>
 
         </div>
+
       </div>
+
+      {/* ARROWS (BUTTONS FOR MOBILE) */}
+      <div className="flex lg:hidden gap-4 justify-between absolute bottom-5 w-full px-6 z-20">
+        <OvalArrow direction="left" variant="white" onClick={prevSlide} />
+        <OvalArrow direction="right" variant="white" onClick={nextSlide} />
+      </div>
+
     </section>
   );
 };
