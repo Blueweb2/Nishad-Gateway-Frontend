@@ -77,7 +77,7 @@ export default function Consultant() {
           Confidence Beyond the Investment
         </h2>
 
-        <div className="flex justify-center gap-3 text-xm leading-snug">
+        <div className="flex justify-center gap-6 text-xm leading-snug">
 
           <button
             onClick={() => {
@@ -224,8 +224,8 @@ export default function Consultant() {
 
           </div>
 
-          {/* RIGHT COLUMN */}
-          <div className="flex flex-col items-center justify-end lg:items-start text-center lg:text-left max-w-lg mx-auto lg:mx-0 h-full mt-[30%] lg:mt-auto">
+          {/* RIGHT COLUMN 25%*/}
+          <div className="flex flex-col items-center justify-end lg:items-start text-center lg:text-left max-w-lg mx-auto lg:mx-0 h-full mt-[25%] lg:mt-auto">
 
             <AnimatePresence mode="wait">
               <motion.p
@@ -240,13 +240,13 @@ export default function Consultant() {
               </motion.p>
             </AnimatePresence>
 
-            <button className="text-sm md:text-base underline underline-offset-4 ">
+            <button className="text-sm md:text-base pb-10 lg:pb-0 underline underline-offset-4 ">
                Read More
             </button>
 
             <div className="hidden md:block h-px bg-white/20 w-full mt-5 mb-6" />
 
-            {/* ARROWS */}
+            {/* ARROWS FOR LARGE DIVICE */}
             <div className="hidden lg:flex gap-4 justify-center md:justify-start mb-[-67px]">
               <OvalArrow direction="left" variant="white" onClick={prevSlide} />
               <OvalArrow direction="right" variant="white" onClick={nextSlide} />
