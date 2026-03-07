@@ -44,8 +44,14 @@ export default function ContactPopup({
       <div
         onClick={(e) => e.stopPropagation()}
         className={`
-          fixed top-28 right-10 z-[9999]
-          w-[360px] md:w-[420px]
+          fixed z-[9999]
+
+          /* MOBILE — center */
+          top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+          w-[92%] max-w-[360px]
+
+          /* DESKTOP — right side */
+          md:top-28 md:right-10 md:left-auto md:translate-x-0 md:translate-y-0 md:w-[420px]
           ${open ? "animate-sheetReveal" : "animate-sheetHide"}
         `}
       >
