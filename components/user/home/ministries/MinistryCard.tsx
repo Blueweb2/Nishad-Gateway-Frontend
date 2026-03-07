@@ -31,8 +31,8 @@ export default function MinistryCard({ ministry }: { ministry: Ministry }) {
           pointer-events-none
           absolute inset-0
           rounded-[160px]
-          opacity-0
-          group-hover:opacity-100
+          opacity-100 sm:opacity-0
+          sm:group-hover:opacity-100
           transition-opacity duration-300
         "
       >
@@ -91,10 +91,11 @@ export default function MinistryCard({ ministry }: { ministry: Ministry }) {
       <div
         className="
           absolute bottom-8
-          opacity-0 translate-y-2
+          opacity-100 sm:opacity-0
+          translate-y-0 sm:translate-y-2
           transition-all duration-300
-          group-hover:opacity-100
-          group-hover:translate-y-0
+          sm:group-hover:opacity-100
+          sm:group-hover:translate-y-0
         "
       >
         <Link
@@ -110,6 +111,7 @@ export default function MinistryCard({ ministry }: { ministry: Ministry }) {
           <ArrowRight size={16} />
         </Link>
       </div>
+
     </div>
   );
 }
