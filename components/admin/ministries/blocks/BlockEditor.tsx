@@ -22,50 +22,60 @@ export default function BlocksEditor({ ministryId }: Props) {
   const [saving, setSaving] = useState(false);
    const [loading, setLoading] = useState(true);
 
-    // ⭐ Load existing blocks
-  useEffect(() => {
-    const loadBlocks = async () => {
-      try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/ministries/id/${ministryId}`,
-          {
-            credentials: "include",
-          }
-        );
+  //  load existing data for the ministry
+useEffect(() => {
+  const loadBlocks = async () => {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/ministries/${ministryId}`,
+        { credentials: "include" }
+      );
 
-        const data = await res.json();
+      const data = await res.json();
 
-        if (data?.data?.blocks) {
-          setBlocks(data.data.blocks);
-        }
-      } catch {
-        toast.error("Failed to load blocks");
-      } finally {
-        setLoading(false);
+      console.log("API RESPONSE:", data);
+
+      if (data?.data?.blocks) {
+        const normalizedBlocks = data.data.blocks.map((block: any) => ({
+          ...block,
+          id: block.id || block._id || crypto.randomUUID(),
+        }));
+
+        setBlocks(normalizedBlocks);
       }
-    };
+    } catch {
+      toast.error("Failed to load blocks");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    loadBlocks();
-  }, [ministryId]);
+  loadBlocks();
+}, [ministryId]);
 
 const addBlock = (type: string) => {
+  if (type === "content" && blocks.some(b => b.type === "content")) {
+    toast.error("Content block already exists");
+    return;
+  }
+
   let newBlock: MinistryBlock;
 
   if (type === "content") {
     newBlock = {
-      id: Date.now().toString(),
+      id: crypto.randomUUID(),
       type: "content",
       content: "",
     };
   } else if (type === "slider") {
     newBlock = {
-      id: Date.now().toString(),
+      id: crypto.randomUUID(),
       type: "slider",
       slides: [],
     };
   } else if (type === "cards") {
     newBlock = {
-      id: Date.now().toString(),
+      id: crypto.randomUUID(),
       type: "cards",
       heading: "",
       subText: "",
@@ -74,7 +84,7 @@ const addBlock = (type: string) => {
     };
   } else {
     newBlock = {
-      id: Date.now().toString(),
+      id: crypto.randomUUID(),
       type: "faq",
       faqImage: "",
       faqImageAlt: "",
@@ -82,7 +92,7 @@ const addBlock = (type: string) => {
     };
   }
 
-  setBlocks((prev) => [...prev, newBlock]);
+  setBlocks(prev => [...prev, newBlock]);
 };
 
   const handleDragEnd = (event: any) => {
@@ -111,6 +121,12 @@ const saveBlocks = async () => {
         body: JSON.stringify({ blocks }),
       }
     );
+
+    const result = await res.json();
+
+if (!result.success) {
+  throw new Error(result.message);
+}
 
     if (!res.ok) throw new Error();
 
