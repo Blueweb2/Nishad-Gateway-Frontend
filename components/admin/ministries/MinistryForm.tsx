@@ -11,26 +11,34 @@ import {
 
 import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
 import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
+import { Ministry } from "@/lib/types/ministry";
+
+// type Props = {
+//   mode: "create" | "edit";
+//   ministryId?: string;
+//   initialData?: Ministry;
+//   defaultValues?: {
+//     title?: string;
+//     slug?: string;
+//     shortDesc?: string;
+//     logo?: string;
+//     logoAlt?: string;
+//     coverImage?: string;
+//     coverAlt?: string;
+//     isActive?: boolean;
+//   };
+// };
 
 type Props = {
   mode: "create" | "edit";
   ministryId?: string;
-  defaultValues?: {
-    title?: string;
-    slug?: string;
-    shortDesc?: string;
-    logo?: string;
-    logoAlt?: string;
-    coverImage?: string;
-    coverAlt?: string;
-    isActive?: boolean;
-  };
+  initialData?: Ministry;
 };
 
 export default function MinistryForm({
   mode,
   ministryId,
-  defaultValues,
+  initialData,
 }: Props) {
 
   const router = useRouter();
@@ -54,19 +62,19 @@ export default function MinistryForm({
   /* ---------------- Prefill ---------------- */
 
   useEffect(() => {
-    if (mode === "edit" && defaultValues) {
+    if (mode === "edit" && initialData) {
       setForm({
-        title: defaultValues.title || "",
-        slug: defaultValues.slug || "",
-        shortDesc: defaultValues.shortDesc || "",
-        logo: defaultValues.logo || "",
-        logoAlt: defaultValues.logoAlt || "",
-        coverImage: defaultValues.coverImage || "",
-        coverAlt: defaultValues.coverAlt || "",
-        isActive: defaultValues.isActive ?? true,
+        title: initialData.title || "",
+        slug: initialData.slug || "",
+        shortDesc: initialData.shortDesc || "",
+        logo: initialData.logo || "",
+        logoAlt: initialData.logoAlt || "",
+        coverImage: initialData.coverImage || "",
+        coverAlt: initialData.coverAlt || "",
+        isActive: initialData.isActive ?? true,
       });
     }
-  }, [mode, defaultValues]);
+  }, [mode, initialData]);
 
   /* ---------------- Auto slug ---------------- */
 
