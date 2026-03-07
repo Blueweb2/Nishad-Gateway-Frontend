@@ -8,7 +8,7 @@ type Props = {
 
 export default function CardsBlock({ block }: Props) {
   return (
-    <section className="py-20 bg-[#f7f7f7]">
+    <section className="py-20 bg-[#f7f7f7] w-full">
       <div className="max-w-7xl mx-auto px-6 text-center space-y-12">
 
         {/* Heading */}
