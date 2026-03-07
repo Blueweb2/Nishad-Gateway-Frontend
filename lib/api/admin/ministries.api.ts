@@ -7,9 +7,9 @@ export const adminGetMinistries = async () => {
 };
 
 // 📄 Get single ministry by id (for edit page)
-export const getMinistryById = async (ministryId: string) => {
-  const { data } = await adminAxios.get(`/ministries/id/${ministryId}`);
-  return data.data;
+export const getMinistryById = async (id: string) => {
+  const res = await adminAxios.get(`/ministries/by-id/${id}`);
+  return res?.data?.data ?? null;
 };
 
 // ➕ Create ministry
@@ -20,11 +20,11 @@ export const adminCreateMinistry = async (payload: any) => {
 
 // ✏ Update ministry
 export const adminUpdateMinistry = async (
-  ministryId: string,
+  id: string,
   payload: any
 ) => {
   const { data } = await adminAxios.put(
-    `/ministries/${ministryId}`,
+    `/ministries/${id}`,
     payload
   );
 
@@ -32,7 +32,7 @@ export const adminUpdateMinistry = async (
 };
 
 // ❌ Delete ministry
-export const adminDeleteMinistry = async (ministryId: string) => {
-  const { data } = await adminAxios.delete(`/ministries/${ministryId}`);
+export const adminDeleteMinistry = async (id: string) => {
+  const { data } = await adminAxios.delete(`/ministries/${id}`);
   return data;
 };
