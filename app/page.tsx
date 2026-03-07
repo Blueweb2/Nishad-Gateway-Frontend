@@ -23,8 +23,8 @@ export default function Page() {
         <CitiesSection />
         <KeyServices />
         <Consultant />
-        {/* <Stats />
-        <MinistriesSection/> */}
+        {/* <Stats />*/}
+        <MinistriesSection/> 
         <CaseStudies />
         <Insights />
         <FinalCTA />

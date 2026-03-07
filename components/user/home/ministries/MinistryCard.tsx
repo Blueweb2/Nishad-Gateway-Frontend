@@ -15,7 +15,6 @@ type Ministry = {
 };
 
 export default function MinistryCard({ ministry }: { ministry: Ministry }) {
-
   return (
     <div
       className="
@@ -25,6 +24,45 @@ export default function MinistryCard({ ministry }: { ministry: Ministry }) {
         transition-all duration-300 overflow-hidden
       "
     >
+
+      {/* ANIMATED BORDER */}
+      <span
+        className="
+          pointer-events-none
+          absolute inset-0
+          rounded-[160px]
+          opacity-0
+          group-hover:opacity-100
+          transition-opacity duration-300
+        "
+      >
+        <span
+          className="absolute inset-0 rounded-[160px] border-animate"
+          style={{
+            padding: "4px",
+            background: `
+              conic-gradient(
+                from var(--angle),
+                rgba(15,185,177,0.02) 0deg,
+                rgba(15,185,177,0.05) 40deg,
+                rgba(15,185,177,0.15) 80deg,
+                rgba(15,185,177,0.4) 120deg,
+                rgba(15,185,177,0.8) 150deg,
+                rgba(15,185,177,1) 180deg,
+                rgba(15,185,177,0.8) 210deg,
+                rgba(15,185,177,0.4) 240deg,
+                rgba(15,185,177,0.15) 280deg,
+                rgba(15,185,177,0.05) 320deg,
+                rgba(15,185,177,0.02) 360deg
+              )
+            `,
+            WebkitMask:
+              "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
+            WebkitMaskComposite: "xor",
+            maskComposite: "exclude",
+          }}
+        />
+      </span>
 
       {/* LOGO */}
       {ministry.logo && (
@@ -52,12 +90,12 @@ export default function MinistryCard({ ministry }: { ministry: Ministry }) {
       {/* LINK */}
       <div
         className="
-        absolute bottom-8
-        opacity-0 translate-y-2
-        transition-all duration-300
-        group-hover:opacity-100
-        group-hover:translate-y-0
-      "
+          absolute bottom-8
+          opacity-0 translate-y-2
+          transition-all duration-300
+          group-hover:opacity-100
+          group-hover:translate-y-0
+        "
       >
         <Link
           href={`/ministries/${ministry.slug}`}
@@ -72,7 +110,6 @@ export default function MinistryCard({ ministry }: { ministry: Ministry }) {
           <ArrowRight size={16} />
         </Link>
       </div>
-
     </div>
   );
 }
