@@ -125,10 +125,10 @@ export default function CityCategoriesPage() {
                     </Link> */}
 
                     <Link
-                      href={`/admin/cities/${cityId}/categories/${category._id}/blogs`}
+                      href={`/admin/cities/${cityId}/categories/${category._id}`}
                       className="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white text-sm"
                     >
-                      Manage Blogs
+                      Edit Page
                     </Link>
 
                   </div>

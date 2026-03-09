@@ -4,7 +4,7 @@ import { useMemo,  useRef,  useState   } from "react";
 import { X, Sparkles, ArrowRight } from "lucide-react";
 import toast from "react-hot-toast";
 import FAQSection from "../shared/FAQSection";
-
+import OTPModal from "./OTPModal";
 
 
 type InvestorType = "Individual" | "Company" | "Startup" | "Investor";
@@ -57,7 +57,9 @@ type ResultState = {
 
 export default function KsaExpansionCostCalculator() {
   const [loading, setLoading] = useState(false);
-
+const [showOtp, setShowOtp] = useState(false);
+const [otp, setOtp] = useState("");
+const [verifying, setVerifying] = useState(false);
   const [form, setForm] = useState<FormState>({
     fullName: "",
     email: "",
@@ -269,193 +271,101 @@ const reportId = `NG-${now.getFullYear()}-${Math.floor(
     if (!form.timeline) return "Please select timeline preference";
     return null;
   }
-
 async function onCalculate() {
+  console.log("Calculate clicked");
   const err = validateForm();
+
   if (err) {
-    toast.error(err, {
-      style: {
-        backgroundColor: "#842029",
-        color: "#f8d7da",
-        border: "1px solid #f1aeb5",
-        borderRadius: "8px",
-      },
-    });
+    toast.error(err);
     return;
   }
 
-  setLoading(true);
-  setResult(null);
-
-  setTimeout(() => {
-    const r = calculateEstimate();
-    setResult(r);
-
-    requestAnimationFrame(() => {
-      resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
-
-    setLoading(false);
-
-    toast.success("Estimate generated successfully!", {
-      style: {
-        backgroundColor: "#0f5132",
-        color: "#d1e7dd",
-        border: "1px solid #2f9e44",
-        borderRadius: "8px",
-      },
-    });
-  }, 900);
-}
-
-// add logo inside pdf
-async function getBase64FromUrl(url: string): Promise<string> {
-  const res = await fetch(url);
-  const blob = await res.blob();
-
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onloadend = () => resolve(reader.result as string);
-    reader.onerror = reject;
-    reader.readAsDataURL(blob);
-  });
-}
-
-function addWatermarkBehind(doc: any) {
-  doc.setTextColor(235); // very light gray
-  doc.setFontSize(55);
-  doc.text("NISHAD GATEWAY", 20, 170, { angle: 30 });
-
-  // reset color for normal content
-  doc.setTextColor(0);
-}
-
-
-
-async function downloadPDF() {
-  if (!result) {
-    toast.error("Please calculate estimate first.");
-    return;
-  }
-
-  const { jsPDF } = await import("jspdf");
-  const autoTable = (await import("jspdf-autotable")).default;
-
-  const doc = new jsPDF();
-
-
-
-  // Logo
   try {
-    const logoBase64 = await getBase64FromUrl(
-  `${window.location.origin}/coloredlogo.png`
-);
-    doc.addImage(logoBase64, "PNG", 14, 10, 55, 14);
+    setLoading(true);
 
-    doc.setFontSize(16);
-doc.text("KSA Expansion Cost Estimate", 14, 35);
-  } catch (error) {
-    console.log("Logo load failed:", error);
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/calculator/send-otp`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+     body: JSON.stringify({
+          email: form.email,
+        }),
+      }
+    );
+
+    if (!res.ok) throw new Error("OTP failed");
+
+    setShowOtp(true);
+
+    toast.success("OTP sent to your email");
+  } catch (err) {
+    toast.error("Failed to send OTP");
+  } finally {
+    setLoading(false);
   }
+}
+async function verifyOtp(code: string) {
+  try {
 
-  addWatermarkBehind(doc);
-  // Header
-  doc.setFontSize(16);
-  doc.text("KSA Expansion Cost Estimate", 14, 35);
+    setVerifying(true);
 
-  doc.setFontSize(10);
-  doc.text(`Report ID: ${result.reportId}`, 14, 42);
-  doc.text(`Date: ${result.reportDate}`, 150, 42);
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/calculator/verify-otp`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: form.email,
+          otp: code,
+        }),
+      }
+    );
 
-  // Client details
-  doc.setFontSize(12);
-  doc.text("Client Details", 14, 55);
+    const data = await res.json();
 
-  doc.setFontSize(10);
-  doc.text(`Full Name: ${form.fullName}`, 14, 63);
-  doc.text(`Email: ${form.email}`, 14, 70);
-  doc.text(`Mobile: ${form.mobile}`, 14, 77);
+    if (!data.verified) {
+      toast.error("Invalid OTP");
+      return;
+    }
 
-  // Business inputs
-  doc.setFontSize(12);
-  doc.text("Business Inputs", 14, 90);
+    toast.success("OTP verified");
 
-  doc.setFontSize(10);
-  doc.text(`Investor Type: ${form.investorType}`, 14, 98);
-  doc.text(`Business Activity: ${form.activity}`, 14, 105);
-  doc.text(`Preferred City: ${form.city}`, 14, 112);
-  doc.text(`Timeline Preference: ${form.timeline}`, 14, 119);
-  doc.text(`Visas (Year 1): ${form.visas}`, 14, 126);
+    await generateReport();
 
-  // Estimated result summary
-  doc.setFontSize(12);
-  doc.text("Estimated Summary", 14, 140);
+  } catch {
+    toast.error("OTP verification failed");
+  } finally {
+    setVerifying(false);
+  }
+}
 
-  doc.setFontSize(10);
-  doc.text(
-    `Estimated Cost Range: SAR ${result.min.toLocaleString()} – ${result.max.toLocaleString()}`,
-    14,
-    148
-  );
-  doc.text(`Expected Timeline: ${result.timelineText}`, 14, 155);
-  doc.text(`Recommended Setup: ${result.recommendedSetup}`, 14, 162);
-  doc.text(`Suggested City: ${result.suggestedCity}`, 14, 169);
+async function generateReport() {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/calculator/generate-report`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      }
+    );
 
-  // Cost Breakdown Table
-  doc.setFontSize(12);
-  doc.text("Cost Breakdown (Approximate)", 14, 182);
+    if (!res.ok) throw new Error();
 
-  const tableRows = result.breakdown
-    .filter((item) => item.min !== 0 || item.max !== 0)
-    .map((item) => [
-      item.label,
-      `SAR ${item.min.toLocaleString()}`,
-      `SAR ${item.max.toLocaleString()}`,
-    ]);
+    toast.success("Your AI expansion report has been sent to your email!");
 
-  autoTable(doc, {
-    startY: 188,
-    head: [["Item", "Min", "Max"]],
-    body: tableRows,
-    styles: { fontSize: 9 },
-    headStyles: { fillColor: [11, 106, 103] }, // Nishad theme color
-    margin: { left: 14, right: 14 },
-  });
+    setShowOtp(false);
 
-  // After table position
-  const finalY = (doc as any).lastAutoTable?.finalY || 240;
-
-  // AI Explanation
-  doc.setFontSize(12);
-  doc.text("AI Explanation", 14, finalY + 10);
-
-  doc.setFontSize(10);
-  let y = finalY + 18;
-
-  result.notes.slice(0, 4).forEach((note) => {
-    const lines = doc.splitTextToSize(`• ${note}`, 180);
-    doc.text(lines, 16, y);
-    y += lines.length * 6;
-  });
-
-  // Footer
-  doc.setFontSize(9);
-  doc.text(
-    "Note: This estimate is approximate. Final pricing may vary based on approvals and documentation.",
-    14,
-    285
-  );
-
-  doc.save(`KSA_Expansion_Report_${result.reportId}.pdf`);
-
-  toast.success("PDF downloaded successfully ", {
-    style: {
-      backgroundColor: "#0f5132",
-      color: "#d1e7dd",
-      border: "1px solid #2f9e44",
-      borderRadius: "8px",
-    },
-  });
+  } catch {
+    toast.error("Report generation failed");
+  }
 }
 
 
@@ -617,133 +527,19 @@ doc.text("KSA Expansion Cost Estimate", 14, 35);
               </>
             ) : (
               <>
-                Calculate Estimated Cost <ArrowRight className="w-5 h-5" />
+             
+Calculate <ArrowRight className="w-5 h-5" />
               </>
             )}
           </button>
-
-          {/* Result */}
-       {result && (
-  <div
-    ref={resultRef}
-    className="mt-10 rounded-3xl border border-neutral-200 bg-[#f7faf7] p-6 md:p-8"
-  >
-
-    <div className="flex items-start justify-between gap-4">
-      <div>
-        <h3 className="text-lg md:text-xl font-semibold text-neutral-900">
-          Instant AI Estimate ✨
-        </h3>
-        <p className="text-sm text-neutral-600 mt-1">
-          Based on your inputs, here’s an instant expansion estimate.
-        </p>
-      </div>
-
-      <span className="text-xs px-3 py-1 rounded-full bg-white border text-neutral-700">
-        AI Generated
-      </span>
-    </div>
-
-    {/* Main Summary */}
-    <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div className="rounded-2xl bg-white border border-neutral-200 p-5">
-        <p className="text-xs text-neutral-500">Estimated Cost</p>
-        <p className="text-2xl font-semibold text-neutral-900 mt-1">
-          SAR {result.min.toLocaleString()} – {result.max.toLocaleString()}
-        </p>
-      </div>
-
-      <div className="rounded-2xl bg-white border border-neutral-200 p-5">
-        <p className="text-xs text-neutral-500">Timeline</p>
-        <p className="text-xl font-semibold text-neutral-900 mt-1">
-          {result.timelineText}
-        </p>
-      </div>
-
-      <div className="rounded-2xl bg-white border border-neutral-200 p-5">
-        <p className="text-xs text-neutral-500">Recommended Setup</p>
-        <p className="text-base font-semibold text-neutral-900 mt-1">
-          {result.recommendedSetup}
-        </p>
-      </div>
-
-      <div className="rounded-2xl bg-white border border-neutral-200 p-5">
-        <p className="text-xs text-neutral-500">Suggested City</p>
-        <p className="text-base font-semibold text-neutral-900 mt-1">
-          {result.suggestedCity}{" "}
-          <span className="text-neutral-500 font-normal text-sm">
-            (best based on your selection)
-          </span>
-        </p>
-      </div>
-    </div>
-
-    {/* Includes + Addons */}
-    <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div className="rounded-2xl bg-white border border-neutral-200 p-5">
-        <p className="text-sm font-semibold text-neutral-900">Includes</p>
-        <ul className="mt-3 space-y-2 text-sm text-neutral-700 list-disc pl-5">
-          {result.includes.map((item, idx) => (
-            <li key={idx}>{item}</li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="rounded-2xl bg-white border border-neutral-200 p-5">
-        <p className="text-sm font-semibold text-neutral-900">Extra Add-ons</p>
-        {result.extraAddons.length > 0 ? (
-          <ul className="mt-3 space-y-2 text-sm text-neutral-700 list-disc pl-5">
-            {result.extraAddons.map((item, idx) => (
-              <li key={idx}>{item}</li>
-            ))}
-          </ul>
-        ) : (
-          <p className="mt-3 text-sm text-neutral-600">
-            No add-ons selected.
-          </p>
-        )}
-      </div>
-    </div>
-
-    {/* AI Notes */}
-    <div className="mt-6">
-      <p className="text-sm font-semibold text-neutral-900">AI Explanation</p>
-      <ul className="mt-2 space-y-2 text-sm text-neutral-700 list-disc pl-5">
-        {result.notes.map((n, i) => (
-          <li key={i}>{n}</li>
-        ))}
-      </ul>
-    </div>
-
-    {/* Buttons */}
-    <div className="mt-7 flex flex-col md:flex-row gap-3">
-      <button
-        className="w-full md:w-auto px-6 py-3 rounded-full bg-neutral-900 text-white font-medium hover:bg-neutral-800 transition"
-      onClick={downloadPDF}
-      >
-        Get PDF Report
-      </button>
-
-      <a
-        href="/contact"
-        className="w-full md:w-auto px-6 py-3 rounded-full border border-neutral-300 bg-white font-medium text-center hover:bg-neutral-50 transition"
-      >
-        Book Free Consultation
-      </a>
-
-      <a
-        href="https://wa.me/966551234567"
-        target="_blank"
-        rel="noreferrer"
-        className="w-full md:w-auto px-6 py-3 rounded-full bg-green-700 text-white font-medium text-center hover:bg-green-800 transition"
-      >
-        WhatsApp Now
-      </a>
-    </div>
-  </div>
-)}
-
-        </div>
+{showOtp && (
+<OTPModal
+  email={form.email}
+  onVerify={verifyOtp}
+  onClose={() => setShowOtp(false)}
+  verifying={verifying}
+/>
+)}    </div>
 
        <FAQSection
   title="Frequently Asked Questions"
