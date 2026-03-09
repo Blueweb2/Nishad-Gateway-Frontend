@@ -158,6 +158,9 @@ export type SubServiceContent = {
   faqs: FAQ[];
   faqImage?: string;
   faqCtaText?: string;
+
+  entityDescription: string;
+  setupTime: string;
 };
 
 type Props = {
