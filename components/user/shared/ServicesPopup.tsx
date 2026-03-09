@@ -98,7 +98,7 @@ export default function ServicesPopup({
         onClick={(e) => e.stopPropagation()}
         className={`
           fixed top-20 left-1/2 w-[340px] sm:w-[360px] sm:hidden md:block z-50
-          ${open ? "animate-sheetReveal" : "animate-sheetHide"}
+          ${open ? "animate-sheetRevealButtons" : "animate-sheetHideButtons"}
         `}
       >
         {/* INNER – CARD */}

@@ -47,7 +47,7 @@ export default function CaseStudies() {
       <div className="absolute inset-x-0 top-0 h-full pointer-events-none">
         <div className="hidden lg:flex w-full h-full items-center justify-between px-6 lg:px-10">
 
-          <div className="pointer-events-auto border">
+          <div className="pointer-events-auto">
             <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-400">
               <span>{String(activeIndex + 1).padStart(2, "0")}</span>
               <span>|</span>
@@ -55,7 +55,7 @@ export default function CaseStudies() {
             </div>
           </div>
 
-          <div className="pointer-events-auto flex gap-4 lg:gap-6 z-20 border">
+          <div className="pointer-events-auto flex gap-4 lg:gap-6 z-20">
             <OvalArrow
               direction="left"
               variant="gray"
@@ -72,7 +72,7 @@ export default function CaseStudies() {
       </div>
 
       {/* ================= WATERMARK ================= */}
-      <div className="pointer-events-none absolute inset-0 flex items-end justify-center pb-12 lg:pb-20">
+      <div className="pointer-events-none absolute inset-0 flex items-end justify-center pb-56 lg:pb-20">
         <span className="text-[80px] sm:text-[120px] lg:text-[180px] font-bold text-black/5 tracking-wide whitespace-nowrap select-none">
           Case Studies
         </span>
@@ -81,19 +81,6 @@ export default function CaseStudies() {
       {/* ================= Arrows (ONLY SHOW IN MOBILE) ================= */}
       <div className="lg:hidden absolute bottom-0 w-full mx-auto px-6">
         <div className="relative w-full py-4">
-
-          {/* COUNTER */}
-          <div
-            className="flex items-start justify-center gap-1 absolute left-1/2 top-1/2
-            -translate-x-1/2 -translate-y-1/2 text-gray-500"
-          >
-            <span>
-              {String(activeIndex + 1).padStart(2, "0")}
-            </span>
-            <span>
-              | {String(slides.length).padStart(2, "0")}
-            </span>
-          </div>
 
           {/* ARROWS */}
           <div className="pointer-events-auto flex items-center justify-between w-full">
@@ -196,9 +183,12 @@ export default function CaseStudies() {
 
             </Swiper>
 
-            <button className="hidden lg:block mt-8 text-sm text-green-600 underline underline-offset-4 hover:text-green-700 transition">
-              Learn more
-            </button>
+            <a 
+              href="/ksa-expansion-cost-calculator"
+              className="hidden lg:block mt-8 text-sm text-green-600 underline underline-offset-4 hover:text-green-700 transition"
+            >
+              Calculate Your KSA Expansion Cost
+            </a>
 
           </div>
 
@@ -237,9 +227,12 @@ export default function CaseStudies() {
               </motion.p>
             </AnimatePresence>
 
-            <button className="block lg:hidden mt-3 text-sm text-green-600 underline underline-offset-4 hover:text-green-700 transition">
-              Learn more
-            </button>
+            <a 
+              href="/ksa-expansion-cost-calculator"
+              className="block lg:hidden mt-3 text-sm text-green-600 underline underline-offset-4 hover:text-green-700 transition"
+            >
+              Calculate Your KSA Expansion Cost
+            </a>
 
             <div className="hidden lg:block w-full h-px bg-gray-200 mt-6" />
 
