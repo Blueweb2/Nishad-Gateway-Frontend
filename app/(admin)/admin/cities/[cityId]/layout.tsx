@@ -10,6 +10,7 @@ import {
   Folder,
   Settings,
   Info,
+  Layers,
 } from "lucide-react";
 
 type City = {
@@ -75,80 +76,88 @@ export default function CityLayout({
         </div>
 
         {/* Navigation */}
-        <nav className="flex flex-col gap-2 text-sm">
+   <nav className="flex flex-col gap-2 text-sm">
 
-          <Link
-            href={`/admin/cities/${cityId}`}
-            className={`flex items-center gap-3 px-3 py-2 rounded-lg transition ${isActive(`/admin/cities/${cityId}`) &&
-                !pathname.includes("meta") &&
-                !pathname.includes("blog") &&
-                !pathname.includes("categories") &&
-                !pathname.includes("settings")
-                ? "bg-white/10 text-white"
-                : "text-white/60 hover:bg-white/5 hover:text-white"
-              }`}
-          >
-            <LayoutDashboard className="w-4 h-4" />
-            Overview
-          </Link>
+  <Link
+    href={`/admin/cities/${cityId}`}
+    className={`flex items-center gap-3 px-3 py-2 rounded-lg transition ${
+      isActive(`/admin/cities/${cityId}`) &&
+      !pathname.includes("meta") &&
+      !pathname.includes("blog") &&
+      !pathname.includes("categories") &&
+      !pathname.includes("content") &&
+      !pathname.includes("settings")
+        ? "bg-white/10 text-white"
+        : "text-white/60 hover:bg-white/5 hover:text-white"
+    }`}
+  >
+    <LayoutDashboard className="w-4 h-4" />
+    Overview
+  </Link>
 
-          <Link
-            href={`/admin/cities/${cityId}/meta`}
-            className={`flex items-center gap-3 px-3 py-2 rounded-lg transition ${isActive(`/admin/cities/${cityId}/meta`)
-                ? "bg-white/10 text-white"
-                : "text-white/60 hover:bg-white/5 hover:text-white"
-              }`}
-          >
-            <Info className="w-4 h-4" />
-            Meta
-          </Link>
+  <Link
+    href={`/admin/cities/${cityId}/meta`}
+    className={`flex items-center gap-3 px-3 py-2 rounded-lg transition ${
+      isActive(`/admin/cities/${cityId}/meta`)
+        ? "bg-white/10 text-white"
+        : "text-white/60 hover:bg-white/5 hover:text-white"
+    }`}
+  >
+    <Info className="w-4 h-4" />
+    Meta
+  </Link>
 
-          <Link
-            href={`/admin/cities/${cityId}/blog`}
-            className={`flex items-center gap-3 px-3 py-2 rounded-lg transition ${isActive(`/admin/cities/${cityId}/blog`)
-                ? "bg-white/10 text-white"
-                : "text-white/60 hover:bg-white/5 hover:text-white"
-              }`}
-          >
-            <FileText className="w-4 h-4" />
-            City Guide
-          </Link>
+  <Link
+    href={`/admin/cities/${cityId}/blog`}
+    className={`flex items-center gap-3 px-3 py-2 rounded-lg transition ${
+      isActive(`/admin/cities/${cityId}/blog`)
+        ? "bg-white/10 text-white"
+        : "text-white/60 hover:bg-white/5 hover:text-white"
+    }`}
+  >
+    <FileText className="w-4 h-4" />
+    City Guide
+  </Link>
 
-          <Link
-            href={`/admin/cities/${cityId}/categories`}
-            className={`flex items-center gap-3 px-3 py-2 rounded-lg transition ${isActive(`/admin/cities/${cityId}/categories`)
-                ? "bg-white/10 text-white"
-                : "text-white/60 hover:bg-white/5 hover:text-white"
-              }`}
-          >
-            <Folder className="w-4 h-4" />
-            Categories
-          </Link>
+  <Link
+    href={`/admin/cities/${cityId}/categories`}
+    className={`flex items-center gap-3 px-3 py-2 rounded-lg transition ${
+      isActive(`/admin/cities/${cityId}/categories`)
+        ? "bg-white/10 text-white"
+        : "text-white/60 hover:bg-white/5 hover:text-white"
+    }`}
+  >
+    <Folder className="w-4 h-4" />
+    Categories
+  </Link>
 
+  {/* NEW CONTENT MANAGER */}
 
-          <Link href={`/admin/cities/${cityId}/places`}>
-            Places
-          </Link>
+  <Link
+    href={`/admin/cities/${cityId}/content`}
+    className={`flex items-center gap-3 px-3 py-2 rounded-lg transition ${
+      isActive(`/admin/cities/${cityId}/content`)
+        ? "bg-white/10 text-white"
+        : "text-white/60 hover:bg-white/5 hover:text-white"
+    }`}
+  >
+    <Layers className="w-4 h-4" />
+    Content
+  </Link>
 
-          <Link href={`/admin/cities/${cityId}/listings`}>
-            Listings
-          </Link>
+  <Link
+    href={`/admin/cities/${cityId}/settings`}
+    className={`flex items-center gap-3 px-3 py-2 rounded-lg transition ${
+      isActive(`/admin/cities/${cityId}/settings`)
+        ? "bg-white/10 text-white"
+        : "text-white/60 hover:bg-white/5 hover:text-white"
+    }`}
+  >
+    <Settings className="w-4 h-4" />
+    Settings
+  </Link>
 
-          <Link href={`/admin/cities/${cityId}/articles`}>
-            Articles
-          </Link>
-
-          <Link
-            href={`/admin/cities/${cityId}/settings`}
-            className={`flex items-center gap-3 px-3 py-2 rounded-lg transition ${isActive(`/admin/cities/${cityId}/settings`)
-                ? "bg-white/10 text-white"
-                : "text-white/60 hover:bg-white/5 hover:text-white"
-              }`}
-          >
-            <Settings className="w-4 h-4" />
-            Settings
-          </Link>
-        </nav>
+</nav>
       </aside>
 
       {/* Main Content */}
