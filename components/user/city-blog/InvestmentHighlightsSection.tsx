@@ -28,7 +28,7 @@ export default function InvestmentHighlightsSection({
 }: Props) {
 
   const slides = useMemo(() => cards || [], [cards]);
-    
+
   const [active, setActive] = useState(0);
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
@@ -79,7 +79,7 @@ export default function InvestmentHighlightsSection({
       {/* SLIDER */}
       <div className="mt-14 relative w-full cursor-none hidden md:block px-4">
         <Swiper
-          modules={[ Mousewheel]}
+          modules={[Mousewheel]}
           direction="horizontal"
           mousewheel={{
             forceToAxis: true,
@@ -93,68 +93,65 @@ export default function InvestmentHighlightsSection({
           {slides.map((slide, index) => {
             const isEven = index % 2 === 0;
             return (
-            <SwiperSlide
-              key={index}
-              className="!w-[480px] h-full relative flex items-center justify-center mr-10"
-            >
-              {/* IMAGE */}
-              <div className="relative h-full w-[80%] overflow-hidden rounded-[44px]">
-                <Image
-                  src={cloudinaryAutoWebp(slide.mainImage)}
-                  alt={slide.title}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-
-              {/* FLOATING CARD */}
-              <div 
-                className={`absolute ${isEven? "right-0 top-10" : "right-0 bottom-10"}  z-10 w-[300px] cursor-auto floating-card`}
+              <SwiperSlide
+                key={index}
+                className="!w-[480px] h-full relative flex items-center justify-center mr-10"
               >
-                <div
-                  className="bg-gray-100 rounded-[28px] shadow-xl px-8 py-8 transition-all duration-500"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <div className="flex items-start justify-between gap-6">
-                    <div>
-                      <p className="text-xs text-gray-400 mb-4">
-                        {formatIndex(index + 1)}
-                      </p>
-                      <h3 className="text-lg font-medium text-gray-900 leading-snug max-w-[220px]">
-                        {slide.title}
-                      </h3>
-                    </div>
-
-                    <button
-                      onClick={() => toggleExpand(index)}
-                      className="w-10 h-10 rounded-full border border-green-500 flex items-center justify-center transition-all duration-300"
-                    >
-                      <Plus
-                        size={18}
-                        className={`text-green-600 transition-transform duration-300 ${
-                          expandedIndex === index ? "rotate-45" : ""
-                        }`}
-                      />
-                    </button>
-                  </div>
-
-                  <AnimatePresence>
-                    {expandedIndex === index && slide.subText && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 40 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 30 }}
-                        transition={{ duration: 0.4, ease: "easeOut" }}
-                        className="mt-6 text-sm text-gray-600 leading-relaxed"
-                      >
-                        {slide.subText}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-
+                {/* IMAGE */}
+                <div className="relative h-full w-[80%] overflow-hidden rounded-[44px]">
+                  <Image
+                    src={cloudinaryAutoWebp(slide.mainImage)}
+                    alt={slide.title}
+                    fill
+                    className="object-cover"
+                  />
                 </div>
-              </div>
-            </SwiperSlide>
+
+                {/* FLOATING CARD */}
+                <div
+                  className={`absolute ${isEven ? "right-0 top-10" : "right-0 bottom-10"}  z-10 w-[300px] cursor-auto floating-card`}
+                >
+                  <div
+                    className="bg-gray-100 rounded-[28px] shadow-xl px-8 py-8 transition-all duration-500"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <div className="flex items-start justify-between gap-6">
+                      <div>
+                        <p className="text-xs text-gray-400 mb-4">
+                          {formatIndex(index + 1)}
+                        </p>
+                        <h3 className="text-lg font-medium text-gray-900 leading-snug max-w-[220px]">
+                          {slide.title}
+                        </h3>
+                      </div>
+
+                      <button
+                        onClick={() => toggleExpand(index)}
+                        className="w-10 h-10 rounded-full border border-green-500 flex items-center justify-center transition-all duration-300"
+                      >
+                        <Plus
+                          size={18}
+                          className={`text-green-600 transition-transform duration-300 ${expandedIndex === index ? "rotate-45" : ""
+                            }`}
+                        />
+                      </button>
+                    </div>
+                    <AnimatePresence>
+                      {expandedIndex === index && slide.subText && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 40 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 30 }}
+                          transition={{ duration: 0.4, ease: "easeOut" }}
+                          className="mt-6 text-sm text-gray-600 leading-relaxed"
+                          dangerouslySetInnerHTML={{ __html: slide.subText }}
+                        />
+                      )}
+                    </AnimatePresence>
+
+                  </div>
+                </div>
+              </SwiperSlide>
             )
           })}
         </Swiper>
