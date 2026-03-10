@@ -27,7 +27,7 @@ useEffect(() => {
   const loadBlocks = async () => {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/ministries/${ministryId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/ministries/by-id/${ministryId}`,
         { credentials: "include" }
       );
 
