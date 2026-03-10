@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
@@ -28,10 +28,45 @@ export default function LocationsSliderSection({
   const slides = useMemo(() => cities || [], [cities]);
 
   const [activeIndex, setActiveIndex] = useState(0);
+  const [cardWidth, setCardWidth] = useState(0);
+  const [visibleCount, setVisibleCount] = useState(3);
+  const sliderRef = useRef(null);
+  const cardRef = useRef<HTMLDivElement | null>(null);
 
-  const visibleCount = 3;
-  const cardWidth = 420; // exact card width including gap
   const maxIndex = Math.max(0, slides.length - visibleCount);
+
+  useEffect(() => {
+    const updateWidth = () => {
+      if (cardRef.current) {
+        const gap = window.innerWidth < 640 ? 16 : window.innerWidth < 1024 ? 24 : 32;
+        setCardWidth(cardRef.current.offsetWidth + gap);
+      }
+    };
+
+    updateWidth();
+    window.addEventListener("resize", updateWidth);
+
+    return () => window.removeEventListener("resize", updateWidth);
+  }, []);
+
+  useEffect(() => {
+    const updateLayout = () => {
+      const width = window.innerWidth;
+
+      if (width < 640) {
+        setVisibleCount(1); // mobile
+      } else if (width < 1024) {
+        setVisibleCount(2); // tablet
+      } else {
+        setVisibleCount(3); // desktop
+      }
+    };
+
+    updateLayout();
+    window.addEventListener("resize", updateLayout);
+
+    return () => window.removeEventListener("resize", updateLayout);
+  }, []);
 
   const handlePrev = () => {
     setActiveIndex((prev) => Math.max(0, prev - 1));
@@ -81,20 +116,27 @@ export default function LocationsSliderSection({
         </div>
 
         {/* Slider */}
-        <div className="mt-12 relative">
+        <div className="mt-12 relative overflow-hidden">
           <div
-            className="flex gap-8 transition-transform duration-500 ease-in-out"
+            ref={sliderRef}
+            className="flex gap-4 md:gap-6 lg:gap-8 transition-transform duration-500 ease-in-out"
             style={{
               transform: `translateX(-${translateX}px)`,
             }}
           >
-            {slides.map((city) => (
+            {slides.map((city,index) => (
               <div
                 key={city._id}
-                className="min-w-[400px] max-w-[400px] bg-white rounded-3xl overflow-hidden shadow-lg flex"
+                ref={index === 0 ? cardRef : null}
+                className="
+                  min-w-[85%] 
+                  sm:min-w-[340px]
+                  md:min-w-[360px]
+                  lg:min-w-[400px] lg:max-w-[400px]
+                bg-white rounded-3xl overflow-hidden shadow-lg flex
+                "
               >
-                {/* Left Image */}
-                <div className="relative w-[140px] h-[200px] shrink-0 m-4 rounded-2xl overflow-hidden">
+                <div className=" relative w-[110px] sm:w-[120px] md:w-[140px] h-[180px] md:h-[200px] shrink-0 m-3 md:m-4 rounded-2xl overflow-hidden">
                   <Image
                     src={city.cityImage || "/images/placeholder.jpg"}
                     alt={city.cityName}
@@ -104,13 +146,12 @@ export default function LocationsSliderSection({
                 </div>
 
                 {/* Right Content */}
-                <div className="flex-1 px-4 py-6 flex flex-col justify-between">
+                <div className=" flex-1 px-3 md:px-4 py-4 md:py-6 flex flex-col justify-between">
                   <div>
-                    <h3 className="text-xl font-semibold text-black">
+                    <h3 className=" text-lg md:text-xl font-semibold text-black">
                       {city.cityName}
                     </h3>
-
-                    <p className="mt-2 text-sm text-gray-600 leading-snug">
+                    <p className=" mt-2 text-xs md:text-sm text-gray-600 leading-snug">
                       {city.description ||
                         "Headquarters, government access, and corporate ecosystem."}
                     </p>

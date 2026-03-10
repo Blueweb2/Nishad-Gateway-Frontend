@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+//import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Parallax } from "swiper/modules";
@@ -12,69 +12,63 @@ import "swiper/css/parallax";
 const slides = [
   {
     name: "Ahmed Al-Qahtani",
-    jobTitle: "Business Incorporation Specialist",
-    title: "MAADEN",
+    jobTitle: "Industrial Market Entry Specialist",
+    title: "Manufacturing & Industrial Investment",
     country: "Saudi Arabia",
-    experience: "8+ Years",
+    experience: "10+ Years",
     src: "/about/aboutIntro.jpg",
     description:
-      "MODON enables integrated industrial investment environments that support diversification and employment.",
-    link: "Browse Case Studies"
+      "Supporting global manufacturers establishing operations in Saudi Arabia’s growing industrial ecosystem, including MODON zones and industrial licensing.",
   },
   {
     name: "Fahad Al-Salem",
-    jobTitle: "Industrial Development Manager",
-    title: "MODON",
-    country: "UAE",
-    experience: "10+ Years",
+    jobTitle: "Technology Market Entry Advisor",
+    title: "Technology & Innovation Companies",
+    country: "Middle East",
+    experience: "9+ Years",
     src: "/about/saudi-expansion.png",
     description:
-      "Creating strong industrial ecosystems that foster investment, employment, and long-term development.",
-    link: "Explore Mining Projects"
+      "Helping technology startups and global tech firms launch and expand in Saudi Arabia’s innovationdriven economy aligned with Vision 2030.",
   },
   {
     name: "Sara Al-Harbi",
-    jobTitle: "Sustainability Strategy Director",
-    title: "NEOM",
-    country: "India",
-    experience: "12+ Years",
+    jobTitle: "Tourism Investment Consultant",
+    title: "Hospitality & Tourism Projects",
+    country: "Saudi Arabia",
+    experience: "8+ Years",
     src: "/about/indro-section.jpg",
     description:
-      "NEOM is building a futuristic, sustainable region powered by innovation, advanced technology, and smart infrastructure.",
-    link: "View Industrial Developments"
+      "Advising investors and hospitality brands entering Saudi Arabia’s rapidly expanding tourism and lifestyle sectors.",
   },
   {
     name: "Omar Al-Faraj",
-    jobTitle: "Energy Investment Advisor",
-    title: "ARAMCO",
-    country: "America",
-    experience: "15+ Years",
+    jobTitle: "Logistics Sector Specialist",
+    title: "Logistics & Supply Chain Businesses",
+    country: "GCC Region",
+    experience: "10+ Years",
     src: "/about/buisnessveriticals.jpg",
     description:
-      "Aramco drives global energy solutions while investing in sustainable development and technological advancement.",
-    link: "Discover Future Cities"
+      "Supporting logistics companies establishing distribution networks and supply chain operations across Saudi Arabia.",
   },
   {
     name: "Noura Al-Mutairi",
-    jobTitle: "Tourism Development Consultant",
-    title: "RED SEA GLOBAL",
-    country: "China",
-    experience: "9+ Years",
+    jobTitle: "Retail Market Expansion Advisor",
+    title: "Retail & Consumer Brands",
+    country: "Middle East",
+    experience: "8+ Years",
     src: "/about/aboutIntro.jpg",
     description:
-      "Red Sea Global develops regenerative tourism destinations focused on environmental protection and luxury experiences.",
-    link: "Explore Energy Innovations"
+      "Helping international brands enter the Saudi consumer market through structured retail expansion strategies.",
   },
   {
     name: "Khalid Al-Dossari",
-    jobTitle: "Chemical Innovation Lead",
-    title: "SABIC",
-    country: "Brazil",
+    jobTitle: "Infrastructure Investment Consultant",
+    title: "Construction & Infrastructure",
+    country: "Saudi Arabia",
     experience: "11+ Years",
     src: "/about/aboutHero.jpg",
     description:
-      "SABIC is a global leader in diversified chemicals, delivering innovative material solutions for industries worldwide.",
-    link: "View Tourism Destinations"
+      "Advising construction companies and infrastructure investors participating in Saudi Arabia’s mega development projects",
   },
 ];
 
@@ -86,28 +80,33 @@ export default function TeamSection() {
   const activeSlide = slides[activeIndex];
 
   return (
-    <section className="w-full bg-[#f3f3f3] py-24" data-menu="dark-text">
-      <div className="max-w-7xl mx-auto px-8 relative">
+    <section className="w-full bg-[#f3f3f3] py-12 lg:py-24" data-menu="dark-text">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 relative">
 
         {/* Top Title */}
-        <h2 className="text-3xl font-extrabold">Our <br /> Team</h2>
+        <h2 className="text-2xl text-center lg:text-left sm:text-3xl lg:text-4xl font-extrabold mb-12">
+          Our Expertise Across <br />
+          Saudi Arabia’s Key <br />
+          Growth Sectors
+        </h2>
 
         {/* Main Grid */}
-        <div className="grid md:grid-cols-3 items-center gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-12">
 
           {/* LEFT SIDE */}
-          <div className="space-y-8">
+          <div className="space-y-8 text-center md:text-left">
 
-            <div className="flex items-center">
+            <div className="flex flex-col md:flex-row md:items-center">
+              
               {/* Counter */}
               <p className="text-sm text-gray-500">
-                {String(activeIndex + 1).padStart(2, "0")} 
-                <span className="mx-2">|</span> 
+                {String(activeIndex + 1).padStart(2, "0")}
+                <span className="mx-2">|</span>
                 {String(slides.length).padStart(2, "0")}
               </p>
 
               {/* Name */}
-              <div className="ml-10">
+              <div className="md:ml-10 mt-3 md:mt-0">
                 <FadeUpScroll delay={0.3} key={activeIndex}>
                   <h3 className="text-xl font-semibold">{activeSlide.title}</h3>
                 </FadeUpScroll>
@@ -120,16 +119,17 @@ export default function TeamSection() {
             {/* Divider Line */}
             <div className="h-px bg-gray-300 w-full"></div>
 
-            <div className="flex items-center relative">
-              {/* Description */}
-              <p className="text-sm text-gray-600 leading-relaxed max-w-sm ml-10">
+            <div className="flex justify-center md:justify-start">
+              <p className="text-sm text-gray-600 leading-relaxed max-w-sm md:ml-10">
                 {activeSlide.description}
               </p>
-            </div> 
+            </div>
+
           </div>
 
-          {/* CENTER IMAGE src="/about/aboutIntro.jpg"*/}
+          {/* CENTER IMAGE */}
           <div className="flex flex-col items-center">
+
             <Swiper
               modules={[Parallax]}
               speed={900}
@@ -138,14 +138,14 @@ export default function TeamSection() {
               loop
               onSwiper={(swiper) => (swiperRef.current = swiper)}
               onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
-              className="w-[360px] h-[520px]"
+              className="w-[260px] sm:w-[320px] lg:w-[360px] h-[400px] sm:h-[480px] lg:h-[520px]"
             >
               {slides.map((slide, index) => (
                 <SwiperSlide
                   key={index}
                   className="!flex !items-center !justify-center"
                 >
-                  <div className="relative w-[360px] h-[520px] rounded-[160px] overflow-hidden">
+                  <div className="relative w-full h-full rounded-[140px] lg:rounded-[160px] overflow-hidden">
                     <div
                       className="absolute inset-0"
                       data-swiper-parallax="-30%"
@@ -164,27 +164,32 @@ export default function TeamSection() {
             </Swiper>
 
             {/* Social Icons */}
-            <div className="flex gap-4 mt-6">
+            {/* <div className="flex gap-4 mt-6">
               <a className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-300 hover:bg-gray-400">
                 <img src="/about/linkedin.svg" alt="" className="w-4 h-4"/>
               </a>
               <a className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-300 hover:bg-gray-400">
                 <img src="/about/whatsapp.svg" alt="" className="w-4 h-4"/>
               </a>
-            </div>
+            </div> */}
+
           </div>
 
           {/* RIGHT SIDE */}
-          <div className="flex justify-around">
+          <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row items-center justify-between gap-8 text-center md:text-left">
 
             <div>
               <p className="text-xs text-gray-400">Work Experience:</p>
-              <p className="text-lg font-semibold mt-1">{activeSlide.experience}</p>
+              <p className="text-lg font-semibold mt-1">
+                {activeSlide.experience}
+              </p>
             </div>
 
             <div>
               <p className="text-xs text-gray-400">Country:</p>
-              <p className="text-lg font-semibold mt-1">{activeSlide.country}</p>
+              <p className="text-lg font-semibold mt-1">
+                {activeSlide.country}
+              </p>
             </div>
 
             {/* Navigation Arrows */}
@@ -202,6 +207,7 @@ export default function TeamSection() {
             </div>
 
           </div>
+
         </div>
       </div>
     </section>

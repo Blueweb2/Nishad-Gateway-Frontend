@@ -46,22 +46,30 @@ export default function FaqSection({
           )}
 
           {/* CTA CARD */}
-          <div className="absolute bottom-10 left-10 bg-white rounded-3xl p-8 shadow-xl max-w-md">
-            <p className="text-xs tracking-wide text-gray-500 uppercase">
-              Contact Us
-            </p>
+          <div className="
+            absolute 
+            bottom-6 left-1/2 -translate-x-1/2
+            w-[90%] max-w-sm
+            bg-white rounded-3xl p-6 md:p-8 shadow-xl
+            lg:left-10 lg:translate-x-0 lg:w-auto lg:max-w-md
+            ">
 
-            <h3 className="mt-3 text-2xl font-semibold text-black leading-snug">
-              {faqCtaText || "Need clarity on your entity type?"}
-            </h3>
+              <p className="text-xs tracking-wide text-gray-500 uppercase">
+                Contact Us
+              </p>
 
-            <Link
-              href="/contact"
-              className="inline-block mt-6 px-6 py-3 bg-green-600 text-white rounded-full font-medium hover:bg-green-700 transition"
-            >
-              Talk to an Advisor
-            </Link>
-          </div>
+              <h3 className="mt-3 text-xl md:text-2xl font-semibold text-black leading-snug">
+                {faqCtaText || "Need clarity on your entity type?"}
+              </h3>
+
+              <Link
+                href="/contact"
+                className="inline-block mt-5 md:mt-6 px-5 md:px-6 py-2.5 md:py-3 bg-green-600 text-white rounded-full font-medium hover:bg-green-700 transition"
+              >
+                Talk to an Advisor
+              </Link>
+
+            </div>
         </div>
 
         {/* RIGHT SIDE */}
