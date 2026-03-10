@@ -19,7 +19,7 @@ export default function Navbar() {
   const [openServices, setOpenServices] = useState(false);
   const [openBlogs, setOpenBlogs] = useState(false);
 
-  const [useColoredLogo, setUseColoredLogo] = useState(false);
+  const [isLight, setIsLight] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
   const [openContact, setOpenContact] = useState(false);
 
@@ -29,7 +29,7 @@ export default function Navbar() {
   //  change navbar color based on white sections
   useEffect(() => {
     const handleScroll = () => {
-      const sections = document.querySelectorAll<HTMLElement>("[data-navbar]");
+      const sections = document.querySelectorAll("section");
       const navbarHeight = 90;
 
       let currentTheme = "dark";
@@ -39,18 +39,22 @@ export default function Navbar() {
 
         if (rect.top <= navbarHeight && rect.bottom >= navbarHeight) {
           const theme = section.getAttribute("data-navbar");
-          if (theme) currentTheme = theme;
+          if (theme === "light") {
+            currentTheme = "light";
+          } else {
+            currentTheme = "dark";
+          }
         }
       });
 
-      setUseColoredLogo(currentTheme === "light");
+      setIsLight(currentTheme === "light");
     };
 
-    handleScroll();
     window.addEventListener("scroll", handleScroll);
+    handleScroll();
 
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [pathname]);
+  }, []);
 
   //  close popups on route change
   useEffect(() => {
@@ -58,8 +62,6 @@ export default function Navbar() {
     setOpenBlogs(false);
     setOpenMenu(false);
   }, [pathname]);
-
-  const isLight = useColoredLogo;
 
   return (
     <>
