@@ -43,10 +43,10 @@ xl: 768px   // Fold / Tablet */
 /* Animation for service popup */
 @keyframes sheetReveal {
   from {
-    transform: translateX(-50%) scaleY(0);
+    transform: scaleY(0);
   }
   to {
-    transform: translateX(-50%) scaleY(1);
+    transform: scaleY(1);
   }
 }
 
@@ -90,10 +90,10 @@ xl: 768px   // Fold / Tablet */
 /* reverse or closing animation of service pop up */
 @keyframes sheetHide {
   from {
-    transform: translateX(-50%) scaleY(1);
+    transform: scaleY(1);
   }
   to {
-    transform: translateX(-50%) scaleY(0);
+    transform: scaleY(0);
   }
 }
 

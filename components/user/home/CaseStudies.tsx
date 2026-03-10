@@ -47,7 +47,7 @@ export default function CaseStudies() {
       <div className="absolute inset-x-0 top-0 h-full pointer-events-none">
         <div className="hidden lg:flex w-full h-full items-center justify-between px-6 lg:px-10">
 
-          <div className="pointer-events-auto border">
+          <div className="pointer-events-auto">
             <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-400">
               <span>{String(activeIndex + 1).padStart(2, "0")}</span>
               <span>|</span>
@@ -55,7 +55,7 @@ export default function CaseStudies() {
             </div>
           </div>
 
-          <div className="pointer-events-auto flex gap-4 lg:gap-6 z-20 border">
+          <div className="pointer-events-auto flex gap-4 lg:gap-6 z-20">
             <OvalArrow
               direction="left"
               variant="gray"
