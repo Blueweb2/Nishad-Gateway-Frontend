@@ -38,8 +38,8 @@ export default function CityCard({ city, index }: any) {
           <Image
             src={city.cityImage || "/citiesbg.webp"}
             alt={city.cityName}
-            width={250}
-            height={280}
+            width={150}
+            height={180}
             className="object-cover w-[130px] h-[170px] group-hover:scale-105 transition"
           />
         </div>
