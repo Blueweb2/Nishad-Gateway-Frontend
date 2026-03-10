@@ -7,7 +7,7 @@ const verticals = [
   {
     title: "Business Consultancy",
     subtitle: "Strategic advisory to help companies enter and grow in Saudi Arabia.",
-    image: "/about/buisnessveriticals.jpg",
+    image: "about/business-consultancy.jpg",
     points: [
       "Business Planning",
       "Market Entry Strategy",
@@ -18,7 +18,7 @@ const verticals = [
   {
     title: "Company Formation",
     subtitle: "End-to-end support for establishing businesses in Saudi Arabia.",
-    image: "/buisnessgrowth/Dress-Code.jpg",
+    image: "/about/company-formation.jpg",
     points: [
       "MISA Licensing",
       "Company Incorporation",
@@ -29,7 +29,7 @@ const verticals = [
   {
     title: "Regulatory & Compliance",
     subtitle: "Ensuring businesses operate fully compliant with Saudi regulations",
-    image: "/buisnessgrowth/business-coworkers-discussing-new-ideas-brainstorming-together-looking-new-project-document.jpg",
+    image: "/about/regulatory-and-compliance.jpg",
     points: [
       "Legal Compliance",
       "Saudization Advisory",
@@ -40,7 +40,7 @@ const verticals = [
   {
     title: "Business Expansion Support",
     subtitle: "Helping companies scale operations and strengthen market presence",
-    image: "/buisnessgrowth/business-coworkers-discussing-new-ideas-brainstorming-together-looking-new-project-document.jpg",
+    image: "/about/business-consultancy.jpg",
     points: [
       "Office Setup",
       "Operational Strategy",
@@ -51,7 +51,7 @@ const verticals = [
   {
     title: "Strategic Investment Advisory",
     subtitle: "Guiding investors to identify and leverage opportunities in Saudi Arabia.",
-    image: "/buisnessgrowth/business-coworkers-discussing-new-ideas-brainstorming-together-looking-new-project-document.jpg",
+    image: "/about/strategic-investment-advisory.jpg", 
     points: [
       "Vision 2030 Opportunities",
       "Sector Market Insights",
@@ -107,7 +107,7 @@ export default function BusinessVerticals() {
         <div className="flex flex-col justify-end text-center lg:text-left h-[140px] lg:h-[300px]">
 
           <h2 className="text-3xl sm:text-4xl lg:text-[3vw] font-semibold leading-tight mb-0 lg:mb-8">
-            Our Global <br />
+            Our Global <br className="hidden lg:block" />
             Business <br />
             Verticals
           </h2>

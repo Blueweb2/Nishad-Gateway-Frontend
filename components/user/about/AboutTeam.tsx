@@ -16,7 +16,7 @@ const slides = [
     title: "Manufacturing & Industrial Investment",
     country: "Saudi Arabia",
     experience: "10+ Years",
-    src: "/about/aboutIntro.jpg",
+    src: "/about/manufacturing-and-industrial-investment.jpg",
     description:
       "Supporting global manufacturers establishing operations in Saudi Arabia’s growing industrial ecosystem, including MODON zones and industrial licensing.",
   },
@@ -36,7 +36,7 @@ const slides = [
     title: "Hospitality & Tourism Projects",
     country: "Saudi Arabia",
     experience: "8+ Years",
-    src: "/about/indro-section.jpg",
+    src: "/about/hospitality-and-tourism-projects.jpg",
     description:
       "Advising investors and hospitality brands entering Saudi Arabia’s rapidly expanding tourism and lifestyle sectors.",
   },
@@ -56,7 +56,7 @@ const slides = [
     title: "Retail & Consumer Brands",
     country: "Middle East",
     experience: "8+ Years",
-    src: "/about/aboutIntro.jpg",
+    src: "/about/retail.jpg",
     description:
       "Helping international brands enter the Saudi consumer market through structured retail expansion strategies.",
   },
@@ -66,7 +66,7 @@ const slides = [
     title: "Construction & Infrastructure",
     country: "Saudi Arabia",
     experience: "11+ Years",
-    src: "/about/aboutHero.jpg",
+    src: "/about/construction.jpg",
     description:
       "Advising construction companies and infrastructure investors participating in Saudi Arabia’s mega development projects",
   },

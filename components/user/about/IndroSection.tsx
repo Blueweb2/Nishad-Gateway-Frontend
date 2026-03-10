@@ -17,17 +17,13 @@ export default function AboutSection() {
 
           {/* RIGHT SMALL TEXT */}
           <p className="text-sm text-gray-200 leading-relaxed max-w-md md:ml-auto ">
-            Saudi Arabia is rapidly transforming into one of the world’s most dynamic investment destinations.
-            Through Vision 2030, the Kingdom is opening new opportunities across industries including
-            technology, tourism, manufacturing, logistics, and entertainment. <br />
-            <br />
-            Nishad Abdurahiman helps entrepreneurs, investors, and global companies navigate this evolving
-            market with confidence. With more than 17 years of experience in business consulting, he
-            supports businesses in establishing, expanding, and operating successfully in Saudi Arabia. <br />
-            <br />
-            Having guided 2200+ companies across multiple sectors, Nishad provides strategic insight,
-            regulatory guidance, and operational support to ensure smooth market entry and sustainable growth
-            in the Kingdom.
+            Saudi Arabia is rapidly becoming one of the world’s most dynamic investment destinations under Vision 2030, creating new opportunities across technology, manufacturing, logistics, tourism, and infrastructure. <br /><br />
+
+            Nishad Abdurahiman brings 17+ years of business consulting experience, helping global entrepreneurs, investors, and companies successfully establish and expand their presence in Saudi Arabia and the Middle East. <br /><br />
+
+            As Co-Founder of Analytix, he has supported 2000+ companies across sectors including logistics, technology, manufacturing, construction, healthcare, and professional services. His expertise covers business setup, MISA licensing, regulatory compliance, market entry strategy, and operational expansion.<br /><br />
+
+            Nishad’s mission is to simplify business entry into Saudi Arabia and help companies grow confidently within the Kingdom’s rapidly evolving economy.
           </p>
         </div>
 
@@ -55,7 +51,6 @@ export default function AboutSection() {
           </div>
 
           {/* Divider */}
-          {/* <div className="hidden md:block h-40 w-px bg-gray-300 opacity-40 mx-auto" /> */}
 
           {/* IMAGE */}
           <div className="relative w-full h-64 md:h-72 rounded-2xl overflow-hidden">
