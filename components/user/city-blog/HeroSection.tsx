@@ -34,14 +34,14 @@ export default function HeroSection({ content }: Props) {
           <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-black/20 to-black/10" />
 
           {/* Content */}
-          <div className="relative z-10 h-full flex items-center">
-            <div className="max-w-2xl px-12">
+          <div className="relative z-10 h-full flex items-center ">
+            <div className="mt-20 pl-4 pb-10 lg:pb-0 lg:pl-12 lg:mt-0">
 
-              <h1 className="text-5xl md:text-6xl font-semibold leading-tight mb-6 text-white">
+              <h1 className="text-5xl md:text-6xl font-semibold leading-none mb-6 mt-5 text-white">
                 {content.heading}
               </h1>
 
-              <p className="text-lg md:text-xl text-white/90 max-w-xl">
+              <p className="text-lg md:text-xl text-white/90 max-w-xl leading-none">
                 {content.subheading}
               </p>
 
