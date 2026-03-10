@@ -21,11 +21,7 @@ export default function ParallaxImage({
 }: ParallaxImageProps) {
   const ref = useRef<HTMLDivElement | null>(null);
 
-  // 🛑 Safety guard
-  if (!src) {
-    console.error("ParallaxImage: invalid src →", src);
-    return null;
-  }
+  if (!src) return null;
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -35,17 +31,21 @@ export default function ParallaxImage({
   const y = useTransform(scrollYProgress, [0, 1], [-speed, speed]);
 
   return (
-    <div ref={ref} className={`relative overflow-hidden ${className}`}>
+    <div
+      ref={ref}
+      className={`relative w-full h-full overflow-hidden ${className}`}
+    >
       <motion.div style={{ y }} className="absolute inset-0">
-        {/* Overscan so image doesn't cut during movement */}
-        <div className="absolute inset-[-60px]">
+        {/* overscan for parallax */}
+        <div className="absolute inset-y-[-40px] inset-x-0">
           <Image
             src={src}
             alt={alt}
             fill
             priority={priority}
             sizes="100vw"
-            className="object-cover"
+            quality={90}
+            className="object-cover will-change-transform"
           />
         </div>
       </motion.div>

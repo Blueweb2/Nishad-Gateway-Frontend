@@ -66,12 +66,11 @@ export default function CitiesSection() {
 
       {/* Slider Container */}
       <div
-        className="relative overflow-hidden min-h-[77dvh] lg:min-h-dvh"
-        data-menu=""
+className="relative overflow-hidden h-[100dvh] lg:h-[90dvh]"  
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
-        <AnimatePresence initial={false}>
+        <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={index}
             initial={{ x: direction > 0 ? "100%" : "-100%" }}

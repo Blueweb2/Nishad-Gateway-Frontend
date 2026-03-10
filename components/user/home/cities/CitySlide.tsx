@@ -28,17 +28,17 @@ export default function CitySlide({ city }: Props) {
 
 
   return (
-    <section className="relative w-full min-h-dvh text-white overflow-hidden">
-
-      {/* Background */}
+<section
+  aria-label="Cities and zones in Saudi Arabia"
+className="relative w-full h-[870px] text-white overflow-hidden">    
       <div className="absolute inset-0 z-0">
-        <ParallaxImage
-          src={city.cityImage || "/citiesbg.webp"}
-          alt={city.cityName}
-          className="w-full h-full object-cover"
-          priority
-          speed={160}
-        />
+     <ParallaxImage
+  src={city.cityImage || "/citiesbg.webp"}
+  alt={city.cityName}
+  className="absolute inset-0"
+  priority
+  speed={160}
+/>
       </div>
 
       {/* Overlay */}
@@ -57,7 +57,7 @@ export default function CitySlide({ city }: Props) {
         </motion.h2>
 
         {/* Heading + Description*/}
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-8 items-end mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-end mb-6">
 
           {/* Heading */}
           <motion.h4
@@ -75,7 +75,7 @@ export default function CitySlide({ city }: Props) {
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="text-white/90 text-sm md:text-base lg:text-[1vw] leading-tight md:leading-relaxed max-w-lg lg:max-w-[20vw] text-left"
+              className="text-white/90 text-sm md:text-base lg:text-[1vw] leading-tight md:leading-relaxed max-w-lg lg:max-w-[24vw] text-left"
             >
               {city.description}
             </motion.p>

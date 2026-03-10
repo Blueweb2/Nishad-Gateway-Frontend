@@ -10,6 +10,8 @@ import ServicesPopup from "./ServicesPopup";
 import BlogsPopup from "./BlogsPopup";
 import HamburgerMenu from "./HamburgerMenu";
 import ContactPopup from "./ContactPopup";
+import { ChevronDown } from "lucide-react";
+import CitiesPopup from "./CitiesPopup";
 
 
 export default function Navbar() {
@@ -22,6 +24,7 @@ export default function Navbar() {
   const [isLight, setIsLight] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
   const [openContact, setOpenContact] = useState(false);
+  const [openCities, setOpenCities] = useState(false);
 
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -61,6 +64,7 @@ export default function Navbar() {
     setOpenServices(false);
     setOpenBlogs(false);
     setOpenMenu(false);
+    setOpenCities(false);
   }, [pathname]);
 
   return (
@@ -88,71 +92,106 @@ export default function Navbar() {
               />
             </Link>
 
-            {/* CENTER — SERVICES + BLOG */}
-            <div className="hidden md:flex items-center gap-3 lg:gap-5 absolute left-1/2 -translate-x-1/2">
+{/* CENTER — SERVICES + BLOG + CITIES */}
+<div className="hidden md:flex items-center gap-3 lg:gap-5 absolute left-1/2 -translate-x-1/2">
 
-              {/* Services */}
-              <button
-                onClick={() => {
-                  setOpenServices((prev) => !prev);
-                  setOpenBlogs(false);
-                }}
-                className={`
-                  flex items-center gap-2
-                  px-3 lg:px-4 py-2 rounded-full
-                  text-xs lg:text-sm font-medium
-                  transition-all
-                  ${isLight
-                    ? openServices
-                      ? "bg-black text-white shadow-md"
-                      : "bg-black/[0.04] text-black border border-black/10 hover:bg-black/[0.08]"
-                    : openServices
-                    ? "bg-white text-gray-900 shadow-md"
-                    : "bg-white/10 text-white border border-white/20 hover:bg-white/20"
-                  }
-                `}
-              >
-                Services
-                <span
-                  className={`text-lg leading-none transition-transform ${
-                    openServices ? "rotate-45" : ""
-                  }`}
-                >
-                  +
-                </span>
-              </button>
+  {/* Services */}
+  <button
+    onClick={() => {
+      setOpenServices((prev) => !prev);
+      setOpenBlogs(false);
+      setOpenCities(false);
+    }}
+    className={`
+      flex items-center gap-2
+      px-3 lg:px-4 py-2 rounded-full
+      text-xs lg:text-sm font-medium
+      transition-all
+      ${isLight
+        ? openServices
+          ? "bg-black text-white shadow-md"
+          : "bg-black/[0.04] text-black border border-black/10 hover:bg-black/[0.08]"
+        : openServices
+        ? "bg-white text-gray-900 shadow-md"
+        : "bg-white/10 text-white border border-white/20 hover:bg-white/20"
+      }
+    `}
+  >
+    Services
+    <span
+      className={`text-lg leading-none transition-transform ${
+        openServices ? "rotate-45" : ""
+      }`}
+    >
+      +
+    </span>
+  </button>
 
-              {/* Blog */}
-              <button
-                onClick={() => {
-                  setOpenBlogs((prev) => !prev);
-                  setOpenServices(false);
-                }}
-                className={`
-                  flex items-center gap-2
-                  px-3 lg:px-4 py-2 rounded-full
-                  text-xs lg:text-sm font-medium
-                  transition-all
-                  ${isLight
-                    ? openBlogs
-                      ? "bg-black text-white shadow-md"
-                      : "bg-black/[0.05] text-black border border-black/10 hover:bg-black/[0.08]"
-                    : openBlogs
-                    ? "bg-white text-gray-900 shadow-md"
-                    : "bg-white/10 text-white border border-white/20 hover:bg-white/20"
-                  }
-                `}
-              >
-                Blog
-                <span
-                  className={`text-lg leading-none transition-transform ${
-                    openBlogs ? "rotate-45" : ""
-                  }`}
-                >
-                  +
-                </span>
-              </button>
-            </div>
+  {/* Blog */}
+  <button
+    onClick={() => {
+      setOpenBlogs((prev) => !prev);
+      setOpenServices(false);
+      setOpenCities(false);
+    }}
+    className={`
+      flex items-center gap-2
+      px-3 lg:px-4 py-2 rounded-full
+      text-xs lg:text-sm font-medium
+      transition-all
+      ${isLight
+        ? openBlogs
+          ? "bg-black text-white shadow-md"
+          : "bg-black/[0.05] text-black border border-black/10 hover:bg-black/[0.08]"
+        : openBlogs
+        ? "bg-white text-gray-900 shadow-md"
+        : "bg-white/10 text-white border border-white/20 hover:bg-white/20"
+      }
+    `}
+  >
+    Blog
+    <span
+      className={`text-lg leading-none transition-transform ${
+        openBlogs ? "rotate-45" : ""
+      }`}
+    >
+      +
+    </span>
+  </button>
+
+  {/* Cities */}
+  <button
+    onClick={() => {
+      setOpenCities((prev) => !prev);
+      setOpenServices(false);
+      setOpenBlogs(false);
+    }}
+    className={`
+      flex items-center gap-2
+      px-3 lg:px-4 py-2 rounded-full
+      text-xs lg:text-sm font-medium
+      transition-all
+      ${isLight
+        ? openCities
+          ? "bg-black text-white shadow-md"
+          : "bg-black/[0.05] text-black border border-black/10 hover:bg-black/[0.08]"
+        : openCities
+        ? "bg-white text-gray-900 shadow-md"
+        : "bg-white/10 text-white border border-white/20 hover:bg-white/20"
+      }
+    `}
+  >
+    Cities
+    <span
+      className={`text-lg leading-none transition-transform ${
+        openCities ? "rotate-45" : ""
+      }`}
+    >
+      +
+    </span>
+  </button>
+
+</div>
 
             {/* RIGHT */}
             <div className="flex items-center gap-3 sm:gap-5 lg:gap-8">
@@ -245,6 +284,9 @@ export default function Navbar() {
 
       {/* BLOGS POPUP */}
       <BlogsPopup open={openBlogs} onClose={() => setOpenBlogs(false)} />
+
+        {/* CITIES POPUP */}
+<CitiesPopup open={openCities} onClose={() => setOpenCities(false)} />
     </>
   )
 }
