@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
 
 type ParallaxImageProps = {
   src: string;
@@ -19,35 +18,23 @@ export default function ParallaxImage({
   priority = false,
   speed = 120,
 }: ParallaxImageProps) {
-  const ref = useRef<HTMLDivElement | null>(null);
 
-  if (!src) return null;
+  const { scrollY } = useScroll();
 
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-
-  const y = useTransform(scrollYProgress, [0, 1], [-speed, speed]);
+  const y = useTransform(scrollY, [0, 800], [0, speed]);
 
   return (
-    <div
-      ref={ref}
-      className={`relative w-full h-full overflow-hidden ${className}`}
-    >
-      <motion.div style={{ y }} className="absolute inset-0">
-        {/* overscan for parallax */}
-        <div className="absolute inset-y-[-40px] inset-x-0">
-          <Image
-            src={src}
-            alt={alt}
-            fill
-            priority={priority}
-            sizes="100vw"
-            quality={90}
-            className="object-cover will-change-transform"
-          />
-        </div>
+    <div className={`absolute inset-0 overflow-hidden ${className}`}>
+      <motion.div style={{ y }} className="absolute -top-5 -bottom-5 left-0 right-0">
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          priority={priority}
+          sizes="100vw"
+          quality={90}
+          className="object-cover will-change-transform"
+        />
       </motion.div>
     </div>
   );
