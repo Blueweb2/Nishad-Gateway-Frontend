@@ -120,7 +120,7 @@ export default function BlogsPopup({
             <div
                 onClick={(e) => e.stopPropagation()}
                 className={`fixed top-20 left-1/2 w-[340px] sm:w-[360px] z-50 sm:hidden md:block
-                ${open ? "animate-sheetReveal" : "animate-sheetHide"}`}
+                ${open ? "animate-sheetRevealButtons" : "animate-sheetHideButtons"}`}
             >
                 {/* INNER CARD */}
                 <div className="bg-white rounded-[28px] shadow-2xl border border-black/10 overflow-hidden flex flex-col max-h-full">

@@ -50,6 +50,21 @@ xl: 768px   // Fold / Tablet */
   }
 }
 
+@keyframes sheetRevealOfServiceBlogButtons {
+  from {
+    transform: translateX(-50%) scaleY(0);
+  }
+  to {
+    transform: translateX(-50%) scaleY(1);
+  }
+}
+
+.animate-sheetRevealButtons {
+  animation: sheetRevealOfServiceBlogButtons 0.65s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  transform-origin: top;
+  will-change: transform;
+}
+
 .animate-sheetReveal {
   animation: sheetReveal 0.65s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
   transform-origin: top;
@@ -88,6 +103,15 @@ xl: 768px   // Fold / Tablet */
 }
 
 /* reverse or closing animation of service pop up */
+@keyframes sheetHideOfServiceBlogButtons {
+  from {
+    transform: translateX(-50%) scaleY(1);
+  }
+  to {
+    transform: translateX(-50%) scaleY(0);
+  }
+}
+
 @keyframes sheetHide {
   from {
     transform: scaleY(1);
@@ -95,6 +119,12 @@ xl: 768px   // Fold / Tablet */
   to {
     transform: scaleY(0);
   }
+}
+
+.animate-sheetHideButtons {
+  animation: sheetHideOfServiceBlogButtons 2s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  transform-origin: top;
+  will-change: transform;
 }
 
 .animate-sheetHide {
