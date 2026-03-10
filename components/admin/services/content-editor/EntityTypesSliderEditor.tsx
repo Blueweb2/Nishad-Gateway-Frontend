@@ -3,6 +3,7 @@
 import toast from "react-hot-toast";
 import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
 import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
+import MiniTextEditor from "../../common/MiniTextEditor";
 
 export type EntityTypeSlide = {
   title: string;
@@ -108,15 +109,11 @@ export default function EntityTypesSliderEditor({
                 placeholder="Title (ex: Limited Liability Company (LLC))"
                 className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
               />
-
-              <textarea
+              <MiniTextEditor
                 value={slide.description || ""}
-                onChange={(e) =>
-                  updateEntityTypeSlide(idx, "description", e.target.value)
+                onChange={(value) =>
+                  updateEntityTypeSlide(idx, "description", value)
                 }
-                placeholder="Optional description (small text)"
-                rows={3}
-                className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500 resize-none"
               />
 
               {/* MAIN IMAGE Upload */}

@@ -195,10 +195,10 @@ export default function WhySliderSection({
               </h3>
             </div>
 
-            <p className=" text-gray-500 leading-relaxed max-w-sm h-[95px] lg:h-[170px] mt-3 flex items-start lg:items-end">
-              {current?.description ||
-                "Slide description will appear here from backend."}
-            </p>
+         <div
+  className="text-gray-500 leading-relaxed max-w-sm h-[95px] lg:h-[170px] mt-3 flex items-start lg:items-end rich-text"
+  dangerouslySetInnerHTML={{ __html: current?.description || "" }}
+/>
 
             {/* link for small divice */}
             {whyCtaText && whyCtaLink && (

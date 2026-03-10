@@ -35,7 +35,7 @@ export default function EntityTypesSliderSection({
   };
 
   const formatIndex = (i: number) => String(i).padStart(2, "0");
-  
+
 
   return (
     <section className="w-full bg-white py-12 lg:py-20 overflow-hidden" data-navbar="light">
@@ -170,19 +170,18 @@ export default function EntityTypesSliderSection({
                       </button>
                     </div>
 
-         <AnimatePresence>
-  {expandedIndex === index && slide.description && (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 30 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
-      className="mt-4 md:mt-5 lg:mt-6 text-xs md:text-sm text-gray-600 leading-relaxed rich-text"
-      dangerouslySetInnerHTML={{ __html: slide.description }}
-      
-    />
-  )}
-</AnimatePresence>
+                    <AnimatePresence>
+                      {expandedIndex === index && slide.description && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 40 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 30 }}
+                          transition={{ duration: 0.4, ease: "easeOut" }}
+                          className="mt-4 md:mt-5 lg:mt-6 text-xs md:text-sm text-gray-600 leading-relaxed rich-text"
+                          dangerouslySetInnerHTML={{ __html: slide.description || "" }}
+                        />
+                      )}
+                    </AnimatePresence>
                   </div>
                 </div>
               </SwiperSlide>

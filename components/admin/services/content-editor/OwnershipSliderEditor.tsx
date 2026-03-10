@@ -3,6 +3,7 @@
 import toast from "react-hot-toast";
 import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
 import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
+import MiniTextEditor from "../../common/MiniTextEditor";
 
 export type OwnershipSlide = {
   title: string; // Capsule text (Main title inside)
@@ -129,14 +130,11 @@ export default function OwnershipSliderEditor({
                   className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500 resize-none"
                 />
 
-                <textarea
+                <MiniTextEditor
                   value={slide.rightText || ""}
-                  onChange={(e) =>
-                    updateOwnershipSlide(idx, "rightText", e.target.value)
+                  onChange={(value) =>
+                    updateOwnershipSlide(idx, "rightText", value)
                   }
-                  placeholder="Right Text (ex: Sector exceptions)"
-                  rows={3}
-                  className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500 resize-none"
                 />
               </div>
 

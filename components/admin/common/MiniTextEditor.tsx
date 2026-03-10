@@ -3,6 +3,7 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
+import Placeholder from "@tiptap/extension-placeholder";
 
 type Props = {
   value: string;
@@ -24,6 +25,9 @@ const editor = useEditor({
     Link.configure({
       openOnClick: false,
     }),
+    Placeholder.configure({
+  placeholder: "THis is a mini editor for small text. It does not support headings, lists, blockquotes, or code blocks. It only supports basic formatting like bold and links.",
+}),
   ],
 
   content: value || "",

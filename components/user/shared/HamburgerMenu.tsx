@@ -210,6 +210,13 @@ export default function HamburgerMenu({ open, onClose, buttonRef }: Props) {
               >
                 About us
               </MotionLink>
+                 <MotionLink
+                href="/cities"
+                onClick={onClose}
+                className={`block text-[16px] sm:text-[18px] font-semibold text-black hover:opacity-70 transition ${!open && "hidden"}`}
+              >
+                Cities
+              </MotionLink>
 
               <MotionLink
                 href="/blogs"

@@ -6,6 +6,7 @@ import { getCities } from "@/lib/api/public/city.api";
 import { City } from "@/lib/types/city";
 import Stats from "@/components/user/home/Stats";
 import LocationsSliderSection from "@/components/user/ui/LocationsSliderSection";
+import MinistriesSection from "@/components/user/home/MinistriesSection";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -52,38 +53,41 @@ export default async function SectorDetailPage({ params }: Props) {
   );
   console.log("BLOCKS:", sectorRes.blocks);
 
-return (
-  <main className="bg-white">
+  return (
+    <main className="bg-white w-full mx-auto ">
 
-    {/* 🔹 Render all blocks except FAQ */}
-{otherBlocks?.map((block: SectorBlock, index: number) => (
-  <SectorBlockRenderer
-    key={block._id ?? `block-${index}`}
-    block={block}
-    cities={cities}
-  />
-))}
+      {/* 🔹 Render all blocks except FAQ */}
+      {otherBlocks?.map((block: SectorBlock, index: number) => (
+        <SectorBlockRenderer
+          key={block._id ?? `block-${index}`}
+          block={block}
+          cities={cities}
+        />
+      ))}
 
-    {/* 🔹 Always show locations section */}
-    {cities.length > 0 && (
-      <LocationsSliderSection
-        locationsHeading="Start Your Business Anywhere in Saudi Arabia"
-        locationsSubheading="Entity selection and licensing can be completed regardless of your chosen city or economic zone."
-        cities={cities}
-      />
-    )}
+      {/* 🔹 Always show locations section */}
+      {cities.length > 0 && (
+        <LocationsSliderSection
+          locationsHeading="Start Your Business Anywhere in Saudi Arabia"
+          locationsSubheading="Entity selection and licensing can be completed regardless of your chosen city or economic zone."
+          cities={cities}
+        />
+      )}
 
-    <Stats />
+      {/* <Stats /> */}
+<div className="w-[1320px] mx-auto">
+        <MinistriesSection />
+  
+</div >
+      {/* 🔹 Render FAQ always at bottom */}
+      {faqBlock && (
+        <SectorBlockRenderer
+          key={faqBlock._id}
+          block={faqBlock}
+          cities={cities}
+        />
+      )}
 
-    {/* 🔹 Render FAQ always at bottom */}
-    {faqBlock && (
-      <SectorBlockRenderer
-        key={faqBlock._id}
-        block={faqBlock}
-        cities={cities}
-      />
-    )}
-
-  </main>
-);
+    </main>
+  );
 }
