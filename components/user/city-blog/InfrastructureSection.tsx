@@ -76,91 +76,125 @@ export default function InfrastructureSection({ content }: Props) {
   };
 
   return (
-    <section className="pt-24 pb-14 bg-[#7f7b77] text-white" data-navbar="light">
-      <div className="max-w-8xl mx-auto px-6">
-
+    <section 
+      className="pt-16 md:pt-20 lg:pt-24 pb-10 md:pb-12 lg:pb-14 bg-[#7f7b77] text-white" 
+      data-navbar="light"
+    >
+      <div className="max-w-8xl mx-auto px-4 md:px-6">
         {/* HEADER */}
-        <div className="flex justify-items-start items-start mb-20 gap-16 relative">
+        <div className="flex flex-col lg:flex-row lg:items-start gap-10 lg:gap-16 mb-14 lg:mb-20 relative">
+
+          {/* LEFT TITLE */}
           <div>
-            <span className="text-white/60 text-sm mb-4 block">
+            <span className="text-white/60 text-xs md:text-sm mb-3 md:mb-4 block">
               01 | {String(content.slides.length).padStart(2, "0")}
             </span>
 
-            <h2 className="text-4xl font-semibold max-w-xl leading-tight">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold max-w-xl leading-tight">
               {content.heading}
             </h2>
           </div>
 
-          {/* 🔥 Rich Description */}
+          {/* DESCRIPTION */}
           <div
-            className="text-white/70 max-w-md text-sm leading-relaxed rich-text mt-10 "
+            className="text-white/70 max-w-md text-xs sm:text-sm leading-relaxed rich-text lg:mt-10"
             dangerouslySetInnerHTML={{
               __html: content.description || "",
             }}
           />
 
-          <div className="flex gap-3 absolute right-3 bottom-0">
+          {/* ARROWS */}
+          <div className="flex gap-3 lg:absolute lg:right-3 lg:bottom-0">
             <OvalArrow direction="left" variant="gray" onClick={prevSlide} />
             <OvalArrow direction="right" variant="gray" onClick={nextSlide} />
           </div>
 
         </div>
 
+
         {/* SLIDES */}
-        <div 
+        <div
           ref={scrollRef}
-          className="flex gap-10 overflow-x-auto pb-6 hide-scrollbar scroll-smooth snap-x snap-mandatory"
-        >
+          className="flex gap-6 md:gap-8 lg:gap-10 overflow-x-auto pb-6 hide-scrollbar scroll-smooth snap-x snap-mandatory"
+          >
+
           {content.slides.map((slide, index) => {
+
             const imageSrc =
-              slide.imageUrl &&
-              typeof slide.imageUrl === "string" &&
-              slide.imageUrl.trim() !== ""
-                ? cloudinaryAutoWebp(slide.imageUrl)
-                : null;
+            slide.imageUrl &&
+            typeof slide.imageUrl === "string" &&
+            slide.imageUrl.trim() !== ""
+            ? cloudinaryAutoWebp(slide.imageUrl)
+            : null;
 
             return (
+
               <div
                 key={index}
-                className="min-w-[760px] bg-white rounded-[28px] p-8 flex gap-12 relative snap-start"
+                className="
+                min-w-[330px]
+                sm:min-w-[420px]
+                md:min-w-[560px]
+                lg:min-w-[760px]
+                bg-white
+                rounded-[20px] md:rounded-[24px] lg:rounded-[28px]
+                p-5 sm:p-6 md:p-7 lg:p-8
+                flex flex-col md:flex-row
+                gap-6 md:gap-8 lg:gap-12
+                relative
+                snap-start
+                "
               >
+
                 {/* Slide Number */}
-                <span className="absolute top-6 left-8 text-gray-400 text-sm">
+                <span className="absolute top-4 md:top-6 left-5 md:left-8 text-gray-400 text-xs md:text-sm">
                   {String(index + 1).padStart(2, "0")} /
                 </span>
 
+
                 {/* LEFT CONTENT */}
-                <div className="flex-1 mt-10 pr-4">
-                  <h3 className="text-2xl font-semibold text-gray-900 mb-4">
+                <div className="flex-1 mt-8 md:mt-10 pr-2 md:pr-4">
+
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-900 mb-3 md:mb-4">
                     {slide.title}
                   </h3>
 
-                  {/* 🔥 Rich Slide Text */}
                   <div
-                    className="text-gray-600 text-sm leading-relaxed max-w-sm rich-text max-w-none"
+                    className="text-gray-600 text-xs sm:text-sm leading-relaxed rich-text"
                     dangerouslySetInnerHTML={{
-                      __html: slide.text || "",
+                    __html: slide.text || "",
                     }}
                   />
+
                 </div>
 
-                {/* RIGHT IMAGE (Safe Render) */}
+
+                {/* IMAGE */}
                 {imageSrc && (
-                  <div className="relative w-[320px] h-[320px] rounded-[24px] overflow-hidden shrink-0">
+
+                  <div className="relative w-full md:w-[240px] lg:w-[320px] h-[200px] sm:h-[240px] md:h-[260px] lg:h-[320px] rounded-[18px] md:rounded-[20px] lg:rounded-[24px] overflow-hidden shrink-0">
+
                     <Image
                       src={imageSrc}
                       alt={slide.title}
                       fill
                       className="object-cover"
-                      sizes="320px"
+                      sizes="(max-width:768px) 100vw, 320px"
                     />
+
                   </div>
+
                 )}
+
               </div>
+
             );
+
           })}
+
         </div>
+
       </div>
     </section>
   );
-}
+};
