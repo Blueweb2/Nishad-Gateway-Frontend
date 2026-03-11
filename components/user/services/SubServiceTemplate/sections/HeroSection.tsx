@@ -64,9 +64,10 @@ export default function HeroSection({
 
             {/* DESCRIPTION */}
             {heroDescription && (
-              <p className="mt-10 max-w-[430px] text-white/75 text-sm md:text-base leading-relaxed">
-                {heroDescription}
-              </p>
+              <div
+                className="mt-10 max-w-[430px] text-white/75 text-sm md:text-base leading-relaxed rich-text"
+                dangerouslySetInnerHTML={{ __html: heroDescription }}
+              />
             )}
 
             {/* CTA BUTTON */}

@@ -215,7 +215,7 @@ export default function RichTextEditor({ value, onChange }: Props) {
 
       {/* Editor */}
 
-      <div className="p-4">
+      <div className="p-4 rich-text">
         <EditorContent editor={editor} />
       </div>
 

@@ -3,6 +3,7 @@
 import toast from "react-hot-toast";
 import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
 import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
+import MiniTextEditor from "../../common/MiniTextEditor";
 
 type Props = {
   form: any;
@@ -32,12 +33,9 @@ export default function HeroEditor({ form, updateField }: Props) {
         />
       </div>
 
-      <textarea
+      <MiniTextEditor
         value={form.heroDescription}
-        onChange={(e) => updateField("heroDescription", e.target.value)}
-        placeholder="Hero Description"
-        rows={3}
-        className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500 resize-none"
+        onChange={(value) => updateField("heroDescription", value)}
       />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
