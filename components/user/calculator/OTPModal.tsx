@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import OTPInput from "./OTPInput";
 
@@ -18,7 +18,17 @@ export default function OTPModal({
 
   const [otpDigits, setOtpDigits] = useState(["","","","","",""]);
 
+
   const otp = otpDigits.join("");
+
+    useEffect(() => {
+  setOtpDigits(["","","","","",""]);
+}, []);
+useEffect(() => {
+  if (otp.length === 6) {
+    onVerify(otp);
+  }
+}, [otp]);
 
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
@@ -43,7 +53,7 @@ export default function OTPModal({
         <OTPInput otp={otpDigits} setOtp={setOtpDigits} />
 
         <button
-          onClick={() => onVerify(otp)}
+          onClick={() => otp.length === 6 && onVerify(otp)}
           disabled={otp.length !== 6 || verifying}
           className="mt-6 w-full bg-green-700 hover:bg-green-800 text-white py-3 rounded-full font-medium transition disabled:opacity-60"
         >

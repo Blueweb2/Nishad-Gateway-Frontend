@@ -357,17 +357,19 @@ async function generateReport() {
       }
     );
 
-    if (!res.ok) throw new Error();
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error);
+    }
 
     toast.success("Your AI expansion report has been sent to your email!");
 
     setShowOtp(false);
 
-  } catch {
-    toast.error("Report generation failed");
+  } catch (err: any) {
+    toast.error(err.message || "Report generation failed");
   }
 }
-
 
 
   
