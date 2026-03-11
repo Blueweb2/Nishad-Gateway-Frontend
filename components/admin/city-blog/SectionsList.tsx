@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo } from "react";
 import { Trash2, GripVertical } from "lucide-react";
+import { useEffect } from "react";
 
 import HeroSectionEditor from "./HeroSectionEditor";
 import CategoriesSectionEditor from "./CategoriesSectionEditor";
@@ -91,7 +92,16 @@ export default function SectionsList({
   sections,
   setSections,
 }: Props) {
-  const [collapsed, setCollapsed] = useState<string[]>([]);
+  // const [collapsed, setCollapsed] = useState<string[]>([]);
+  const [expanded, setExpanded] = useState<string | null>(null);
+
+
+
+  useEffect(() => {
+    if (sections.length && !expanded) {
+      setExpanded(sections[0].id);
+    }
+  }, [sections, expanded]);
 
   /* ================= REMOVE SECTION ================= */
   const removeSection = (id: string) => {
@@ -110,18 +120,18 @@ export default function SectionsList({
   };
 
   /* ================= UPDATE CONTENT ================= */
-const updateSectionContent = (id: string, content: any) => {
-  setSections((prev) =>
-    prev.map((s) =>
-      s.id === id
-        ? {
+  const updateSectionContent = (id: string, content: any) => {
+    setSections((prev) =>
+      prev.map((s) =>
+        s.id === id
+          ? {
             ...s,
             content: { ...content }, // 🔥 force new reference
           }
-        : s
-    )
-  );
-};
+          : s
+      )
+    );
+  };
 
 
   /* ================= DRAG END ================= */
@@ -167,20 +177,26 @@ const updateSectionContent = (id: string, content: any) => {
             strategy={verticalListSortingStrategy}
           >
             {sortedSections.map((section) => {
-              const isCollapsed = collapsed.includes(section.id);
-
+              const isExpanded = expanded === section.id;
               return (
                 <SortableItem key={section.id} id={section.id}>
                   {(attributes, listeners) => (
                     <div className="rounded-xl border border-white/10 bg-white/5 p-5">
 
                       {/* HEADER */}
-                      <div className="flex items-center justify-between mb-4">
-
+<div
+  onClick={() =>
+    setExpanded((prev) =>
+      prev === section.id ? null : section.id
+    )
+  }
+  className="cursor-pointer flex items-center justify-between mb-4"
+>
                         <div className="flex items-center gap-3">
                           <div
                             {...attributes}
                             {...listeners}
+                            onClick={(e) => e.stopPropagation()}
                             className="cursor-grab text-white/40 hover:text-white"
                           >
                             <GripVertical className="w-4 h-4" />
@@ -197,32 +213,24 @@ const updateSectionContent = (id: string, content: any) => {
                         </div>
 
                         <div className="flex items-center gap-3">
-                          <button
-                            onClick={() =>
-                              setCollapsed((prev) =>
-                                prev.includes(section.id)
-                                  ? prev.filter((i) => i !== section.id)
-                                  : [...prev, section.id]
-                              )
-                            }
-                            className="text-xs text-white/60 hover:text-white"
-                          >
-                            {isCollapsed ? "Expand" : "Collapse"}
-                          </button>
+                         
 
                           {section.type !== "HERO" && (
-                            <button
-                              onClick={() => removeSection(section.id)}
-                              className="text-red-400 hover:text-red-300"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </button>
+                         <button
+  onClick={(e) => {
+    e.stopPropagation();
+    removeSection(section.id);
+  }}
+  className="text-red-400 hover:text-red-300"
+>
+  <Trash2 className="w-4 h-4" />
+</button>
                           )}
                         </div>
                       </div>
 
                       {/* EDITORS */}
-                      {!isCollapsed && (
+                      {isExpanded && (
                         <>
                           {section.type === "HERO" && (
                             <HeroSectionEditor
@@ -348,13 +356,13 @@ const updateSectionContent = (id: string, content: any) => {
                           )}
 
                           {section.type === "FUTURE_OUTLOOK" && (
-  <FutureOutlookEditor
-    content={section.content as FutureOutlookSectionContent}
-    onChange={(updatedContent) =>
-      updateSectionContent(section.id, updatedContent)
-    }
-  />
-)}
+                            <FutureOutlookEditor
+                              content={section.content as FutureOutlookSectionContent}
+                              onChange={(updatedContent) =>
+                                updateSectionContent(section.id, updatedContent)
+                              }
+                            />
+                          )}
 
 
 
