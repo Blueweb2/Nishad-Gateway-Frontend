@@ -157,20 +157,20 @@ export default function CityBlogRenderer({
             }
 
             case "EXPANDABLE_SNAPSHOT": {
-  const content =
-    section.content as ExpandableSnapshotSectionContent;
+              const content =
+                section.content as ExpandableSnapshotSectionContent;
 
-  return (
-    <ExpandableSnapshotSection
-      key={section.id}
-      heading={content.heading}
-      cards={content.cards}
-    />
-  );
-}
+              return (
+                <ExpandableSnapshotSection
+                  key={section.id}
+                  heading={content.heading}
+                  cards={content.cards}
+                />
+              );
+            }
 
 
-  case "FUTURE_OUTLOOK":
+            case "FUTURE_OUTLOOK":
               return (
                 <FutureOutlookSection
                   key={section.id}
