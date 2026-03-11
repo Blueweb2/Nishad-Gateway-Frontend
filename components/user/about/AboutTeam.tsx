@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+//import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Parallax } from "swiper/modules";
@@ -80,32 +80,33 @@ export default function TeamSection() {
   const activeSlide = slides[activeIndex];
 
   return (
-    <section className="w-full bg-[#f3f3f3] py-24" data-menu="dark-text">
-      <div className="max-w-7xl mx-auto px-8 relative">
+    <section className="w-full bg-[#f3f3f3] py-12 lg:py-24" data-menu="dark-text">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 relative">
 
         {/* Top Title */}
-        <h2 className="text-3xl font-extrabold">
+        <h2 className="text-2xl text-center lg:text-left sm:text-3xl lg:text-4xl font-extrabold mb-12">
           Our Expertise Across <br />
-           Saudi Arabia’s Key <br />
+          Saudi Arabia’s Key <br />
           Growth Sectors
         </h2>
 
         {/* Main Grid */}
-        <div className="grid md:grid-cols-3 items-center gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-12">
 
           {/* LEFT SIDE */}
-          <div className="space-y-8">
+          <div className="space-y-8 text-center md:text-left">
 
-            <div className="flex items-center">
+            <div className="flex flex-col md:flex-row md:items-center">
+              
               {/* Counter */}
               <p className="text-sm text-gray-500">
-                {String(activeIndex + 1).padStart(2, "0")} 
-                <span className="mx-2">|</span> 
+                {String(activeIndex + 1).padStart(2, "0")}
+                <span className="mx-2">|</span>
                 {String(slides.length).padStart(2, "0")}
               </p>
 
               {/* Name */}
-              <div className="ml-10">
+              <div className="md:ml-10 mt-3 md:mt-0">
                 <FadeUpScroll delay={0.3} key={activeIndex}>
                   <h3 className="text-xl font-semibold">{activeSlide.title}</h3>
                 </FadeUpScroll>
@@ -118,16 +119,17 @@ export default function TeamSection() {
             {/* Divider Line */}
             <div className="h-px bg-gray-300 w-full"></div>
 
-            <div className="flex items-center relative">
-              {/* Description */}
-              <p className="text-sm text-gray-600 leading-relaxed max-w-sm ml-10">
+            <div className="flex justify-center md:justify-start">
+              <p className="text-sm text-gray-600 leading-relaxed max-w-sm md:ml-10">
                 {activeSlide.description}
               </p>
-            </div> 
+            </div>
+
           </div>
 
-          {/* CENTER IMAGE src="/about/aboutIntro.jpg"*/}
+          {/* CENTER IMAGE */}
           <div className="flex flex-col items-center">
+
             <Swiper
               modules={[Parallax]}
               speed={900}
@@ -136,14 +138,14 @@ export default function TeamSection() {
               loop
               onSwiper={(swiper) => (swiperRef.current = swiper)}
               onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
-              className="w-[360px] h-[520px]"
+              className="w-[260px] sm:w-[320px] lg:w-[360px] h-[400px] sm:h-[480px] lg:h-[520px]"
             >
               {slides.map((slide, index) => (
                 <SwiperSlide
                   key={index}
                   className="!flex !items-center !justify-center"
                 >
-                  <div className="relative w-[360px] h-[520px] rounded-[160px] overflow-hidden">
+                  <div className="relative w-full h-full rounded-[140px] lg:rounded-[160px] overflow-hidden">
                     <div
                       className="absolute inset-0"
                       data-swiper-parallax="-30%"
@@ -162,27 +164,32 @@ export default function TeamSection() {
             </Swiper>
 
             {/* Social Icons */}
-            <div className="flex gap-4 mt-6">
+            {/* <div className="flex gap-4 mt-6">
               <a className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-300 hover:bg-gray-400">
                 <img src="/about/linkedin.svg" alt="" className="w-4 h-4"/>
               </a>
               <a className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-300 hover:bg-gray-400">
                 <img src="/about/whatsapp.svg" alt="" className="w-4 h-4"/>
               </a>
-            </div>
+            </div> */}
+
           </div>
 
           {/* RIGHT SIDE */}
-          <div className="flex justify-around">
+          <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row items-center justify-between gap-8 text-center md:text-left">
 
             <div>
               <p className="text-xs text-gray-400">Work Experience:</p>
-              <p className="text-lg font-semibold mt-1">{activeSlide.experience}</p>
+              <p className="text-lg font-semibold mt-1">
+                {activeSlide.experience}
+              </p>
             </div>
 
             <div>
               <p className="text-xs text-gray-400">Country:</p>
-              <p className="text-lg font-semibold mt-1">{activeSlide.country}</p>
+              <p className="text-lg font-semibold mt-1">
+                {activeSlide.country}
+              </p>
             </div>
 
             {/* Navigation Arrows */}
@@ -200,6 +207,7 @@ export default function TeamSection() {
             </div>
 
           </div>
+
         </div>
       </div>
     </section>
