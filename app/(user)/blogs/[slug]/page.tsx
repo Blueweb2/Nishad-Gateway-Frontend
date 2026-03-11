@@ -255,14 +255,17 @@ export default async function SingleBlogPage({
         </div>
       </div>
 
-      <div className="px-60 flex">
+      <div className="lg:px-40 xl:px-60 flex flex-col lg:flex-row gap-10">
 
         {/* SHARE SECTION */}
-        <BlogShare title={blog.title} />
+        <div className="lg:w-[120px]">
+          <BlogShare title={blog.title} />
+        </div>
 
-        <div>
+        <div className="flex-1">
+          
           {/* TITLE */}
-          <h1 className="text-4xl font-semibold mb-6">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-semibold mb-6">
             {blog.title}
           </h1>
 

@@ -176,7 +176,7 @@ export default function OwnershipSliderSection({
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -100 }}
                   transition={{ duration: 0.5 }}
-                  className="text-white/80 text-sm md:text-base lg:text-[1vw] leading-relaxed mb-6 h-[70px] lg:h-auto rich-text"
+                  className="text-white/80 text-sm md:text-base lg:text-[1vw] leading-relaxed mb-6 h-[190px] lg:h-auto rich-text"
                   dangerouslySetInnerHTML={{ __html: current.rightText || "" }}
                 />
               )}

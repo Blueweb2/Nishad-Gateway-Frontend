@@ -13,7 +13,7 @@ export default function LandmarksSection({ content }: Props) {
 
         {/* LEFT SIDE */}
         <div className="flex flex-col justify-between">
-          <h2 className="text-5xl font-semibold leading-tight max-w-md">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold leading-tight max-w-md">
             {content.heading}
           </h2>
 

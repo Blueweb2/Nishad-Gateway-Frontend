@@ -190,15 +190,16 @@ export default function WhySliderSection({
 
             {/* mobile title */}
             <div className=" flex lg:hidden flex-1 flex-col items-center justify-center lg:items-start">
-              <h3 className=" text-xl sm:text-2xl font-medium text-[#287F7F] max-w-sm mx-auto md:h-[50px] flex items-end lg:pr-24">
+              <h3 className=" text-xl sm:text-2xl font-medium text-[#287F7F] max-w-sm mx-auto h-[50px] 
+              md:h-[50px] flex items-end lg:pr-24">
                 {current?.title || "Ownership Rights"}
               </h3>
             </div>
 
-         <div
-  className="text-gray-500 leading-relaxed max-w-sm h-[95px] lg:h-[170px] mt-3 flex items-start lg:items-end rich-text"
-  dangerouslySetInnerHTML={{ __html: current?.description || "" }}
-/>
+            <div
+              className="text-gray-500 leading-relaxed max-w-sm h-[165px] lg:h-[170px] mt-3 flex items-start lg:items-end rich-text lg:pr-20"
+              dangerouslySetInnerHTML={{ __html: current?.description || "" }}
+            />
 
             {/* link for small divice */}
             {whyCtaText && whyCtaLink && (
