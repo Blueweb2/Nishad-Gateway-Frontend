@@ -62,17 +62,20 @@ export default function EntityTypesSliderSection({
           </div>
 
           {/* RIGHT DESCRIPTION */}
-          <p className="
-            text-sm 
-            sm:text-base 
-            md:text-lg 
-            text-gray-500 
-            leading-relaxed 
-            max-w-full md:max-w-xl
-          ">
-            {entityTypesDescription ||
-              "Lorem Ipsum is simply dummy text of the printing and typesetting industry."}
-          </p>
+<div
+  className="
+    rich-text
+    text-sm sm:text-base md:text-lg
+    text-gray-500
+    leading-relaxed
+    max-w-full md:max-w-xl
+  "
+  dangerouslySetInnerHTML={{
+    __html:
+      entityTypesDescription ||
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+  }}
+/>
 
         </div>
       </div>

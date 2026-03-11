@@ -67,15 +67,10 @@ export default function EntityTypesSliderEditor({
           className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
         />
 
-        <textarea
-          value={entityTypesDescription}
-          onChange={(e) =>
-            updateField("entityTypesDescription", e.target.value)
-          }
-          placeholder="Description (right side text)"
-          rows={2}
-          className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500 resize-none"
-        />
+<MiniTextEditor
+  value={entityTypesDescription}
+  onChange={(value) => updateField("entityTypesDescription", value)}
+/>
       </div>
 
       {/* Slides */}

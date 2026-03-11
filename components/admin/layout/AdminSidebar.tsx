@@ -83,10 +83,14 @@ export default function AdminSidebar() {
   return (
     <aside className="w-[260px] bg-[#0b0f0b] border-r border-green-700/30 p-6 flex flex-col">
       <div className="mb-8">
-        <h2 className="text-xl font-bold text-green-400">
-          Nishad Admin
-        </h2>
+     <div className="text-xl font-bold text-green-400 flex items-center gap-2">
+  <img 
+    src="/coloredlogo.svg" 
+    alt="Logo"
+    className="h-12 w-auto"
+  />
 
+</div>
         {role && (
           <p className="text-xs text-green-500 mt-1">
             {role === "superadmin" ? "Super Admin" : "Admin"}
