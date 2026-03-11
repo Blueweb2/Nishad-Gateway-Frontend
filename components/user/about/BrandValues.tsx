@@ -29,7 +29,7 @@ export default function BrandValues() {
   const [active, setActive] = useState(1);
 
   return (
-    <section className="w-full bg-[#F4F4F4] py-28" data-menu="dark-text">
+    <section className="w-full bg-[#F4F4F4] py-12 lg:py-28" data-menu="dark-text">
       <div className="max-w-[1400px] mx-auto px-6 text-center">
 
         {/* Heading */}
