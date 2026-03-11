@@ -29,50 +29,46 @@ export default function Navbar() {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
 
-  //  change navbar color based on white sections
+//   //  change navbar color based on white sections
 useEffect(() => {
-  const sections = document.querySelectorAll("section");
+  const initNavbarObserver = () => {
+    const sections = document.querySelectorAll("[data-navbar]");
 
-  const updateTheme = (section: Element | null) => {
-    if (!section) return;
+    console.log("Sections detected:", sections);
 
-    const theme = section.getAttribute("data-navbar");
-    setIsLight(theme === "light");
-  };
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          updateTheme(entry.target);
-        }
-      });
-    },
-    {
-      root: null,
-      threshold: 0.3,
-    }
-  );
-
-  sections.forEach((section) => observer.observe(section));
-
-  // 🔹 Detect first visible section on load
-  const handleInitial = () => {
-    const navbarHeight = 90;
-
-    sections.forEach((section) => {
-      const rect = section.getBoundingClientRect();
-
-      if (rect.top <= navbarHeight && rect.bottom >= navbarHeight) {
-        updateTheme(section);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const theme = entry.target.getAttribute("data-navbar");
+            setIsLight(theme === "light");
+          }
+        });
+      },
+      {
+        rootMargin: "-90px 0px -60% 0px",
+        threshold: 0,
       }
-    });
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    // console.log("Section:", section.getAttribute("data-navbar"));
   };
 
-  handleInitial();
+  const timer = setTimeout(initNavbarObserver, 300);
 
-  return () => observer.disconnect();
+  return () => clearTimeout(timer);
 }, []);
+// useEffect(() => {
+//   const sections = document.querySelectorAll("[data-navbar]");
+
+//   console.log("Navbar script running");
+//   console.log("Sections found:", sections);
+
+//   sections.forEach((section) => {
+//     console.log("Section:", section.getAttribute("data-navbar"));
+//   });
+// }, []);
 
   //  close popups on route change
   useEffect(() => {
