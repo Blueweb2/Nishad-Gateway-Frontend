@@ -2,7 +2,9 @@ import dynamic from "next/dynamic";
 
 import HeroSection from "@/components/user/home/HeroSection";
 import Navbar from "@/components/user/shared/Navbar";
+
 import PreloaderProvider from "@/components/user/shared/PreloaderProvider";
+import LazySection from "@/components/user/shared/LazySection";
 
 const WhySaudi = dynamic(() => import("@/components/user/home/WhySaudi"));
 const BusinessGrowth = dynamic(() => import("@/components/user/home/BusinessGrowth"));
@@ -19,17 +21,46 @@ export default function Page() {
     <main className="w-full">
       <Navbar />
 
+      {/* Critical content */}
+      <HeroSection />
+
+      {/* Lazy loaded sections */}
       <PreloaderProvider>
-        <HeroSection />
-        <WhySaudi />
-        <BusinessGrowth />
-        <CitiesSection />
-        <KeyServices />
-        <Consultant />
-        <MinistriesSection />
-        <CaseStudies />
-        <Insights />
-        <FinalCTA />
+        <LazySection>
+          <WhySaudi />
+        </LazySection>
+
+        <LazySection>
+          <BusinessGrowth />
+        </LazySection>
+
+        <LazySection>
+          <CitiesSection />
+        </LazySection>
+
+        <LazySection>
+          <KeyServices />
+        </LazySection>
+
+        <LazySection>
+          <Consultant />
+        </LazySection>
+
+        <LazySection>
+          <MinistriesSection />
+        </LazySection>
+
+        <LazySection>
+          <CaseStudies />
+        </LazySection>
+
+        <LazySection>
+          <Insights />
+        </LazySection>
+
+        <LazySection>
+          <FinalCTA />
+        </LazySection>
       </PreloaderProvider>
     </main>
   );

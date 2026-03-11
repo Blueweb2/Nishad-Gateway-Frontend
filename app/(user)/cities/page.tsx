@@ -12,9 +12,9 @@ export default async function CitiesPage() {
 
   return (
     <main className="bg-white min-h-screen pt-28 pb-20" data-navbar="light">
-      <div className="max-w-8xl mx-auto px-6">
+      <div className="max-w-8xl mx-auto ">
 
-        <h1 className="text-6xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-center mb-14">
+        <h1 className="text-6xl sm:text-2xl md:text-3xl lg:text-5xl font-semibold text-center mb-14">
           Cities & Business Zones in Saudi Arabia
         </h1>
 
