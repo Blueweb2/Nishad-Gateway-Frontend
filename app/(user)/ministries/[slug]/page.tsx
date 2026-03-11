@@ -23,22 +23,26 @@ export default async function MinistryPage({ params }: Props) {
     <div className="max-w-8xl mx-auto px-6 pt-28 space-y-10" data-navbar="light">
       <div className="max-w-5xl mx-auto px-6 space-y-10">
         {/* Breadcrumb */}
-        <div className="text-sm text-gray-500 flex items-center gap-2">
-          <Link href="/" className="hover:text-gray-900">
-            Home
-          </Link>
+        <div className="overflow-x-auto hide-scrollbar">
+          <div className="flex items-center gap-2 text-sm text-gray-500 whitespace-nowrap hide-scrollbar">
+            <div className="text-sm text-gray-500 flex items-center overflow-x-auto gap-2">
+              <Link href="/" className="hover:text-gray-900">
+                Home
+              </Link>
 
-          <span>›</span>
+              <span>›</span>
 
-          <Link href="/#ministries" className="hover:text-gray-900">
-            Government Authorities
-          </Link>
+              <Link href="/#ministries" className="hover:text-gray-900">
+                Government Authorities
+              </Link>
 
-          <span>›</span>
+              <span>›</span>
 
-          <span className="text-gray-900 font-medium">
-            {ministry.title}
-          </span>
+              <span className="text-gray-900 font-medium">
+                {ministry.title}
+              </span>
+            </div>
+          </div>
         </div>
 
         {/* Cover Image */}
@@ -70,11 +74,11 @@ export default async function MinistryPage({ params }: Props) {
             {ministry.logo && (
               <div
                 className="
-      absolute 
-      top-4 right-4
-      md:top-auto md:bottom-6 md:right-6
-      bg-black/90 backdrop-blur rounded-lg p-2 md:p-3
-    "
+                  absolute 
+                  top-4 right-4
+                  md:top-auto md:bottom-6 md:right-6
+                  bg-black/90 backdrop-blur rounded-lg p-2 md:p-3
+                "
               >
                 <Image
                   src={cloudinaryAutoWebp(ministry.logo)}
@@ -88,10 +92,6 @@ export default async function MinistryPage({ params }: Props) {
 
           </div>
         )}
-        {/* Title */}
-        {/* <h1 className="text-4xl font-semibold">
-        {ministry.title}
-      </h1> */}
 
         {/* Description */}
         {ministry.shortDesc && (
