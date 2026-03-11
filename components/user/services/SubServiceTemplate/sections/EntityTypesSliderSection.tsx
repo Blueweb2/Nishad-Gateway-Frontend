@@ -35,6 +35,7 @@ export default function EntityTypesSliderSection({
   };
 
   const formatIndex = (i: number) => String(i).padStart(2, "0");
+  
 
   return (
     <section className="w-full bg-white py-12 lg:py-20 overflow-hidden" data-navbar="light">
@@ -103,7 +104,7 @@ export default function EntityTypesSliderSection({
                   mr-6 md:mr-8 lg:mr-10
                 "
               >
-                {/* IMAGE */} 
+                {/* IMAGE */}
                 <div className="relative h-full w-[90%] lg:w-[80%] overflow-hidden rounded-[28px] lg:rounded-[44px]">
                   <Image
                     src={cloudinaryAutoWebp(slide.mainImage)}
@@ -163,26 +164,25 @@ export default function EntityTypesSliderSection({
                       >
                         <Plus
                           size={16}
-                          className={`text-green-600 transition-transform duration-300 ${
-                            expandedIndex === index ? "rotate-45" : ""
-                          }`}
+                          className={`text-green-600 transition-transform duration-300 ${expandedIndex === index ? "rotate-45" : ""
+                            }`}
                         />
                       </button>
                     </div>
 
-                    <AnimatePresence>
-                      {expandedIndex === index && slide.description && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 40 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 30 }}
-                          transition={{ duration: 0.4, ease: "easeOut" }}
-                          className="mt-4 md:mt-5 lg:mt-6 text-xs md:text-sm text-gray-600 leading-relaxed"
-                        >
-                          {slide.description}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+         <AnimatePresence>
+  {expandedIndex === index && slide.description && (
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 30 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+      className="mt-4 md:mt-5 lg:mt-6 text-xs md:text-sm text-gray-600 leading-relaxed rich-text"
+      dangerouslySetInnerHTML={{ __html: slide.description }}
+      
+    />
+  )}
+</AnimatePresence>
                   </div>
                 </div>
               </SwiperSlide>
