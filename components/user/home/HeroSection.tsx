@@ -6,7 +6,7 @@ import FadeUpMount from "../ui/FadeUpMount";
 
 export default function HeroSection() {
   return (
-    <section className="relative w-full min-h-dvh overflow-hidden">
+    <section className="relative w-full min-h-dvh overflow-hidden" data-navbar="dark">
 
       {/* Background Image */}
       <Image

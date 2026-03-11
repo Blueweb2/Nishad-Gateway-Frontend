@@ -257,11 +257,11 @@ xl: 768px   // Fold / Tablet */
 
 .rich-text p {
   font-size: 1rem;
-  color: #4b5563; /* gray-600 */
+  color: currentColor;
 }
 
 .rich-text strong {
-  color: #15803d; /* green-700 */
+  color: #08b146; /* green-700 */
   font-weight: 600;
 }
 
