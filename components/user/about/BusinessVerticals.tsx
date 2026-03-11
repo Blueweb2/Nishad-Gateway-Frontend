@@ -2,37 +2,61 @@
 
 import { useState } from "react";
 import OvalArrow from "@/components/user/ui/OvalArrow";
-import ParallaxImage from "../shared/ParallaxImage";
 
 const verticals = [
   {
     title: "Business Consultancy",
-    subtitle: "Management Consultancy",
+    subtitle: "Strategic advisory to help companies enter and grow in Saudi Arabia.",
     image: "/about/buisnessveriticals.jpg",
     points: [
       "Business Planning",
       "Market Entry Strategy",
       "Feasibility Studies",
+      "Investment Advisory",
     ],
   },
   {
-    title: "Investment Advisory",
-    subtitle: "Capital & Growth Advisory",
+    title: "Company Formation",
+    subtitle: "End-to-end support for establishing businesses in Saudi Arabia.",
     image: "/buisnessgrowth/Dress-Code.jpg",
     points: [
-      "Investment Structuring",
-      "Due Diligence",
-      "Risk Assessment",
+      "MISA Licensing",
+      "Company Incorporation",
+      "Legal Structuring",
+      "Government Approvals"
     ],
   },
   {
-    title: "Strategic Partnerships",
-    subtitle: "Global Expansion Support",
+    title: "Regulatory & Compliance",
+    subtitle: "Ensuring businesses operate fully compliant with Saudi regulations",
     image: "/buisnessgrowth/business-coworkers-discussing-new-ideas-brainstorming-together-looking-new-project-document.jpg",
     points: [
-      "Joint Ventures",
-      "Local Sponsor Identification",
-      "Regulatory Advisory",
+      "Legal Compliance",
+      "Saudization Advisory",
+      "Regulatory Filings",
+      "Corporate Governance"
+    ],
+  },
+  {
+    title: "Business Expansion Support",
+    subtitle: "Helping companies scale operations and strengthen market presence",
+    image: "/buisnessgrowth/business-coworkers-discussing-new-ideas-brainstorming-together-looking-new-project-document.jpg",
+    points: [
+      "Office Setup",
+      "Operational Strategy",
+      "Local Partnership Support",
+      "Market Expansion Planning"
+    ],
+  },
+  {
+    title: "Strategic Investment Advisory",
+    subtitle: "Guiding investors to identify and leverage opportunities in Saudi Arabia.",
+    image: "/buisnessgrowth/business-coworkers-discussing-new-ideas-brainstorming-together-looking-new-project-document.jpg",
+    points: [
+      "Vision 2030 Opportunities",
+      "Sector Market Insights",
+      "Investment Structuring",
+      "Growth Strategy"
     ],
   },
 ];
@@ -60,86 +84,98 @@ export default function BusinessVerticals() {
       ? verticals[verticals.length - 1].subtitle
       : verticals[activeIndex - 1].subtitle;
 
+
   return (
     <section
-      className="relative w-full h-screen text-white overflow-hidden"
+      className="relative w-full min-h-screen text-white overflow-hidden "
       data-navbar="light"
     >
       {/* Background */}
       <div
-        key={activeIndex}
         className="absolute inset-0 z-0 transition-opacity duration-700"
       >
-        <ParallaxImage
-          src={current.image}
-          alt={current.title}
-          className="w-full h-full object-cover"
-          priority
-          speed={160}
-        />
+        <img src={current.image} alt={current.title} className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"/>
       </div>
 
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/60 z-10" />
 
       {/* Main Grid */}
-      <div className="relative z-20 h-full px-[5vw] grid grid-cols-3 items-center">
+      <div className="relative z-20 min-h-screen lg:py-0 px-6 md:px-10 lg:px-[5vw] grid grid-cols-1  lg:grid-cols-3 items-center gap-12">
 
         {/* LEFT COLUMN */}
-        <div className="flex flex-col h-full justify-center">
+        <div className="flex flex-col justify-end text-center lg:text-left h-[140px] lg:h-[300px]">
 
-          <h2 className="text-[3vw] font-semibold leading-tight mb-[2vw] mt-[6vw]">
+          <h2 className="text-3xl sm:text-4xl lg:text-[3vw] font-semibold leading-tight mb-0 lg:mb-8">
             Our Global <br />
             Business <br />
             Verticals
           </h2>
 
           {/* Bottom Left Info */}
-          <div className="mt-auto mb-[14vw]">
-            <div className="flex items-center gap-[1vw] text-white/60 text-[1vw] mb-[1vw]">
+          <div>
+
+            <div className="flex justify-center lg:justify-start items-center gap-3 text-white/60 text-sm lg:text-[1vw] mb-4">
               <span>{formattedCurrent}</span>
               <span>|</span>
               <span>{formattedTotal}</span>
             </div>
 
-            <p className="text-white/40 text-[1.4vw] mb-[1vw] w-[12vw] leading-tight">
+            {/* ONLY SHOW IN LARGE DIVICE */}
+            <p className="hidden lg:block text-white/40 text-lg mb-4 max-w-xs">
               {previousTitle}
             </p>
 
-            <div className="h-px bg-white/20 w-full" />
+            <div className="hidden lg:block h-px bg-white/20 w-full" />
           </div>
         </div>
 
         {/* CENTER GLASS CAPSULE */}
         <div className="relative flex items-center justify-center">
 
-          <div className="absolute w-[26vw] h-[32vw] bg-white/10 backdrop-blur-xxl border border-white/10
-            rounded-[160px]"/>
-
-          <h3 className="relative z-10 text-[2.2vw] font-semibold text-center max-w-[16vw] leading-tight">
+          <div
+            className="
+            absolute
+            w-[220px] h-[280px]
+            sm:w-[260px] sm:h-[320px]
+            lg:w-[26vw] lg:h-[32vw]
+            bg-white/10 backdrop-blur-xxl
+            border border-white/10
+            rounded-[160px]
+          "
+          />
+          <h3 className="relative z-10 text-xl sm:text-2xl lg:text-[2.2vw] font-semibold text-center max-w-[200px] lg:max-w-[16vw] leading-tight h-[40px] lg:h-auto">
             {current.title}
           </h3>
         </div>
 
         {/* RIGHT COLUMN */}
-        <div className="flex flex-col">
-          <div className="flex justify-between items-center max-w-[28vw] ml-auto h-full mt-[8vw] w-full border-b border-white/20">
+        <div className="flex flex-col justify-end items-center lg:items-end lg:h-[300px]">
 
-            <ul className="space-y-[1vw] text-white/90 text-[1vw] mb-[2vw]">
+          <div className="flex flex-col lg:flex-row justify-between items-center lg:items-start w-full max-w-md lg:max-w-[28vw] lg:border-b lg:border-white/20 lg:pb-6">
+
+            {/* ONLY SHOW IN MOBILE */}
+            <p className="lg:hidden text-white/40 text-lg mb-4 max-w-xs h-[60px] mt-5">
+              {previousTitle}
+            </p>
+
+            <ul className="grid grid-cols-2 lg:grid-cols-1 gap-y-3 gap-x-6 text-white/90 text-sm lg:text-[1vw] mb-6 lg:mb-0 h-[90px] lg:h-auto">
               {current.points.map((point, index) => (
-                <li key={index} className="flex items-start gap-[0.8vw]">
-                  <span className="mt-[0.4vw] w-[0.4vw] h-[0.4vw] bg-white rounded-full" />
+                <li key={index} className="flex items-start gap-2">
+                  <span className="mt-2 w-2 h-2 bg-white rounded-full" />
                   {point}
                 </li>
               ))}
             </ul>
 
-            {/* Arrows */}
-            <div className="flex gap-[1.5vw]">
+            
+            <div className="flex gap-4 h-[30px] lg:h-auto">
               <OvalArrow direction="left" variant="white" onClick={prevSlide} />
               <OvalArrow direction="right" variant="white" onClick={nextSlide} />
             </div>
+
           </div>
+
         </div>
 
       </div>
