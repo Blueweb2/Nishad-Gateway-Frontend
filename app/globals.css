@@ -341,6 +341,14 @@ xl: 768px   // Fold / Tablet */
   height: 0px;
 }
 
+/* .hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+} */
 
 @property --angle {
   syntax: "<angle>";
