@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
 import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 import MiniTextEditor from "../../common/MiniTextEditor";
+import RichTextEditor from "../../common/RichTextEditor";
 
 type Props = {
   form: any;
@@ -35,7 +36,9 @@ export default function HeroEditor({ form, updateField }: Props) {
 
       <MiniTextEditor
         value={form.heroDescription}
+      
         onChange={(value) => updateField("heroDescription", value)}
+        
       />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

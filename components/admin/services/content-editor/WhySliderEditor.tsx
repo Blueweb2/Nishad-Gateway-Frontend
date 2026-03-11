@@ -3,6 +3,7 @@
 import toast from "react-hot-toast";
 import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
 import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
+import MiniTextEditor from "../../common/MiniTextEditor";
 
 export type WhySlide = {
   title: string;
@@ -103,15 +104,12 @@ export default function WhySliderEditor({
                 className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500"
               />
 
-              <textarea
-                value={slide.description}
-                onChange={(e) =>
-                  updateWhySlide(idx, "description", e.target.value)
-                }
-                placeholder="Slide Description"
-                rows={4}
-                className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white focus:outline-none focus:border-green-500 resize-none"
-              />
+            <MiniTextEditor
+  value={slide.description}
+  onChange={(value) =>
+    updateWhySlide(idx, "description", value)
+  }
+/>
 
               {/* Upload Slide Image */}
               <div className="space-y-2">
