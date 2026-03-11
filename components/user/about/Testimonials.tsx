@@ -221,7 +221,7 @@ export default function CaseStudies() {
               </FadeUpScroll>
             </div>
 
-            <p className="text-gray-500 leading-relaxed max-w-sm mt-3 lg:pr-20 lg:mt-10">
+            <p className="text-gray-500 leading-relaxed max-w-sm mt-3 lg:pr-20 lg:mt-10 h-[90px] md:h-auto">
               {activeSlide.description}
             </p>
 
