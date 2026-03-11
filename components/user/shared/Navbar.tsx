@@ -31,8 +31,14 @@ export default function Navbar() {
 
 //   //  change navbar color based on white sections
 useEffect(() => {
-  const initNavbarObserver = () => {
+  const initObserver = () => {
     const sections = document.querySelectorAll("[data-navbar]");
+
+    if (!sections.length) {
+      console.log("No sections yet, retrying...");
+      setTimeout(initObserver, 200);
+      return;
+    }
 
     console.log("Sections detected:", sections);
 
@@ -52,12 +58,9 @@ useEffect(() => {
     );
 
     sections.forEach((section) => observer.observe(section));
-    // console.log("Section:", section.getAttribute("data-navbar"));
   };
 
-  const timer = setTimeout(initNavbarObserver, 300);
-
-  return () => clearTimeout(timer);
+  initObserver();
 }, []);
 // useEffect(() => {
 //   const sections = document.querySelectorAll("[data-navbar]");

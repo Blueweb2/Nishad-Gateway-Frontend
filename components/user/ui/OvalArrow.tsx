@@ -21,6 +21,7 @@ export default function OvalArrow({
 
   return (
     <button
+      type="button"
       onClick={onClick}
       className={`
         group
@@ -28,7 +29,7 @@ export default function OvalArrow({
         w-[30px]
         h-[42px]
         rounded-full
-        border-1
+        border
         flex items-center justify-center
         transition
         ${
@@ -43,11 +44,7 @@ export default function OvalArrow({
         size={12}
         className={`
           transition-transform duration-300
-          ${
-            isGray
-              ? "text-gray-600 group-hover:text-white"
-              : "text-white"
-          }
+          ${isGray ? "text-gray-600 " : "text-white"}
           ${
             direction === "left"
               ? "group-hover:-translate-x-1"
