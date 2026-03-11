@@ -12,69 +12,63 @@ import "swiper/css/parallax";
 const slides = [
   {
     name: "Ahmed Al-Qahtani",
-    jobTitle: "Business Incorporation Specialist",
-    title: "MAADEN",
+    jobTitle: "Industrial Market Entry Specialist",
+    title: "Manufacturing & Industrial Investment",
     country: "Saudi Arabia",
-    experience: "8+ Years",
+    experience: "10+ Years",
     src: "/about/aboutIntro.jpg",
     description:
-      "MODON enables integrated industrial investment environments that support diversification and employment.",
-    link: "Browse Case Studies"
+      "Supporting global manufacturers establishing operations in Saudi Arabia’s growing industrial ecosystem, including MODON zones and industrial licensing.",
   },
   {
     name: "Fahad Al-Salem",
-    jobTitle: "Industrial Development Manager",
-    title: "MODON",
-    country: "UAE",
-    experience: "10+ Years",
+    jobTitle: "Technology Market Entry Advisor",
+    title: "Technology & Innovation Companies",
+    country: "Middle East",
+    experience: "9+ Years",
     src: "/about/saudi-expansion.png",
     description:
-      "Creating strong industrial ecosystems that foster investment, employment, and long-term development.",
-    link: "Explore Mining Projects"
+      "Helping technology startups and global tech firms launch and expand in Saudi Arabia’s innovationdriven economy aligned with Vision 2030.",
   },
   {
     name: "Sara Al-Harbi",
-    jobTitle: "Sustainability Strategy Director",
-    title: "NEOM",
-    country: "India",
-    experience: "12+ Years",
+    jobTitle: "Tourism Investment Consultant",
+    title: "Hospitality & Tourism Projects",
+    country: "Saudi Arabia",
+    experience: "8+ Years",
     src: "/about/indro-section.jpg",
     description:
-      "NEOM is building a futuristic, sustainable region powered by innovation, advanced technology, and smart infrastructure.",
-    link: "View Industrial Developments"
+      "Advising investors and hospitality brands entering Saudi Arabia’s rapidly expanding tourism and lifestyle sectors.",
   },
   {
     name: "Omar Al-Faraj",
-    jobTitle: "Energy Investment Advisor",
-    title: "ARAMCO",
-    country: "America",
-    experience: "15+ Years",
+    jobTitle: "Logistics Sector Specialist",
+    title: "Logistics & Supply Chain Businesses",
+    country: "GCC Region",
+    experience: "10+ Years",
     src: "/about/buisnessveriticals.jpg",
     description:
-      "Aramco drives global energy solutions while investing in sustainable development and technological advancement.",
-    link: "Discover Future Cities"
+      "Supporting logistics companies establishing distribution networks and supply chain operations across Saudi Arabia.",
   },
   {
     name: "Noura Al-Mutairi",
-    jobTitle: "Tourism Development Consultant",
-    title: "RED SEA GLOBAL",
-    country: "China",
-    experience: "9+ Years",
+    jobTitle: "Retail Market Expansion Advisor",
+    title: "Retail & Consumer Brands",
+    country: "Middle East",
+    experience: "8+ Years",
     src: "/about/aboutIntro.jpg",
     description:
-      "Red Sea Global develops regenerative tourism destinations focused on environmental protection and luxury experiences.",
-    link: "Explore Energy Innovations"
+      "Helping international brands enter the Saudi consumer market through structured retail expansion strategies.",
   },
   {
     name: "Khalid Al-Dossari",
-    jobTitle: "Chemical Innovation Lead",
-    title: "SABIC",
-    country: "Brazil",
+    jobTitle: "Infrastructure Investment Consultant",
+    title: "Construction & Infrastructure",
+    country: "Saudi Arabia",
     experience: "11+ Years",
     src: "/about/aboutHero.jpg",
     description:
-      "SABIC is a global leader in diversified chemicals, delivering innovative material solutions for industries worldwide.",
-    link: "View Tourism Destinations"
+      "Advising construction companies and infrastructure investors participating in Saudi Arabia’s mega development projects",
   },
 ];
 
@@ -90,7 +84,11 @@ export default function TeamSection() {
       <div className="max-w-7xl mx-auto px-8 relative">
 
         {/* Top Title */}
-        <h2 className="text-3xl font-extrabold">Our <br /> Team</h2>
+        <h2 className="text-3xl font-extrabold">
+          Our Expertise Across <br />
+           Saudi Arabia’s Key <br />
+          Growth Sectors
+        </h2>
 
         {/* Main Grid */}
         <div className="grid md:grid-cols-3 items-center gap-12">
