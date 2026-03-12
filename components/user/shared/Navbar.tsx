@@ -30,34 +30,49 @@ export default function Navbar() {
 
 
   //  change navbar color based on white sections
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = document.querySelectorAll("section");
-      const navbarHeight = 90;
+useEffect(() => {
+  const sections = document.querySelectorAll("section");
 
-      let currentTheme = "dark";
+  const updateTheme = (section: Element | null) => {
+    if (!section) return;
 
-      sections.forEach((section) => {
-        const rect = section.getBoundingClientRect();
+    const theme = section.getAttribute("data-navbar");
+    setIsLight(theme === "light");
+  };
 
-        if (rect.top <= navbarHeight && rect.bottom >= navbarHeight) {
-          const theme = section.getAttribute("data-navbar");
-          if (theme === "light") {
-            currentTheme = "light";
-          } else {
-            currentTheme = "dark";
-          }
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          updateTheme(entry.target);
         }
       });
+    },
+    {
+      root: null,
+      threshold: 0.3,
+    }
+  );
 
-      setIsLight(currentTheme === "light");
-    };
+  sections.forEach((section) => observer.observe(section));
 
-    window.addEventListener("scroll", handleScroll);
-    handleScroll();
+  // 🔹 Detect first visible section on load
+  const handleInitial = () => {
+    const navbarHeight = 90;
 
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    sections.forEach((section) => {
+      const rect = section.getBoundingClientRect();
+
+      if (rect.top <= navbarHeight && rect.bottom >= navbarHeight) {
+        updateTheme(section);
+      }
+    });
+  };
+
+  handleInitial();
+
+  return () => observer.disconnect();
+}, []);
 
   //  close popups on route change
   useEffect(() => {
@@ -83,124 +98,120 @@ export default function Navbar() {
             {/* LEFT — LOGO */}
             <Link href="/" aria-label="Go to Home">
               <Image
+                key={isLight ? "light-logo" : "dark-logo"}
                 src={isLight ? "/coloredlogo.svg" : "/logowhite.svg"}
                 alt="Nishad Gateway"
                 width={220}
                 height={80}
                 priority
-                className="cursor-pointer transition-opacity duration-300 w-[160px] sm:w-[180px] lg:w-[220px] h-auto"
               />
             </Link>
 
-{/* CENTER — SERVICES + BLOG + CITIES */}
-<div className="hidden md:flex items-center gap-3 lg:gap-5 absolute left-1/2 -translate-x-1/2">
+            {/* CENTER — SERVICES + BLOG + CITIES */}
+            <div className="hidden md:flex items-center gap-3 lg:gap-5 absolute left-1/2 -translate-x-1/2">
 
-  {/* Services */}
-  <button
-    onClick={() => {
-      setOpenServices((prev) => !prev);
-      setOpenBlogs(false);
-      setOpenCities(false);
-    }}
-    className={`
+              {/* Services */}
+              <button
+                onClick={() => {
+                  setOpenServices((prev) => !prev);
+                  setOpenBlogs(false);
+                  setOpenCities(false);
+                }}
+                className={`
       flex items-center gap-2
       px-3 lg:px-4 py-2 rounded-full
       text-xs lg:text-sm font-medium
       transition-all
       ${isLight
-        ? openServices
-          ? "bg-black text-white shadow-md"
-          : "bg-black/[0.04] text-black border border-black/10 hover:bg-black/[0.08]"
-        : openServices
-        ? "bg-white text-gray-900 shadow-md"
-        : "bg-white/10 text-white border border-white/20 hover:bg-white/20"
-      }
+                    ? openServices
+                      ? "bg-black text-white shadow-md"
+                      : "bg-black/[0.04] text-black border border-black/10 hover:bg-black/[0.08]"
+                    : openServices
+                      ? "bg-white text-gray-900 shadow-md"
+                      : "bg-white/10 text-white border border-white/20 hover:bg-white/20"
+                  }
     `}
-  >
-    Services
-    <span
-      className={`text-lg leading-none transition-transform ${
-        openServices ? "rotate-45" : ""
-      }`}
-    >
-      +
-    </span>
-  </button>
+              >
+                Services
+                <span
+                  className={`text-lg leading-none transition-transform ${openServices ? "rotate-45" : ""
+                    }`}
+                >
+                  +
+                </span>
+              </button>
 
-  {/* Blog */}
-  <button
-    onClick={() => {
-      setOpenBlogs((prev) => !prev);
-      setOpenServices(false);
-      setOpenCities(false);
-    }}
-    className={`
+              {/* Blog */}
+              <button
+                onClick={() => {
+                  setOpenBlogs((prev) => !prev);
+                  setOpenServices(false);
+                  setOpenCities(false);
+                }}
+                className={`
       flex items-center gap-2
       px-3 lg:px-4 py-2 rounded-full
       text-xs lg:text-sm font-medium
       transition-all
       ${isLight
-        ? openBlogs
-          ? "bg-black text-white shadow-md"
-          : "bg-black/[0.05] text-black border border-black/10 hover:bg-black/[0.08]"
-        : openBlogs
-        ? "bg-white text-gray-900 shadow-md"
-        : "bg-white/10 text-white border border-white/20 hover:bg-white/20"
-      }
+                    ? openBlogs
+                      ? "bg-black text-white shadow-md"
+                      : "bg-black/[0.05] text-black border border-black/10 hover:bg-black/[0.08]"
+                    : openBlogs
+                      ? "bg-white text-gray-900 shadow-md"
+                      : "bg-white/10 text-white border border-white/20 hover:bg-white/20"
+                  }
     `}
-  >
-    Blog
-    <span
-      className={`text-lg leading-none transition-transform ${
-        openBlogs ? "rotate-45" : ""
-      }`}
-    >
-      +
-    </span>
-  </button>
+              >
+                Blog
+                <span
+                  className={`text-lg leading-none transition-transform ${openBlogs ? "rotate-45" : ""
+                    }`}
+                >
+                  +
+                </span>
+              </button>
 
-  {/* Cities */}
-  <button
-    onClick={() => {
-      setOpenCities((prev) => !prev);
-      setOpenServices(false);
-      setOpenBlogs(false);
-    }}
-    className={`
+              {/* Cities */}
+              <button
+                onClick={() => {
+                  setOpenCities((prev) => !prev);
+                  setOpenServices(false);
+                  setOpenBlogs(false);
+                }}
+                className={`
       flex items-center gap-2
       px-3 lg:px-4 py-2 rounded-full
       text-xs lg:text-sm font-medium
       transition-all
       ${isLight
-        ? openCities
-          ? "bg-black text-white shadow-md"
-          : "bg-black/[0.05] text-black border border-black/10 hover:bg-black/[0.08]"
-        : openCities
-        ? "bg-white text-gray-900 shadow-md"
-        : "bg-white/10 text-white border border-white/20 hover:bg-white/20"
-      }
+                    ? openCities
+                      ? "bg-black text-white shadow-md"
+                      : "bg-black/[0.05] text-black border border-black/10 hover:bg-black/[0.08]"
+                    : openCities
+                      ? "bg-white text-gray-900 shadow-md"
+                      : "bg-white/10 text-white border border-white/20 hover:bg-white/20"
+                  }
     `}
-  >
-    Cities
-    <span
-      className={`text-lg leading-none transition-transform ${
-        openCities ? "rotate-45" : ""
-      }`}
-    >
-      +
-    </span>
-  </button>
+              >
+                Cities
+                <span
+                  className={`text-lg leading-none transition-transform ${openCities ? "rotate-45" : ""
+                    }`}
+                >
+                  +
+                </span>
+              </button>
 
-</div>
+            </div>
 
             {/* RIGHT */}
             <div className="flex items-center gap-3 sm:gap-5 lg:gap-8">
 
               {/* Phone */}
               <span
-                className={`hidden lg:block text-sm ${
-                  isLight ? "text-black" : "text-white"
-                }`}
+                className={`hidden lg:block text-sm ${isLight ? "text-black" : "text-white"
+                  }`}
               >
                 +966 55 123 4567
               </span>
@@ -244,10 +255,9 @@ export default function Navbar() {
                   h-9 sm:h-10
                   rounded-full
                   transition-all duration-300
-                  ${
-                    openMenu
-                      ? "bg-green-700 hover:bg-green-600"
-                      : isLight
+                  ${openMenu
+                    ? "bg-green-700 hover:bg-green-600"
+                    : isLight
                       ? "bg-white/70 border border-black/10"
                       : "bg-black/30 border border-white/70 backdrop-blur-md"
                   }
@@ -260,14 +270,12 @@ export default function Navbar() {
                 ) : (
                   <div className="flex flex-col gap-1">
                     <span
-                      className={`w-4 sm:w-5 h-[2px] rounded-full ${
-                        isLight ? "bg-black" : "bg-white"
-                      }`}
+                      className={`w-4 sm:w-5 h-[2px] rounded-full ${isLight ? "bg-black" : "bg-white"
+                        }`}
                     />
                     <span
-                      className={`w-4 sm:w-5 h-[2px] rounded-full ${
-                        isLight ? "bg-black" : "bg-white"
-                      }`}
+                      className={`w-4 sm:w-5 h-[2px] rounded-full ${isLight ? "bg-black" : "bg-white"
+                        }`}
                     />
                   </div>
                 )}
@@ -285,8 +293,8 @@ export default function Navbar() {
       {/* BLOGS POPUP */}
       <BlogsPopup open={openBlogs} onClose={() => setOpenBlogs(false)} />
 
-        {/* CITIES POPUP */}
-<CitiesPopup open={openCities} onClose={() => setOpenCities(false)} />
+      {/* CITIES POPUP */}
+      <CitiesPopup open={openCities} onClose={() => setOpenCities(false)} />
     </>
   )
 }
