@@ -1,21 +1,24 @@
-import BusinessGrowth from "@/components/user/home/BusinessGrowth";
+import dynamic from "next/dynamic";
+
 import HeroSection from "@/components/user/home/HeroSection";
-import WhySaudi from "@/components/user/home/WhySaudi";
-import KeyServices from "@/components/user/home/KeyServices";
-import Consultant from "@/components/user/home/Consultant";
-import Stats from "@/components/user/home/Stats";
-import CaseStudies from "@/components/user/home/CaseStudies";
-import FinalCTA from "@/components/user/home/FinalCTA";
-import Insights from "@/components/user/home/Insights";
-import PreloaderProvider from "@/components/user/shared/PreloaderProvider";
 import Navbar from "@/components/user/shared/Navbar";
-import CitiesSection from "@/components/user/home/cities/CitiesSection";
-import MinistriesSection from "@/components/user/home/MinistriesSection";
+import PreloaderProvider from "@/components/user/shared/PreloaderProvider";
+
+const WhySaudi = dynamic(() => import("@/components/user/home/WhySaudi"));
+const BusinessGrowth = dynamic(() => import("@/components/user/home/BusinessGrowth"));
+const CitiesSection = dynamic(() => import("@/components/user/home/cities/CitiesSection"));
+const KeyServices = dynamic(() => import("@/components/user/home/KeyServices"));
+const Consultant = dynamic(() => import("@/components/user/home/Consultant"));
+const MinistriesSection = dynamic(() => import("@/components/user/home/MinistriesSection"));
+const CaseStudies = dynamic(() => import("@/components/user/home/CaseStudies"));
+const Insights = dynamic(() => import("@/components/user/home/Insights"));
+const FinalCTA = dynamic(() => import("@/components/user/home/FinalCTA"));
 
 export default function Page() {
   return (
-    <main className="w-full ">
+    <main className="w-full">
       <Navbar />
+
       <PreloaderProvider>
         <HeroSection />
         <WhySaudi />
@@ -23,8 +26,7 @@ export default function Page() {
         <CitiesSection />
         <KeyServices />
         <Consultant />
-        {/* <Stats />*/}
-        <MinistriesSection/> 
+        <MinistriesSection />
         <CaseStudies />
         <Insights />
         <FinalCTA />
