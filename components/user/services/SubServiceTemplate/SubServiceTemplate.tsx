@@ -185,27 +185,29 @@ export default function SubServiceTemplate({ content, cities }: Props) {
      SECTION ORDER
   ============================ */
 
-  const defaultOrder = [
-    "hero",
-    "why",
-    "entityTable",
-    "entityTypes",
-    "ownership",
-    "entityChoose",
-    "documents",
-    "locations",
-    "faq",
-  ];
+const defaultOrder = [
+  "hero",
+  "why",
+  "entityTable",
+  "entityTypes",
+  "ownership",
+  "entityChoose",
+  "documents",
+  "locations",
+  "faq",
+];
 
-  let order =
-    Array.isArray(content.sectionOrder) &&
-    content.sectionOrder.length > 0
-      ? content.sectionOrder
-      : defaultOrder;
+let order =
+  Array.isArray(content.sectionOrder) && content.sectionOrder.length > 0
+    ? content.sectionOrder
+    : defaultOrder;
 
-  if (!order.includes("locations")) {
-    order = [...order, "locations"];
-  }
+// remove locations & faq if they already exist
+order = order.filter((s) => s !== "locations" && s !== "faq");
+
+// always push them at the end
+order.push("locations");
+order.push("faq");
 
   /* ============================
      RENDER SECTION

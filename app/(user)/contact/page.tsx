@@ -44,9 +44,12 @@ export default function ContactPage() {
                     {/* Email */}
                     <div>
                         <p className="text-sm text-gray-400 mb-2">E:</p>
-                        <p className="text-lg md:text-xl font-semibold text-black">
-                            contact@narsaudi.com
-                        </p>
+                        <a
+                            href="mailto:contact@nishadvta.com"
+                            className="text-lg md:text-xl font-semibold text-black hover:underline"
+                        >
+                            contact@nishadvta.com
+                        </a>
                     </div>
 
                     {/* Location */}
@@ -93,7 +96,7 @@ export default function ContactPage() {
 
                     {/* Location */}
                     <div className="flex items-start gap-6">
-                  
+
 
                         {/* Right side icons */}
                         <div className="flex items-center gap-3 mt-6">
