@@ -13,47 +13,122 @@ import FadeUpScroll from "../ui/FadeUpScroll";
 
 const slides = [
   {
-    src: "/buisnessgrowth/Company-Formation-Overview.jpg",
+    src: "/buisnessgrowth/Company-Formation-Overview.webp",
     alt: "Company Formation Overview",
     title: "Company Formation Overview",
-    description:
-      "Company formation in Saudi Arabia starts with an investment license from the Ministry of Investment, followed by Commercial Registration (CR) from the Ministry of Commerce, with many businesses establishing operations in Riyadh or Jeddah.",
+    description: (
+      <>
+        The process of{" "}
+        <Link href="/services/company-formation" className="underline text-green-60">
+          company formation in Saudi Arabia
+        </Link>{" "}
+        begins with obtaining an investment license from the Ministry of
+        Investment (MISA) followed by Commercial Registration (CR) from the
+        Ministry of Commerce. After registration, companies can establish
+        operations in key commercial cities such as{" "}
+        <Link href="/cities/discover-riyadh" className="underline text-green-60">
+          Riyadh
+        </Link>{" "}
+        or{" "}
+        <Link href="/cities/explore-jeddah" className="underline text-green-60">
+          Jeddah
+        </Link>
+        , two of the leading hubs for business in Saudi Arabia.
+      </>
+    ),
     linkText: "Understand Business Setup",
     link: "/services/company-formation",
   },
+
   {
     src: "/buisnessgrowth/Types-of-Licenses.jpg",
     alt: "Types of Licenses",
     title: "Types of Business Licenses",
-    description:
-      "Saudi company registration offers structures such as LLC, Branch Office, Entrepreneur License, and Professional License depending on ownership structure and market entry strategy.",
+    description: (
+      <>
+        Saudi Arabia provides multiple legal structures for companies starting
+        business in Saudi Arabia, including LLC structures, branch offices,
+        entrepreneur licenses, and professional service licenses depending on
+        ownership structure and{" "}
+        <Link href="/services/international-market-entry/market-entry-strategy" className="underline text-green-60">
+          market entry strategy
+        </Link>
+        .
+      </>
+    ),
     linkText: "Explore License Types",
     link: "/services/company-formation/licensing-approvals",
   },
+
   {
     src: "/buisnessgrowth/Ownership-and-Capital-Rules.jpg",
     alt: "Ownership & Capital Rules",
     title: "Ownership & Capital Rules",
-    description:
-      "Ownership structure and capital requirements influence shareholder control, banking eligibility, and visa quotas. Many sectors allow 100% foreign ownership under current investment regulations.",
+    description: (
+      <>
+        Foreign investors planning business in Saudi Arabia must evaluate
+        ownership structure, shareholder rights, and capital requirements. Many
+        sectors allow 100% foreign ownership, enabling international companies
+        to establish fully owned subsidiaries through{" "}
+        <Link href="/services/company-formation" className="underline text-green-60">
+          foreign company formation in Saudi Arabia
+        </Link>
+        .
+      </>
+    ),
     linkText: "View Ownership Rules",
     link: "/services/company-formation/ownership-&-capital",
   },
+
   {
     src: "/buisnessgrowth/business-tax-compliance-meeting.jpg",
     alt: "Taxes & Compliance",
     title: "Taxes & Compliance (Zakat, VAT, CT)",
-    description:
-      "Businesses must comply with VAT, Zakat, and corporate tax obligations regulated by the Zakat, Tax and Customs Authority.",
+    description: (
+      <>
+        Companies operating business in Saudi Arabia must comply with tax and
+        regulatory requirements including VAT registration, Zakat obligations,
+        and corporate tax regulations managed by the{" "}
+        <a
+          href="https://zatca.gov.sa"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline text-green-60"
+        >
+          Zakat, Tax and Customs Authority (ZATCA)
+        </a>
+        . Businesses can also rely on{" "}
+        <Link href="/services/corporate-support" className="underline text-green-60">
+          Accounting & Tax Services in Saudi Arabia
+        </Link>{" "}
+        for compliance support.
+      </>
+    ),
     linkText: "Understand Tax Structure",
     link: "/services/saudi-business-advisory/tax-regulatory-advisory",
   },
+
   {
     src: "/buisnessgrowth/Setup-Timeline.jpg",
     alt: "Setup Timeline",
     title: "Setup Timeline (Step-by-Step)",
-    description:
-      "The Saudi company registration timeline includes licensing approval, CR issuance, tax registration, bank account setup, and visa processing through government portals.",
+    description: (
+      <>
+        The typical timeline for starting a business in Saudi Arabia includes
+        investment license approval, commercial registration, tax registration,
+        bank account opening, and visa processing. Many of these procedures are
+        now completed through integrated government portals that simplify the
+        business setup process. Learn more about our{" "}
+        <Link href="/services/international-market-entry/market-entry-strategy" className="underline text-green-60">
+          Market Entry Strategy in Saudi Arabia
+        </Link>{" "}
+        and{" "}
+        <Link href="/services/corporate-support" className="underline text-green-60">
+          Corporate Support Services
+        </Link>
+        .
+      </>
+    ),
     linkText: "View Setup Timeline",
     link: "/services/company-formation/setup-timeline",
   },

@@ -18,7 +18,7 @@ const verticals = [
   {
     title: "Company Formation",
     subtitle: "End-to-end support for establishing businesses in Saudi Arabia.",
-    image: "/about/company-formation.jpg",
+    image: "/about/company_formation.webp",
     points: [
       "MISA Licensing",
       "Company Incorporation",
@@ -29,7 +29,7 @@ const verticals = [
   {
     title: "Regulatory & Compliance",
     subtitle: "Ensuring businesses operate fully compliant with Saudi regulations",
-    image: "/about/regulatory-and-compliance.jpg",
+    image: "/about/regulatory-and-compliance.webp",
     points: [
       "Legal Compliance",
       "Saudization Advisory",
@@ -51,7 +51,7 @@ const verticals = [
   {
     title: "Strategic Investment Advisory",
     subtitle: "Guiding investors to identify and leverage opportunities in Saudi Arabia.",
-    image: "/about/strategic-investment-advisory.jpg", 
+    image: "/about/Strategic-investment-advisory.webp", 
     points: [
       "Vision 2030 Opportunities",
       "Sector Market Insights",

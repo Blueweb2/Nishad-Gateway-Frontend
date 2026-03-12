@@ -4,43 +4,114 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import OvalArrow from "@/components/user/ui/OvalArrow";
+import Link from "next/link";
+
 
 const slides = [
   {
     title: "Vision 2030 Investment Growth",
-    content:
-      "The Vision 2030 program is fueling massive strategic development projects, industrial zones, tourism development, and economic transformation programs that attract foreign direct investment (FDI) into Saudi Arabia.",
-    image: "/vision 2030.svg",
+    content: (
+      <>
+        Saudi Arabia’s{" "}
+        <Link href="/blogs/giga-projects-in-saudi-arabia-a-key-part-of-vision-2030" className="underline">
+          Vision 2030
+        </Link>{" "}
+        program is driving major infrastructure, tourism, and industrial
+        projects, creating new opportunities for global companies establishing{" "}
+        <Link href="/services/international-market-entry/market-entry-strategy" className="underline">
+          business in Saudi Arabia
+        </Link>{" "}
+        and expanding across emerging sectors.
+      </>
+    ),
+    image: "/vision_2030.svg",
   },
+
   {
     title: "Strategic Global Location.",
-    content:
-      "Being situated at the intersection of Asia, Europe, and Africa, Saudi Arabia serves a strategic logistics and business gateway for companies looking to expand across the GCC and Middle East.",
-    image: "/strategic global location.svg",
+    content: (
+      <>
+        Located between Asia, Europe, and Africa, Saudi Arabia serves as a key
+        gateway for companies expanding business in Saudi Arabia and accessing
+        GCC and Middle East markets through cities like{" "}
+        <Link href="/cities/discover-riyadh" className="underline">
+          Riyadh
+        </Link>
+        ,{" "}
+        <Link href="/cities/explore-jeddah" className="underline">
+          Jeddah
+        </Link>
+        , and{" "}
+        <Link href="/cities/experience-dammam" className="underline">
+          Dammam
+        </Link>
+        .
+      </>
+    ),
+    image: "/strategic_global_location.svg",
   },
+
   {
     title: "100% Foreign Ownership",
-    content:
-      "Foreign ownership of up to 100% is permitted in most industries, allowing foreign investors to set up wholly foreign-owned businesses through a structured company formation in Saudi Arabia.",
+    content: (
+      <>
+        Many sectors allow international investors to establish business in
+        Saudi Arabia with 100% foreign ownership through structured{" "}
+        <Link href="/services/company-formation" className="underline">
+          company formation in Saudi Arabia
+        </Link>{" "}
+        and commercial registration.
+      </>
+    ),
     image: "/100-foreign-ownership.svg",
   },
+
   {
     title: "Fast & Structured Business Setup",
-    content:
-      "Saudi Arabia offers fast business setup options through online government services, fast-track MISA approvals, simplified Commercial Registration (CR), and well-defined compliance procedures.",
-    image: "/fast and structured business setup.svg",
+    content: (
+      <>
+        Saudi Arabia offers simplified licensing and digital government
+        services, making it easier to launch business in Saudi Arabia through a
+        professional{" "}
+        <Link href="/services/international-market-entry/market-entry-strategy" className="underline">
+          market entry strategy in Saudi Arabia
+        </Link>
+        .
+      </>
+    ),
+    image: "/fast_and_structured_business_setup.svg",
   },
+
   {
     title: "High-Growth Sectors",
-    content:
-      "Saudi Arabia offers growth-ready investment opportunities in healthcare, logistics, fintech, manufacturing, renewable energy, and tourism sectors, making it one of the top investment destinations in the GCC.",
-    image: "/high-growth sectors.svg",
+    content: (
+      <>
+        Industries such as logistics, manufacturing, healthcare, fintech,
+        renewable energy, and tourism provide strong opportunities for
+        companies building business in Saudi Arabia. Explore our{" "}
+        <Link href="/services/saudi-business-advisory" className="underline">
+          Saudi Business Advisory Services
+        </Link>
+        .
+      </>
+    ),
+    image: "/high_growth_sectors.svg",
   },
+
   {
     title: "Strong Economy & Stability",
-    content:
-      "Saudi Arabia is the biggest economy in the Middle East, providing strong economic stability, a USD pegged exchange rate, and government-supported growth programs that boost overall investment confidence.",
-    image: "/strong economy and stability.svg",
+    content: (
+      <>
+        As the largest economy in the Middle East, Saudi Arabia offers a stable
+        currency, strong infrastructure, and government-backed reforms that
+        support long-term business in Saudi Arabia. Learn about our{" "}
+        <Link href="/services/market-entry-strategy" className="underline">
+          Market Entry Strategy in Saudi Arabia
+        </Link>
+        .
+      </>
+    ),
+    image: "/strong_economy_and_stability.svg",
   },
 ];
 

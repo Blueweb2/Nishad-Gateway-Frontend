@@ -4,22 +4,287 @@ import { useState } from "react";
 import OvalArrow from "@/components/user/ui/OvalArrow";
 import { motion, AnimatePresence } from "framer-motion";
 
+import Link from "next/link";
+
 const contentData = {
   western: [
-    { title: "Professional Work Culture", description: "Professional, relationship-driven, and fast-evolving, with a strong focus on results and Vision 2030 goals.", image: "/consultant/Professional-Work-Culture.jpg.jpeg" },
-    { title: "Dress Code & Cultural Etiquette ", description: "Modest and professional; expats enjoy flexibility while respecting local norms in public spaces.", image: "/consultant/Dress-Code.jpg" },
-    { title: "Social Life, Entertainment & Lifestyle ", description: "A growing lifestyle scene with cafés, events, gyms, entertainment zones, and expat communities.", image: "/consultant/Social-Life.jpg" },
-    { title: "Housing Options & Expat Communities ", description: "Wide options including expat compounds, gated communities, and modern city apartments.", image: "/consultant/Housing.jpg"  },
-    { title: "International Education & Schools ", description: "Access to high-quality international schools following American, British, IB, and European curricula.",  image: "/consultant/Education.jpg" },
-    { title: "Healthcare Facilities & Medical Services", description: "Modern hospitals, private clinics, and international-standard medical care are widely available.", image: "/consultant/Healthcare.jpg" },
-    { title: "Banking, Finance & Digital Payments ", description: "Advanced digital banking, international transfers, and expat-friendly financial services." , image: "/consultant/Banking.jpg"},
+    {
+      title: "Professional Work Culture",
+      description:
+        "Professional, relationship-driven, and fast-evolving, with a strong focus on results and Vision 2030 goals.",
+      image: "/consultant/Professional-Work-Culture.jpg.jpeg",
+    },
+
+    {
+      title: "Dress Code & Cultural Etiquette ",
+      description:
+        "Modest and professional; expats enjoy flexibility while respecting local norms in public spaces.",
+      image: "/consultant/Dress-Code.jpg",
+    },
+
+    {
+      title: "Social Life, Entertainment & Lifestyle ",
+      description: (
+        <>
+          Expat life in Saudi Arabia has evolved significantly with modern
+          cafés, international restaurants, global events, sports facilities,
+          and entertainment districts. Professionals who{" "}
+          <Link
+            href="/services/company-formation"
+            className="text-green-700 hover:underline"
+          >
+            establish their companies in Saudi Arabia
+          </Link>{" "}
+          benefit from a vibrant lifestyle supported by{" "}
+          <Link
+            href="/blogs/giga-projects-in-saudi-arabia-a-key-part-of-vision-2030"
+            className="text-green-700 hover:underline"
+          >
+            Vision 2030 developments
+          </Link>{" "}
+          across major cities.
+        </>
+      ),
+      image: "/consultant/Social-Life.jpg",
+    },
+
+    {
+      title: "Housing Options & Expat Communities ",
+      description: (
+        <>
+          Living in Saudi Arabia offers diverse housing choices including
+          gated compounds, expatriate communities, and modern apartments in
+          business hubs such as{" "}
+          <Link
+            href="/cities/discover-riyadh"
+            className="text-green-700 hover:underline"
+          >
+            Riyadh
+          </Link>{" "}
+          and{" "}
+          <Link
+            href="/cities/explore-jeddah"
+            className="text-green-700 hover:underline"
+          >
+            Jeddah
+          </Link>
+          . These cities host many global entrepreneurs completing{" "}
+          <Link
+            href="/services/company-formation"
+            className="text-green-700 hover:underline"
+          >
+            company registration in Saudi Arabia
+          </Link>{" "}
+          and expanding their business in Saudi Arabia.
+        </>
+      ),
+      image: "/consultant/Housing.jpg",
+    },
+
+    {
+      title: "International Education & Schools ",
+      description: (
+        <>
+          Families relocating after completing{" "}
+          <Link
+            href="/services/company-formation"
+            className="text-green-700 hover:underline"
+          >
+            ownership structuring
+          </Link>{" "}
+          can access leading international schools offering American,
+          British, IB, and European curricula across major cities. These
+          institutions support expatriate families involved in{" "}
+          <Link
+            href="/services/company-formation"
+            className="text-green-700 hover:underline"
+          >
+            foreign investment in Saudi Arabia
+          </Link>{" "}
+          and long-term relocation.
+        </>
+      ),
+      image: "/consultant/Education.jpg",
+    },
+
+    {
+      title: "Healthcare Facilities & Medical Services",
+      description: (
+        <>
+          Saudi Arabia provides internationally accredited hospitals,
+          private clinics, and advanced healthcare services that support
+          professionals and families relocating to manage their business in
+          Saudi Arabia and long-term investment operations. Businesses can
+          also rely on{" "}
+          <Link
+            href="/services/saudi-business-advisory"
+            className="text-green-700 hover:underline"
+          >
+            business planning & strategy services
+          </Link>
+          .
+        </>
+      ),
+      image: "/consultant/Healthcare.jpg",
+    },
+
+    {
+      title: "Banking, Finance & Digital Payments ",
+      description: (
+        <>
+          The financial ecosystem regulated by the{" "}
+          <a
+            href="https://www.sama.gov.sa"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-green-700 hover:underline"
+          >
+            Saudi Central Bank (SAMA)
+          </a>{" "}
+          supports advanced digital banking, international transfers, and
+          corporate financial services. Dedicated{" "}
+          <Link
+            href="/services/corporate-support"
+            className="text-green-700 hover:underline"
+          >
+            financial services support
+          </Link>{" "}
+          helps investors opening companies after completing company
+          formation in Saudi Arabia manage their banking operations
+          efficiently. Investors also coordinate with the{" "}
+          <a
+            href="https://www.misa.gov.sa"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-green-700 hover:underline"
+          >
+            Ministry of Investment (MISA)
+          </a>
+          .
+        </>
+      ),
+      image: "/consultant/Banking.jpg",
+    },
   ],
+
   asian: [
-    { title: "Employment Opportunities Across Key Sectors ", description: "Strong demand across construction, healthcare, IT, logistics, retail, and service sectors.", image: "/consultant/employment-opportunities-across-key-sectors.jpg" },
-    { title: "Cost of Living & Community Life", description: "Affordable living options with well-established Asian communities across major cities.", image: "/consultant/Cost-of-Living-and-Community-Life.jpg" },
-    { title: "Community Networks & Cultural Support", description: "Strong Asian communities, cultural associations, religious centers, and social groups provide support, connection, and a sense of home across major Saudi cities.",image: "/consultant/community-networks-and-cultural-support.jpg" },
-    { title: "Schools & Curriculum Options ", description: "International and community-based schools offering Indian, Filipino, British, and CBSE curricula." ,image: "/consultant/Schoolsasian.jpg"},
-    { title: "Food Culture, Cuisine & Daily Lifestyle", description: "Easy access to Asian groceries, restaurants, cultural food habits, and social networks", image: "/consultant/Food-and-Lifestyle.jpg"},
+    {
+      title: "Employment Opportunities Across Key Sectors ",
+      description: (
+        <>
+          Saudi Arabia continues to create strong demand across
+          construction, logistics, healthcare, technology, retail, and
+          service industries. Businesses entering through structured{" "}
+          <Link
+            href="/services/company-formation"
+            className="text-green-700 hover:underline"
+          >
+            company setup procedures
+          </Link>{" "}
+          benefit from transparent regulations and strong licensing
+          compliance frameworks supporting{" "}
+          <Link
+            href="/services/company-formation"
+            className="text-green-700 hover:underline"
+          >
+            foreign investment in Saudi Arabia
+          </Link>
+          .
+        </>
+      ),
+      image: "/consultant/employment-opportunities-across-key-sectors.jpg",
+    },
+
+    {
+      title: "Cost of Living & Community Life",
+      description: (
+        <>
+          Compared to many Western economies, the cost of living in Saudi
+          Arabia remains competitive. Affordable housing, growing
+          infrastructure, and established Asian communities support
+          professionals planning to{" "}
+          <Link
+            href="/services/company-formation"
+            className="text-green-700 hover:underline"
+          >
+            start a business in Saudi Arabia
+          </Link>{" "}
+          or expand their regional operations.
+        </>
+      ),
+      image: "/consultant/Cost-of-Living-and-Community-Life.jpg",
+    },
+
+    {
+      title: "Community Networks & Cultural Support",
+      description: (
+        <>
+          Large Asian communities across{" "}
+          <Link
+            href="/cities/discover-riyadh"
+            className="text-green-700 hover:underline"
+          >
+            Riyadh
+          </Link>
+          ,{" "}
+          <Link
+            href="/cities/explore-jeddah"
+            className="text-green-700 hover:underline"
+          >
+            Jeddah
+          </Link>
+          , and the Eastern Province provide cultural associations,
+          religious centers, and social networks supporting professionals
+          entering the Kingdom through strategic{" "}
+          <Link
+            href="/services/international-market-entry/market-entry-strategy"
+            className="text-green-700 hover:underline"
+          >
+            market entry planning
+          </Link>{" "}
+          and business expansion in Saudi Arabia.
+        </>
+      ),
+      image: "/consultant/community-networks-and-cultural-support.jpg",
+    },
+
+    {
+      title: "Schools & Curriculum Options ",
+      description: (
+        <>
+          Families relocating after completing{" "}
+          <Link
+            href="/services/company-formation"
+            className="text-green-700 hover:underline"
+          >
+            company setup procedures
+          </Link>{" "}
+          can access Indian, Filipino, British, and CBSE curriculum schools
+          across major cities supporting professionals establishing their
+          business in Saudi Arabia.
+        </>
+      ),
+      image: "/consultant/Schoolsasian.jpg",
+    },
+
+    {
+      title: "Food Culture, Cuisine & Daily Lifestyle",
+      description: (
+        <>
+          Asian grocery stores, restaurants, and familiar cuisine are
+          widely available in cities where international investors{" "}
+          <Link
+            href="/services/company-formation"
+            className="text-green-700 hover:underline"
+          >
+            establish their companies in Saudi Arabia
+          </Link>
+          , making long-term relocation comfortable for expatriate
+          communities.
+        </>
+      ),
+      image: "/consultant/Food-and-Lifestyle.jpg",
+    },
   ],
 };
 
