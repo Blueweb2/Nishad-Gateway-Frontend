@@ -43,13 +43,13 @@ export default function LandmarksSection({ content }: Props) {
                   flex
                   justify-between
                   items-start
-                  gap-6
-                  py-6 px-6
+                  gap-3 lg:gap-6
+                  py-2 lg:py-6 px-0 lg:px-6
                   border-b
                   border-black/10
                   transition-all
                   duration-300
-                  hover:bg-black/5
+                  hover:bg-black/5 
                 "
               >
                 {/* LEFT CONTENT */}
