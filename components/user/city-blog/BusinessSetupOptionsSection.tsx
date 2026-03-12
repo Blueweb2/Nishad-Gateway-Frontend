@@ -36,9 +36,13 @@ export default function BusinessSetupOptionsSection({
               href={item.link}
               className="
                 snap-start
-                w-[clamp(220px,22vw,320px)]
-                h-[clamp(220px,22vw,320px)]
-                p-[clamp(16px,2vw,28px)]
+                w-[220px] 
+                h-[220px]
+                sm:w-[240px] sm:h-[240px]
+                md:w-[260px] md:h-[260px]
+                lg:w-[280px] lg:h-[280px]
+                xl:w-[320px] xl:h-[320px]
+                p-5 lg:p-7
                 rounded-2xl
                 bg-white
                 shadow-md
