@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-//import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Parallax } from "swiper/modules";
@@ -84,18 +83,18 @@ export default function TeamSection() {
       <div className="max-w-7xl mx-auto px-6 sm:px-8 relative">
 
         {/* Top Title */}
-        <h2 className="text-2xl text-center lg:text-left sm:text-3xl lg:text-4xl font-extrabold mb-12">
+        <h2 className="text-2xl text-center lg:text-left sm:text-3xl lg:text-4xl font-extrabold mb-3 lg:mb-12">
           Our Expertise Across <br />
           Saudi Arabia’s Key <br />
           Growth Sectors
         </h2>
 
         {/* Main Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-2 lg:gap-12">
 
           {/* LEFT SIDE */}
-          <div className="space-y-8 text-center md:text-left">
-
+          <div className="space-y-2 lg:space-y-8 text-center md:text-left">
+ 
             <div className="flex flex-col md:flex-row md:items-center">
               
               {/* Counter */}
@@ -108,9 +107,11 @@ export default function TeamSection() {
               {/* Name */}
               <div className="md:ml-10 mt-3 md:mt-0">
                 <FadeUpScroll delay={0.3} key={activeIndex}>
-                  <h3 className="text-xl font-semibold">{activeSlide.title}</h3>
+                  <h3 className="text-xl font-semibold h-[50px] md:h-[90px] lg:h-[50px]">
+                    {activeSlide.title}
+                  </h3>
                 </FadeUpScroll>
-                <p className="text-sm text-gray-500 mt-2">
+                <p className="text-sm text-gray-500 mt-2 md:h-[40px] lg:h-auto">
                   {activeSlide.jobTitle}
                 </p>
               </div>
@@ -120,15 +121,24 @@ export default function TeamSection() {
             <div className="h-px bg-gray-300 w-full"></div>
 
             <div className="flex justify-center md:justify-start">
-              <p className="text-sm text-gray-600 leading-relaxed max-w-sm md:ml-10">
+              <p className="text-sm text-gray-600 leading-relaxed max-w-sm md:ml-10 h-[90px]">
                 {activeSlide.description}
               </p>
             </div>
 
           </div>
 
-          {/* CENTER IMAGE */}
-          <div className="flex flex-col items-center">
+          {/* CENTER IMAGE flex-col*/}
+          <div className="flex items-center">
+
+            {/* Left Arrows (only show in mobile) */}
+            <div className="block md:hidden">
+              <OvalArrow
+                direction="left"
+                variant="gray"
+                onClick={() => swiperRef.current?.slidePrev()}
+              />
+            </div>
 
             <Swiper
               modules={[Parallax]}
@@ -163,20 +173,19 @@ export default function TeamSection() {
               ))}
             </Swiper>
 
-            {/* Social Icons */}
-            {/* <div className="flex gap-4 mt-6">
-              <a className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-300 hover:bg-gray-400">
-                <img src="/about/linkedin.svg" alt="" className="w-4 h-4"/>
-              </a>
-              <a className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-300 hover:bg-gray-400">
-                <img src="/about/whatsapp.svg" alt="" className="w-4 h-4"/>
-              </a>
-            </div> */}
+            {/* Right Arrows (only show in mobile) */}
+            <div className="block md:hidden">
+              <OvalArrow
+                direction="right"
+                variant="gray"
+                onClick={() => swiperRef.current?.slideNext()}
+              />
+            </div>
 
           </div>
 
-          {/* RIGHT SIDE */}
-          <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row items-center justify-between gap-8 text-center md:text-left">
+          {/* RIGHT SIDE flex-col*/}
+          <div className="flex sm:flex-row md:flex-col lg:flex-row items-center justify-between gap-8 text-center md:text-left">
 
             <div>
               <p className="text-xs text-gray-400">Work Experience:</p>
@@ -193,7 +202,7 @@ export default function TeamSection() {
             </div>
 
             {/* Navigation Arrows */}
-            <div className="flex gap-3">
+            <div className="gap-3 hidden md:flex">
               <OvalArrow
                 direction="left"
                 variant="gray"
