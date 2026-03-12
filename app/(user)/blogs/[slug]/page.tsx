@@ -255,7 +255,7 @@ export default async function SingleBlogPage({
         </div>
       </div>
 
-      <div className="lg:px-40 xl:px-60 flex flex-col lg:flex-row gap-10 border">
+      <div className="lg:px-40 xl:px-60 flex flex-col lg:flex-row gap-10">
 
         {/* SHARE SECTION */}
         <div className="lg:w-[120px]">
