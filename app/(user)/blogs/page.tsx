@@ -74,9 +74,9 @@ export default async function BlogsPage() {
       data-navbar="light"
       data-menu="dark-text"
     >
-      <div className="px-8 mb-20">
-        <h1 className="text-5xl font-semibold">Blogs</h1>
-      </div>
+      <h1 className="text-3xl sm:text-4xl md:text-5xl px-8 mb-3 lg:mb-20 font-semibold">
+        Blogs
+      </h1>
 
       {/* HERO BLOG */}
       <div className="px-8 mb-12">
@@ -96,8 +96,7 @@ export default async function BlogsPage() {
                 ? new Date(heroBlog.publishedAt).toLocaleDateString()
                 : ""}
             </p>
-
-            <h2 className="text-3xl font-semibold max-w-xl">
+            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold max-w-xl">
               {heroBlog.title}
             </h2>
           </div>
