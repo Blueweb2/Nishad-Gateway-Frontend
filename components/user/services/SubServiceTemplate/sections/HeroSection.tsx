@@ -90,9 +90,6 @@ export default function HeroSection({
           </div>
         </div>
       </div>
-
-      {/* HORIZONTAL LINE ACROSS HERO (like screenshot) */}
-      <div className="absolute left-0 right-0 top-[54%] h-[1px] bg-white/20 z-10" />
     </section>
   );
 }
