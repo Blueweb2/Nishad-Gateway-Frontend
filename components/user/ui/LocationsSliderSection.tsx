@@ -80,7 +80,7 @@ export default function LocationsSliderSection({
 
   return (
     <section className="w-full bg-[#0b6b67] text-white py-16 overflow-hidden" data-navbar="light">
-      <div className="w-full max-w-7xl mx-auto px-6 md:px-10">
+      <div className="w-full max-w-8xl mx-auto px-6 md:px-10">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
           <h2 className="text-3xl md:text-4xl font-semibold max-w-xl leading-tight">
@@ -116,7 +116,7 @@ export default function LocationsSliderSection({
         </div>
 
         {/* Slider */}
-        <div className="mt-12 relative overflow-hidden">
+        <div className="mt-12 relative overflow-hidden max-w-7xl mx-auto">
           <div
             ref={sliderRef}
             className="flex gap-4 md:gap-6 lg:gap-8 transition-transform duration-500 ease-in-out"

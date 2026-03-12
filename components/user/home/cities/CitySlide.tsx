@@ -30,7 +30,7 @@ export default function CitySlide({ city }: Props) {
   return (
 <section
   aria-label="Cities and zones in Saudi Arabia"
-className="relative w-full h-[870px] text-white overflow-hidden">    
+className="relative w-full h-full text-white overflow-hidden">    
       <div className="absolute inset-0 z-0">
      <ParallaxImage
   src={city.cityImage || "/citiesbg.webp"}

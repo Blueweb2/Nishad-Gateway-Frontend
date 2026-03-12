@@ -27,7 +27,7 @@ type BlogListResponse = {
 
 async function getBlogs(): Promise<Blog[]> {
   const res = await fetch(
-    `${process.env.API_URL}/blogs?page=1&limit=9`,
+    `${process.env.API_URL}/blogs?page=1&limit=100`,
     {
       next: { revalidate: 60 }, // 🔥 better than no-store
     }
@@ -45,7 +45,18 @@ async function getBlogs(): Promise<Blog[]> {
 export default async function BlogsPage() {
   const blogs = await getBlogs();
 
-  const mapped = blogs.map((blog) => ({
+  if (!blogs.length) {
+    return (
+      <main className="max-w-8xl mx-auto py-28 bg-white">
+        <p className="text-gray-500 px-8">No blogs available.</p>
+      </main>
+    );
+  }
+
+  const heroBlog = blogs[0]; // ⭐ first blog as hero
+  const restBlogs = blogs.slice(1); // remaining blogs
+
+  const mapped = restBlogs.map((blog) => ({
     id: blog.slug,
     image: blog.coverImage?.url
       ? cloudinaryAutoWebp(blog.coverImage.url)
@@ -64,18 +75,37 @@ export default async function BlogsPage() {
       data-menu="dark-text"
     >
       <div className="px-8 mb-20">
-        <h1 className="text-5xl font-semibold">
-          Insights
-        </h1>
+        <h1 className="text-5xl font-semibold">Blogs</h1>
       </div>
 
-      {mapped.length === 0 ? (
-        <p className="text-gray-500 px-8">
-          No blogs available.
-        </p>
-      ) : (
-        <BlogCardsGrid blogs={mapped} />
-      )}
+      {/* HERO BLOG */}
+      <div className="px-8 mb-12">
+        <div className="relative overflow-hidden rounded-3xl">
+          <img
+            src={
+              heroBlog.coverImage?.url
+                ? cloudinaryAutoWebp(heroBlog.coverImage.url)
+                : "/placeholder.jpg"
+            }
+            className="w-full h-[660px] object-cover"
+          />
+
+          <div className="absolute inset-0 bg-black/40 flex flex-col justify-end p-10 text-white">
+            <p className="text-sm mb-2">
+              {heroBlog.publishedAt
+                ? new Date(heroBlog.publishedAt).toLocaleDateString()
+                : ""}
+            </p>
+
+            <h2 className="text-3xl font-semibold max-w-xl">
+              {heroBlog.title}
+            </h2>
+          </div>
+        </div>
+      </div>
+
+      {/* BLOG GRID */}
+      <BlogCardsGrid blogs={mapped} />
     </main>
   );
 }

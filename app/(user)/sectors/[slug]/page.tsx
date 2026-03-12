@@ -75,7 +75,7 @@ export default async function SectorDetailPage({ params }: Props) {
       )}
 
       {/* <Stats /> */}
-<div className="w-[1320px] mx-auto">
+<div className="w-full bg-black mx-auto">
         <MinistriesSection />
   
 </div >

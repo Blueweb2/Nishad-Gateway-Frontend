@@ -66,16 +66,16 @@ export default function CitiesSection() {
 
       {/* Slider Container */}
       <div
-className="relative overflow-hidden h-[100dvh] lg:h-[90dvh]"  
+        className="relative overflow-hidden h-[100dvh] lg:min-h-screen"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
-        <AnimatePresence mode="wait" initial={false}>
+        <AnimatePresence mode="sync" initial={false}>
           <motion.div
             key={index}
-            initial={{ x: direction > 0 ? "100%" : "-100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: direction > 0 ? "-100%" : "100%" }}
+            initial={{ x: direction > 0 ? "30%" : "-30%", opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: direction > 0 ? "-30%" : "30%", opacity: 0 }}
             transition={{
               duration: 0.9,
               ease: [0.22, 1, 0.36, 1],
@@ -124,7 +124,7 @@ className="relative overflow-hidden h-[100dvh] lg:h-[90dvh]"
 
         {/* Counter and Arrows ( ONLY SHOW IN MOBILE ) */}
         <div className="lg:hidden relative w-full">
-            {/* Counter */}
+          {/* Counter */}
           <div className="text-white flex items-start justify-center gap-1 absolute left-1/2 top-1/2 
           -translate-x-1/2 -translate-y-1/2">
             <span className="text-[22px] md:text-[28px] font-bold leading-none">
