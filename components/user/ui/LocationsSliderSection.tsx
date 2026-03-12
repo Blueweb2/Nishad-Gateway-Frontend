@@ -4,6 +4,7 @@ import { useMemo, useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
 
 export type City = {
   _id: string;
@@ -68,12 +69,14 @@ export default function LocationsSliderSection({
     return () => window.removeEventListener("resize", updateLayout);
   }, []);
 
-  const handlePrev = () => {
-    setActiveIndex((prev) => Math.max(0, prev - 1));
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev + 1) % slides.length);
   };
 
-  const handleNext = () => {
-    setActiveIndex((prev) => Math.min(maxIndex, prev + 1));
+  const handlePrev = () => {
+    setActiveIndex((prev) =>
+      prev === 0 ? slides.length - 1 : prev - 1
+    );
   };
 
   const translateX = activeIndex * cardWidth;
@@ -82,17 +85,33 @@ export default function LocationsSliderSection({
     <section className="w-full bg-[#0b6b67] text-white py-16 overflow-hidden" data-navbar="light">
       <div className="w-full max-w-8xl mx-auto px-6 md:px-10">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
-          <h2 className="text-3xl md:text-4xl font-semibold max-w-xl leading-tight">
-            {locationsHeading ||
-              "Start Your Business Anywhere in Saudi Arabia"}
-          </h2>
+        <motion.div 
+          initial="hidden"
+          whileInView="show"
+          transition={{ staggerChildren: 0.2 }}
+          className="flex flex-col md:flex-row md:items-start md:justify-between gap-6"
+        >
+          <motion.h2
+            initial={{ y: -120, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.9, ease: "easeOut" }}
+            className="text-3xl md:text-4xl font-semibold max-w-xl leading-tight"
+          >
+            {locationsHeading || "Start Your Business Anywhere in Saudi Arabia"}
+          </motion.h2>
 
           <div className="flex items-start justify-between md:justify-end gap-6 w-full md:w-auto">
-            <p className="text-sm md:text-base text-white/85 max-w-md leading-relaxed">
+            <motion.p
+              variants={{
+                hidden: { y: -120, opacity: 0 },
+                show: { y: 0, opacity: 1 }
+              }}
+              transition={{ duration: 0.9, ease: "easeOut" }}
+              className="text-sm md:text-base text-white/85 max-w-md leading-relaxed"
+            >
               {locationsSubheading ||
                 "Entity selection and licensing can be completed regardless of your chosen city or economic zone."}
-            </p>
+            </motion.p>
 
             {/* Arrows */}
             <div className="flex items-center gap-2 shrink-0">
@@ -113,10 +132,10 @@ export default function LocationsSliderSection({
               </button>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Slider */}
-        <div className="mt-12 relative overflow-hidden max-w-7xl mx-auto">
+        <div className="mt-12 relative overflow-hidden mx-auto">
           <div
             ref={sliderRef}
             className="flex gap-4 md:gap-6 lg:gap-8 transition-transform duration-500 ease-in-out"
@@ -157,7 +176,7 @@ export default function LocationsSliderSection({
                     </p>
                   </div>
 
-                  <div className="mt-6 flex items-center justify-end">
+                  <div className="flex lg:mt-[-15] items-center justify-end">
 
                     <Link
                       href={`/cities/${city.citySlug}`}

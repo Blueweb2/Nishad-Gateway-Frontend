@@ -379,7 +379,7 @@ export default function Consultant() {
       <div className="absolute inset-0 bg-black/55 z-10" />
 
       {/* ================= CONTENT WRAPPER ================= */}
-      <div className="relative z-20 max-w-[1320px] mx-auto w-full px-6 mt-[60%] lg:mt-0">
+      <div className="relative z-20 mx-auto w-full px-6 mt-[60%] lg:mt-0">
 
         {/* TOP TABS */}
         <div className="hidden lg:flex lg:justify-end gap-6 text-sm md:text-[0.9vw] mb-12">
@@ -416,7 +416,7 @@ export default function Consultant() {
 
 
         {/* ================= GRID ================= */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-16 items-center">
 
           {/* LEFT COLUMN */}
           <div className="hidden lg:flex flex-col text-center lg:text-left h-full">

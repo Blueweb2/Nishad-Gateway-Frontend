@@ -1,5 +1,7 @@
 "use client";
 
+import { motion } from "framer-motion";
+
 export type EntityRow = {
   id?: string;
   entityType: string;
@@ -58,12 +60,22 @@ export default function EntityTableSection({
       <div className="w-full max-w-7xl mx-auto px-6 md:px-10">
         {/* Heading */}
         <div className="text-center">
-          <h2 className="text-2xl md:text-4xl font-semibold tracking-tight">
+          <motion.h2 
+            initial={{ x: -300, opacity: 0 }}
+            whileInView={{ x: 0, opacity: 1 }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+            className="text-2xl md:text-4xl font-semibold tracking-tight"
+          >
             {entityTableHeading || "All Entity Types at a Glance"}
-          </h2>
-          <p className="text-sm md:text-base text-white/50 mt-2">
+          </motion.h2>
+          <motion.p 
+            initial={{ x: 300, opacity: 0 }}
+            whileInView={{ x: 0, opacity: 1 }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+            className="text-sm md:text-base text-white/50 mt-2"
+          >
             Compare ownership, capital, setup time and regulatory requirements.
-          </p>
+          </motion.p>
         </div>
 
         {/* Table Wrapper */}
@@ -190,7 +202,7 @@ export default function EntityTableSection({
 
                       return (
                         <div key={col.key} className="text-sm text-white/70 px-6">
-                          {value} hi
+                          {value}
                         </div>
                       );
                     })}

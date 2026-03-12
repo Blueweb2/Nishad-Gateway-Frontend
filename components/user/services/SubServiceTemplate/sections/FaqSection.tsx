@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Plus, Minus } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export type FAQ = {
   q: string;
@@ -28,7 +29,7 @@ export default function FaqSection({
   if (!faqs || faqs.length === 0) return null;
 
   return (
-<section className="w-full pt-32 pb-20 bg-[#f5f5f5] relative z-10" data-navbar="light">
+    <section className="w-full pt-32 pb-20 bg-[#f5f5f5] relative z-10" data-navbar="light">
       <div className="max-w-7xl mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
 
         {/* LEFT SIDE */}
@@ -102,12 +103,21 @@ export default function FaqSection({
                       <Plus className="w-5 h-5 text-gray-500" />
                     )}
                   </button>
-
-                  {open && (
-                    <p className="mt-3 text-sm text-gray-600 leading-relaxed max-w-xl">
-                      {faq.a}
-                    </p>
-                  )}
+                  
+                  <AnimatePresence initial={false}>
+                    {open && (
+                      <motion.p
+                        key="content"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.35, ease: "easeOut" }}
+                        className="mt-3 text-sm text-gray-600 leading-relaxed max-w-xl overflow-hidden"
+                      >
+                        {faq.a}
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
                 </div>
               );
             })}

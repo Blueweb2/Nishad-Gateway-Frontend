@@ -3,6 +3,7 @@
 import { useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 import OvalArrow from "@/components/user/ui/OvalArrow";
 
@@ -107,17 +108,28 @@ export default function WhySliderSection({
 
           {/* ================= LEFT ================= */}
           <div className="flex flex-col text-center lg:text-left h-full ">
-
-            <h2 className="text-2xl sm:text-3xl lg:text-[38px] font-bold leading-tight">
+            <motion.h2 
+              initial={{ x: -200, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              viewport={{ once: true }}
+              className="text-2xl sm:text-3xl lg:text-[38px] font-bold leading-tight"
+            >
               {whyHeading || "Why Entity Type Matters"}
-            </h2>
+            </motion.h2>
 
             {/* desktop title */}
             <div className=" hidden lg:flex flex-1 flex-col items-center justify-center lg:items-start">
               
-              <h3 className="text-xl lg:text-2xl text-teal-700 font-bold leading-tight">
+              <motion.h3
+                key={current?.title}
+                initial={{y:200, opacity:0}}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                className="text-xl lg:text-2xl text-teal-700 font-bold leading-tight"
+              >
                 {current?.title || "Ownership Rights"}
-              </h3>
+              </motion.h3>
               <div className="hidden lg:block w-full h-px bg-gray-200 mt-6" />
             </div>
 
@@ -196,7 +208,11 @@ export default function WhySliderSection({
               </h3>
             </div>
 
-            <div
+            <motion.div
+              key={current?.title}
+              initial={{y:200, opacity:0}}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 1, ease: "easeOut" }}
               className="text-gray-500 leading-relaxed max-w-sm h-[165px] lg:h-[170px] mt-3 flex items-start lg:items-end rich-text lg:pr-20"
               dangerouslySetInnerHTML={{ __html: current?.description || "" }}
             />

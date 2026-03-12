@@ -46,36 +46,46 @@ export default function EntityTypesSliderSection({
 
           {/* LEFT HEADING */}
           <div className="flex items-start gap-4 md:gap-6">
-            <h2 className="
-              text-2xl 
-              sm:text-3xl 
-              md:text-4xl 
-              font-semibold 
-              leading-snug 
-              md:leading-tight 
-              text-gray-900 
-              max-w-full md:max-w-xl
-            ">
+            <motion.h2
+              initial={{ x: -120, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="
+                text-2xl 
+                sm:text-3xl 
+                md:text-4xl 
+                font-semibold 
+                leading-snug 
+                md:leading-tight 
+                text-gray-900 
+                max-w-full md:max-w-xl
+              "
+            >
               {entityTypesHeading ||
                 "Entity Types Available to Foreign Investors"}
-            </h2>
+            </motion.h2>
           </div>
 
           {/* RIGHT DESCRIPTION */}
-<div
-  className="
-    rich-text
-    text-sm sm:text-base md:text-lg
-    text-gray-500
-    leading-relaxed
-    max-w-full md:max-w-xl
-  "
-  dangerouslySetInnerHTML={{
-    __html:
-      entityTypesDescription ||
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-  }}
-/>
+          <motion.div
+            initial={{ x: 120, opacity: 0 }}
+            whileInView={{ x: 0, opacity: 1 }}
+            
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="
+              rich-text
+              text-sm sm:text-base md:text-lg
+              text-gray-500
+              leading-relaxed
+              max-w-full md:max-w-xl
+            "
+            dangerouslySetInnerHTML={{
+              __html:
+                entityTypesDescription ||
+                "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+            }}
+          />
 
         </div>
       </div>
@@ -120,7 +130,7 @@ export default function EntityTypesSliderSection({
                 {/* FLOATING CARD */}
                 <div
                   className={`
-                    absolute 
+                    absolute
                     ${isEven ? "right-0 top-6 md:top-8 lg:top-10" : "right-0 bottom-6 md:bottom-8 lg:bottom-10"} 
                     z-10 
                     w-[200px] 

@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import OvalArrow from "@/components/user/ui/OvalArrow";
@@ -78,29 +77,33 @@ export default function OwnershipSliderSection({
 
       {/* TOP BAR (ONLY SHOW IN MOBILE) */}
       <div className="w-full lg:hidden z-20 absolute top-12 flex flex-col gap-3 items-center justify-center">
-        <h2
+        <motion.h2
+          initial={{ opacity: 0, y: 60 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 2.5, delay: 0.2 }}
+          
           className="block w-full font-semibold text-3xl text-center"
         >
           {ownershipHeading || "Ownership & Capital Rules"}
-        </h2>
+        </motion.h2>
       </div>
 
 
       <div className="absolute inset-0 bg-black/55 z-10" />
 
       {/* ================= CONTENT WRAPPER ================= */}
-      <div className="relative z-20 max-w-[1320px] mx-auto w-full px-6 mt-[60%] lg:mt-0">
+      <div className="relative z-20 mx-auto w-full px-6 mt-[60%] lg:mt-0">
 
         {/* ================= GRID ================= */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-12 items-center">
 
           {/* LEFT COLUMN */}
-          <div className="hidden lg:flex flex-col text-center lg:text-left h-full">
+          <div className="hidden lg:flex flex-col text-center justify-end lg:text-left h-full">
 
             <motion.h2
               initial={{ opacity: 0, y: 60 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, delay: 0.2 }}
+              transition={{ duration: 2.5, delay: 0.2 }}
               viewport={{ once: true }}
               className="text-3xl md:text-4xl lg:text-[3vw] font-semibold  leading-tight mb-10 lg:mt-[-139px]"
             >
@@ -152,7 +155,7 @@ export default function OwnershipSliderSection({
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -100 }}
                   transition={{ duration: 0.5 }}
-                  className="relative z-10 text-xl sm:text-2xl lg:text-[2.2vw] font-semibold text-center max-w-[240px] lg:max-w-[16vw] h-[70px] lg:h-auto"
+                  className="relative z-10 text-xl sm:text-2xl lg:text-[2.2vw] font-semibold text-center max-w-[240px] lg:max-w-[16vw] h-[70px] lg:h-[150px] lg:flex lg:items-center"
                 >
                   {stageIndex !== -1 && (
                     <span className="text-green-400 font-medium text-[12px] mr-2 uppercase">
@@ -176,13 +179,14 @@ export default function OwnershipSliderSection({
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -100 }}
                   transition={{ duration: 0.5 }}
-                  className="text-white/80 text-sm md:text-base lg:text-[1vw] leading-relaxed mb-6 h-[190px] lg:h-auto rich-text"
+                  className="text-white/80 text-sm md:text-base lg:text-[1vw] leading-relaxed mb-6 h-[190px] 
+                  lg:h-[90px] lg:flex lg:items-end rich-text"
                   dangerouslySetInnerHTML={{ __html: current.rightText || "" }}
                 />
               )}
             </AnimatePresence>
 
-            <div className="hidden md:block h-px bg-white/20 w-full mt-5 mb-6" />
+            <div className="hidden md:block h-px bg-white/20 w-full mb-6" />
 
             {/* ARROWS FOR LARGE DIVICE */}
             <div className="hidden lg:flex gap-4 justify-center md:justify-start mb-[-67px]">
