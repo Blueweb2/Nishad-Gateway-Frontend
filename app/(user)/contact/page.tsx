@@ -65,7 +65,7 @@ export default function ContactPage() {
                         </p>
 
                         <Link
-                            href="#"
+                            href="/cities"
                             className="inline-block mt-3 text-sm text-green-700 underline underline-offset-4 hover:text-green-800 transition"
                         >
                             Find us here
