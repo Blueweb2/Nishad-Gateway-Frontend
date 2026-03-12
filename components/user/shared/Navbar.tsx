@@ -40,7 +40,6 @@ useEffect(() => {
       return;
     }
 
-    console.log("Sections detected:", sections);
 
     const observer = new IntersectionObserver(
       (entries) => {

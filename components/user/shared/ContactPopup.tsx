@@ -2,6 +2,28 @@
 
 import { useEffect, useState } from "react";
 import { X, ChevronDown } from "lucide-react";
+import { getServicesMenu } from "@/lib/api/public/services.api";
+import Select from "../ui/Select";
+import toast from "react-hot-toast";
+
+type CityItem = {
+  _id: string;
+  cityName: string;
+  citySlug: string;
+};
+
+type SubServiceItem = {
+  _id: string;
+  title: string;
+  slug: string;
+};
+
+type ServiceItem = {
+  _id: string;
+  title: string;
+  slug: string;
+  subServices: SubServiceItem[];
+};
 
 export default function ContactPopup({
   open,
@@ -12,6 +34,38 @@ export default function ContactPopup({
 }) {
   const [render, setRender] = useState(open);
 
+  const [services, setServices] = useState<ServiceItem[]>([]);
+  const [sending, setSending] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [service, setService] = useState("");
+  const [city, setCity] = useState("");
+
+  const serviceOptions = services.map((service) => ({
+    label: service.title,
+    options:
+      service.subServices?.map((sub) => ({
+        label: sub.title,
+        value: sub._id,
+      })) || [],
+  }));
+  const cityOptions = [
+    {
+      label: "Cities",
+      options: [
+        { label: "Dammam | Al Khobar | KSA", value: "ksa" },
+        { label: "United Arab Emirates", value: "uae" },
+        { label: "Qatar", value: "qatar" },
+        { label: "Oman", value: "oman" },
+        { label: "United Kingdom", value: "uk" },
+        { label: "India", value: "india" },
+        { label: "China", value: "china" },
+        { label: "USA", value: "usa" },
+      ],
+    },
+  ];
   useEffect(() => {
     if (open) setRender(true);
     else {
@@ -19,6 +73,69 @@ export default function ContactPopup({
       return () => clearTimeout(t);
     }
   }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const loadData = async () => {
+      try {
+        setLoading(true);
+
+
+        const servicesRes = await getServicesMenu();
+        console.log("servicesRes", servicesRes);
+
+
+        setServices(servicesRes?.data || []);
+
+      } catch (err) {
+        console.error("Failed loading contact data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, [open]);
+
+const handleSubmit = async () => {
+  try {
+    console.log("Submitting:", { name, phone, email, service, city });
+
+    if (!name || !phone || !email) {
+      toast.error("Please fill all required fields");
+      return;
+    }
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/contact`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          phone,
+          email,
+          service,
+          city,
+        }),
+      }
+    );
+
+    console.log("Response status:", res.status);
+
+    if (!res.ok) throw new Error();
+
+    toast.success("Message sent successfully");
+
+  } catch (error) {
+    console.error(error);
+    toast.error("Failed to send message");
+  }
+};
+
 
   // ESC close
   useEffect(() => {
@@ -30,6 +147,7 @@ export default function ContactPopup({
   }, [onClose]);
 
   if (!render) return null;
+
 
   return (
     <>
@@ -55,7 +173,7 @@ export default function ContactPopup({
           ${open ? "animate-sheetReveal" : "animate-sheetHide"}
         `}
       >
-        <div className="bg-white rounded-[28px] shadow-2xl border border-black/10 overflow-hidden">
+        <div className="bg-white rounded-[28px] shadow-2xl border border-black/10 max-h-[85vh] overflow-y-auto hide-scrollbar  pb-6">
           {/* Header */}
           <div className="flex items-center justify-between px-7 pt-6 pb-4">
             <h2 className="text-[22px] font-semibold text-gray-900">
@@ -79,6 +197,8 @@ export default function ContactPopup({
             <input
               type="text"
               placeholder=""
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               className="w-full border-b border-gray-200 focus:border-gray-500 outline-none py-2 mb-5 text-sm"
             />
 
@@ -88,6 +208,8 @@ export default function ContactPopup({
             </label>
             <input
               type="text"
+              value={phone}
+              onChange={(e => (setPhone(e.target.value)))}
               className="w-full border-b border-gray-200 focus:border-gray-500 outline-none py-2 mb-5 text-sm"
             />
 
@@ -97,35 +219,50 @@ export default function ContactPopup({
             </label>
             <input
               type="email"
+              value={email}
+              onChange={(e => (setEmail(e.target.value)))}
               className="w-full border-b border-gray-200 focus:border-gray-500 outline-none py-2 mb-5 text-sm"
             />
 
             {/* Select a Service */}
-            <label className="block text-xs text-gray-700 mb-2">
-              Select a Service
-            </label>
+
+
+
             <div className="relative mb-5">
-              <select className="w-full appearance-none border-b border-gray-200 focus:border-gray-500 outline-none py-2 text-sm bg-transparent">
-                <option value="">Select a Service</option>
-                <option>Business Setup</option>
-                <option>Visa Support</option>
-                <option>Corporate Advisory</option>
-              </select>
-              <ChevronDown className="w-4 h-4 absolute right-0 top-3 text-gray-500 pointer-events-none" />
+              <label className="block text-xs text-gray-700 mb-2">
+                Select a Service
+              </label>
+
+              <Select
+                options={serviceOptions}
+                placeholder="Select a service"
+                className="mb-5"
+                onChange={(value => (setService(value)))}
+              />
+
             </div>
 
+
+
             {/* Country of Interest */}
-            <label className="block text-xs text-gray-700 mb-2">
-              Country of Interest
-            </label>
+
+
+
             <div className="relative mb-6">
-              <select className="w-full appearance-none border-b border-gray-200 focus:border-gray-500 outline-none py-2 text-sm bg-transparent">
-                <option value="">Country of Interest</option>
-                <option>Saudi Arabia</option>
-                <option>UAE</option>
-                <option>Qatar</option>
-              </select>
-              <ChevronDown className="w-4 h-4 absolute right-0 top-3 text-gray-500 pointer-events-none" />
+
+
+              <label className="block text-xs text-gray-700 mb-2">
+                Country of Interest
+              </label>
+
+              <Select
+                options={cityOptions}
+                placeholder="Select city"
+                className="mb-6"
+                onChange={(value) => (setCity(value))}
+              />
+
+
             </div>
 
             {/* Checkbox */}
@@ -141,13 +278,15 @@ export default function ContactPopup({
 
             {/* Button */}
             <div className="flex justify-end">
-              <button className="px-8 py-3 rounded-full bg-green-700 text-white text-sm font-medium hover:bg-green-600 transition">
-                Apply Now
+              <button onClick={handleSubmit} disabled={sending} className="px-8 py-3 rounded-full bg-green-700 text-white text-sm font-medium hover:bg-green-600 transition">
+                {sending ? "Sending..." : "Apply Now"}
+
+                
               </button>
             </div>
           </div>
         </div>
-      </div>
+      </div >
     </>
   );
 }
