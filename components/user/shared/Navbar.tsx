@@ -215,12 +215,15 @@ useEffect(() => {
             <div className="flex items-center gap-3 sm:gap-5 lg:gap-8">
 
               {/* Phone */}
-              <span
-                className={`hidden lg:block text-sm ${isLight ? "text-black" : "text-white"
-                  }`}
-              >
-                +966 55 123 4567
-              </span>
+            <a href="tel:+966559912262">
+  <span
+    className={`hidden lg:block text-sm ${
+      isLight ? "text-black" : "text-white"
+    }`}
+  >
+    +966 55 991 2262
+  </span>
+</a>
 
               {/* Contact */}
               <button

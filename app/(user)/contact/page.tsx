@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, Send, Instagram, PhoneCall } from "lucide-react";
+import { ArrowLeft, Send, Instagram, PhoneCall, Linkedin } from "lucide-react";
 import { FaInstagram, FaWhatsapp, FaTelegramPlane } from "react-icons/fa";
 
 export default function ContactPage() {
@@ -36,9 +36,11 @@ export default function ContactPage() {
                     {/* Phone */}
                     <div>
                         <p className="text-sm text-gray-400 mb-2">P:</p>
-                        <p className="text-lg md:text-xl font-semibold text-black">
-                            +966 55 123 4567
-                        </p>
+                        <a href="tel:+966559912262">
+                            <p className="text-lg md:text-xl font-semibold text-black hover:underline">
+                                +966 55 991 2262
+                            </p>
+                        </a>
                     </div>
 
                     {/* Email */}
@@ -119,6 +121,14 @@ export default function ContactPage() {
                                 className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition"
                             >
                                 <FaWhatsapp className="text-[16px] text-black" />
+                            </Link>
+                            <Link
+                                href="https://www.linkedin.com/in/nishad-abdu-rahiman-business-consultant"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition"
+                            >
+                                <Linkedin className="text-[12px] text-black" />
                             </Link>
                         </div>
                     </div>
