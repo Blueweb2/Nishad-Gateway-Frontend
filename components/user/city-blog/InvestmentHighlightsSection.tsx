@@ -28,27 +28,12 @@ export default function InvestmentHighlightsSection({
 }: Props) {
 
   const slides = useMemo(() => cards || [], [cards]);
-
-  const [active, setActive] = useState(0);
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
-
-  const total = slides.length;
-
-  const goPrev = () => {
-    if (total <= 1) return;
-    setActive((p) => (p - 1 + total) % total);
-  };
-
-  const goNext = () => {
-    if (total <= 1) return;
-    setActive((p) => (p + 1) % total);
-  };
 
   const toggleExpand = (index: number) => {
     setExpandedIndex((prev) => (prev === index ? null : index));
   };
 
-  const centerSlide = total ? slides[active] : null;
   const formatIndex = (i: number) => String(i).padStart(2, "0");
 
 
@@ -58,24 +43,35 @@ export default function InvestmentHighlightsSection({
       <div className="w-full max-w-8xl mx-auto px-6 md:px-10">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-10">
           <div className="flex items-start gap-6">
-            <div className="text-xs text-gray-400 tracking-wider pt-2">
-              {formatIndex(active + 1)} <span className="mx-1">|</span>{" "}
-              {formatIndex(Math.max(total, 1))}
-            </div>
-
-            <h2 className="text-3xl md:text-4xl font-semibold leading-tight text-gray-900 max-w-xl">
+            <motion.h2
+              initial={{ x: -120, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="text-3xl md:text-4xl font-semibold leading-tight text-gray-900 max-w-xl"
+            >
               {mainHeading ||
                 "Entity Types Available to Foreign Investors"}
-            </h2>
+            </motion.h2>
           </div>
-          <div
-            className="rich-text text-lg text-gray-500 leading-relaxed max-w-xl"
-            dangerouslySetInnerHTML={{
-              __html:
-                description ||
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-            }}
-          />
+
+          <motion.div
+            initial={{ x: -40, opacity: 0 }}
+            whileInView={{ x: 0, opacity: 1 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
+            <div
+              className="rich-text text-lg text-gray-500 leading-relaxed max-w-xl"
+              dangerouslySetInnerHTML={{
+               __html:
+  description?.trim()
+    ? description
+    : "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+              }}
+            />
+          </motion.div>
+
         </div>
       </div>
 
@@ -88,7 +84,8 @@ export default function InvestmentHighlightsSection({
             forceToAxis: true,
             sensitivity: 1,
           }}
-          loop={true}
+          freeMode={true}
+          loop
           slidesPerView="auto"
           grabCursor
           className="relative w-full h-[420px] md:h-[460px] lg:h-[520px]"

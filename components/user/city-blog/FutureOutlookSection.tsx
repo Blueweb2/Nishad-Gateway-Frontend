@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
 import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 import type { FutureOutlookSectionContent } from "@/lib/types/city-blog";
 
@@ -54,9 +55,15 @@ export default function FutureOutlookSection({ content }: Props) {
 
           {/* LEFT SIDE */}
           <div>
-            <h2 className="text-2xl text-center lg:text-left sm:text-3xl lg:text-4xl font-semibold mb-8 lg:mb-12">
+            <motion.h2
+              initial={{ x: -120, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="text-2xl text-center lg:text-left sm:text-3xl lg:text-4xl font-semibold mb-8 lg:mb-12"
+            >
               {content.heading}
-            </h2>
+            </motion.h2>
 
             {/* AUTO NUMBER LABEL */}
             <div className="flex items-center gap-4 lg:gap-6 text-gray-500 mb-3 lg:mb-4">
@@ -67,9 +74,16 @@ export default function FutureOutlookSection({ content }: Props) {
               <div className="h-px bg-gray-300 flex-1" />
             </div>
 
-            <h3 className="text-lg sm:text-xl lg:text-2xl text-teal-600 font-medium">
+            <motion.h3
+              key={slide.title}
+              initial={{ x: -120, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="text-lg sm:text-xl lg:text-2xl text-teal-600 font-medium"
+            >
               {slide.title}
-            </h3>
+            </motion.h3>
           </div>
 
           {/* CENTER IMAGE */}
@@ -89,7 +103,12 @@ export default function FutureOutlookSection({ content }: Props) {
           <div>
 
             {/* DESCRIPTION */}
-            <div
+            <motion.div
+              key={slide.description}
+              initial={{ x: 120, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
               className="text-gray-600 text-sm sm:text-base leading-relaxed rich-text max-w-none lg:flex 
               lg:items-end h-[200px] lg:h-[90px]"
               dangerouslySetInnerHTML={{

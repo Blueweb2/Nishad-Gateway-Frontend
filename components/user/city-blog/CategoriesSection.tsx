@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 type Props = {
   citySlug: string;
@@ -24,9 +25,15 @@ export default function CategoriesSection({
 
         {/* LEFT SIDE */}
         <div>
-          <h2 className="font-bold mb-[clamp(16px,3vw,32px)] text-[clamp(1.8rem,3.5vw,2.5rem)]">
+          <motion.h2 
+            initial={{ x: -120, opacity: 0 }}
+            whileInView={{ x: 0, opacity: 1 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="font-bold mb-[clamp(16px,3vw,32px)] text-[clamp(1.8rem,3.5vw,2.5rem)]"
+          >
             {heading}
-          </h2>
+          </motion.h2>
 
           <div className="flex flex-wrap gap-x-[clamp(16px,2vw,32px)] gap-y-[clamp(10px,1.5vw,20px)] text-[clamp(0.9rem,1.1vw,1rem)] text-gray-700">
             {categories.map((cat, index) => (
@@ -47,7 +54,11 @@ export default function CategoriesSection({
         </div>
 
         {/* RIGHT SIDE */}
-        <div
+        <motion.div
+          initial={{ x: 120, opacity: 0 }}
+          whileInView={{ x: 0, opacity: 1 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
           className="rich-text text-gray-600 leading-relaxed text-[clamp(0.95rem,1.2vw,1.1rem)]"
           dangerouslySetInnerHTML={{ __html: introText || "" }}
         />
