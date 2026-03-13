@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 type Props = {
   heroTitle?: string;
@@ -49,22 +50,34 @@ export default function HeroSection({
         <div className="min-h-screen flex flex-col justify-center pt-28 md:pt-32 pb-20">
           <div className="max-w-[620px]">
             {/* MAIN TITLE */}
-            <h1 className="text-white font-semibold tracking-tight leading-[1.05] text-[52px] md:text-[82px]">
+            <motion.h1
+              initial={{ x: 200, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="text-white font-semibold tracking-tight leading-[1.05] text-[52px] md:text-[82px]"
+            >
               {heroTitle}
-            </h1>
+            </motion.h1>
 
             {/* LINE + SUBTITLE */}
             <div className="mt-24 flex items-center gap-6">
               {/* line should not stretch full */}
-
-              <p className="text-white/90 text-xl md:text-3xl font-light">
+              <motion.p 
+                initial={{ x: -200, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                className="text-white/90 text-xl md:text-3xl font-light"
+              >
                 {heroSubtitle || "What’s Best for Your Business"}
-              </p>
+              </motion.p>
             </div>
 
             {/* DESCRIPTION */}
             {heroDescription && (
-              <div
+              <motion.div
+                initial={{ x: 200, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
                 className="mt-10 max-w-[430px] text-white/75 text-sm md:text-base leading-relaxed rich-text"
                 dangerouslySetInnerHTML={{ __html: heroDescription }}
               />
