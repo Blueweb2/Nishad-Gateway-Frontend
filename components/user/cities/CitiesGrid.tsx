@@ -12,7 +12,7 @@ export default function CitiesGrid({ cities }: any) {
         return (
           <div
             key={city.citySlug}
-            className="relative px-6 py-10"
+            className="relative px-4 py-4"
           >
             {/* vertical divider */}
             {!isLastColumn && (

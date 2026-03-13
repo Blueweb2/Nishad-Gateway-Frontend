@@ -1,6 +1,7 @@
 "use client";
 
 import OvalArrow from "@/components/user/ui/OvalArrow";
+import Image from "next/image";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectFade, Autoplay } from "swiper/modules";
@@ -75,7 +76,7 @@ export default function BusinessGrowth() {
       {/* ================= FULL-WIDTH CONTROLS ================= */}
       <div className="absolute inset-x-0 top-20 md:top-0 h-full pointer-events-none z-20">
         <div className="w-full h-full flex items-start sm:items-center justify-between px-2 sm:px-6 md:px-10">
-          
+
           <div className="pointer-events-auto">
             <div className="flex items-center gap-2 text-xs md:text-sm text-gray-400">
               <span>{String(activeIndex + 1).padStart(2, "0")}</span>
@@ -152,10 +153,13 @@ export default function BusinessGrowth() {
               {slides.map((slide, index) => (
                 <SwiperSlide key={index}>
                   <div className="relative w-full h-full rounded-[120px] md:rounded-[150px] overflow-hidden">
-                    <img
+                    <Image
+                      key={slide.title}
                       src={slide.src}
                       alt={slide.alt}
-                      className="w-full h-full object-cover"
+                      fill
+                      sizes="(max-width:768px) 280px, 380px"
+                      className="object-cover"
                     />
                   </div>
                 </SwiperSlide>
@@ -169,7 +173,7 @@ export default function BusinessGrowth() {
               {activeSlide.linkText}
             </Link>
 
-              {/* HEADING (ONLY IN MOBILE) */}
+            {/* HEADING (ONLY IN MOBILE) */}
             <div className="relative  md:hidden sm:h-[80px] md:min-h-[480px] text-center md:text-right pt-6">
 
               <div className="hidden md:block absolute left-0 right-0 top-1/2 h-px bg-gray-200" />
