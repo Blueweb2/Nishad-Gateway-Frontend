@@ -12,21 +12,21 @@ import FadeUpScroll from "../ui/FadeUpScroll";
 
 const slides = [
   {
-    src: "/about/testimonials.jpg",
+    src: "/about/testimonials.webp",
     title: "MAADEN",
     description:
       "MODON enables integrated industrial investment environments that support diversification and employment.",
     link: "Browse Case Studies"
   },
   {
-    src: "/about/saudi-expansion.png",
+    src: "/about/saudi-expansion.webp",
     title: "MODON",
     description:
       "Creating strong industrial ecosystems that foster investment, employment, and long-term development.",
     link: "Explore Mining Projects"
   },
   {
-    src: "/about/indro-section.jpg",
+    src: "/about/intro_section.webp",
     title: "NEOM",
     description:
       "NEOM is building a futuristic, sustainable region powered by innovation, advanced technology, and smart infrastructure.",
@@ -40,14 +40,14 @@ const slides = [
     link: "Discover Future Cities"
   },
   {
-    src: "/about/aboutIntro.jpg",
+    src: "/about/aboutintro.webp",
     title: "RED SEA GLOBAL",
     description:
       "Red Sea Global develops regenerative tourism destinations focused on environmental protection and luxury experiences.",
     link: "Explore Energy Innovations"
   },
   {
-    src: "/about/aboutHero.jpg",
+    src: "/about/aboutHero.webp",
     title: "SABIC",
     description:
       "SABIC is a global leader in diversified chemicals, delivering innovative material solutions for industries worldwide.",

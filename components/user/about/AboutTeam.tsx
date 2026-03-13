@@ -15,7 +15,7 @@ const slides = [
     title: "Manufacturing & Industrial Investment",
     country: "Saudi Arabia",
     experience: "10+ Years",
-    src: "/about/manufacturing-and-industrial-investment.jpg",
+    src: "/about/manufacturing_and_industrial_investment.webp",
     description:
       "Supporting global manufacturers establishing operations in Saudi Arabia’s growing industrial ecosystem, including MODON zones and industrial licensing.",
   },
@@ -25,7 +25,7 @@ const slides = [
     title: "Technology & Innovation Companies",
     country: "Middle East",
     experience: "9+ Years",
-    src: "/about/saudi-expansion.png",
+    src: "/about/saudi-expansion.webp",
     description:
       "Helping technology startups and global tech firms launch and expand in Saudi Arabia’s innovationdriven economy aligned with Vision 2030.",
   },
@@ -35,7 +35,7 @@ const slides = [
     title: "Hospitality & Tourism Projects",
     country: "Saudi Arabia",
     experience: "8+ Years",
-    src: "/about/hospitality-and-tourism-projects.jpg",
+    src: "/about/hospitality_and_tourism_project .webp",
     description:
       "Advising investors and hospitality brands entering Saudi Arabia’s rapidly expanding tourism and lifestyle sectors.",
   },
@@ -55,7 +55,7 @@ const slides = [
     title: "Retail & Consumer Brands",
     country: "Middle East",
     experience: "8+ Years",
-    src: "/about/retail.jpg",
+    src: "/about/retail.webp",
     description:
       "Helping international brands enter the Saudi consumer market through structured retail expansion strategies.",
   },
@@ -65,7 +65,7 @@ const slides = [
     title: "Construction & Infrastructure",
     country: "Saudi Arabia",
     experience: "11+ Years",
-    src: "/about/construction.jpg",
+    src: "/about/construction.webp",
     description:
       "Advising construction companies and infrastructure investors participating in Saudi Arabia’s mega development projects",
   },

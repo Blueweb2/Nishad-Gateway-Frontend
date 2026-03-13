@@ -31,35 +31,43 @@ export default function Navbar() {
 
 //   //  change navbar color based on white sections
 useEffect(() => {
-  const initObserver = () => {
-    const sections = document.querySelectorAll("[data-navbar]");
-
-    if (!sections.length) {
-      console.log("No sections yet, retrying...");
-      setTimeout(initObserver, 200);
-      return;
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const theme = entry.target.getAttribute("data-navbar");
+          setIsLight(theme === "light");
+        }
+      });
+    },
+    {
+      rootMargin: "-90px 0px -60% 0px",
+      threshold: 0,
     }
+  );
 
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const theme = entry.target.getAttribute("data-navbar");
-            setIsLight(theme === "light");
-          }
-        });
-      },
-      {
-        rootMargin: "-90px 0px -60% 0px",
-        threshold: 0,
-      }
-    );
+  const observeSections = () => {
+    const sections = document.querySelectorAll("[data-navbar]");
+    if (!sections.length) return;
 
     sections.forEach((section) => observer.observe(section));
   };
 
-  initObserver();
+  observeSections();
+
+  const mutation = new MutationObserver(() => {
+    observeSections();
+  });
+
+  mutation.observe(document.body, {
+    childList: true,
+    subtree: true,
+  });
+
+  return () => {
+    observer.disconnect();
+    mutation.disconnect();
+  };
 }, []);
 // useEffect(() => {
 //   const sections = document.querySelectorAll("[data-navbar]");

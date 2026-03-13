@@ -16,7 +16,7 @@ export default function SaudiExpansion() {
 
             {/* Image */}
             <div className="relative w-full h-[380px] rounded-3xl overflow-hidden">
-              <img src="/about/saudi-expansion.png" alt="Business Meeting" className="w-full h-full object-cover object-center"/>
+              <img src="/about/saudi-expansion.webp" alt="Business Meeting" className="w-full h-full object-cover object-center"/>
             </div>
           </div>
 

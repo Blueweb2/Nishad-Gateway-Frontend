@@ -46,8 +46,8 @@ export default function AboutHero() {
               shadow-[0_40px_80px_rgba(0,0,0,0.15)]
             ">
               <Image
-                src="/about/aboutHero.jpg"
-                alt="Nishad Abdurahiman"
+                src="/about/aboutHero.webp"
+                alt="Nishad Abdurahiman about hero img"
                 fill
                 className="object-cover"
                 priority

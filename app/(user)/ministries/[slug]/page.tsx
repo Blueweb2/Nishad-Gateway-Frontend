@@ -20,7 +20,7 @@ export default async function MinistryPage({ params }: Props) {
 
   return (
 
-    <div className="max-w-8xl mx-auto px-6 pt-28 space-y-10" data-navbar="light">
+    <div className="max-w-8xl mx-auto  pt-28 " data-navbar="light">
       <div className="max-w-5xl mx-auto px-6 space-y-10">
         {/* Breadcrumb */}
         <div className="overflow-x-auto hide-scrollbar">

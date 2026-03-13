@@ -55,7 +55,7 @@ export default function AboutSection() {
           {/* IMAGE */}
           <div className="relative w-full h-64 md:h-72 rounded-2xl overflow-hidden">
             <Image
-              src="/about/indro-section.jpg"
+              src="/about/intro_section.webp"
               alt="Office"
               fill
               className="object-cover"
