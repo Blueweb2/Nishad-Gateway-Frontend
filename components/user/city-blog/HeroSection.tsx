@@ -41,9 +41,10 @@ export default function HeroSection({ content }: Props) {
                 {content.heading}
               </h1>
 
-              <p className="text-lg md:text-xl text-white/90 max-w-xl leading-none">
-                {content.subheading}
-              </p>
+              <div
+                className="rich-text text-lg md:text-xl text-white/90 max-w-xl leading-none"
+                dangerouslySetInnerHTML={{ __html: content.subheading }}
+              />
 
               {content.ctaText && content.ctaLink && (
                 isExternal ? (

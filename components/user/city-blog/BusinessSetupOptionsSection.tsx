@@ -23,9 +23,10 @@ export default function BusinessSetupOptionsSection({
         </h2>
 
         {/* Description */}
-        <p className="text-gray-600 mb-16 max-w-[clamp(300px,60vw,700px)] mx-auto text-[clamp(0.95rem,1.2vw,1.1rem)]">
-          {description}
-        </p>
+        <p
+          className="text-gray-600 mb-16 max-w-[clamp(300px,60vw,700px)] mx-auto text-[clamp(0.95rem,1.2vw,1.1rem)]"
+          dangerouslySetInnerHTML={{ __html: description }}
+        />
 
         {/* Cards */}
         <div className="flex gap-[clamp(16px,2vw,32px)] overflow-x-auto pb-6 snap-x snap-mandatory hide-scrollbar">
@@ -99,9 +100,10 @@ export default function BusinessSetupOptionsSection({
 
         {/* Bottom Text */}
         {bottomText && (
-          <p className="mt-6 text-gray-600 max-w-[clamp(300px,65vw,800px)] mx-auto text-[clamp(0.9rem,1.1vw,1rem)]">
-            {bottomText}
-          </p>
+          <div
+            className="rich-text mt-6 text-gray-600 max-w-[clamp(300px,65vw,800px)] mx-auto text-[clamp(0.9rem,1.1vw,1rem)]"
+            dangerouslySetInnerHTML={{ __html: bottomText }}
+          />
         )}
 
       </div>

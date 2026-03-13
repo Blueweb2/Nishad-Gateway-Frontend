@@ -19,7 +19,7 @@ const contentData = {
       title: "Dress Code & Cultural Etiquette ",
       description:
         "Modest and professional; expats enjoy flexibility while respecting local norms in public spaces.",
-      image: "/consultant/Dress-Code.jpg",
+      image: "/buisnessgrowth/Dress-Code.webp",
     },
 
     {
@@ -78,7 +78,7 @@ const contentData = {
           and expanding their business in Saudi Arabia.
         </>
       ),
-      image: "/consultant/Housing.jpg",
+      image: "/buisnessgrowth/Housing.webp",
     },
 
     {
@@ -104,7 +104,7 @@ const contentData = {
           and long-term relocation.
         </>
       ),
-      image: "/consultant/Education.jpg",
+      image: "/buisnessgrowth/Education.webp",
     },
 
     {
@@ -125,7 +125,7 @@ const contentData = {
           .
         </>
       ),
-      image: "/consultant/Healthcare.jpg",
+      image: "/buisnessgrowth/Healthcare.webp",
     },
 
     {

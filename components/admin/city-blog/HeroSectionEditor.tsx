@@ -8,6 +8,7 @@ import { useState } from "react";
 import { HeroSectionContent } from "@/lib/types/city-blog";
 import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
 import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
+import MiniTextEditor from "../common/MiniTextEditor";
 
 type Props = {
   content: HeroSectionContent;
@@ -87,15 +88,12 @@ export default function HeroSectionEditor({ content, onChange }: Props) {
       />
 
       {/* Subheading */}
-      <textarea
-        placeholder="Hero subheading"
-        value={content.subheading}
-        onChange={(e) =>
-          onChange({ ...content, subheading: e.target.value })
-        }
-        rows={3}
-        className="w-full px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white"
-      />
+<MiniTextEditor
+  value={content.subheading}
+  onChange={(val) =>
+    onChange({ ...content, subheading: val })
+  }
+/>
 
       {/* Image Upload */}
       <div>

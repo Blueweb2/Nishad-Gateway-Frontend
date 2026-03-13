@@ -68,11 +68,14 @@ export default function InvestmentHighlightsSection({
                 "Entity Types Available to Foreign Investors"}
             </h2>
           </div>
-
-          <p className="text-lg text-gray-500 leading-relaxed max-w-xl">
-            {description ||
-              "Lorem Ipsum is simply dummy text of the printing and typesetting industry."}
-          </p>
+          <div
+            className="rich-text text-lg text-gray-500 leading-relaxed max-w-xl"
+            dangerouslySetInnerHTML={{
+              __html:
+                description ||
+                "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+            }}
+          />
         </div>
       </div>
 
@@ -122,10 +125,9 @@ export default function InvestmentHighlightsSection({
                 <div
                   className={`
                     absolute
-                    ${
-                      isEven
-                        ? "right-0 top-6 md:top-8 lg:top-10"
-                        : "right-0 bottom-6 md:bottom-8 lg:bottom-10"
+                    ${isEven
+                      ? "right-0 top-6 md:top-8 lg:top-10"
+                      : "right-0 bottom-6 md:bottom-8 lg:bottom-10"
                     }
                     z-10
                     w-[200px]
@@ -172,21 +174,20 @@ export default function InvestmentHighlightsSection({
                       >
                         <Plus
                           size={16}
-                          className={`text-green-600 transition-transform duration-300 ${
-                            expandedIndex === index ? "rotate-45" : ""
-                          }`}
+                          className={`text-green-600 transition-transform duration-300 ${expandedIndex === index ? "rotate-45" : ""
+                            }`}
                         />
                       </button>
                     </div>
 
                     <AnimatePresence>
-                      {expandedIndex === index && slide.subText && (
+                      {expandedIndex === index && slide.subText?.trim() && (
                         <motion.div
                           initial={{ opacity: 0, y: 40 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: 30 }}
                           transition={{ duration: 0.4, ease: "easeOut" }}
-                          className="mt-4 md:mt-5 lg:mt-6 text-xs md:text-sm text-gray-600 leading-relaxed"
+                          className="mt-4 rich-text md:mt-5 lg:mt-6 text-xs md:text-sm text-gray-600 leading-relaxed"
                           dangerouslySetInnerHTML={{ __html: slide.subText }}
                         />
                       )}

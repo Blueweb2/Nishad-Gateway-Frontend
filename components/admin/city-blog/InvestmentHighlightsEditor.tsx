@@ -13,6 +13,7 @@ import type {
 import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
 import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 import RichTextEditor from "../common/RichTextEditor";
+import MiniTextEditor from "../common/MiniTextEditor";
 
 
 type Props = {
@@ -135,17 +136,14 @@ export default function InvestmentHighlightsEditor({
       />
 
       {/* ================= DESCRIPTION ================= */}
-    <textarea
-  placeholder="Section Description"
-  value={content.description}
-  onChange={(e) =>
+  <MiniTextEditor
+  value={content.description || ""}
+  onChange={(val) =>
     updateContent({
       ...content,
-      description: e.target.value,
+      description: val,
     })
   }
-  rows={3}
-  className="w-full px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white"
 />
 
 
@@ -200,16 +198,16 @@ export default function InvestmentHighlightsEditor({
               />
 
               {/* Sub Text */}
-            <div className="space-y-2">
-  <p className="text-sm text-white/60">Card Sub Text</p>
+              <div className="space-y-2">
+                <p className="text-sm text-white/60">Card Sub Text</p>
 
-  <RichTextEditor
-    value={card.subText}
-    onChange={(val) =>
-      updateCardField(index, { subText: val })
-    }
-  />
-</div>
+                <RichTextEditor
+                  value={card.subText}
+                  onChange={(val) =>
+                    updateCardField(index, { subText: val })
+                  }
+                />
+              </div>
 
 
               {/* MAIN IMAGE */}
@@ -245,7 +243,7 @@ export default function InvestmentHighlightsEditor({
               </div>
 
               {/* SUB IMAGE */}
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <p className="text-sm text-white/60">Sub Image</p>
 
                 <label className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 border border-white/10 text-white text-sm font-semibold cursor-pointer">
@@ -274,7 +272,7 @@ export default function InvestmentHighlightsEditor({
                     />
                   </div>
                 )}
-              </div>
+              </div> */}
 
             </div>
           );

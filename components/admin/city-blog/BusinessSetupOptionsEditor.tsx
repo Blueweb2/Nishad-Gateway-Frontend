@@ -5,6 +5,7 @@ import type {
   CityBlogSection,
   BusinessSetupOptionsContent,
 } from "@/lib/types/city-blog";
+import MiniTextEditor from "../common/MiniTextEditor";
 
 type Props = {
   section: CityBlogSection<"BUSINESS_SETUP_OPTIONS">;
@@ -69,17 +70,14 @@ export default function BusinessSetupOptionsEditor({
       />
 
       {/* Description */}
-      <textarea
-        placeholder="Short Description"
+      <MiniTextEditor
         value={content.description || ""}
-        onChange={(e) =>
+        onChange={(val) =>
           updateContent({
             ...content,
-            description: e.target.value,
+            description: val,
           })
         }
-        rows={3}
-        className="w-full px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white"
       />
 
       {/* Options */}
@@ -113,11 +111,10 @@ export default function BusinessSetupOptionsEditor({
                 type="button"
                 disabled={options.length === 1}
                 onClick={() => removeOption(index)}
-                className={`text-red-400 ${
-                  options.length === 1
+                className={`text-red-400 ${options.length === 1
                     ? "opacity-40 cursor-not-allowed"
                     : ""
-                }`}
+                  }`}
               >
                 <Trash size={16} />
               </button>
@@ -159,18 +156,15 @@ export default function BusinessSetupOptionsEditor({
       />
 
       {/* Optional Bottom Text */}
-      <textarea
-        placeholder="Bottom Paragraph (Optional)"
-        value={content.bottomText ?? ""}
-        onChange={(e) =>
-          updateContent({
-            ...content,
-            bottomText: e.target.value,
-          })
-        }
-        rows={3}
-        className="w-full px-4 py-2 rounded-lg bg-black/40 border border-white/10 text-white"
-      />
+    <MiniTextEditor
+  value={content.bottomText ?? ""}
+  onChange={(val) =>
+    updateContent({
+      ...content,
+      bottomText: val,
+    })
+  }
+/>
     </div>
   );
 }
