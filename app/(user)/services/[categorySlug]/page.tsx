@@ -102,50 +102,56 @@ export default function CategoryPage() {
             </div>
           </div>
         </div>
-{/* Intro */}
-<div className="flex justify-end mb-16">
-  <div className="max-w-xs">
-    <p className="text-gray-500 text-sm leading-relaxed">
-        Explore our {service.title} services designed to help businesses
-        establish and operate smoothly. Choose the right option that
-        fits your requirements and start your journey with confidence.
-    </p>
-  </div>
-</div>
+        {/* Intro */}
+        <div className="flex justify-end mb-16">
+          <div className="max-w-xs">
+            <p className="text-gray-500 text-sm leading-relaxed">
+                Explore our {service.title} services designed to help businesses
+                establish and operate smoothly. Choose the right option that
+                fits your requirements and start your journey with confidence.
+            </p>
+          </div>
+        </div>
 
         {/* Subservices */}
         <div className="space-y-6">
           {subservices.map((sub) => (
             <div key={sub._id} className="border-t border-gray-200 p-6">
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "40px 100px 520px 1fr 100px",
-                  alignItems: "center",
-                  columnGap: "24px",
-                }}
-              >
-                {/* Letter */}
-                <div className="text-gray-300 font-light text-lg">
+              <div className="grid grid-cols-1 lg:grid-cols-[40px_100px_520px_1fr_100px] gap-4 lg:gap-6 items-start lg:items-center">
+
+                {/* Letter (desktop only) */}
+                <div className="hidden lg:block text-gray-300 font-light text-lg">
                   {(sub.title?.[0] || "S").toUpperCase()}
                 </div>
 
-                {/* Thumbnail */}
-                <div>
+                {/* Image */}
+                <div className="flex justify-between items-center gap-4 lg:block">
                   <img
                     src={cloudinaryAutoWebp(sub.thumbnail)}
                     alt={sub.title}
-                    style={{
-                      width: "40px",
-                      height: "50px",
-                      borderRadius: "160px",
-                      objectFit: "cover",
-                    }}
+                    className="w-[70px] h-[90px] lg:w-[80px] lg:h-[100px] rounded-[160px] object-cover"
                   />
+
+                  {/* Title (mobile next to image) */}
+                  <h2 className="lg:hidden text-lg font-semibold text-gray-900 leading-tight">
+                    {sub.title}
+                  </h2> 
+
+                  {/* Arrow (mobile divice) */}
+                  <div className="flex lg:hidden justify-end">
+                    <button
+                      onClick={() =>
+                        router.push(`/services/${service.slug}/${sub.slug}`)
+                      }
+                      className="w-5 h-12 rounded-[160px] border border-gray-200 shadow-sm flex items-center justify-center bg-white hover:bg-gray-50 transition-all duration-200"
+                    >
+                      <ArrowRight className="w-5 h-5 text-gray-800" />
+                    </button>
+                  </div>
                 </div>
 
-                {/* Title */}
-                <div>
+                {/* Title (desktop) */}
+                <div className="hidden lg:block">
                   <h2 className="text-2xl font-semibold text-gray-900 leading-tight">
                     {sub.title}
                   </h2>
@@ -158,13 +164,13 @@ export default function CategoryPage() {
                   </p>
                 </div>
 
-                {/* Arrow */}
-                <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                {/* Arrow (large divice) */}
+                <div className="hidden lg:flex justify-end">
                   <button
                     onClick={() =>
                       router.push(`/services/${service.slug}/${sub.slug}`)
                     }
-                    className="w-12 h-32 rounded-[160px] border border-gray-200 shadow-sm flex items-center justify-center bg-white hover:bg-gray-50 transition-all duration-200"
+                    className="w-10 h-24 lg:w-12 lg:h-32 rounded-[160px] border border-gray-200 shadow-sm flex items-center justify-center bg-white hover:bg-gray-50 transition-all duration-200"
                   >
                     <ArrowRight className="w-5 h-5 text-gray-800" />
                   </button>
