@@ -62,14 +62,14 @@ export default function HeroSection({
             {/* LINE + SUBTITLE */}
             <div className="mt-24 flex items-center gap-6">
               {/* line should not stretch full */}
-              <motion.p 
+              <motion.div
                 initial={{ x: -200, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
                 className="text-white/90 text-xl md:text-3xl font-light"
               >
                 {heroSubtitle || "What’s Best for Your Business"}
-              </motion.p>
+              </motion.div>
             </div>
 
             {/* DESCRIPTION */}

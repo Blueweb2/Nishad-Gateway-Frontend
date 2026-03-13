@@ -101,7 +101,7 @@ export default function LocationsSliderSection({
           </motion.h2>
 
           <div className="flex items-start justify-between md:justify-end gap-6 w-full md:w-auto">
-            <motion.p
+            <motion.div
               variants={{
                 hidden: { y: -120, opacity: 0 },
                 show: { y: 0, opacity: 1 }
@@ -111,7 +111,7 @@ export default function LocationsSliderSection({
             >
               {locationsSubheading ||
                 "Entity selection and licensing can be completed regardless of your chosen city or economic zone."}
-            </motion.p>
+            </motion.div>
 
             {/* Arrows */}
             <div className="flex items-center gap-2 shrink-0">

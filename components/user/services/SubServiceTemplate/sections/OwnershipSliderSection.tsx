@@ -124,7 +124,7 @@ export default function OwnershipSliderSection({
               <AnimatePresence mode="wait">
                 {
                   current?.leftText && (
-                    <motion.p
+                    <motion.div
                       key={current._id}
                       initial={{ x: "100%", opacity: 0 }}
                       animate={{ x: "0%", opacity: 1 }}
@@ -133,7 +133,7 @@ export default function OwnershipSliderSection({
                       className="absolute w-full text-white/40 text-lg leading-snug"
                     >
                       {current.leftText}
-                    </motion.p>
+                    </motion.div>
                   )
                 }
               </AnimatePresence>

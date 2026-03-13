@@ -445,7 +445,7 @@ export default function Consultant() {
             <div className="relative min-h-[48px] max-w-[220px] mx-auto md:mx-0">
 
               <AnimatePresence mode="wait">
-                <motion.p
+                <motion.div
                 key={activeIndex}
                 initial={{ x: "100%", opacity: 0 }}
                 animate={{ x: "0%", opacity: 1 }}
@@ -454,7 +454,7 @@ export default function Consultant() {
                 className="absolute w-full text-white/40 text-lg leading-snug"
                 >
                 {previousTitle}
-                </motion.p>
+                </motion.div>
               </AnimatePresence>
 
             </div>
@@ -493,7 +493,7 @@ export default function Consultant() {
           <div className="flex flex-col items-center justify-end lg:items-start text-center lg:text-left max-w-lg mx-auto lg:mx-0 h-full mt-[25%] lg:mt-auto">
 
             <AnimatePresence mode="wait">
-              <motion.p
+              <motion.div
               key={activeIndex}
               initial={{ opacity: 0, x: 100 }}
               animate={{ opacity: 1, x: 0 }}
@@ -502,7 +502,7 @@ export default function Consultant() {
               className="text-white/80 text-sm md:text-base lg:text-[1vw] leading-relaxed mb-6 h-[70px] lg:h-auto"
               >
                 {currentItem.description}
-              </motion.p>
+              </motion.div>
             </AnimatePresence>
 
             <button className="text-sm md:text-base pb-10 lg:pb-0 underline underline-offset-4 ">

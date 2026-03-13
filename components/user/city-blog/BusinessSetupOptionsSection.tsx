@@ -33,7 +33,7 @@ export default function BusinessSetupOptionsSection({
 />
 
 {/* Description */}
-<motion.p
+<motion.div
   initial={{ y: -120, opacity: 0 }}
   whileInView={{ y: 0, opacity: 1 }}
   viewport={{ once: true, amount: 0.4 }}
