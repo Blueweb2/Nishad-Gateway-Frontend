@@ -92,7 +92,13 @@ export default function FinalCTA() {
           <div className="sm:flex-1 flex justify-center gap-4">
             <SocialIcon icon={<Send size={14} />} />
             <SocialIcon icon={<Instagram size={14} />} />
-            <SocialIcon icon={<Linkedin size={14} />} />
+            <a
+              href="https://www.linkedin.com/in/nishad-abdu-rahiman-business-consultant"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <SocialIcon icon={<Linkedin size={14} />} />
+            </a>
           </div>
 
           {/* RIGHT */}
