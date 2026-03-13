@@ -68,12 +68,14 @@ export default function LocationsSliderSection({
     return () => window.removeEventListener("resize", updateLayout);
   }, []);
 
-  const handlePrev = () => {
-    setActiveIndex((prev) => Math.max(0, prev - 1));
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev + 1) % slides.length);
   };
 
-  const handleNext = () => {
-    setActiveIndex((prev) => Math.min(maxIndex, prev + 1));
+  const handlePrev = () => {
+    setActiveIndex((prev) =>
+      prev === 0 ? slides.length - 1 : prev - 1
+    );
   };
 
   const translateX = activeIndex * cardWidth;
@@ -116,7 +118,7 @@ export default function LocationsSliderSection({
         </div>
 
         {/* Slider */}
-        <div className="mt-12 relative overflow-hidden max-w-7xl mx-auto">
+        <div className="mt-12 relative overflow-hidden mx-auto">
           <div
             ref={sliderRef}
             className="flex gap-4 md:gap-6 lg:gap-8 transition-transform duration-500 ease-in-out"
@@ -157,7 +159,7 @@ export default function LocationsSliderSection({
                     </p>
                   </div>
 
-                  <div className="mt-6 flex items-center justify-end">
+                  <div className="flex lg:mt-[-15] items-center justify-end">
 
                     <Link
                       href={`/cities/${city.citySlug}`}
