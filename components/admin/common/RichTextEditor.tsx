@@ -10,6 +10,7 @@ import Placeholder from "@tiptap/extension-placeholder";
 type Props = {
   value: string;
   onChange: (value: string) => void;
+  placeholder?: string;
 };
 
 export default function RichTextEditor({ value, onChange }: Props) {

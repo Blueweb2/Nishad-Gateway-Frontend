@@ -1,88 +1,131 @@
-import Image from "next/image";
-import Link from "next/link";
-import { getCategoryBlogs } from "@/lib/api/public/categoryBlogs.api";
+import { notFound } from "next/navigation";
 
-export default async function CategoryPage({
-  params,
-}: {
-  params: Promise<{ citySlug: string; categorySlug: string }>;
-}) {
-  const { citySlug, categorySlug } = await params;
+type Props = {
+  params: {
+    citySlug: string;
+    categorySlug: string;
+  };
+};
 
-  const data = await getCategoryBlogs(citySlug, categorySlug);
+async function getCategoryContent(citySlug: string, categorySlug: string) {
+
+  const API = process.env.NEXT_PUBLIC_API_URL;
+
+  const res = await fetch(
+    `${API}/cities/${citySlug}/categories/${categorySlug}/contents`,
+    {
+      next: { revalidate: 60 },
+    }
+  );
+
+  if (!res.ok) return null;
+
+  const data = await res.json();
+
+  return data.data;
+}
+
+export default async function CategoryPage({ params }: Props) {
+
+  const data = await getCategoryContent(
+    params.citySlug,
+    params.categorySlug
+  );
 
   if (!data) {
-    return (
-      <main className="max-w-4xl mx-auto py-20 px-6 text-center">
-        <h1 className="text-3xl font-semibold">Category not found</h1>
-      </main>
-    );
+    return notFound();
   }
 
-  const blogs = data.blogs ?? [];
-  const featured = data.featured;
-
-  if (blogs.length === 0 && !featured) {
-    return (
-      <main className="max-w-4xl mx-auto py-20 px-6 text-center">
-        <h1 className="text-3xl font-semibold">No blogs found in category</h1>
-      </main>
-    );
-  }
+  const { city, category, overview, listings } = data;
 
   return (
-    <main className="max-w-5xl mx-auto py-20 px-6">
-      <div className="space-y-20">
 
-        {/* Featured */}
-        {featured && (
-          <div>
-            <Link href={`/cities/${citySlug}/${categorySlug}/${featured.slug}`}>
-              <div className="relative w-full h-[460px] rounded-3xl overflow-hidden mb-8">
-                <Image
-                  src={featured.coverImage || "/placeholder.jpg"}
-                  alt={featured.title}
-                  fill
-                  priority
-                  className="object-cover"
-                />
+    <main className="max-w-6xl mx-auto px-6 py-16 space-y-16" data-nav="light">
+
+      {/* Category Title */}
+
+      <header>
+
+        <h1 className="text-4xl font-bold text-white">
+
+          {category.name} in {city.cityName}
+
+        </h1>
+
+      </header>
+
+      {/* Overview */}
+
+      {overview && (
+
+        <section>
+
+          <div
+            className="prose prose-invert max-w-none"
+            dangerouslySetInnerHTML={{
+              __html: overview.description,
+            }}
+          />
+
+        </section>
+
+      )}
+
+      {/* Listings */}
+
+      {listings?.length > 0 && (
+
+        <section>
+
+          <h2 className="text-2xl font-semibold text-white mb-8">
+
+            Listings
+
+          </h2>
+
+          <div className="grid md:grid-cols-3 gap-6">
+
+            {listings.map((listing: any) => (
+
+              <div
+                key={listing._id}
+                className="bg-white/5 border border-white/10 rounded-xl overflow-hidden"
+              >
+
+                {listing.image && (
+
+                  <img
+                    src={listing.image}
+                    alt={listing.title}
+                    className="w-full h-48 object-cover"
+                  />
+
+                )}
+
+                <div className="p-5">
+
+                  <h3 className="text-lg font-semibold text-white">
+                    {listing.title}
+                  </h3>
+
+                  {listing.address && (
+                    <p className="text-sm text-white/60 mt-2">
+                      {listing.address}
+                    </p>
+                  )}
+
+                </div>
+
               </div>
-            </Link>
 
-            <Link href={`/cities/${citySlug}/${categorySlug}/${featured.slug}`}>
-              <h2 className="text-4xl font-semibold mb-4 hover:text-emerald-600">
-                {featured.title}
-              </h2>
-            </Link>
+            ))}
+
           </div>
-        )}
 
-        {/* Blog list */}
-        {blogs.map((blog) => (
-          <div key={blog._id}>
-            <Link href={`/cities/${citySlug}/${categorySlug}/${blog.slug}`}>
-              <div className="relative w-full h-[420px] rounded-3xl overflow-hidden mb-8">
-                <Image
-                  src={blog.coverImage || "/placeholder.jpg"}
-                  alt={blog.title}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            </Link>
+        </section>
 
-            <Link href={`/cities/${citySlug}/${categorySlug}/${blog.slug}`}>
-              <h2 className="text-3xl font-semibold mb-4 hover:text-emerald-600">
-                {blog.title}
-              </h2>
-            </Link>
+      )}
 
-            {blog.excerpt && (
-              <p className="text-gray-600 text-lg">{blog.excerpt}</p>
-            )}
-          </div>
-        ))}
-      </div>
     </main>
   );
 }

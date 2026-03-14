@@ -2,9 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import toast from "react-hot-toast";
-import SectionsList from "@/components/admin/city-blog/SectionsList";
-import type { CityBlogSection } from "@/lib/types/city-blog";
+import Link from "next/link";
 
 type Category = {
   _id: string;
@@ -12,7 +10,7 @@ type Category = {
   slug: string;
 };
 
-export default function CategoryBlogPage() {
+export default function CategoryDashboard() {
   const { cityId, categoryId } = useParams<{
     cityId: string;
     categoryId: string;
@@ -21,118 +19,108 @@ export default function CategoryBlogPage() {
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   const [category, setCategory] = useState<Category | null>(null);
-  const [sections, setSections] = useState<CityBlogSection[]>([]);
   const [loading, setLoading] = useState(true);
 
   /* ======================================================
-     FETCH CATEGORY + BLOG
+     FETCH SINGLE CATEGORY
   ====================================================== */
+
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchCategory = async () => {
       try {
-        if (!API_URL) return;
-
-        // 1️⃣ Fetch category info
-        const catRes = await fetch(
+        const res = await fetch(
           `${API_URL}/admin/cities/${cityId}/categories/${categoryId}`,
-          { credentials: "include" }
+          {
+            credentials: "include",
+          }
         );
 
-        const catData = await catRes.json();
+        const data = await res.json();
 
-        if (!catRes.ok) {
-          toast.error(catData?.message || "Failed to load category");
-          return;
-        }
-
-        setCategory(catData.category);
-
-        // 2️⃣ Fetch category blog
-        const blogRes = await fetch(
-          `${API_URL}/admin/cities/${cityId}/categories/${categoryId}/blog`,
-          { credentials: "include" }
-        );
-
-        const blogData = await blogRes.json();
-
-        if (blogRes.ok) {
-          setSections(blogData.sections || []);
-        }
-      } catch {
-        toast.error("Failed to load category blog");
+        // Adjust depending on API response
+        setCategory(data.data || data.category || data);
+      } catch (error) {
+        console.error("Failed to fetch category", error);
       } finally {
         setLoading(false);
       }
     };
 
-    if (cityId && categoryId) fetchData();
-  }, [cityId, categoryId]);
-
-  /* ======================================================
-     SAVE BLOG
-  ====================================================== */
-  const handleSave = async () => {
-    try {
-      const res = await fetch(
-        `${API_URL}/admin/cities/${cityId}/categories/${categoryId}/blog`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({ sections }),
-        }
-      );
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        toast.error(data?.message || "Save failed");
-        return;
-      }
-
-      toast.success("Category blog saved");
-    } catch {
-      toast.error("Failed to save blog");
-    }
-  };
-
-  /* ======================================================
-     RENDER
-  ====================================================== */
-  if (loading) {
-    return <div className="text-white/60">Loading...</div>;
-  }
-
-  if (!category) {
-    return <div className="text-red-400">Category not found</div>;
-  }
+    if (cityId && categoryId) fetchCategory();
+  }, [cityId, categoryId, API_URL]);
 
   return (
     <div className="space-y-10">
-      {/* Header */}
-      <div className="flex items-start justify-between">
-        <div>
-          <h1 className="text-3xl font-semibold text-white">
-            {category.name} Blog
-          </h1>
-          <p className="text-sm text-white/60 mt-2">
-            /{category.slug}
-          </p>
-        </div>
 
-        <button
-          onClick={handleSave}
-          className="px-5 py-2 rounded-lg bg-emerald-500 text-black font-semibold hover:bg-emerald-400"
-        >
-          Save Blog
-        </button>
+      {/* HEADER */}
+
+      <div>
+        <h1 className="text-3xl font-semibold text-white">
+          {loading ? "Loading..." : category?.name || "Category"}
+        </h1>
+
+        <p className="text-sm text-white/60 mt-2">
+          {loading
+            ? "Fetching category details..."
+            : `Manage overview and listings for the ${category?.name} page`}
+        </p>
       </div>
 
-      {/* Sections Editor */}
-      <SectionsList
-        sections={sections}
-        setSections={setSections}
-      />
+      {/* OVERVIEW */}
+
+      <div className="bg-white/5 border border-white/10 rounded-xl p-6">
+
+        <h2 className="text-lg text-white font-semibold">
+          Overview
+        </h2>
+
+        <p className="text-sm text-white/60 mt-2">
+          Edit the overview content shown at the top of the category page.
+        </p>
+
+        <Link
+          href={`/admin/cities/${cityId}/categories/${categoryId}/overview`}
+          className="inline-block mt-4 px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white text-sm"
+        >
+          Edit Overview
+        </Link>
+
+      </div>
+
+      {/* LISTINGS */}
+
+      <div className="bg-white/5 border border-white/10 rounded-xl p-6">
+
+        <div className="flex items-center justify-between">
+
+          <div>
+            <h2 className="text-lg text-white font-semibold">
+              Listings
+            </h2>
+
+            <p className="text-sm text-white/60 mt-2">
+              Manage listings such as restaurants or businesses.
+            </p>
+          </div>
+
+          <Link
+            href={`/admin/cities/${cityId}/categories/${categoryId}/listings/create`}
+            className="px-4 py-2 rounded-lg bg-emerald-500 text-black text-sm font-semibold hover:bg-emerald-400"
+          >
+            + Add Listing
+          </Link>
+
+        </div>
+
+        <Link
+          href={`/admin/cities/${cityId}/categories/${categoryId}/listings`}
+          className="inline-block mt-4 text-sm text-blue-400 hover:underline"
+        >
+          View Listings →
+        </Link>
+
+      </div>
+
     </div>
   );
 }
