@@ -138,7 +138,7 @@ export default function CityDashboardPage() {
             href={`/admin/cities/${cityId}/blog`}
             className="px-4 py-2 rounded-lg bg-blue-500/20 hover:bg-blue-500/30 text-blue-200 text-sm"
           >
-            Manage Blog
+            Manage city Guide
           </Link>
 
           <Link

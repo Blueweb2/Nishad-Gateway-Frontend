@@ -68,14 +68,14 @@ export default function EntityTableSection({
           >
             {entityTableHeading || "All Entity Types at a Glance"}
           </motion.h2>
-          <motion.p 
+          <motion.div
             initial={{ x: 300, opacity: 0 }}
             whileInView={{ x: 0, opacity: 1 }}
             transition={{ duration: 1.5, ease: "easeOut" }}
             className="text-sm md:text-base text-white/50 mt-2"
           >
             Compare ownership, capital, setup time and regulatory requirements.
-          </motion.p>
+          </motion.div>
         </div>
 
         {/* Table Wrapper */}

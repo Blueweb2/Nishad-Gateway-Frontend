@@ -43,7 +43,7 @@ export default function InvestmentHighlightsSection({
       <div className="w-full max-w-8xl mx-auto px-6 md:px-10">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-10">
           <div className="flex items-start gap-6">
-            <motion.h2 
+            <motion.h2
               initial={{ x: -120, opacity: 0 }}
               whileInView={{ x: 0, opacity: 1 }}
               viewport={{ once: true, amount: 0.4 }}
@@ -55,16 +55,23 @@ export default function InvestmentHighlightsSection({
             </motion.h2>
           </div>
 
-          <motion.p
-            initial={{ x: 120, opacity: 0 }}
+          <motion.div
+            initial={{ x: -40, opacity: 0 }}
             whileInView={{ x: 0, opacity: 1 }}
             viewport={{ once: true, amount: 0.4 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="text-lg text-gray-500 leading-relaxed max-w-xl"
           >
-            {description ||
-              "Lorem Ipsum is simply dummy text of the printing and typesetting industry."}
-          </motion.p>
+            <div
+              className="rich-text text-lg text-gray-500 leading-relaxed max-w-xl"
+              dangerouslySetInnerHTML={{
+               __html:
+  description?.trim()
+    ? description
+    : "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+              }}
+            />
+          </motion.div>
+
         </div>
       </div>
 
@@ -77,7 +84,8 @@ export default function InvestmentHighlightsSection({
             forceToAxis: true,
             sensitivity: 1,
           }}
-          loop={true}
+          freeMode={true}
+          loop
           slidesPerView="auto"
           grabCursor
           className="relative w-full h-[420px] md:h-[460px] lg:h-[520px]"
@@ -114,10 +122,9 @@ export default function InvestmentHighlightsSection({
                 <div
                   className={`
                     absolute
-                    ${
-                      isEven
-                        ? "right-0 top-6 md:top-8 lg:top-10"
-                        : "right-0 bottom-6 md:bottom-8 lg:bottom-10"
+                    ${isEven
+                      ? "right-0 top-6 md:top-8 lg:top-10"
+                      : "right-0 bottom-6 md:bottom-8 lg:bottom-10"
                     }
                     z-10
                     w-[200px]
@@ -164,21 +171,20 @@ export default function InvestmentHighlightsSection({
                       >
                         <Plus
                           size={16}
-                          className={`text-green-600 transition-transform duration-300 ${
-                            expandedIndex === index ? "rotate-45" : ""
-                          }`}
+                          className={`text-green-600 transition-transform duration-300 ${expandedIndex === index ? "rotate-45" : ""
+                            }`}
                         />
                       </button>
                     </div>
 
                     <AnimatePresence>
-                      {expandedIndex === index && slide.subText && (
+                      {expandedIndex === index && slide.subText?.trim() && (
                         <motion.div
                           initial={{ opacity: 0, y: 40 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: 30 }}
                           transition={{ duration: 0.4, ease: "easeOut" }}
-                          className="mt-4 md:mt-5 lg:mt-6 text-xs md:text-sm text-gray-600 leading-relaxed"
+                          className="mt-4 rich-text md:mt-5 lg:mt-6 text-xs md:text-sm text-gray-600 leading-relaxed"
                           dangerouslySetInnerHTML={{ __html: slide.subText }}
                         />
                       )}

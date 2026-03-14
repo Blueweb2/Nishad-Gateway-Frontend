@@ -61,7 +61,7 @@ const slides = [
   },
 
   {
-    src: "/buisnessgrowth/Ownership-and-Capital-Rules.jpg",
+    src: "/buisnessgrowth/Ownership-and-Capital-Rules.webp",
     alt: "Ownership & Capital Rules",
     title: "Ownership & Capital Rules",
     description: (
@@ -109,7 +109,7 @@ const slides = [
   },
 
   {
-    src: "/buisnessgrowth/Setup-Timeline.jpg",
+    src: "/buisnessgrowth/Setup-Timeline.webp",
     alt: "Setup Timeline",
     title: "Setup Timeline (Step-by-Step)",
     description: (

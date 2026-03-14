@@ -38,25 +38,31 @@ export default function HeroSection({ content }: Props) {
           <div className="relative z-10 h-full flex items-center ">
             <div className="mt-20 pl-4 pb-10 lg:pb-0 lg:pl-12 lg:mt-0">
 
-              <motion.h1 
+              <motion.h1
                 initial={{ x: 120, opacity: 0 }}
                 whileInView={{ x: 0, opacity: 1 }}
                 viewport={{ once: true, amount: 0.4 }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
-                className="text-5xl md:text-6xl font-semibold leading-none mb-6 mt-5 text-white"
-              >
-                {content.heading}
-              </motion.h1>
+                className="rich-text text-5xl md:text-6xl font-semibold leading-none mb-6 mt-5 text-white"
+                dangerouslySetInnerHTML={{
+                  __html: content.heading?.trim()
+                    ? content.heading
+                    : "Default Heading Text",
+                }}
+              />
 
-              <motion.p 
-                initial={{ x: -120, opacity: 0 }}
+              <motion.div
+                initial={{ x: 120, opacity: 0 }}
                 whileInView={{ x: 0, opacity: 1 }}
                 viewport={{ once: true, amount: 0.4 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-                className="text-lg md:text-xl text-white/90 max-w-xl leading-none"
-              >
-                {content.subheading}
-              </motion.p>
+                transition={{ duration: 0.9, ease: "easeIn" }}
+                className="rich-text text-lg md:text-xl text-white/90 max-w-xl leading-none"
+                dangerouslySetInnerHTML={{
+                  __html: content.subheading?.trim()
+                    ? content.subheading
+                    : "",
+                }}
+              />
 
               {content.ctaText && content.ctaLink && (
                 isExternal ? (

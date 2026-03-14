@@ -18,27 +18,33 @@ export default function BusinessSetupOptionsSection({
     <section className="py-[clamp(60px,8vw,120px)] bg-[#f4f4f4] text-center" data-navbar="light">
       <div className="max-w-[1400px] mx-auto px-[clamp(16px,4vw,40px)]">
 
-        {/* Heading */}
-        <motion.h2 
-          initial={{ y: -120, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="font-bold mb-6 text-[clamp(1.8rem,3.5vw,2.5rem)]"
-        >
-          {heading}
-        </motion.h2>
+{/* Heading */}
+<motion.h2
+  initial={{ y: -120, opacity: 0 }}
+  whileInView={{ y: 0, opacity: 1 }}
+  viewport={{ once: true, amount: 0.4 }}
+  transition={{ duration: 0.8, ease: "easeOut" }}
+  className="rich-text font-bold mb-6 text-[clamp(1.8rem,3.5vw,2.5rem)]"
+  dangerouslySetInnerHTML={{
+    __html: heading?.trim()
+      ? heading
+      : "Business Setup Options",
+  }}
+/>
 
-        {/* Description */}
-        <motion.p
-          initial={{ y: 120, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="text-gray-600 mb-16 max-w-[clamp(300px,60vw,700px)] mx-auto text-[clamp(0.95rem,1.2vw,1.1rem)]"
-        >
-          {description}
-        </motion.p>
+{/* Description */}
+<motion.div
+  initial={{ y: -120, opacity: 0 }}
+  whileInView={{ y: 0, opacity: 1 }}
+  viewport={{ once: true, amount: 0.4 }}
+  transition={{ duration: 0.8, ease: "easeOut" }}
+  className="rich-text text-gray-600 mb-16 max-w-[clamp(300px,60vw,700px)] mx-auto text-[clamp(0.95rem,1.2vw,1.1rem)]"
+  dangerouslySetInnerHTML={{
+    __html: description?.trim()
+      ? description
+      : "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+  }}
+/>
 
         {/* Cards */}
         <div className="flex gap-[clamp(16px,2vw,32px)] overflow-x-auto pb-6 snap-x snap-mandatory hide-scrollbar">
@@ -112,9 +118,10 @@ export default function BusinessSetupOptionsSection({
 
         {/* Bottom Text */}
         {bottomText && (
-          <p className="mt-6 text-gray-600 max-w-[clamp(300px,65vw,800px)] mx-auto text-[clamp(0.9rem,1.1vw,1rem)]">
-            {bottomText}
-          </p>
+          <div
+            className="rich-text mt-6 text-gray-600 max-w-[clamp(300px,65vw,800px)] mx-auto text-[clamp(0.9rem,1.1vw,1rem)]"
+            dangerouslySetInnerHTML={{ __html: bottomText }}
+          />
         )}
 
       </div>

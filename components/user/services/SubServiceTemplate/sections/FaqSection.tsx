@@ -106,7 +106,7 @@ export default function FaqSection({
                   
                   <AnimatePresence initial={false}>
                     {open && (
-                      <motion.p
+                      <motion.div
                         key="content"
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
@@ -115,7 +115,7 @@ export default function FaqSection({
                         className="mt-3 text-sm text-gray-600 leading-relaxed max-w-xl overflow-hidden"
                       >
                         {faq.a}
-                      </motion.p>
+                      </motion.div>
                     )}
                   </AnimatePresence>
                 </div>

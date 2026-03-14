@@ -215,7 +215,7 @@ export default function CaseStudies() {
             </div>
 
             <AnimatePresence mode="wait">
-              <motion.p
+              <motion.div
                 key={activeIndex}
                 initial={{ opacity: 0, x: 100 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -224,7 +224,7 @@ export default function CaseStudies() {
                 className="text-gray-500 leading-relaxed max-w-sm h-[95px] lg:h-[170px] mt-3 flex items-start lg:items-end"
               >
                 {activeSlide.description}
-              </motion.p>
+              </motion.div>
             </AnimatePresence>
 
             <a 
