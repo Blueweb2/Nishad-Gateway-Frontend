@@ -1,5 +1,7 @@
+"use client"
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
 import type { LandmarksSectionContent } from "@/lib/types/city-blog";
 
 type Props = {
@@ -13,9 +15,15 @@ export default function LandmarksSection({ content }: Props) {
 
         {/* LEFT SIDE */}
         <div className="flex flex-col justify-between">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold leading-tight max-w-md">
+          <motion.h2
+            initial={{ x: -120, opacity: 0 }}
+            whileInView={{ x: 0, opacity: 1 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="text-3xl md:text-4xl lg:text-5xl font-semibold leading-tight max-w-md"
+          >
             {content.heading}
-          </h2>
+          </motion.h2>
 
           {content.ctaText && content.ctaLink && (
             <Link

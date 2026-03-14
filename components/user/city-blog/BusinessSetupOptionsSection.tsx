@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
 import type { BusinessSetupOptionsContent } from "@/lib/types/city-blog";
 
 type Props = BusinessSetupOptionsContent;
@@ -18,14 +19,26 @@ export default function BusinessSetupOptionsSection({
       <div className="max-w-[1400px] mx-auto px-[clamp(16px,4vw,40px)]">
 
         {/* Heading */}
-        <h2 className="font-bold mb-6 text-[clamp(1.8rem,3.5vw,2.5rem)]">
+        <motion.h2 
+          initial={{ y: -120, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="font-bold mb-6 text-[clamp(1.8rem,3.5vw,2.5rem)]"
+        >
           {heading}
-        </h2>
+        </motion.h2>
 
         {/* Description */}
-        <p className="text-gray-600 mb-16 max-w-[clamp(300px,60vw,700px)] mx-auto text-[clamp(0.95rem,1.2vw,1.1rem)]">
+        <motion.p
+          initial={{ y: 120, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="text-gray-600 mb-16 max-w-[clamp(300px,60vw,700px)] mx-auto text-[clamp(0.95rem,1.2vw,1.1rem)]"
+        >
           {description}
-        </p>
+        </motion.p>
 
         {/* Cards */}
         <div className="flex gap-[clamp(16px,2vw,32px)] overflow-x-auto pb-6 snap-x snap-mandatory hide-scrollbar">

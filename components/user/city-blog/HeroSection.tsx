@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 import type { HeroSectionContent } from "@/lib/types/city-blog";
 
@@ -37,13 +38,25 @@ export default function HeroSection({ content }: Props) {
           <div className="relative z-10 h-full flex items-center ">
             <div className="mt-20 pl-4 pb-10 lg:pb-0 lg:pl-12 lg:mt-0">
 
-              <h1 className="text-5xl md:text-6xl font-semibold leading-none mb-6 mt-5 text-white">
+              <motion.h1 
+                initial={{ x: 120, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                viewport={{ once: true, amount: 0.4 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                className="text-5xl md:text-6xl font-semibold leading-none mb-6 mt-5 text-white"
+              >
                 {content.heading}
-              </h1>
+              </motion.h1>
 
-              <p className="text-lg md:text-xl text-white/90 max-w-xl leading-none">
+              <motion.p 
+                initial={{ x: -120, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                viewport={{ once: true, amount: 0.4 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                className="text-lg md:text-xl text-white/90 max-w-xl leading-none"
+              >
                 {content.subheading}
-              </p>
+              </motion.p>
 
               {content.ctaText && content.ctaLink && (
                 isExternal ? (

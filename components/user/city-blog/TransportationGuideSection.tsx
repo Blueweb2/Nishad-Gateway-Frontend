@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
 
 import type { TransportationGuideSectionContent } from "@/lib/types/city-blog";
 import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
@@ -42,9 +43,15 @@ export default function TransportationGuideSection({ content }: Props) {
         <div>
 
           {/* Heading */}
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[3.2vw] font-medium tracking-wide mb-6 md:mb-[4vh]">
+          <motion.h2
+            initial={{ x: -120, opacity: 0 }}
+            whileInView={{ x: 0, opacity: 1 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-[3.2vw] font-medium tracking-wide mb-6 md:mb-[4vh]"
+          >
             {content.heading}
-          </h2>
+          </motion.h2>
 
           {/* Tabs */}
           <div className="flex flex-wrap md:flex-nowrap gap-4 md:gap-[3vw] text-sm md:text-[0.95vw] font-light tracking-wide">
@@ -74,9 +81,16 @@ export default function TransportationGuideSection({ content }: Props) {
           <div className="flex flex-col sm:flex-row sm:items-end gap-6 sm:gap-[2vw]">
 
             {/* Slide Title */}
-            <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-[4.5vw] font-extralight leading-tight max-w-full sm:max-w-[60vw] lg:max-w-[50vw]">
+            <motion.h3
+              key={activeSlide.title}
+              initial={{ x: -120, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-[4.5vw] font-extralight leading-tight max-w-full sm:max-w-[60vw] lg:max-w-[50vw]"
+            >
               {activeSlide.title}
-            </h3>
+            </motion.h3>
 
             {/* Arrow */}
             <Link

@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 
 type Props = {
@@ -53,11 +54,17 @@ export default function VisionSection({
 
         {/* LEFT */}
         <div>
-          <h2 className="text-4xl md:text-5xl font-bold leading-tight mb-8">
+          <motion.h2 
+            initial={{ x: -120, opacity: 0 }}
+            whileInView={{ x: 0, opacity: 1 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="text-4xl md:text-5xl font-bold leading-tight mb-8"
+          >
             {heading}
-          </h2>
+          </motion.h2>
 
-          <div
+          <div 
             ref={contentRef}
             className="rich-text text-gray-300 leading-relaxed space-y-6"
             dangerouslySetInnerHTML={{ __html: content || "" }}

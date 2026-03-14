@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useRef } from "react";
+import { motion } from "framer-motion";
 import type { InfrastructureSectionContent } from "@/lib/types/city-blog";
 import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 import OvalArrow from "@/components/user/ui/OvalArrow";
@@ -85,19 +86,24 @@ export default function InfrastructureSection({ content }: Props) {
         <div className="flex flex-col lg:flex-row lg:items-start gap-10 lg:gap-16 mb-14 lg:mb-20 relative">
 
           {/* LEFT TITLE */}
-          <div>
-            <span className="text-white/60 text-xs md:text-sm mb-3 md:mb-4 block">
-              01 | {String(content.slides.length).padStart(2, "0")}
-            </span>
-
+          <motion.div
+            initial={{ x: -120, opacity: 0 }}
+            whileInView={{ x: 0, opacity: 1 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold max-w-xl leading-tight">
               {content.heading}
             </h2>
-          </div>
+          </motion.div>
 
           {/* DESCRIPTION */}
-          <div
-            className="text-white/70 max-w-md text-xs sm:text-sm leading-relaxed rich-text lg:mt-10"
+          <motion.div
+            initial={{ x: 120, opacity: 0 }}
+            whileInView={{ x: 0, opacity: 1 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="text-white/70 max-w-md text-xs sm:text-sm leading-relaxed rich-text"
             dangerouslySetInnerHTML={{
               __html: content.description || "",
             }}
