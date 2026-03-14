@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import OvalArrow from "@/components/user/ui/OvalArrow";
 import Link from "next/link";
+import { once } from "events";
 
 
 const slides = [
@@ -167,10 +168,22 @@ export default function WhySaudi() {
 
         {/* Left Title */}
         <div className="text-center md:text-left">
-          <p className="text-lg md:text-2xl font-semibold">Why</p>
-          <h2 className="text-3xl md:text-5xl font-bold leading-tight">
+          <motion.p
+            initial={{ opacity: 0, y: -60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="text-lg md:text-2xl font-semibold"
+          >Why</motion.p>
+          <motion.h2
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="text-3xl md:text-5xl font-bold leading-tight"
+          >
             Saudi Arabia
-          </h2>
+          </motion.h2>
         </div>
 
         {/* Slide Content */}
@@ -204,7 +217,7 @@ export default function WhySaudi() {
                   {slides[index].title}
                 </h3>
 
-                <p className="text-gray-600 leading-tight text-base md:text-lg h-[90px] md:h-auto">
+                <p className="text-gray-600 leading-tight text-base md:text-lg h-[90px] md:h-[250px] lg:h-[150px]">
                   {slides[index].content}
                 </p>
               </div>

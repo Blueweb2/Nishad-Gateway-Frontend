@@ -41,7 +41,7 @@ export default function KeyServices() {
         {/* HEADER */}
         <div className="flex items-center justify-between mb-8 lg:mb-16">
           <FadeUpScroll delay={0.1}>
-            <h2 className="text-[30px] font-semibold">
+            <h2 className="text-2xl sm:text-3xl lg:text-[38px] font-bold leading-tight">
               Top Investment Sectors in Saudi Arabia
             </h2>
           </FadeUpScroll>

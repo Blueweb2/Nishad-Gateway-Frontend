@@ -21,11 +21,12 @@ export default function Page() {
     <main className="w-full">
       <Navbar />
 
-      {/* Critical content */}
-      <HeroSection />
-
       {/* Lazy loaded sections */}
       <PreloaderProvider>
+
+        {/* Critical content */}
+        <HeroSection />
+
         <LazySection>
           <WhySaudi />
         </LazySection>

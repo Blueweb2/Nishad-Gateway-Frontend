@@ -64,9 +64,9 @@ export default function CitiesSection() {
   return (
     <section className="relative w-full" data-navbar="light">
 
-      {/* Slider Container */}
+      {/* Slider Container h-[100dvh]*/}
       <div
-        className="relative overflow-hidden h-[100dvh] lg:min-h-screen"
+        className="relative overflow-hidden h-[550px] lg:min-h-screen"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >

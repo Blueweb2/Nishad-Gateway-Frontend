@@ -51,7 +51,7 @@ className="relative w-full h-full text-white overflow-hidden">
           initial={{ opacity: 0, y: 60 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1 }}
-          className="text-center text-2xl md:text-3xl lg:text-[2.9vw] font-semibold mb-10 lg:mb-16"
+          className="text-center text-2xl sm:text-3xl lg:text-[38px] font-bold leading-tight mb-10 lg:mb-16"
         >
           Cities & Zones in Saudi Arabia
         </motion.h2>
