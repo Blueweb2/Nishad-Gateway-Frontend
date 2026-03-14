@@ -23,7 +23,7 @@ let ministries: Ministry[] = [];
         <div className="text-center mb-20">
 
           <FadeUpScroll delay={0.1}>
-            <h2 className="text-[42px] font-semibold mb-3">
+            <h2 className="mb-3 text-2xl sm:text-3xl lg:text-[38px] font-bold leading-tight">
               Ministries & Authorities
             </h2>
           </FadeUpScroll>

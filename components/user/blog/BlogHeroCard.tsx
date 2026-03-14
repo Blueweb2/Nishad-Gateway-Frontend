@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 
 export type BlogHero = {
   id: string;
@@ -53,10 +54,15 @@ export default function BlogHeroCard({ blog }: Props) {
 
       {/* Title */}
       <div className="w-full flex items-start justify-start mb-3">
-        <h3 className="pl-3 font-extrabold text-[18px] leading-5 w-[60%] text-gray-800 group-hover:text-gray-500    pb-3"
+        <motion.h3
+          initial={{ x: 80, opacity: 0 }}
+          whileInView={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          viewport={{ once: true }}
+          className="pl-3 font-extrabold text-[18px] leading-5 w-[60%] text-gray-800 group-hover:text-gray-500 pb-3"
         >
           {blog.title}
-        </h3>
+        </motion.h3>
       </div>
     </div>
   );

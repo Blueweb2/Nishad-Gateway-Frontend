@@ -3,8 +3,6 @@ import { getSectorBySlugPublic } from "@/lib/api/public/sectors.api";
 import SectorBlockRenderer from "@/components/user/sectors/SectorBlockRenderer";
 import { SectorBlock } from "@/lib/types/sector.types";
 import { getCities } from "@/lib/api/public/city.api";
-import { City } from "@/lib/types/city";
-import Stats from "@/components/user/home/Stats";
 import LocationsSliderSection from "@/components/user/ui/LocationsSliderSection";
 import MinistriesSection from "@/components/user/home/MinistriesSection";
 
@@ -74,11 +72,10 @@ export default async function SectorDetailPage({ params }: Props) {
         />
       )}
 
-      {/* <Stats /> */}
-<div className="w-full bg-black mx-auto">
+      <div className="w-full bg-black mx-auto">
         <MinistriesSection />
-  
-</div >
+      </div >
+      
       {/* 🔹 Render FAQ always at bottom */}
       {faqBlock && (
         <SectorBlockRenderer

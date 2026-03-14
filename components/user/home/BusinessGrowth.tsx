@@ -145,22 +145,22 @@ export default function BusinessGrowth() {
     <section
       data-navbar="light"
       data-menu="dark-text"
-      className="relative w-full bg-white text-black overflow-hidden flex flex-col justify-center pb-3 md:pb-12 pt-12 md:py-16"
+      className="relative w-full bg-white text-black overflow-hidden flex flex-col justify-center pb-3 lg:pb-12 pt-12 lg:py-16"
     >
 
       {/* ================= FULL-WIDTH CONTROLS ================= */}
-      <div className="absolute inset-x-0 top-20 md:top-0 h-full pointer-events-none z-20">
-        <div className="w-full h-full flex items-start sm:items-center justify-between px-2 sm:px-6 md:px-10">
+      <div className="absolute inset-x-0 top-20 lg:top-0 h-full pointer-events-none z-20">
+        <div className="w-full h-full flex items-start sm:items-center justify-between px-2 sm:px-6 lg:px-10">
 
           <div className="pointer-events-auto">
-            <div className="flex items-center gap-2 text-xs md:text-sm text-gray-400">
+            <div className="flex items-center gap-2 text-xs lg:text-sm text-gray-400">
               <span>{String(activeIndex + 1).padStart(2, "0")}</span>
               <span>|</span>
               <span>{String(slides.length).padStart(2, "0")}</span>
             </div>
           </div>
 
-          <div className="pointer-events-auto flex gap-3 md:gap-6">
+          <div className="pointer-events-auto flex gap-3 lg:gap-6">
             <OvalArrow
               direction="left"
               variant="gray"
@@ -181,24 +181,24 @@ export default function BusinessGrowth() {
 
         {/* HEADING mx-auto*/}
         <FadeUpScroll delay={0.2}>
-          <div className="max-w-3xl mx-20 md:mx-auto text-center mb-10 md:mb-16">
-            <h2 className="text-2xl sm:text-3xl md:text-[38px] font-bold leading-tight">
+          <div className="max-w-3xl mx-20 lg:mx-auto text-center mb-10 lg:mb-16">
+            <h2 className="text-2xl sm:text-3xl lg:text-[38px] font-bold leading-tight">
               How Business Works in Saudi Arabia
             </h2>
           </div>
         </FadeUpScroll>
 
         {/* GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-12 items-center">
 
           {/* LEFT COLUMN ( NOT MOBAIL VIEW ) */}
-          <div className="relative hidden md:block sm:h-[80px] md:min-h-[480px] text-center md:text-right">
+          <div className="relative hidden lg:block sm:h-[80px] lg:min-h-[480px] text-center lg:text-right">
 
-            <div className="hidden md:block absolute left-0 right-0 top-1/2 h-px bg-gray-200" />
+            <div className="hidden lg:block absolute left-0 right-0 top-1/2 h-px bg-gray-200" />
 
-            <div className="md:absolute md:top-1/2 md:right-0 md:-translate-y-full md:pb-6 w-full">
+            <div className="lg:absolute lg:top-1/2 lg:right-0 lg:-translate-y-full md:pb-6 w-full">
               <FadeUpScroll delay={0.3} key={activeIndex}>
-                <p className="text-xl sm:text-2xl md:text-[36px] font-medium text-[#287F7F] md:max-w-sm md:pr-24 leading-snug text-center md:text-left">
+                <p className="text-xl sm:text-2xl lg:text-[36px] font-medium text-[#287F7F] lg:max-w-sm lg:pr-24 leading-snug text-center lg:text-left">
                   {activeSlide.title}
                 </p>
               </FadeUpScroll>
@@ -223,7 +223,7 @@ export default function BusinessGrowth() {
               }}
               onSwiper={(swiper) => (swiperRef.current = swiper)}
               onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
-              className="w-full max-w-[280px] sm:max-w-[340px] md:max-w-[380px] h-[360px] sm:h-[420px] md:h-[500px]"
+              className="w-full max-w-[280px] sm:max-w-[340px] lg:max-w-[380px] h-[360px] sm:h-[420px] lg:h-[500px]"
             >
               {slides.map((slide, index) => (
                 <SwiperSlide key={index}>
@@ -243,19 +243,19 @@ export default function BusinessGrowth() {
 
             <Link
               href={activeSlide.link}
-              className="hidden md:inline-block text-sm text-green-600 underline underline-offset-4 pt-6 "
+              className="hidden lg:inline-block text-sm text-green-600 underline underline-offset-4 pt-6 "
             >
               {activeSlide.linkText}
             </Link>
 
             {/* HEADING (ONLY IN MOBILE) */}
-            <div className="relative  md:hidden sm:h-[80px] md:min-h-[480px] text-center md:text-right pt-6">
+            <div className="relative  lg:hidden sm:h-[80px] lg:min-h-[480px] text-center ;g:text-right pt-6">
 
-              <div className="hidden md:block absolute left-0 right-0 top-1/2 h-px bg-gray-200" />
+              <div className="hidden lg:block absolute left-0 right-0 top-1/2 h-px bg-gray-200" />
 
-              <div className="md:absolute md:top-1/2 md:right-0 md:-translate-y-full md:pb-6 w-full">
+              <div className="lg:absolute lg:top-1/2 lg:right-0 ;g:-translate-y-full lg:pb-6 w-full">
                 <FadeUpScroll delay={0.3} key={activeIndex}>
-                  <p className="text-xl sm:text-2xl md:text-[36px] font-medium text-[#287F7F] md:max-w-sm md:pr-24 leading-snug text-center md:text-center">
+                  <p className="text-xl sm:text-2xl lg:text-[36px] font-medium text-[#287F7F] lg:max-w-sm lg:pr-24 leading-snug text-center lg:text-center">
                     {activeSlide.title}
                   </p>
                 </FadeUpScroll>
@@ -266,13 +266,13 @@ export default function BusinessGrowth() {
           </div>
 
           {/* RIGHT COLUMN */}
-          <div className="relative min-h-[120px] md:min-h-[480px] text-center md:text-left">
+          <div className="relative min-h-[120px] lg:min-h-[480px] text-center lg:text-left">
 
-            <div className="hidden md:block absolute left-0 right-0 top-1/2 h-px bg-gray-200" />
+            <div className="hidden lg:block absolute left-0 right-0 top-1/2 h-px bg-gray-200" />
 
-            <div className="md:absolute md:top-1/2 md:-translate-y-full md:pb-6 w-full md:w-[75%]">
+            <div className="lg:absolute lg:top-1/2 lg:-translate-y-full lg:pb-6 w-full lg:w-[75%]">
               <FadeUpScroll delay={0.4} key={activeIndex + "desc"}>
-                <p className="text-gray-500 leading-relaxed max-w-md mx-auto md:mx-0 description-text">
+                <p className="text-gray-500 leading-relaxed h-[205px] lg:h-auto max-w-md mx-auto lg:mx-0 description-text">
                   {activeSlide.description}
                 </p>
               </FadeUpScroll>
@@ -283,7 +283,7 @@ export default function BusinessGrowth() {
           {/* LINK (ONLY DISPLAY IN MOBILE) */}
           <Link
             href={activeSlide.link}
-            className="inline-block md:hidden text-sm text-green-600 underline underline-offset-4 text-center mb-3"
+            className="inline-block lg:hidden text-sm text-green-600 underline underline-offset-4 text-center mb-3"
           >
             {activeSlide.linkText}
           </Link>

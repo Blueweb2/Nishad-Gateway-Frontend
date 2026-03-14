@@ -337,7 +337,7 @@ export default function Consultant() {
       {/* TOP BAR (ONLY SHOW IN MOBILE) */}
       <div className="w-full lg:hidden z-20 absolute top-12 flex flex-col gap-3 items-center justify-center">
         <h2
-          className="block w-full font-semibold text-3xl text-center"
+          className="block w-full text-center text-2xl sm:text-3xl font-bold leading-tight"
         >
           Confidence Beyond the Investment
         </h2>
@@ -419,14 +419,14 @@ export default function Consultant() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-16 items-center">
 
           {/* LEFT COLUMN */}
-          <div className="hidden lg:flex flex-col text-center lg:text-left h-full">
+          <div className="hidden lg:flex flex-col text-center justify-end lg:text-left h-full">
 
             <motion.h2
               initial={{ opacity: 0, y: 60 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.2 }}
               viewport={{ once: true }}
-              className="text-3xl md:text-4xl lg:text-[3vw] font-semibold  leading-tight mb-10 lg:mt-[-139px]"
+              className=" md:text-4xl lg:text-[3vw] mb-10 mt-[-139px] text-[38px] font-bold leading-tight"
             >
               Confidence <br />
               Beyond the <br />
@@ -489,8 +489,8 @@ export default function Consultant() {
 
           </div>
 
-          {/* RIGHT COLUMN 25%*/}
-          <div className="flex flex-col items-center justify-end lg:items-start text-center lg:text-left max-w-lg mx-auto lg:mx-0 h-full mt-[25%] lg:mt-auto">
+          {/* RIGHT COLUMN */}
+          <div className="flex flex-col items-center justify-end lg:items-start text-center lg:text-left max-w-lg mx-auto lg:mx-0 h-full mt-[25%] lg:mt-auto lg:h-[100px]">
 
             <AnimatePresence mode="wait">
               <motion.div
@@ -499,7 +499,7 @@ export default function Consultant() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -100 }}
               transition={{ duration: 0.5 }}
-              className="text-white/80 text-sm md:text-base lg:text-[1vw] leading-relaxed mb-6 h-[70px] lg:h-auto"
+              className="text-white/80 text-sm md:text-base lg:text-[1vw] leading-relaxed mb-6 h-[175px] lg:h-auto"
               >
                 {currentItem.description}
               </motion.div>

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, Send, Instagram, PhoneCall, Linkedin } from "lucide-react";
+import { ArrowLeft, Linkedin } from "lucide-react";
 import { FaInstagram, FaWhatsapp, FaTelegramPlane } from "react-icons/fa";
 
 export default function ContactPage() {

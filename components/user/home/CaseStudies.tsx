@@ -112,7 +112,7 @@ export default function CaseStudies() {
 
             {/* TOP — HEADING */}
             <FadeUpScroll delay={0.1}>
-              <h2 className="text-2xl sm:text-3xl lg:text-[36px] font-bold leading-tight">
+              <h2 className="text-2xl sm:text-3xl lg:text-[38px] font-bold leading-tight">
                 We're Trusted <br />
                 by 2500+ Clients
               </h2>

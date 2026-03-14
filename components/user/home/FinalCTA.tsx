@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { Send, Instagram, Linkedin } from "lucide-react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 export default function FinalCTA() {
   return (
@@ -15,11 +16,16 @@ export default function FinalCTA() {
 
           {/* LEFT TEXT */}
           <div className="lg:w-[280px] text-white leading-relaxed text-center lg:text-right lg:pr-5">
-            <p>
+            <motion.p
+              initial={{ x: -150, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              transition={{ duration: 1, ease: "easeOut" }}
+              viewport={{ once: true }}
+            >
               Company Formation in Saudi Arabia Starts Here. Expert guidance
               on business setup, foreign investment licensing, and ownership
               structuring in KSA.
-            </p>
+            </motion.p>
           </div>
 
 
