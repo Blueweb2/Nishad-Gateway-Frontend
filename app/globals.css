@@ -33,9 +33,6 @@ body {
   animation: borderPath 7.5s linear infinite;
 }
 
-
-
-
 /* sm: 360px   // Small Android
 md: 390px   // iPhone Pro
 lg: 412px   // Galaxy Ultra / Huawei
@@ -149,10 +146,6 @@ xl: 768px   // Fold / Tablet */
   transform-origin: left;
 }
 
-
-
-
-
 /* contact us  */
 @keyframes contactSheetReveal {
   from {
@@ -183,8 +176,6 @@ xl: 768px   // Fold / Tablet */
 .animate-contactSheetHide {
   animation: contactSheetHide 0.45s ease forwards;
 }
-
-
 
 /* Rich text animated underline */
 .rich-text a {
@@ -298,9 +289,6 @@ xl: 768px   // Fold / Tablet */
   }
 }
 
-
-
-
 /* ================= Fade Up Animation ================= */
 
 @keyframes fadeUp {
@@ -323,8 +311,6 @@ xl: 768px   // Fold / Tablet */
   animation: fadeUp 1s cubic-bezier(.22,1,.36,1) forwards;
 }
 
-
-
 .description-text {
   @apply text-base md:text-lg text-gray-600 leading-tight;
 }
@@ -340,15 +326,6 @@ xl: 768px   // Fold / Tablet */
   width: 0px;
   height: 0px;
 }
-
-/* .hide-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-.hide-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-} */
 
 @property --angle {
   syntax: "<angle>";
@@ -366,6 +343,3 @@ xl: 768px   // Fold / Tablet */
   --angle: 0deg;
   animation: borderFlow 3s linear infinite;
 }
-
-
-

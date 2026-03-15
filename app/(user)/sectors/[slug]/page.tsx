@@ -72,11 +72,10 @@ export default async function SectorDetailPage({ params }: Props) {
         />
       )}
 
-      {/* <Stats /> */}
-<div className="w-full bg-black mx-auto">
+      <div className="w-full bg-black mx-auto">
         <MinistriesSection />
-  
-</div >
+      </div >
+      
       {/* 🔹 Render FAQ always at bottom */}
       {faqBlock && (
         <SectorBlockRenderer
