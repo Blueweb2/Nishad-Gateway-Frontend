@@ -490,7 +490,7 @@ export default function Consultant() {
           </div>
 
           {/* RIGHT COLUMN */}
-          <div className="flex flex-col items-center justify-end lg:items-start text-center lg:text-left max-w-lg mx-auto lg:mx-0 h-full mt-[25%] lg:mt-auto lg:h-[100px]">
+          <div className="flex flex-col items-center justify-end lg:items-start text-center lg:text-left max-w-lg mx-auto lg:mx-0 h-full mt-[25%] lg:mt-auto lg:h-[250px]">
 
             <AnimatePresence mode="wait">
               <motion.div

@@ -1,9 +1,15 @@
+import dynamic from "next/dynamic";
 import Image from "next/image";
-import { getMinistryBySlug } from "@/lib/api/public/ministries.api";
 import { notFound } from "next/navigation";
-import BlockRenderer from "@/components/user/ministries/blocks/BlockRenderer";
-import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 import Link from "next/link";
+import Loading from "./loading";
+import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
+import { getMinistryBySlug } from "@/lib/api/public/ministries.api";
+
+const BlockRenderer = dynamic(
+  () => import("@/components/user/ministries/blocks/BlockRenderer"),
+  { loading: () => <Loading /> }
+);
 
 type Props = {
   params: Promise<{
