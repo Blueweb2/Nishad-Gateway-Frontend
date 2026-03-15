@@ -1,14 +1,28 @@
+import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 import { getSectorBySlugPublic } from "@/lib/api/public/sectors.api";
-import SectorBlockRenderer from "@/components/user/sectors/SectorBlockRenderer";
 import { SectorBlock } from "@/lib/types/sector.types";
 import { getCities } from "@/lib/api/public/city.api";
-import LocationsSliderSection from "@/components/user/ui/LocationsSliderSection";
-import MinistriesSection from "@/components/user/home/MinistriesSection";
+import Loading from "./loading";
+
+const LocationsSliderSection = dynamic(
+  () => import("@/components/user/ui/LocationsSliderSection"),
+  { loading: () => <Loading /> }
+);
+
+const MinistriesSection = dynamic(
+  () => import("@/components/user/home/MinistriesSection"),
+  { loading: () => <Loading /> }
+);
+
+const SectorBlockRenderer = dynamic(
+  () => import("@/components/user/sectors/SectorBlockRenderer"),
+  { loading: () => <Loading /> }
+);
 
 interface Props {
   params: Promise<{ slug: string }>;
-}
+};
 
 
 /* ================= SEO ================= */
@@ -23,7 +37,7 @@ export async function generateMetadata({ params }: Props) {
     title: sector.metaTitle || sector.title,
     description: sector.metaDescription || sector.excerpt,
   };
-}
+};
 
 /* ================= PAGE ================= */
 
