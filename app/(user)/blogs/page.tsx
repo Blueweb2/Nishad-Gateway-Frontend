@@ -1,5 +1,12 @@
-import BlogCardsGrid from "@/components/user/blog/BlogCardsGrid";
+import dynamic from "next/dynamic";
+import Link from "next/link";
 import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
+import Loading from "./loading";
+
+const BlogCardsGrid = dynamic(
+  () => import("@/components/user/blog/BlogCardsGrid"),
+  { loading: () => <Loading /> }
+);
 
 /* ================= TYPES ================= */
 
@@ -90,16 +97,19 @@ export default async function BlogsPage() {
             className="w-full h-[660px] object-cover"
           />
 
-          <div className="absolute inset-0 bg-black/40 flex flex-col justify-end p-10 text-white">
-            <p className="text-sm mb-2">
-              {heroBlog.publishedAt
-                ? new Date(heroBlog.publishedAt).toLocaleDateString()
-                : ""}
-            </p>
-            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold max-w-xl">
-              {heroBlog.title}
-            </h2>
-          </div>
+          <Link href={`/blogs/${heroBlog.slug}`}>
+            <div className="absolute inset-0 bg-black/40 flex flex-col justify-end p-10 text-white">
+              <p className="text-sm mb-2">
+                {heroBlog.publishedAt
+                  ? new Date(heroBlog.publishedAt).toLocaleDateString()
+                  : ""}
+              </p>
+              <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold max-w-xl">
+                {heroBlog.title}
+              </h2>
+            </div>
+          </Link>
+
         </div>
       </div>
 

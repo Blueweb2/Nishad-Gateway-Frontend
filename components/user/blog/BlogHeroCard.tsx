@@ -27,7 +27,7 @@ export default function BlogHeroCard({ blog }: Props) {
   return (
     <div 
       onClick={()=>handleClick(blog.id)}
-      className="flex flex-col items-center justify-between px-3 pt-5 group border-r border-gray-200"
+      className="flex flex-col items-center justify-between relative px-3 pt-5 group border-r lg:border-b border-gray-200"
     >
       
       {/* Tags */}

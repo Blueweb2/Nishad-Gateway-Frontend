@@ -18,6 +18,7 @@ type Props = {
 };
 
 export default function CitySlide({ city }: Props) {
+
   if (!city) {
     return (
       <div className="bg-red-500 text-white p-[2vw] text-center">
@@ -28,18 +29,19 @@ export default function CitySlide({ city }: Props) {
 
 
   return (
-<section
-  aria-label="Cities and zones in Saudi Arabia"
-className="relative w-full h-full text-white overflow-hidden">    
-      <div className="absolute inset-0 z-0">
-     <ParallaxImage
-  src={city.cityImage || "/citiesbg.webp"}
-  alt={city.cityName}
-  className="absolute inset-0"
-  priority
-  speed={160}
-/>
-      </div>
+    <section
+      aria-label="Cities and zones in Saudi Arabia"
+      className="relative w-full h-full text-white overflow-hidden">
+
+        <div className="absolute inset-0 z-0">
+          <ParallaxImage
+            src={city.cityImage || "/citiesbg.webp"}
+            alt={city.cityName}
+            className="absolute inset-0"
+            priority
+            speed={160}
+          />
+        </div>
 
       {/* Overlay */}
       <div className="absolute inset-0 z-10 bg-black/40" />
@@ -70,7 +72,7 @@ className="relative w-full h-full text-white overflow-hidden">
           </motion.h4>
 
           {/* Description */}
-          <div className="lg:col-span-2 lg:flex lg:justify-center">
+          <div className="lg:col-span-2 lg:flex">
             <motion.p
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
@@ -88,7 +90,7 @@ className="relative w-full h-full text-white overflow-hidden">
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="w-full h-px bg-white/20 mb-10"
+          className="w-full lg:w-[80%] h-px bg-white/20 mb-10"
         />
 
         {/* City Name + Arrow */}

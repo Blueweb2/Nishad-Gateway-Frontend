@@ -1,5 +1,11 @@
+import dynamic from "next/dynamic";
 import type { Metadata } from "next";
-import KsaExpansionCostCalculator from "@/components/user/calculator/KsaExpansionCostCalculator";
+import Loading from "./loading";
+
+const KsaExpansionCostCalculator = dynamic(
+  () => import("@/components/user/calculator/KsaExpansionCostCalculator"),
+  { loading: () => <Loading /> }
+);
 
 export const metadata: Metadata = {
   title: "KSA Business Setup Cost Calculator | Saudi Expansion Estimate | Nishad Gateway",

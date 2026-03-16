@@ -1,12 +1,11 @@
 "use client";
 
-import OvalArrow from "@/components/user/ui/OvalArrow";
 import Image from "next/image";
-
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectFade, Autoplay } from "swiper/modules";
 import { useRef, useState } from "react";
 import Link from "next/link";
+import OvalArrow from "@/components/user/ui/OvalArrow";
 import "swiper/css";
 import "swiper/css/effect-fade";
 import FadeUpScroll from "../ui/FadeUpScroll";
@@ -135,11 +134,11 @@ const slides = [
 ];
 
 export default function BusinessGrowth() {
+
   const swiperRef = useRef<any>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
   const activeSlide = slides[activeIndex];
-
 
   return (
     <section
@@ -189,14 +188,14 @@ export default function BusinessGrowth() {
         </FadeUpScroll>
 
         {/* GRID */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-12 items-center lg:items-end">
 
           {/* LEFT COLUMN ( NOT MOBAIL VIEW ) */}
           <div className="relative hidden lg:block sm:h-[80px] lg:min-h-[480px] text-center lg:text-right">
 
-            <div className="hidden lg:block absolute left-0 right-0 top-1/2 h-px bg-gray-200" />
+            <div className="hidden lg:block absolute left-0 right-0 top-1/2 h-px bg-gray-200 lg:mt-16" />
 
-            <div className="lg:absolute lg:top-1/2 lg:right-0 lg:-translate-y-full md:pb-6 w-full">
+            <div className="lg:absolute lg:top-1/2 lg:right-0 lg:-translate-y-full md:pb-6 w-full lg:mt-16">
               <FadeUpScroll delay={0.3} key={activeIndex}>
                 <p className="text-xl sm:text-2xl lg:text-[36px] font-medium text-[#287F7F] lg:max-w-sm lg:pr-24 leading-snug text-center lg:text-left">
                   {activeSlide.title}
@@ -268,9 +267,9 @@ export default function BusinessGrowth() {
           {/* RIGHT COLUMN */}
           <div className="relative min-h-[120px] lg:min-h-[480px] text-center lg:text-left">
 
-            <div className="hidden lg:block absolute left-0 right-0 top-1/2 h-px bg-gray-200" />
+            <div className="hidden lg:block absolute left-0 right-0 top-1/2 h-px bg-gray-200 lg:mt-16" />
 
-            <div className="lg:absolute lg:top-1/2 lg:-translate-y-full lg:pb-6 w-full lg:w-[75%]">
+            <div className="lg:absolute lg:top-1/2 lg:-translate-y-full lg:pb-6 w-full lg:w-[75%] lg:mt-16">
               <FadeUpScroll delay={0.4} key={activeIndex + "desc"}>
                 <p className="text-gray-500 leading-relaxed h-[205px] lg:h-auto max-w-md mx-auto lg:mx-0 description-text">
                   {activeSlide.description}

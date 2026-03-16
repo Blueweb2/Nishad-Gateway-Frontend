@@ -1,8 +1,22 @@
-import BlogCardsGrid from "@/components/user/blog/BlogCardsGrid";
-import BlogShare from "@/components/user/blog/BlogShare";
-import NewsletterSection from "@/components/user/shared/NewsletterSection";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import Loading from "../loading";
+
+const BlogCardsGrid = dynamic(
+  () => import("@/components/user/blog/BlogCardsGrid"),
+  { loading: () => <Loading /> }
+);
+
+const BlogShare = dynamic(
+  () => import("@/components/user/blog/BlogShare"),
+  { loading: () => <Loading /> }
+);
+
+const NewsletterSection = dynamic(
+  () => import("@/components/user/shared/NewsletterSection"),
+  { loading: () => <Loading /> }
+);
 
 /* ================= TYPES ================= */
 
