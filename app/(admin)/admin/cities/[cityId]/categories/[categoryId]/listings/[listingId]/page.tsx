@@ -4,68 +4,118 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import ListingForm from "@/components/admin/listings/ListingForm";
 import toast from "react-hot-toast";
+import { ListingInput } from "@/lib/types/listing.types";
+
 
 export default function EditListingPage() {
 
-  const { cityId, categoryId, listingId } = useParams<{
-    cityId: string;
-    categoryId: string;
-    listingId: string;
-  }>();
+  const params = useParams();
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  const cityId = params.cityId as string;
+  const categoryId = params.categoryId as string;
+  const listingId = params.listingId as string;
+
   const router = useRouter();
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-  const [listing, setListing] = useState<any>(null);
+  const [listing, setListing] = useState<ListingInput | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
 
     const fetchListing = async () => {
 
-      const res = await fetch(
-        `${API_URL}/admin/listings/${listingId}`,
-        { credentials: "include" }
-      );
+      try {
 
-      const data = await res.json();
+        const res = await fetch(
+          `${API_URL}/admin/contents/${listingId}`,
+          { credentials: "include" }
+        );
 
-      setListing(data.data);
+        const data = await res.json();
+
+        if (!res.ok) {
+          toast.error(data?.message || "Failed to load listing");
+          return;
+        }
+
+        setListing(data.data);
+
+      } catch {
+
+        toast.error("Failed to load listing");
+
+      } finally {
+
+        setLoading(false);
+
+      }
 
     };
 
-    fetchListing();
+    if (listingId) fetchListing();
 
   }, [listingId]);
 
-  const handleUpdate = async (data: any) => {
 
-    const res = await fetch(
-      `${API_URL}/admin/listings/${listingId}`,
-      {
-        method: "PUT",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      }
-    );
 
-    if (!res.ok) {
-      toast.error("Failed to update listing");
+  const handleUpdate = async (data: ListingInput): Promise<void> => {
+
+    if (!data.title.trim()) {
+      toast.error("Title is required");
       return;
     }
 
-    toast.success("Listing updated");
+    try {
 
-    router.push(
-      `/admin/cities/${cityId}/categories/${categoryId}/listings`
-    );
+      const res = await fetch(
+        `${API_URL}/admin/contents/${listingId}`,
+        {
+          method: "PUT",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            type: "listing",
+            ...data
+          })
+        }
+      );
+
+      const result = await res.json();
+
+      if (!res.ok) {
+        toast.error(result?.message || "Failed to update listing");
+        return;
+      }
+
+      toast.success("Listing updated");
+
+      router.push(
+        `/admin/cities/${cityId}/categories/${categoryId}`
+      );
+
+    } catch {
+
+      toast.error("Something went wrong");
+
+    }
+
   };
 
+
+
+  if (loading) {
+    return <div className="p-8 text-white/70">Loading listing...</div>;
+  }
+
   if (!listing) {
-    return <div className="text-white">Loading...</div>;
+    return <div className="p-8 text-white/70">Listing not found</div>;
   }
 
   return (
+
     <div className="max-w-3xl space-y-8">
 
       <h1 className="text-3xl font-semibold text-white">
@@ -78,5 +128,7 @@ export default function EditListingPage() {
       />
 
     </div>
+
   );
+
 }

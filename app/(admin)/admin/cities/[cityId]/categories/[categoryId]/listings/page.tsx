@@ -15,10 +15,10 @@ type Listing = {
 
 export default function ListingsManager() {
 
-  const { cityId, categoryId } = useParams<{
-    cityId: string;
-    categoryId: string;
-  }>();
+  const params = useParams();
+
+  const cityId = params.cityId as string;
+  const categoryId = params.categoryId as string;
 
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -29,41 +29,43 @@ export default function ListingsManager() {
      FETCH LISTINGS
   ====================================================== */
 
-  useEffect(() => {
+  const fetchListings = async () => {
 
-    const fetchListings = async () => {
+    try {
 
-      try {
+      const res = await fetch(
+        `${API_URL}/admin/categories/${categoryId}/contents`,
+        { credentials: "include" }
+      );
 
-        const res = await fetch(
-          `${API_URL}/admin/categories/${categoryId}/listings`,
-          { credentials: "include" }
-        );
+      const data = await res.json();
 
-        const data = await res.json();
-
-        if (!res.ok) {
-          toast.error(data?.message || "Failed to load listings");
-          return;
-        }
-
-        setListings(data.data || []);
-
-      } catch {
-
-        toast.error("Failed to load listings");
-
-      } finally {
-
-        setLoading(false);
-
+      if (!res.ok) {
+        toast.error(data?.message || "Failed to load listings");
+        return;
       }
 
-    };
+      setListings(Array.isArray(data.data) ? data.data : []);
+
+    } catch {
+
+      toast.error("Failed to load listings");
+
+    } finally {
+
+      setLoading(false);
+
+    }
+
+  };
+
+  useEffect(() => {
 
     if (categoryId) fetchListings();
 
   }, [categoryId]);
+
+
 
   /* ======================================================
      DELETE LISTING
@@ -76,15 +78,17 @@ export default function ListingsManager() {
     try {
 
       const res = await fetch(
-        `${API_URL}/admin/listings/${id}`,
+        `${API_URL}/admin/contents/${id}`,
         {
           method: "DELETE",
           credentials: "include",
         }
       );
 
+      const data = await res.json();
+
       if (!res.ok) {
-        toast.error("Failed to delete listing");
+        toast.error(data?.message || "Failed to delete listing");
         return;
       }
 
@@ -100,7 +104,10 @@ export default function ListingsManager() {
 
   };
 
+
+
   return (
+
     <div className="space-y-10">
 
       {/* Header */}
@@ -108,6 +115,7 @@ export default function ListingsManager() {
       <div className="flex items-center justify-between">
 
         <div>
+
           <h1 className="text-3xl font-semibold text-white">
             Listings
           </h1>
@@ -115,6 +123,7 @@ export default function ListingsManager() {
           <p className="text-sm text-white/60 mt-2">
             Manage listings for this category page.
           </p>
+
         </div>
 
         <Link
@@ -125,6 +134,7 @@ export default function ListingsManager() {
         </Link>
 
       </div>
+
 
       {/* Listings Table */}
 
@@ -147,16 +157,18 @@ export default function ListingsManager() {
           <table className="w-full">
 
             <thead className="bg-white/5 text-white/70 text-sm">
+
               <tr>
                 <th className="text-left p-4">Title</th>
                 <th className="text-left p-4">Address</th>
                 <th className="text-left p-4">Actions</th>
               </tr>
+
             </thead>
 
             <tbody>
 
-              {listings.map(listing => (
+              {listings.map((listing) => (
 
                 <tr
                   key={listing._id}
@@ -171,7 +183,7 @@ export default function ListingsManager() {
                     {listing.address || "-"}
                   </td>
 
-                  <td className="p-4 flex gap-4">
+                  <td className="p-4 flex items-center gap-4">
 
                     <Link
                       href={`/admin/cities/${cityId}/categories/${categoryId}/listings/${listing._id}`}
@@ -202,5 +214,7 @@ export default function ListingsManager() {
       </div>
 
     </div>
+
   );
+
 }

@@ -6,7 +6,7 @@ export const createListing = async (
 ) => {
 
   const res = await adminAxios.post(
-    `/admin/categories/${categoryId}/listings`,
+    `/admin/categories/${categoryId}/contents`,
     payload
   );
 
