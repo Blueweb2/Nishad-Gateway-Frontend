@@ -1,17 +1,31 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { Mail } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import { usePathname } from "next/navigation";
 
-import ServicesPopup from "./ServicesPopup";
-import BlogsPopup from "./BlogsPopup";
-import HamburgerMenu from "./HamburgerMenu";
-import ContactPopup from "./ContactPopup";
-import { ChevronDown } from "lucide-react";
-import CitiesPopup from "./CitiesPopup";
+const ServicesPopup = dynamic(() => import("./ServicesPopup"), {
+  loading: () => <div className="animate-spin h-5 w-5 border-2 border-gray-300 border-t-black rounded-full" />,
+});
+
+const BlogsPopup = dynamic(() => import("./BlogsPopup"), {
+  loading: () => <div className="animate-spin h-5 w-5 border-2 border-gray-300 border-t-black rounded-full" />,
+});
+
+const HamburgerMenu = dynamic(() => import("./HamburgerMenu"), {
+  loading: () => <div className="animate-spin h-5 w-5 border-2 border-gray-300 border-t-black rounded-full" />,
+});
+
+const ContactPopup = dynamic(() => import("./ContactPopup"), {
+  loading: () => <div className="animate-spin h-5 w-5 border-2 border-gray-300 border-t-black rounded-full" />,
+});
+
+const CitiesPopup = dynamic(() => import("./CitiesPopup"), {
+  loading: () => <div className="animate-spin h-5 w-5 border-2 border-gray-300 border-t-black rounded-full" />,
+});
 
 
 export default function Navbar() {
@@ -69,16 +83,6 @@ useEffect(() => {
     mutation.disconnect();
   };
 }, []);
-// useEffect(() => {
-//   const sections = document.querySelectorAll("[data-navbar]");
-
-//   console.log("Navbar script running");
-//   console.log("Sections found:", sections);
-
-//   sections.forEach((section) => {
-//     console.log("Section:", section.getAttribute("data-navbar"));
-//   });
-// }, []);
 
   //  close popups on route change
   useEffect(() => {

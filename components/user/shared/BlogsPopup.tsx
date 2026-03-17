@@ -197,6 +197,7 @@ export default function BlogsPopup({
                                                     className={`object-cover w-[120px] h-[150px] 
                                                         ${!open && 'hidden'}`}
                                                     priority
+                                                    loading="lazy"
                                                 />
                                             </motion.div>
                                         </div>

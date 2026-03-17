@@ -92,43 +92,50 @@ export default function ContactPopup({
     loadData();
   }, [open]);
 
-const handleSubmit = async () => {
-  try {
-    console.log("Submitting:", { name, phone, email, service, city });
+  // SUBMIT FORM
+  const handleSubmit = async (e?: React.MouseEvent) => {
+
+    e?.preventDefault();
 
     if (!name || !phone || !email) {
       toast.error("Please fill all required fields");
       return;
     }
 
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/contact`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          phone,
-          email,
-          service,
-          city,
-        }),
-      }
-    );
+    try {
+      setSending(true);
+      console.log("Submitting:", { name, phone, email, service, city });
 
-    console.log("Response status:", res.status);
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/contact`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name,
+            phone,
+            email,
+            service,
+            city,
+          }),
+        }
+      );
 
-    if (!res.ok) throw new Error();
+      console.log("Response status:", res.status);
 
-    toast.success("Message sent successfully");
+      if (!res.ok) throw new Error();
 
-  } catch (error) {
-    console.error(error);
-    toast.error("Failed to send message");
-  }
-};
+      toast.success("Message sent successfully");
+
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to send message");
+    } finally {
+      setSending(false);
+    }
+  };
 
 
   // ESC close
@@ -239,9 +246,6 @@ const handleSubmit = async () => {
 
 
             {/* Country of Interest */}
-
-
-
             <div className="relative mb-6">
 
 
@@ -274,8 +278,6 @@ const handleSubmit = async () => {
             <div className="flex justify-end">
               <button onClick={handleSubmit} disabled={sending} className="px-8 py-3 rounded-full bg-green-700 text-white text-sm font-medium hover:bg-green-600 transition">
                 {sending ? "Sending..." : "Apply Now"}
-
-                
               </button>
             </div>
           </div>

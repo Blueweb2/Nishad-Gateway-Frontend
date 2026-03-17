@@ -116,6 +116,7 @@ export default function CitiesPopup({
                       className=" overflow-hidden"
                     >
                       <Image
+                        priority
                         src={city.cityImage || "/citiesbg.webp"}
                         alt={city.cityName}
                         width={60}
