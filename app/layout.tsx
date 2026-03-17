@@ -2,6 +2,7 @@ import "./globals.css";
 import { Nunito_Sans } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import type { Metadata } from "next";
+import CookieBanner from "@/components/user/shared/CookieBanner";
 
 const nunito = Nunito_Sans({
   subsets: ["latin"],
@@ -41,6 +42,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${nunito.variable} w-full min-h-screen overflow-x-hidden`}>
         {children}
+        <CookieBanner/>
 
         {/* Toast container */}
         <Toaster
