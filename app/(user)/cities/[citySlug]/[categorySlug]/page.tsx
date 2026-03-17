@@ -1,88 +1,244 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
-import { getCategoryBlogs } from "@/lib/api/public/categoryBlogs.api";
 
-export default async function CategoryPage({
-  params,
-}: {
-  params: Promise<{ citySlug: string; categorySlug: string }>;
-}) {
-  const { citySlug, categorySlug } = await params;
+type Listing = {
+  _id: string;
+  title: string;
+  description?: string;
 
-  const data = await getCategoryBlogs(citySlug, categorySlug);
+  address?: string;
+  locationLabel?: string;
 
-  if (!data) {
+  phone?: string;
+  email?: string;
+  website?: string;
+
+  openingHours?: string;
+  orderInfo?: string;
+
+  rating?: number | null;
+  priceRange?: string;
+
+  coordinates?: {
+    lat?: number;
+    lng?: number;
+  };
+
+  coverImage?: string;
+  isFeatured?: boolean;
+};
+
+export default function CategoryPage() {
+
+  const { citySlug, categorySlug } = useParams();
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+  const [overview, setOverview] = useState<any>(null);
+  const [listings, setListings] = useState<Listing[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+
+    const fetchCategoryPage = async () => {
+
+      try {
+
+        const res = await fetch(
+          `${API_URL}/public/cities/${citySlug}/categories/${categorySlug}`
+        );
+
+        if (!res.ok) throw new Error("Failed to fetch category");
+
+        const data = await res.json();
+
+        setOverview(data.overview);
+        setListings(data.listings || []);
+
+      } catch (err: any) {
+
+        setError(err.message);
+
+      } finally {
+
+        setLoading(false);
+
+      }
+
+    };
+
+    if (citySlug && categorySlug) fetchCategoryPage();
+
+  }, [citySlug, categorySlug]);
+
+  if (loading) {
     return (
-      <main className="max-w-4xl mx-auto py-20 px-6 text-center">
-        <h1 className="text-3xl font-semibold">Category not found</h1>
-      </main>
+      <div className="p-10 text-center text-gray-500">
+        Loading category...
+      </div>
     );
   }
 
-  const blogs = data.blogs ?? [];
-  const featured = data.featured;
-
-  if (blogs.length === 0 && !featured) {
+  if (error) {
     return (
-      <main className="max-w-4xl mx-auto py-20 px-6 text-center">
-        <h1 className="text-3xl font-semibold">No blogs found in category</h1>
-      </main>
+      <div className="p-10 text-center text-red-500">
+        {error}
+      </div>
     );
   }
 
   return (
-    <main className="max-w-5xl mx-auto py-20 px-6">
-      <div className="space-y-20">
+    <div className="max-w-6xl mx-auto px-6 py-12 space-y-12">
 
-        {/* Featured */}
-        {featured && (
-          <div>
-            <Link href={`/cities/${citySlug}/${categorySlug}/${featured.slug}`}>
-              <div className="relative w-full h-[460px] rounded-3xl overflow-hidden mb-8">
-                <Image
-                  src={featured.coverImage || "/placeholder.jpg"}
-                  alt={featured.title}
-                  fill
-                  priority
-                  className="object-cover"
-                />
+      {/* Category Title */}
+
+      <h1 className="text-4xl font-bold capitalize">
+        {categorySlug}
+      </h1>
+
+      {/* Overview */}
+
+      {overview?.content && (
+        <div
+          className="prose max-w-none"
+          dangerouslySetInnerHTML={{ __html: overview.content }}
+        />
+      )}
+
+      {/* Listings */}
+
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+
+        {listings.map((listing) => (
+
+          <div
+            key={listing._id}
+            className="space-y-4"
+          >
+
+            {/* Image */}
+
+            {listing.coverImage && (
+
+              <div className="flex justify-center">
+
+                <div className="relative w-[180px] h-[220px] rounded-[90px] overflow-hidden">
+
+                  <Image
+                    src={listing.coverImage}
+                    alt={listing.title}
+                    fill
+                    className="object-cover"
+                  />
+
+                </div>
+
               </div>
-            </Link>
 
-            <Link href={`/cities/${citySlug}/${categorySlug}/${featured.slug}`}>
-              <h2 className="text-4xl font-semibold mb-4 hover:text-emerald-600">
-                {featured.title}
-              </h2>
-            </Link>
-          </div>
-        )}
-
-        {/* Blog list */}
-        {blogs.map((blog) => (
-          <div key={blog._id}>
-            <Link href={`/cities/${citySlug}/${categorySlug}/${blog.slug}`}>
-              <div className="relative w-full h-[420px] rounded-3xl overflow-hidden mb-8">
-                <Image
-                  src={blog.coverImage || "/placeholder.jpg"}
-                  alt={blog.title}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            </Link>
-
-            <Link href={`/cities/${citySlug}/${categorySlug}/${blog.slug}`}>
-              <h2 className="text-3xl font-semibold mb-4 hover:text-emerald-600">
-                {blog.title}
-              </h2>
-            </Link>
-
-            {blog.excerpt && (
-              <p className="text-gray-600 text-lg">{blog.excerpt}</p>
             )}
+
+            {/* Title */}
+
+            <div className="text-center space-y-2">
+
+              <h3 className="text-xl font-semibold">
+                {listing.title}
+              </h3>
+
+              {listing.isFeatured && (
+                <span className="text-xs bg-yellow-400 px-2 py-1 rounded">
+                  Featured
+                </span>
+              )}
+
+            </div>
+
+            {/* Description */}
+
+            {listing.description && (
+              <p className="text-sm text-gray-600 text-center">
+                {listing.description}
+              </p>
+            )}
+
+            {/* Info */}
+
+            <div className="text-sm text-gray-500 space-y-1 text-center">
+
+              {listing.orderInfo && (
+                <p>
+                  <b>Order:</b> {listing.orderInfo}
+                </p>
+              )}
+
+              {listing.openingHours && (
+                <p>
+                  <b>Opening hours:</b> {listing.openingHours}
+                </p>
+              )}
+
+              {listing.locationLabel && (
+                <p>
+                  📍 {listing.locationLabel}
+                </p>
+              )}
+
+              {listing.address && (
+                <p>
+                  📍 {listing.address}
+                </p>
+              )}
+
+              {listing.phone && (
+                <p>
+                  📞 {listing.phone}
+                </p>
+              )}
+
+              {listing.email && (
+                <p>
+                  ✉ {listing.email}
+                </p>
+              )}
+
+              {listing.website && (
+                <a
+                  href={
+                    listing.website.startsWith("http")
+                      ? listing.website
+                      : `https://${listing.website}`
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-green-600 hover:underline"
+                >
+                  {listing.website}
+                </a>
+              )}
+
+              {listing.rating && (
+                <p>
+                  ⭐ {listing.rating} / 5
+                </p>
+              )}
+
+              {listing.priceRange && (
+                <p>
+                  Price: {listing.priceRange}
+                </p>
+              )}
+
+            </div>
+
           </div>
+
         ))}
+
       </div>
-    </main>
+
+    </div>
   );
 }
