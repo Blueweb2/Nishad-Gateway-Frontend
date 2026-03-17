@@ -114,7 +114,7 @@ export default function FoodGuideSection({ content }: Props) {
 
                     {/* 🔥 Rich Description */}
                     <div
-                      className="text-sm text-white/60 max-w-md rich-text prose-invert prose-sm max-w-none"
+                      className="text-sm text-white/60 max-w-md rich-text-light prose-invert prose-sm max-w-none"
                       dangerouslySetInnerHTML={{
                         __html: item.description || "",
                       }}

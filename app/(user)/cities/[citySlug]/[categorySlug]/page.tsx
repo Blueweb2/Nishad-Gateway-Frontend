@@ -115,7 +115,7 @@ export default function CategoryPage() {
 
 {overview?.content && (
   <div
-    className="prose max-w-none"
+    className="rich-text-light max-w-none"
     dangerouslySetInnerHTML={{ __html: overview.content }}
   />
 )}
