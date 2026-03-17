@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import toast from "react-hot-toast";
 import RichTextEditor from "../common/RichTextEditor";
+import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
 
 export default function OverviewEditor() {
 
@@ -13,6 +14,7 @@ export default function OverviewEditor() {
   const [content, setContent] = useState("");
   const [coverImage, setCoverImage] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [coverImagePublicId, setCoverImagePublicId] = useState("");
 
   /* -------------------------------------------------------
      Fetch existing overview
@@ -33,10 +35,11 @@ export default function OverviewEditor() {
 
         const data = await res.json();
 
-        if (data?.overview) {
-          setContent(data.overview.content || "");
-          setCoverImage(data.overview.coverImage || "");
-        }
+    if (data?.overview) {
+  setContent(data.overview.content || "");
+  setCoverImage(data.overview.coverImage || "");
+  setCoverImagePublicId(data.overview.coverImagePublicId || "");
+}
 
       } catch (err) {
         toast.error("Failed to load overview");
@@ -52,44 +55,30 @@ export default function OverviewEditor() {
      Upload Cover Image
   ------------------------------------------------------- */
 
-  const handleImageUpload = async (e: any) => {
+const handleImageUpload = async (e: any) => {
 
-    const file = e.target.files?.[0];
-    if (!file) return;
+  const file = e.target.files?.[0];
+  if (!file) return;
 
-    const formData = new FormData();
-    formData.append("image", file);
-
+  try {
     setUploading(true);
 
-    try {
+    const res = await uploadToCloudinarySigned(
+      file,
+      "nishad-gateway/cities/categories/overview"
+    );
 
-      const res = await fetch(
-        `${API_URL}/admin/upload`,
-        {
-          method: "POST",
-          credentials: "include",
-          body: formData,
-        }
-      );
+    setCoverImage(res.secure_url);
+    setCoverImagePublicId(res.public_id);
 
-      const data = await res.json();
+    toast.success("Image uploaded");
 
-      if (data?.url) {
-        setCoverImage(data.url);
-        toast.success("Image uploaded");
-      } else {
-        toast.error("Upload failed");
-      }
+  } catch (err: any) {
+    toast.error(err.message || "Upload failed");
+  }
 
-    } catch (err) {
-      toast.error("Upload error");
-    }
-
-    setUploading(false);
-
-  };
-
+  setUploading(false);
+};
   /* -------------------------------------------------------
      Save Overview
   ------------------------------------------------------- */
@@ -123,6 +112,32 @@ export default function OverviewEditor() {
 
   };
 
+  const deleteImage = async () => {
+
+  if (!coverImagePublicId) return;
+
+  try {
+
+    const res = await fetch(
+      `${API_URL}/admin/upload/${encodeURIComponent(coverImagePublicId)}`,
+      {
+        method: "DELETE",
+        credentials: "include",
+      }
+    );
+
+    if (!res.ok) throw new Error();
+
+    setCoverImage("");
+    setCoverImagePublicId("");
+
+    toast.success("Image removed");
+
+  } catch {
+    toast.error("Failed to delete image");
+  }
+};
+
   /* -------------------------------------------------------
      UI
   ------------------------------------------------------- */
@@ -138,13 +153,22 @@ export default function OverviewEditor() {
           Cover Image
         </label>
 
-        {coverImage && (
-          <img
-            src={coverImage}
-            alt="Cover"
-            className="w-full h-64 object-cover rounded-lg border"
-          />
-        )}
+       {coverImage && (
+  <div className="relative">
+    <img
+      src={coverImage}
+      alt="Cover"
+      className="w-full h-64 object-cover rounded-lg border"
+    />
+
+    <button
+      onClick={deleteImage}
+      className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded"
+    >
+      Delete
+    </button>
+  </div>
+)}
 
         <input
           type="file"

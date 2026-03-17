@@ -133,7 +133,7 @@ export default function CityLayout({
 
   {/* NEW CONTENT MANAGER */}
 
-  <Link
+  {/* <Link
     href={`/admin/cities/${cityId}/content`}
     className={`flex items-center gap-3 px-3 py-2 rounded-lg transition ${
       isActive(`/admin/cities/${cityId}/content`)
@@ -143,7 +143,7 @@ export default function CityLayout({
   >
     <Layers className="w-4 h-4" />
     Content
-  </Link>
+  </Link> */}
 
   <Link
     href={`/admin/cities/${cityId}/settings`}

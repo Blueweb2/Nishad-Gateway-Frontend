@@ -415,9 +415,12 @@ setForm({
   step="0.1"
   className="w-full p-2 rounded bg-black border border-white/20 text-white"
   value={form.rating}
-  onChange={(e) =>
-    setForm({ ...form, rating: Number(e.target.value) })
-  }
+ onChange={(e) =>
+  setForm({
+    ...form,
+    rating: e.target.value === "" ? "" : Number(e.target.value),
+  })
+}
 />
 
 <div className="grid grid-cols-2 gap-4">
