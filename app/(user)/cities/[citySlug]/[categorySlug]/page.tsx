@@ -165,7 +165,7 @@ export default function CategoryPage() {
         )}
 
         {/* Rating + Price */}
-        <div className="flex justify-center items-center gap-3">
+        {/* <div className="flex justify-center items-center gap-3">
 
           {listing.rating !== null && listing.rating !== undefined && (
             <div className="flex items-center gap-1">
@@ -192,7 +192,7 @@ export default function CategoryPage() {
             </span>
           )}
 
-        </div>
+        </div> */}
 
         {/* Info */}
         <div className="text-sm text-gray-500 space-y-2">
