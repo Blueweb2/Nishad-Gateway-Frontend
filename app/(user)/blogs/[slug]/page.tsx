@@ -139,7 +139,7 @@ function renderBlock(block: Block | undefined, index: number) {
       return (
         <div
           key={index}
-          className="rich-text max-w-none prose-gray mb-8"
+          className="rich-text-light max-w-none prose-gray mb-8"
           dangerouslySetInnerHTML={{ __html: block.text }}
         />
       );
@@ -284,7 +284,7 @@ export default async function SingleBlogPage({
 
           {/* EXCERPT */}
           <div
-            className="rich-text max-w-none prose-gray mb-10"
+            className="rich-text-light max-w-none prose-gray mb-10"
             dangerouslySetInnerHTML={{ __html: blog.excerpt }}
           />
 

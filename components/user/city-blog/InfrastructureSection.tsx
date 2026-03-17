@@ -103,7 +103,7 @@ export default function InfrastructureSection({ content }: Props) {
             whileInView={{ x: 0, opacity: 1 }}
             viewport={{ once: true, amount: 0.4 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="text-white/70 max-w-md text-xs sm:text-sm leading-relaxed rich-text"
+            className="text-white/70 max-w-md text-xs sm:text-sm leading-relaxed rich-text-light"
             dangerouslySetInnerHTML={{
               __html: content.description || "",
             }}
@@ -166,7 +166,7 @@ export default function InfrastructureSection({ content }: Props) {
                   </h3>
 
                   <div
-                    className="text-gray-600 text-xs sm:text-sm leading-relaxed rich-text"
+                    className="text-gray-600 text-xs sm:text-sm leading-relaxed rich-text-light"
                     dangerouslySetInnerHTML={{
                     __html: slide.text || "",
                     }}
