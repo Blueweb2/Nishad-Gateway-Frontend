@@ -91,22 +91,34 @@ export default function CategoryPage() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-12 space-y-12">
+    <div className="max-w-6xl mx-auto px-6 py-24 space-y-12">
 
-      {/* Category Title */}
+   {/* Cover Image */}
 
-      <h1 className="text-4xl font-bold capitalize">
-        {categorySlug}
-      </h1>
+{overview?.coverImage && (
+  <div className="w-full h-[300px] md:h-[400px] mb-6 overflow-hidden rounded-xl">
+    <img
+      src={overview.coverImage}
+      alt="category image"
+      className="w-full h-full object-cover"
+    />
+  </div>
+)}
 
-      {/* Overview */}
+{/* Category Title */}
 
-      {overview?.content && (
-        <div
-          className="prose max-w-none"
-          dangerouslySetInnerHTML={{ __html: overview.content }}
-        />
-      )}
+<h1 className="text-4xl font-bold capitalize mb-4">
+  {categorySlug}
+</h1>
+
+{/* Overview */}
+
+{overview?.content && (
+  <div
+    className="prose max-w-none"
+    dangerouslySetInnerHTML={{ __html: overview.content }}
+  />
+)}
 
       {/* Listings */}
 

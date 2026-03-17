@@ -12,7 +12,7 @@ export default async function CityPage({
 }: {
   params: Promise<{ citySlug: string }>;
 }) {
-  const { citySlug } = await params; // ✅ MUST await
+  const { citySlug } = await params; //  MUST await
 
   const apiUrl = process.env.API_URL;
 

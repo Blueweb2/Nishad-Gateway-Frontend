@@ -8,199 +8,218 @@ import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
 
 export default function OverviewEditor() {
 
-  const { cityId, categoryId } = useParams();
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+    const { cityId, categoryId } = useParams();
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-  const [content, setContent] = useState("");
-  const [coverImage, setCoverImage] = useState("");
-  const [uploading, setUploading] = useState(false);
-  const [coverImagePublicId, setCoverImagePublicId] = useState("");
+    const [content, setContent] = useState("");
+    const [coverImage, setCoverImage] = useState("");
+    const [uploading, setUploading] = useState(false);
+    const [coverImagePublicId, setCoverImagePublicId] = useState("");
+    const [coverImageAlt, setCoverImageAlt] = useState("");
 
-  /* -------------------------------------------------------
-     Fetch existing overview
-  ------------------------------------------------------- */
+    /* -------------------------------------------------------
+       Fetch existing overview
+    ------------------------------------------------------- */
 
-  useEffect(() => {
+    useEffect(() => {
 
-    if (!cityId || !categoryId) return;
+        if (!cityId || !categoryId) return;
 
-    const fetchOverview = async () => {
+        const fetchOverview = async () => {
 
-      try {
+            try {
 
-        const res = await fetch(
-          `${API_URL}/admin/cities/${cityId}/categories/${categoryId}/overview`,
-          { credentials: "include" }
-        );
+                const res = await fetch(
+                    `${API_URL}/admin/cities/${cityId}/categories/${categoryId}/overview`,
+                    { credentials: "include" }
+                );
 
-        const data = await res.json();
+                const data = await res.json();
 
-    if (data?.overview) {
-  setContent(data.overview.content || "");
-  setCoverImage(data.overview.coverImage || "");
-  setCoverImagePublicId(data.overview.coverImagePublicId || "");
-}
+                if (data?.overview) {
+                    setContent(data.overview.content || "");
+                    setCoverImage(data.overview.coverImage || "");
+                    setCoverImagePublicId(data.overview.coverImagePublicId || "");
+                }
 
-      } catch (err) {
-        toast.error("Failed to load overview");
-      }
+            } catch (err) {
+                toast.error("Failed to load overview");
+            }
+
+        };
+
+        fetchOverview();
+
+    }, [cityId, categoryId]);
+
+    /* -------------------------------------------------------
+       Upload Cover Image
+    ------------------------------------------------------- */
+
+    const handleImageUpload = async (e: any) => {
+
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        try {
+            setUploading(true);
+
+            const res = await uploadToCloudinarySigned(
+                file,
+                "nishad-gateway/cities/categories/overview"
+            );
+
+            setCoverImage(res.secure_url);
+            setCoverImagePublicId(res.public_id);
+
+            toast.success("Image uploaded");
+
+        } catch (err: any) {
+            toast.error(err.message || "Upload failed");
+        }
+
+        setUploading(false);
+    };
+    /* -------------------------------------------------------
+       Save Overview
+    ------------------------------------------------------- */
+
+    const saveOverview = async () => {
+
+        try {
+
+            const res = await fetch(
+                `${API_URL}/admin/cities/${cityId}/categories/${categoryId}/overview`,
+                {
+                    method: "POST",
+                    credentials: "include",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        content,
+                        coverImage,
+                    }),
+                }
+            );
+
+            if (res.ok) {
+                toast.success("Overview saved");
+            } else {
+                toast.error("Failed to save overview");
+            }
+
+        } catch (err) {
+            toast.error("Save failed");
+        }
 
     };
 
-    fetchOverview();
+    const deleteImage = async () => {
 
-  }, [cityId, categoryId]);
+        if (!coverImagePublicId) return;
 
-  /* -------------------------------------------------------
-     Upload Cover Image
-  ------------------------------------------------------- */
+        try {
 
-const handleImageUpload = async (e: any) => {
+            const res = await fetch(
+                `${API_URL}/admin/upload/${encodeURIComponent(coverImagePublicId)}`,
+                {
+                    method: "DELETE",
+                    credentials: "include",
+                }
+            );
 
-  const file = e.target.files?.[0];
-  if (!file) return;
+            if (!res.ok) throw new Error();
 
-  try {
-    setUploading(true);
+            setCoverImage("");
+            setCoverImagePublicId("");
+            setCoverImageAlt("");
 
-    const res = await uploadToCloudinarySigned(
-      file,
-      "nishad-gateway/cities/categories/overview"
-    );
+            toast.success("Image removed");
 
-    setCoverImage(res.secure_url);
-    setCoverImagePublicId(res.public_id);
-
-    toast.success("Image uploaded");
-
-  } catch (err: any) {
-    toast.error(err.message || "Upload failed");
-  }
-
-  setUploading(false);
-};
-  /* -------------------------------------------------------
-     Save Overview
-  ------------------------------------------------------- */
-
-  const saveOverview = async () => {
-
-    try {
-
-      const res = await fetch(
-        `${API_URL}/admin/cities/${cityId}/categories/${categoryId}/overview`,
-        {
-          method: "POST",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            content,
-            coverImage,
-          }),
+        } catch {
+            toast.error("Failed to delete image");
         }
-      );
+    };
 
-      if (res.ok) {
-        toast.success("Overview saved");
-      } else {
-        toast.error("Failed to save overview");
-      }
+    /* -------------------------------------------------------
+       UI
+    ------------------------------------------------------- */
 
-    } catch (err) {
-      toast.error("Save failed");
-    }
+    return (
+        <div className="space-y-6">
 
-  };
+            {/* Cover Image Upload */}
 
-  const deleteImage = async () => {
+        <div className="space-y-3">
 
-  if (!coverImagePublicId) return;
+  {/* Label */}
+  <label className="text-sm font-medium text-white/80">
+    Cover Image
+  </label>
 
-  try {
-
-    const res = await fetch(
-      `${API_URL}/admin/upload/${encodeURIComponent(coverImagePublicId)}`,
-      {
-        method: "DELETE",
-        credentials: "include",
-      }
-    );
-
-    if (!res.ok) throw new Error();
-
-    setCoverImage("");
-    setCoverImagePublicId("");
-
-    toast.success("Image removed");
-
-  } catch {
-    toast.error("Failed to delete image");
-  }
-};
-
-  /* -------------------------------------------------------
-     UI
-  ------------------------------------------------------- */
-
-  return (
-    <div className="space-y-6">
-
-      {/* Cover Image Upload */}
-
-      <div className="space-y-2">
-
-        <label className="text-sm font-medium">
-          Cover Image
-        </label>
-
-       {coverImage && (
-  <div className="relative">
-    <img
-      src={coverImage}
-      alt="Cover"
-      className="w-full h-64 object-cover rounded-lg border"
-    />
-
-    <button
-      onClick={deleteImage}
-      className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded"
-    >
-      Delete
-    </button>
-  </div>
-)}
-
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleImageUpload}
-          className="text-sm"
-        />
-
-        {uploading && (
-          <p className="text-sm text-gray-500">
-            Uploading image...
-          </p>
-        )}
-
-      </div>
-
-      {/* Rich Text Editor */}
-
-      <RichTextEditor
-        value={content}
-        onChange={(val) => setContent(val)}
+  {/* Image Preview OR Empty State */}
+  {coverImage ? (
+    <div className="relative">
+      <img
+        src={coverImage}
+        alt={coverImageAlt || "Cover image"}
+        className="w-full h-64 object-cover rounded-lg border border-white/10"
       />
 
-      {/* Save Button */}
-
       <button
-        onClick={saveOverview}
-        className="px-6 py-2 bg-emerald-500 text-black rounded-lg hover:bg-emerald-400"
+        onClick={deleteImage}
+        className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded"
       >
-        Save Overview
+        Delete
       </button>
-
     </div>
-  );
+  ) : (
+    <div className="w-full h-40 border border-dashed border-white/20 rounded-lg flex items-center justify-center text-white/40 text-sm">
+      No image uploaded
+    </div>
+  )}
+
+  {/* Alt Text */}
+  <input
+    placeholder="Cover Image Alt Text (SEO)"
+    className="w-full p-2 rounded bg-black border border-white/20 text-white"
+    value={coverImageAlt}
+    disabled={!coverImage}
+    onChange={(e) => setCoverImageAlt(e.target.value)}
+  />
+
+  {/* Upload */}
+  <input
+    type="file"
+    accept="image/*"
+    onChange={handleImageUpload}
+    className="text-sm text-white"
+  />
+
+  {/* Uploading State */}
+  {uploading && (
+    <p className="text-sm text-white/50">
+      Uploading image...
+    </p>
+  )}
+
+</div>
+
+            {/* Rich Text Editor */}
+
+            <RichTextEditor
+                value={content}
+                onChange={(val) => setContent(val)}
+            />
+
+            {/* Save Button */}
+
+            <button
+                onClick={saveOverview}
+                className="px-6 py-2 bg-emerald-500 text-black rounded-lg hover:bg-emerald-400"
+            >
+                Save Overview
+            </button>
+
+        </div>
+    );
 }
