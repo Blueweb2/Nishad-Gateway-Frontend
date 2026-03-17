@@ -1,16 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { X, ChevronDown } from "lucide-react";
+import { X } from "lucide-react";
 import { getServicesMenu } from "@/lib/api/public/services.api";
 import Select from "../ui/Select";
 import toast from "react-hot-toast";
-
-type CityItem = {
-  _id: string;
-  cityName: string;
-  citySlug: string;
-};
 
 type SubServiceItem = {
   _id: string;
