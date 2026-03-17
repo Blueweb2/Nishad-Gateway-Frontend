@@ -1,10 +1,40 @@
-import AboutHero from "@/components/user/about/AboutHero";
-import AboutTeam from "@/components/user/about/AboutTeam";
-import BrandValues from "@/components/user/about/BrandValues";
-import BusinessVerticals from "@/components/user/about/BusinessVerticals";
-import SaudiExpansion from "@/components/user/about/SaudiExpansion";
-import Testimonials from "@/components/user/about/Testimonials";
-import IndroSection from "@/components/user/about/IndroSection"
+import dynamic from "next/dynamic";
+import Loading from "./loading";
+
+const AboutHero = dynamic(
+  () => import("@/components/user/about/AboutHero"),
+  { loading: () => <Loading /> }
+);
+
+const AboutTeam = dynamic(
+  () => import("@/components/user/about/AboutTeam"),
+  { loading: () => <Loading /> }
+);
+
+const BrandValues = dynamic(
+  () => import("@/components/user/about/BrandValues"),
+  { loading: () => <Loading /> }
+);
+
+const BusinessVerticals = dynamic(
+  () => import("@/components/user/about/BusinessVerticals"),
+  { loading: () => <Loading /> }
+);
+
+const SaudiExpansion = dynamic(
+  () => import("@/components/user/about/SaudiExpansion"),
+  { loading: () => <Loading /> }
+);
+
+const Testimonials = dynamic(
+  () => import("@/components/user/about/Testimonials"),
+  { loading: () => <Loading /> }
+);
+
+const IndroSection = dynamic(
+  () => import("@/components/user/about/IndroSection"),
+  { loading: () => <Loading /> }
+);
 
 export default function AboutPage() {
   return (

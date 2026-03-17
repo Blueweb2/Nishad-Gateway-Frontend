@@ -1,5 +1,11 @@
-import BlogCardsGrid from "@/components/user/blog/BlogCardsGrid";
+import dynamic from "next/dynamic";
 import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
+import Loading from "./loading";
+
+const BlogCardsGrid = dynamic(
+  () => import("@/components/user/blog/BlogCardsGrid"),
+  { loading: () => <Loading /> }
+);
 
 /* ================= TYPES ================= */
 

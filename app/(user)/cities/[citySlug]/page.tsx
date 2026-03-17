@@ -1,5 +1,11 @@
+import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
-import CityBlogRenderer from "@/components/user/city-blog/CityBlogRenderer";
+import Loading from "./loading";
+
+const CityBlogRenderer = dynamic(
+  () => import("@/components/user/city-blog/CityBlogRenderer"),
+  { loading: () => <Loading /> }
+);
 
 export default async function CityPage({
   params,

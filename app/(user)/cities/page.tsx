@@ -1,5 +1,11 @@
+import dynamic from "next/dynamic";
 import { getCities } from "@/lib/api/public/city.api";
-import CitiesGrid from "@/components/user/cities/CitiesGrid";
+import Loading from "../ksa-expansion-cost-calculator/loading";
+
+const CitiesGrid = dynamic(
+  () => import("@/components/user/cities/CitiesGrid"),
+  { loading: () => <Loading /> }
+);
 
 export const metadata = {
   title: "Cities & Business Zones in Saudi Arabia",
