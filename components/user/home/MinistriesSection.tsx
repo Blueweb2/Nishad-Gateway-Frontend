@@ -16,8 +16,8 @@ let ministries: Ministry[] = [];
   if (!ministries?.length) return null;
 
   return (
-    <section  id="ministries" className="w-full bg-black text-white py-28 max-w-[1320px] mx-auto px-6" data-navbar="light">
-      <div className="max-w-[1320px] mx-auto px-6">
+    <section  id="ministries" className="w-full bg-black text-white py-28 mx-auto px-6 flex items-center justify-end" data-navbar="light">
+      <div className="max-w-[1320px] px-6">
 
         {/* HEADER */}
         <div className="text-center mb-20">

@@ -381,52 +381,18 @@ export default function Consultant() {
       {/* ================= CONTENT WRAPPER ================= */}
       <div className="relative z-20 mx-auto w-full px-6 mt-[60%] lg:mt-0">
 
-        {/* TOP TABS */}
-        <div className="hidden lg:flex lg:justify-end gap-6 text-sm md:text-[0.9vw] mb-12">
-
-          <button
-            onClick={() => {
-            setActiveTab("western");
-            setActiveIndex(0);
-            }}
-            className={`pb-1 border-b transition ${
-            activeTab === "western"
-            ? "border-green-400 text-green-400"
-            : "border-transparent text-white/50 hover:text-white"
-            }`}
-          >
-            For Americans & Europeans
-          </button>
-
-          <button
-            onClick={() => {
-            setActiveTab("asian");
-            setActiveIndex(0);
-            }}
-            className={`pb-1 border-b transition ${
-            activeTab === "asian"
-            ? "border-green-400 text-green-400"
-            : "border-transparent text-white/50 hover:text-white"
-            }`}
-          >
-            For Asians
-          </button>
-
-        </div>
-
-
         {/* ================= GRID ================= */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-16 items-center">
 
           {/* LEFT COLUMN */}
-          <div className="hidden lg:flex flex-col text-center justify-end lg:text-left h-full">
+          <div className="hidden relative lg:flex flex-col text-center justify-end lg:text-left h-full">
 
-            <motion.h2
+             <motion.h2
               initial={{ opacity: 0, y: 60 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.2 }}
               viewport={{ once: true }}
-              className=" md:text-4xl lg:text-[3vw] mb-10 mt-[-139px] text-[38px] font-bold leading-tight"
+              className="text-[3vw] mb-10 relative top-[-70px] font-bold leading-tight"
             >
               Confidence <br />
               Beyond the <br />
@@ -490,7 +456,40 @@ export default function Consultant() {
           </div>
 
           {/* RIGHT COLUMN */}
-          <div className="flex flex-col items-center justify-end lg:items-start text-center lg:text-left max-w-lg mx-auto lg:mx-0 h-full mt-[25%] lg:mt-auto lg:h-[250px]">
+          <div className="flex flex-col items-center justify-end lg:items-start text-center lg:text-left max-w-lg mx-auto lg:mx-0 h-full mt-[25%] lg:mt-auto lg:h-[250px] lg:relative">
+
+
+            <div className="hidden lg:flex absolute top-[-119px] gap-6 text-sm text-[0.9vw] mb-12">
+
+              <button
+                onClick={() => {
+                setActiveTab("western");
+                setActiveIndex(0);
+                }}
+                className={`pb-1 border-b transition ${
+                activeTab === "western"
+                ? "border-green-400 text-green-400"
+                : "border-transparent text-white/50 hover:text-white"
+                }`}
+              >
+                For Americans & Europeans
+              </button>
+
+              <button
+                onClick={() => {
+                setActiveTab("asian");
+                setActiveIndex(0);
+                }}
+                className={`pb-1 border-b transition ${
+                activeTab === "asian"
+                ? "border-green-400 text-green-400"
+                : "border-transparent text-white/50 hover:text-white"
+                }`}
+              >
+                For Asians
+              </button>
+
+            </div>
 
             <AnimatePresence mode="wait">
               <motion.div

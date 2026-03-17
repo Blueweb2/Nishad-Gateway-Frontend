@@ -42,8 +42,8 @@ export default function CitiesSection() {
 
   if (total === 0) {
     return (
-      <div className="text-center py-20 bg-black text-white">
-        No cities available
+      <div className="flex justify-center items-center h-[300px]">
+        <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-300 border-t-black"></div>
       </div>
     );
   }
