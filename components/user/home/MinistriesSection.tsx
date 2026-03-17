@@ -16,30 +16,30 @@ let ministries: Ministry[] = [];
   if (!ministries?.length) return null;
 
   return (
-    <section  id="ministries" className="w-full bg-black text-white py-28 mx-auto px-6 max-w-[1320px] lg:max-w-full lg:flex lg:items-center lg:justify-end" data-navbar="light">
-      <div className="max-w-[1320px] mx-auto lg:mx-0 px-6">
+    <section  id="ministries" className="w-full bg-black text-white py-28 mx-auto px-6 max-w-[1320px] lg:max-w-full lg:flex lg:flex-col lg:items-center " data-navbar="light">
 
-        {/* HEADER */}
-        <div className="text-center mb-20">
+      {/* HEADER */}
+      <div className="text-center mb-20">
 
-          <FadeUpScroll delay={0.1}>
-            <h2 className="mb-3 text-2xl sm:text-3xl lg:text-[38px] font-bold leading-tight">
-              Ministries & Authorities
-            </h2>
-          </FadeUpScroll>
+        <FadeUpScroll delay={0.1}>
+          <h2 className="mb-3 text-2xl sm:text-3xl lg:text-[38px] font-bold leading-tight">
+            Ministries & Authorities
+          </h2>
+        </FadeUpScroll>
 
-          <FadeUpScroll delay={0.2}>
-            <p className="text-white/60 max-w-xl mx-auto">
-              Clear decisions rely on understanding the institutions that shape
-              policy, regulation, and execution in Saudi Arabia.
-            </p>
-          </FadeUpScroll>
+        <FadeUpScroll delay={0.2}>
+          <p className="text-white/60 max-w-xl mx-auto">
+            Clear decisions rely on understanding the institutions that shape
+            policy, regulation, and execution in Saudi Arabia.
+          </p>
+        </FadeUpScroll>
 
-        </div>
+      </div>
 
+
+      <div className="max-w-[1320px] mx-auto lg:self-end lg:mx-0 px-6">
         {/* SLIDER */}
         <MinistriesSlider ministries={ministries} />
-
       </div>
     </section>
   );
