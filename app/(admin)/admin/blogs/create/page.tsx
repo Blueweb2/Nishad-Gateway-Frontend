@@ -7,8 +7,8 @@ import toast from "react-hot-toast";
 import { UploadCloud, Trash2 } from "lucide-react";
 import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
 import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
-import RichContentBlockEditor from "@/components/admin/sectors/blocks/RichContentBlockEditor";
 import RichTextEditor from "@/components/admin/common/RichTextEditor";
+import MiniTextEditor from "@/components/admin/common/MiniTextEditor";
 
 type BlogStatus = "draft" | "published";
 
@@ -163,76 +163,96 @@ export default function CreateBlogPage() {
   };
   /* ================= SUBMIT ================= */
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    if (!title || !excerpt || !coverImage?.url || blocks.length === 0) {
-      toast.error("All required fields must be filled.");
-      return;
-    }
-    const invalidTable = blocks.some(
-      (b) =>
-        b.type === "table" &&
-        (b.headers.length === 0 ||
-          b.rows.length === 0)
-    );
+  /* ================= CLEAN EDITOR CONTENT ================= */
+  const cleanExcerpt =
+    !excerpt ||
+    excerpt === "<p></p>" ||
+    excerpt === "<p><br></p>"
+      ? ""
+      : excerpt;
 
-    if (invalidTable) {
-      toast.error("Tables must have columns and rows.");
-      return;
-    }
-    if (!slug) {
-      toast.error("Slug is required.");
-      return;
-    }
-    const invalidGallery = blocks.some(
-      (b) =>
-        b.type === "gallery" &&
-        b.images.length === 0
-    );
+  /* ================= REQUIRED VALIDATION ================= */
+  if (!title || !slug || !coverImage?.url) {
+    toast.error("Title, slug and cover image are required.");
+    return;
+  }
 
-    if (invalidGallery) {
-      toast.error("Gallery block must contain at least one image.");
-      return;
-    }
+  /* ================= OPTIONAL BLOCK VALIDATION ================= */
+  // (Blocks are optional now — remove this if you want strict CMS)
+  // if (blocks.length === 0) {
+  //   toast.error("At least one content block is required.");
+  //   return;
+  // }
 
-    try {
-      const res = await fetch(`${API}/blogs/admin`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({
-          title,
-          slug,
-          excerpt,
-          status,
-          tags: tags.split(",").map((t) => t.trim()).filter(Boolean),
+  /* ================= TABLE VALIDATION ================= */
+  const invalidTable = blocks.some(
+    (b) =>
+      b.type === "table" &&
+      (b.headers.length === 0 || b.rows.length === 0)
+  );
 
+  if (invalidTable) {
+    toast.error("Tables must have at least 1 column and 1 row.");
+    return;
+  }
 
-          coverImage: {
-            url: coverImage?.url,
-            alt: coverImage?.alt || title,
-            publicId: coverImage?.publicId,
-          },
+  /* ================= GALLERY VALIDATION ================= */
+  const invalidGallery = blocks.some(
+    (b) =>
+      b.type === "gallery" &&
+      b.images.length === 0
+  );
 
-          metaTitle: metaTitle || title,
-          metaDescription: metaDescription || excerpt,
+  if (invalidGallery) {
+    toast.error("Gallery block must contain at least one image.");
+    return;
+  }
 
-          blocks: blocks.map((b) => ({
-            type: b.type,
-            data: b,
-          })),
-        }),
-      });
+  try {
+    const res = await fetch(`${API}/blogs/admin`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({
+        title,
+        slug,
+        excerpt: cleanExcerpt, // ✅ cleaned & optional
+        status,
 
-      if (!res.ok) throw new Error("Creation failed");
+        tags: tags
+          .split(",")
+          .map((t) => t.trim())
+          .filter(Boolean),
 
-      toast.success("Blog created!");
-      router.push("/admin/blogs");
-    } catch {
-      toast.error("Something went wrong");
-    }
-  };
+        coverImage: {
+          url: coverImage.url,
+          alt: coverImage.alt || title,
+          publicId: coverImage.publicId,
+        },
+
+        metaTitle: metaTitle || title,
+        metaDescription: metaDescription || cleanExcerpt,
+
+        blocks: blocks.map((b) => ({
+          type: b.type,
+          data: b,
+        })),
+      }),
+    });
+
+    if (!res.ok) throw new Error("Creation failed");
+
+    toast.success("Blog created!");
+    router.push("/admin/blogs");
+
+  } catch (err) {
+    console.error(err);
+    toast.error("Something went wrong");
+  }
+};
 
   /* ================= UI ================= */
 
@@ -266,7 +286,7 @@ export default function CreateBlogPage() {
         {/* EXCERPT */}
         <div>
 
-          <RichTextEditor
+          <MiniTextEditor
             value={excerpt}
             onChange={(val: string) => setExcerpt(val)}
           />
@@ -335,7 +355,7 @@ export default function CreateBlogPage() {
           </h2>
 
           <div className="flex gap-3 flex-wrap">
-            <button type="button" onClick={() => addBlock({ type: "heading", level: 2, text: "" })} className="btn">+ Heading</button>
+            {/* <button type="button" onClick={() => addBlock({ type: "heading", level: 2, text: "" })} className="btn">+ Heading</button> */}
             <button type="button" onClick={() => addBlock({ type: "paragraph", text: "" })} className="btn">+ Paragraph</button>
             <button type="button" onClick={() => addBlock({ type: "gallery", images: [] })} className="btn">+ Image</button>
             <button
