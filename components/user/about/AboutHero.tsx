@@ -8,7 +8,7 @@ export default function AboutHero() {
     <section
       data-navbar="light"
       data-menu="dark-text"
-      className="relative w-full bg-[#F3F3F3] text-black pt-28 pb-32 overflow-hidden"
+      className="relative w-full  text-black pt-28 pb-32 overflow-hidden"
     >
       <div className="max-w-[1320px] mx-auto px-6 text-center">
 
@@ -59,4 +59,4 @@ export default function AboutHero() {
       </div>
     </section>
   );
-}
+};

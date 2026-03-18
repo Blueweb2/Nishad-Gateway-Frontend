@@ -5,8 +5,6 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import OvalArrow from "@/components/user/ui/OvalArrow";
 import Link from "next/link";
-import { once } from "events";
-
 
 const slides = [
   {
@@ -203,8 +201,9 @@ export default function WhySaudi() {
               {/* Image */}
               <div className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 flex items-center justify-center md:justify-start">
                 <Image
+                  priority={index === 0}
                   src={slides[index].image}
-                  alt={slides[index].title}
+                  alt={`${slides[index].title} for businesses in Saudi Arabia`}
                   width={130}
                   height={130}
                   className="object-contain"
@@ -246,8 +245,9 @@ export default function WhySaudi() {
 
           <img
             src="/why-saudi-arabia.svg"
-            alt="saudi arabia"
+            alt={`${slides[index].title} for businesses in Saudi Arabia`}
             className="w-full max-w-[380px] md:max-w-none mx-auto md:mx-0"
+            loading="lazy"
           />
         </div>
 

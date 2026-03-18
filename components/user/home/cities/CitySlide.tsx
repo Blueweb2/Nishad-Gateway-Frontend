@@ -36,9 +36,9 @@ export default function CitySlide({ city }: Props) {
         <div className="absolute inset-0 z-0">
           <ParallaxImage
             src={city.cityImage || "/citiesbg.webp"}
-            alt={city.cityName}
+            alt="City of Riyadh in Saudi Arabia with business and services"
             className="absolute inset-0"
-            priority
+            priority={false}
             speed={160}
           />
         </div>
@@ -111,7 +111,7 @@ export default function CitySlide({ city }: Props) {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
             >
-              <Link href={`/cities/${city.citySlug}`} className="group">
+              <Link href={`/cities/${city.citySlug}`} aria-label={`Explore services in ${city.cityName}`} className="group">
                 <OvalArrow
                   direction="right"
                   className="w-[4.3vw] h-[7vw] transition-transform group-hover:translate-x-2"
@@ -129,10 +129,23 @@ export default function CitySlide({ city }: Props) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.7 }}
           >
-            <Link href="/ksa-expansion-cost-calculator">
-              <button className="bg-green-600 hover:bg-green-700 text-white text-sm md:text-base lg:text-[1vw] font-medium px-6 md:px-8 py-3 rounded-full transition-all duration-300 hover:shadow-lg">
-                Calculate Your KSA Expansion Cost
-              </button>
+            <Link
+              href="/ksa-expansion-cost-calculator"
+              aria-label="Calculate your business expansion cost in Saudi Arabia"
+              title="KSA Expansion Cost Calculator"
+              className="
+                inline-block
+                bg-green-600 hover:bg-green-700
+                text-white
+                text-sm md:text-base lg:text-[1vw]
+                font-medium
+                px-6 md:px-8 py-3
+                rounded-full
+                transition-all duration-300
+                hover:shadow-lg
+              "
+            >
+              Calculate Your KSA Expansion Cost
             </Link>
           </motion.div>
         </div>

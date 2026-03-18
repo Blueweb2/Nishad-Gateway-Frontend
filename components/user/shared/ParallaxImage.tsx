@@ -31,6 +31,7 @@ export default function ParallaxImage({
           alt={alt}
           fill
           priority={priority}
+          loading={priority ? "eager" : "lazy"}
           sizes="100vw"
           quality={90}
           className="object-cover will-change-transform"

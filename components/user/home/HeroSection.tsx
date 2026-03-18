@@ -16,11 +16,12 @@ export default function HeroSection() {
       >
         <Image
           src="/riyadhhero.webp"
-          alt="Saudi Arabia Landscape"
+          alt="Riyadh city skyline with modern buildings and business district, Saudi Arabia"
           fill
           priority
           className="object-cover"
           sizes="100vw"
+          title="Business and services in Riyadh, Saudi Arabia"
         />
       </motion.div>
 

@@ -94,7 +94,7 @@ export default function ServicesPopup({
       />
 
       {/* POPUP – OUTER */}
-      <div
+      <section
         onClick={(e) => e.stopPropagation()}
         className={`
           fixed top-20 left-1/2 w-[340px] sm:w-[360px] sm:hidden md:block z-50
@@ -129,6 +129,11 @@ export default function ServicesPopup({
                       onClick={() =>
                         setExpanded(isOpen ? null : service._id)
                       }
+                      aria-expanded={isOpen}
+                      aria-controls={`service-content-${service._id}`}
+                      aria-label={`${
+                        isOpen ? "Collapse" : "Expand"
+                      } service: ${service.title}`}
                       className="flex-1 text-left group"
                     >
                       <span className={`text-xs text-gray-400 block ${!open && 'hidden'}`}>
@@ -206,7 +211,7 @@ export default function ServicesPopup({
               );
             })}
         </div>
-      </div>
+      </section>
     </>
   );
 };

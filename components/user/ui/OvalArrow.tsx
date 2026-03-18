@@ -20,8 +20,7 @@ export default function OvalArrow({
   const isGray = variant === "gray";
 
   return (
-    <button
-      type="button"
+    <div
       onClick={onClick}
       className={`
         group
@@ -39,6 +38,7 @@ export default function OvalArrow({
         }
         ${className}
       `}
+      aria-hidden="true"
     >
       <Icon
         size={12}
@@ -52,6 +52,6 @@ export default function OvalArrow({
           }
         `}
       />
-    </button>
+    </div>
   );
 }

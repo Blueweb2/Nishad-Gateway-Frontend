@@ -228,9 +228,10 @@ export default function BusinessGrowth() {
                 <SwiperSlide key={index}>
                   <div className="relative w-full h-full rounded-[120px] md:rounded-[150px] overflow-hidden">
                     <Image
+                      priority={index === 0}
                       key={slide.title}
                       src={slide.src}
-                      alt={slide.alt}
+                      alt="Business growth strategies for companies in Saudi Arabia"
                       fill
                       sizes="(max-width:768px) 280px, 380px"
                       className="object-cover"
@@ -242,6 +243,7 @@ export default function BusinessGrowth() {
 
             <Link
               href={activeSlide.link}
+              aria-label={`Learn more about ${activeSlide.linkText}`}
               className="hidden lg:inline-block text-sm text-green-600 underline underline-offset-4 pt-6 "
             >
               {activeSlide.linkText}
@@ -282,6 +284,7 @@ export default function BusinessGrowth() {
           {/* LINK (ONLY DISPLAY IN MOBILE) */}
           <Link
             href={activeSlide.link}
+            aria-label={`Learn more about ${activeSlide.linkText}`}
             className="inline-block lg:hidden text-sm text-green-600 underline underline-offset-4 text-center mb-3"
           >
             {activeSlide.linkText}
