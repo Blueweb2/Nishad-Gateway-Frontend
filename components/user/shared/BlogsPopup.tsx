@@ -117,7 +117,7 @@ export default function BlogsPopup({
             />
 
             {/* POPUP – OUTER */}
-            <div
+            <section
                 onClick={(e) => e.stopPropagation()}
                 className={`fixed top-20 left-1/2 w-[340px] sm:w-[360px] z-50 sm:hidden md:block
                 ${open ? "animate-sheetRevealButtons" : "animate-sheetHideButtons"}`}
@@ -191,13 +191,12 @@ export default function BlogsPopup({
                                             >
                                                 <Image
                                                     src={item.image}
-                                                    alt={item.title}
+                                                    alt='business in saudi arabia'
                                                     width={150}
                                                     height={150}
                                                     className={`object-cover w-[120px] h-[150px] 
                                                         ${!open && 'hidden'}`}
                                                     priority
-                                                    loading="lazy"
                                                 />
                                             </motion.div>
                                         </div>
@@ -229,7 +228,7 @@ export default function BlogsPopup({
                         )}
                     </div>
                 </div>
-            </div>
+            </section>
         </>
     );
 }

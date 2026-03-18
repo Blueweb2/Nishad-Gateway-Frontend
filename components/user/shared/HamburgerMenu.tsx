@@ -94,7 +94,7 @@ export default function HamburgerMenu({ open, onClose, buttonRef }: Props) {
   if (!render) return null;
 
   return (
-    <div
+    <section
       className={`
         fixed 
         top-20 sm:top-24
@@ -137,6 +137,9 @@ export default function HamburgerMenu({ open, onClose, buttonRef }: Props) {
 
                       <button
                         onClick={() => setExpanded(isOpen ? null : service._id)}
+                        aria-expanded={isOpen}
+                        aria-controls={`menu-service-content-${service._id}`}
+                        aria-label={`${isOpen ? "Collapse" : "Expand"} service: ${service.title}`}
                         className="flex-1 text-left"
                       >
                         <motion.span
@@ -158,36 +161,40 @@ export default function HamburgerMenu({ open, onClose, buttonRef }: Props) {
                         </motion.h2>
                       </button>
 
-                      <button
-                        onClick={() => {
-                          onClose();
-                          router.push(`/services/${service.slug}`);
-                        }}
+                      <a
+                        href={`/services/${service.slug}`}
+                        onClick={() => onClose()}
+                        aria-label={`View details about ${service.title}`}
                         className={`w-8 h-8 sm:w-9 sm:h-9 rounded-lg border border-white/30 flex items-center justify-center ${!open && "hidden"}`}
                       >
-                        <ArrowRight size={16} className="text-black" />
-                      </button>
+                        <ArrowRight size={16} className="text-black" aria-hidden="true" />
+                      </a>
 
                     </div>
 
                     {/* SUB SERVICES */}
                     {isOpen && (
-                      <ul className="mt-3 space-y-2 text-xs sm:text-sm text-black">
+                      <ul
+                        className="mt-3 space-y-2 text-xs sm:text-sm text-black"
+                        role="list"
+                      >
                         {service.subServices?.map((sub) => (
                           <motion.li
                             key={sub._id}
                             initial={{ opacity: 0, y: 300 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, ease: "easeOut" }}
-                            onClick={() => {
-                              onClose();
-                              router.push(
-                                `/services/${service.slug}/${sub.slug}`
-                              );
-                            }}
-                            className={`cursor-pointer hover:text-teal-400 transition ${!open && "hidden"}`}
+                            className={`${!open && "hidden"}`}
                           >
-                            {sub.title}
+                            <a
+                              href={`/services/${service.slug}/${sub.slug}`}
+                              onClick={() => onClose()}
+                              aria-label={`View ${sub.title} service`}
+                              title={`Learn more about ${sub.title}`}
+                              className="block cursor-pointer hover:text-teal-400 transition"
+                            >
+                              {sub.title}
+                            </a>
                           </motion.li>
                         ))}
                       </ul>
@@ -206,13 +213,15 @@ export default function HamburgerMenu({ open, onClose, buttonRef }: Props) {
               <MotionLink
                 href="/about-us"
                 onClick={onClose}
+                aria-label="Learn more about our company"
                 className={`block text-[16px] sm:text-[18px] font-semibold text-black hover:opacity-70 transition ${!open && "hidden"}`}
               >
                 About us
               </MotionLink>
-                 <MotionLink
+              <MotionLink
                 href="/cities"
                 onClick={onClose}
+                aria-label="Browse services by cities"
                 className={`block text-[16px] sm:text-[18px] font-semibold text-black hover:opacity-70 transition ${!open && "hidden"}`}
               >
                 Cities
@@ -221,6 +230,7 @@ export default function HamburgerMenu({ open, onClose, buttonRef }: Props) {
               <MotionLink
                 href="/blogs"
                 onClick={onClose}
+                aria-label="Read our latest blog articles"
                 className={`block text-[16px] sm:text-[18px] font-semibold text-black hover:opacity-70 transition ${!open && "hidden"}`}
               >
                 Blog
@@ -229,6 +239,7 @@ export default function HamburgerMenu({ open, onClose, buttonRef }: Props) {
               <MotionLink
                 href="/contact"
                 onClick={onClose}
+                aria-label="Contact us for inquiries and support"
                 className={`block text-[16px] sm:text-[18px] font-semibold text-black hover:opacity-70 transition ${!open && "hidden"}`}
               >
                 Contacts
@@ -239,6 +250,6 @@ export default function HamburgerMenu({ open, onClose, buttonRef }: Props) {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };

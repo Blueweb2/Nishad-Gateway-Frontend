@@ -122,17 +122,21 @@ useEffect(() => {
 
               {/* Services */}
               <button
+                aria-label="Open services menu for Saudi Arabia"
+                title="View services in Saudi Arabia"
+                aria-expanded={openServices}
+                aria-controls="services-menu"
                 onClick={() => {
                   setOpenServices((prev) => !prev);
                   setOpenBlogs(false);
                   setOpenCities(false);
                 }}
                 className={`
-      flex items-center gap-2
-      px-3 lg:px-4 py-2 rounded-full
-      text-xs lg:text-sm font-medium
-      transition-all
-      ${isLight
+                  flex items-center gap-2
+                  px-3 lg:px-4 py-2 rounded-full
+                  text-xs lg:text-sm font-medium
+                  transition-all
+                  ${isLight
                     ? openServices
                       ? "bg-black text-white shadow-md"
                       : "bg-black/[0.04] text-black border border-black/10 hover:bg-black/[0.08]"
@@ -140,7 +144,7 @@ useEffect(() => {
                       ? "bg-white text-gray-900 shadow-md"
                       : "bg-white/10 text-white border border-white/20 hover:bg-white/20"
                   }
-    `}
+                `}
               >
                 Services
                 <span
@@ -153,17 +157,21 @@ useEffect(() => {
 
               {/* Blog */}
               <button
+                aria-label="Open blog articles menu"
+                title="Read blog articles"
+                aria-expanded={openBlogs}
+                aria-controls="blogs-menu"
                 onClick={() => {
                   setOpenBlogs((prev) => !prev);
                   setOpenServices(false);
                   setOpenCities(false);
                 }}
                 className={`
-      flex items-center gap-2
-      px-3 lg:px-4 py-2 rounded-full
-      text-xs lg:text-sm font-medium
-      transition-all
-      ${isLight
+                  flex items-center gap-2
+                  px-3 lg:px-4 py-2 rounded-full
+                  text-xs lg:text-sm font-medium
+                  transition-all
+                  ${isLight
                     ? openBlogs
                       ? "bg-black text-white shadow-md"
                       : "bg-black/[0.05] text-black border border-black/10 hover:bg-black/[0.08]"
@@ -171,7 +179,7 @@ useEffect(() => {
                       ? "bg-white text-gray-900 shadow-md"
                       : "bg-white/10 text-white border border-white/20 hover:bg-white/20"
                   }
-    `}
+                `}
               >
                 Blog
                 <span
@@ -184,17 +192,21 @@ useEffect(() => {
 
               {/* Cities */}
               <button
+                aria-label="Open cities menu in Saudi Arabia"
+                title="Explore cities in Saudi Arabia"
+                aria-expanded={openCities}
+                aria-controls="cities-menu"
                 onClick={() => {
                   setOpenCities((prev) => !prev);
                   setOpenServices(false);
                   setOpenBlogs(false);
                 }}
                 className={`
-      flex items-center gap-2
-      px-3 lg:px-4 py-2 rounded-full
-      text-xs lg:text-sm font-medium
-      transition-all
-      ${isLight
+                flex items-center gap-2
+                px-3 lg:px-4 py-2 rounded-full
+                text-xs lg:text-sm font-medium
+                transition-all
+                ${isLight
                     ? openCities
                       ? "bg-black text-white shadow-md"
                       : "bg-black/[0.05] text-black border border-black/10 hover:bg-black/[0.08]"
@@ -202,7 +214,7 @@ useEffect(() => {
                       ? "bg-white text-gray-900 shadow-md"
                       : "bg-white/10 text-white border border-white/20 hover:bg-white/20"
                   }
-    `}
+                `}
               >
                 Cities
                 <span
@@ -219,15 +231,15 @@ useEffect(() => {
             <div className="flex items-center gap-3 sm:gap-5 lg:gap-8">
 
               {/* Phone */}
-            <a href="tel:+966559912262">
-  <span
-    className={`hidden lg:block text-sm ${
-      isLight ? "text-black" : "text-white"
-    }`}
-  >
-    +966 55 991 2262
-  </span>
-</a>
+              <a href="tel:+966559912262" aria-label="Call customer support at +966 55 991 2262">
+                <span
+                  className={`hidden lg:block text-sm ${
+                    isLight ? "text-black" : "text-white"
+                  }`}
+                >
+                  +966 55 991 2262
+                </span>
+              </a>
 
               {/* Contact */}
               <button
@@ -237,6 +249,10 @@ useEffect(() => {
                   setOpenBlogs(false);
                   setOpenMenu(false);
                 }}
+                aria-label="Open contact form"
+                aria-haspopup="dialog"
+                aria-expanded={openContact}
+                aria-controls="contact-popup"
                 className={`
                   flex items-center gap-2
                   text-xs sm:text-sm font-medium
@@ -262,6 +278,10 @@ useEffect(() => {
                   setOpenServices(false);
                   setOpenBlogs(false);
                 }}
+                aria-label={openMenu ? "Close navigation menu" : "Open navigation menu"}
+                aria-haspopup="menu"
+                aria-expanded={openMenu}
+                aria-controls="main-menu"
                 className={`
                   relative flex items-center justify-center
                   w-10 sm:w-12 lg:w-14
@@ -277,11 +297,11 @@ useEffect(() => {
                 `}
               >
                 {openMenu ? (
-                  <span className="text-white text-lg sm:text-xl font-semibold leading-none">
+                  <span className="text-white text-lg sm:text-xl font-semibold leading-none" aria-hidden="true">
                     ×
                   </span>
                 ) : (
-                  <div className="flex flex-col gap-1">
+                  <div className="flex flex-col gap-1" aria-hidden="true">
                     <span
                       className={`w-4 sm:w-5 h-[2px] rounded-full ${isLight ? "bg-black" : "bg-white"
                         }`}

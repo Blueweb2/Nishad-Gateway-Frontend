@@ -66,7 +66,7 @@ export default function CitiesPopup({
       />
 
       {/* POPUP */}
-      <div
+      <section
         onClick={(e) => e.stopPropagation()}
         className={`fixed top-20 left-1/2 w-[340px] sm:w-[360px] sm:hidden md:block z-50
         ${open ? "animate-sheetRevealButtons" : "animate-sheetHideButtons"}`}
@@ -116,9 +116,10 @@ export default function CitiesPopup({
                       className=" overflow-hidden"
                     >
                       <Image
-                        priority
+                        loading="lazy"
                         src={city.cityImage || "/citiesbg.webp"}
-                        alt={city.cityName}
+                        alt={`Businesses and services in ${city.cityName}, Saudi Arabia`}
+                        title={`Explore services in ${city.cityName}`}
                         width={60}
                         height={60}
                         className="w-[60px] h-[80px] rounded-[160px] object-cover"
@@ -143,7 +144,7 @@ export default function CitiesPopup({
               ))}
           </div>
         </div>
-      </div>
+      </section>
     </>
   );
 }
