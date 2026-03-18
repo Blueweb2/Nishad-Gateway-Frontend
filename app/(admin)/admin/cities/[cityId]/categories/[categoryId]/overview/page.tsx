@@ -218,7 +218,6 @@ export default function CategoryOverviewEditor() {
                 content: html,
               }))
             }
-            placeholder="Write the overview content..."
           />
 
         </div>

@@ -177,16 +177,16 @@ xl: 768px   // Fold / Tablet */
   animation: contactSheetHide 0.45s ease forwards;
 }
 
-/* Rich text animated underline */
+/* ================= LINKS ================= */
+
 .rich-text a {
   position: relative;
-  color: #16a34a !important; /* green-600 */
+  color: #22c55e !important; /* green-500 */
   font-weight: 500;
   text-decoration: none;
   transition: color 0.25s ease;
 }
 
-/* Create animated underline */
 .rich-text a::after {
   content: "";
   position: absolute;
@@ -194,78 +194,250 @@ xl: 768px   // Fold / Tablet */
   bottom: -3px;
   width: 100%;
   height: 2px;
-  background-color: #16a34a;
+  background-color: #22c55e;
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.3s cubic-bezier(.22,1,.36,1);
 }
 
-/* Hover effect */
 .rich-text a:hover {
-  color: #15803d !important; /* green-700 */
+  color: #16a34a !important; /* green-600 */
 }
 
 .rich-text a:hover::after {
   transform: scaleX(1);
 }
 
+/* ================= HEADINGS ================= */
+
 .rich-text h1,
 .rich-text h2,
 .rich-text h3 {
   margin-top: 2rem;
   margin-bottom: 0.75rem;
-   font-weight: 700;
-  color: #111;
+  font-weight: 700;
+  color: #f9fafb; /* light for dark UI */
   line-height: 1.2;
 }
 
+.rich-text h1 {
+  font-size: 2.2rem;
+}
+
+.rich-text h2 {
+  font-size: 1.8rem;
+}
+
+.rich-text h3 {
+  font-size: 1.4rem;
+}
+
+/* ================= TEXT ================= */
+
 .rich-text p {
   margin-bottom: 1rem;
+  font-size: 1rem;
+  color: #d1d5db; /* gray-300 */
   line-height: 1.7;
 }
+
+.rich-text strong {
+  color: #4ade80; /* green-400 */
+  font-weight: 600;
+}
+
+/* ================= LISTS ================= */
 
 .rich-text ul,
 .rich-text ol {
   margin: 1rem 0;
-}
-
-.rich-text li {
-  margin-bottom: 0.4rem;
-}
-
-
-.rich-text h1 {
-  font-size: 2.5rem;
-}
-
-.rich-text h2 {
-  font-size: 2rem;
-}
-
-.rich-text h3 {
-  font-size: 1.5rem;
-}
-
-.rich-text p {
-  font-size: 1rem;
-  color: currentColor;
-}
-
-.rich-text strong {
-  color: #08b146; /* green-700 */
-  font-weight: 600;
+  padding-left: 1.4rem;
 }
 
 .rich-text ul {
-  padding-left: 1.2rem;
   list-style: disc;
 }
 
 .rich-text ol {
-  padding-left: 1.2rem;
   list-style: decimal;
 }
 
+.rich-text li {
+  margin-bottom: 0.4rem;
+  color: #d1d5db;
+}
+
+/* ================= BLOCKQUOTE ================= */
+
+.rich-text blockquote {
+  border-left: 3px solid #22c55e;
+  padding-left: 1rem;
+  color: #9ca3af;
+  font-style: italic;
+  margin: 1.5rem 0;
+}
+
+/* ================= CODE ================= */
+
+.rich-text code {
+  background: #111827;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: #22c55e;
+}
+
+.rich-text pre {
+  background: #111827;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+/* ================= IMAGE ================= */
+
+.rich-text figure {
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+.rich-text img {
+  border-radius: 10px;
+  max-width: 100%;
+}
+
+.rich-text figcaption {
+  font-size: 0.85rem;
+  color: #9ca3af;
+  margin-top: 0.5rem;
+}
+
+/* ================= FRONTEND RICH TEXT (LIGHT) ================= */
+
+.rich-text-light h1,
+.rich-text-light h2,
+.rich-text-light h3 {
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+  color: #111827; /* dark text */
+  line-height: 1.2;
+}
+
+.rich-text-light h1 {
+  font-size: 2.2rem;
+}
+
+.rich-text-light h2 {
+  font-size: 1.8rem;
+}
+
+.rich-text-light h3 {
+  font-size: 1.4rem;
+}
+
+.rich-text-light p {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  color: #374151; /* gray-700 */
+  line-height: 1.7;
+}
+
+.rich-text-light strong {
+  color: #15803d; /* green-700 */
+  font-weight: 600;
+}
+
+/* Lists */
+.rich-text-light ul,
+.rich-text-light ol {
+  margin: 1rem 0;
+  padding-left: 1.4rem;
+}
+
+.rich-text-light ul {
+  list-style: disc;
+}
+
+.rich-text-light ol {
+  list-style: decimal;
+}
+
+.rich-text-light li {
+  margin-bottom: 0.4rem;
+  color: #374151;
+}
+
+/* Links */
+.rich-text-light a {
+  color: #16a34a;
+  font-weight: 500;
+  text-decoration: underline;
+}
+
+.rich-text-light blockquote {
+  position: relative;
+  border-left: 3px solid #16a34a;
+  padding-left: 1.5rem;
+  margin: 1.5rem 0;
+  color: #6b7280;
+  font-style: italic;
+}
+
+/* 🔥 Add opening quote */
+.rich-text-light blockquote::before {
+  content: "“";
+  position: absolute;
+  left: -10px;
+  top: -10px;
+  font-size: 2.5rem;
+  color: #16a34a;
+  font-weight: bold;
+}
+
+/* 🔥 Add closing quote */
+.rich-text-light blockquote::after {
+  content: "”";
+  margin-left: 4px;
+  font-size: 1.5rem;
+  color: #16a34a;
+}
+
+/* Code */
+.rich-text-light code {
+  background: #f3f4f6;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: #111;
+}
+
+.rich-text-light pre {
+  background: #f3f4f6;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 1rem 0;
+  color: #111;
+}
+
+/* Images */
+.rich-text-light figure {
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+.rich-text-light img {
+  border-radius: 10px;
+  max-width: 100%;
+}
+
+.rich-text-light figcaption {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-top: 0.5rem;
+}
 /* Swiper customizations  of humburger of navbar */
 @keyframes menuIn {
   from {

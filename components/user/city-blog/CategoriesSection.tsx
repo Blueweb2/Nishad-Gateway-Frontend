@@ -59,7 +59,7 @@ export default function CategoriesSection({
           whileInView={{ x: 0, opacity: 1 }}
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="rich-text text-gray-600 leading-relaxed text-[clamp(0.95rem,1.2vw,1.1rem)]"
+          className="rich-text-light text-gray-600 leading-relaxed text-[clamp(0.95rem,1.2vw,1.1rem)]"
           dangerouslySetInnerHTML={{ __html: introText || "" }}
         />
       </div>
