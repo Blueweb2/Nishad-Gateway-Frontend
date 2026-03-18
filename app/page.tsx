@@ -1,11 +1,9 @@
 import dynamic from "next/dynamic";
 
-import HeroSection from "@/components/user/home/HeroSection";
-import Navbar from "@/components/user/shared/Navbar";
-
-import PreloaderProvider from "@/components/user/shared/PreloaderProvider";
-import LazySection from "@/components/user/shared/LazySection";
-
+const PreloaderProvider = dynamic(() => import("@/components/user/shared/PreloaderProvider"));
+const LazySection = dynamic(() => import("@/components/user/shared/LazySection"));
+const Navbar = dynamic(() => import("@/components/user/shared/Navbar"));
+const HeroSection = dynamic(() => import("@/components/user/home/HeroSection"));
 const WhySaudi = dynamic(() => import("@/components/user/home/WhySaudi"));
 const BusinessGrowth = dynamic(() => import("@/components/user/home/BusinessGrowth"));
 const CitiesSection = dynamic(() => import("@/components/user/home/cities/CitiesSection"));
