@@ -32,7 +32,7 @@ export default function HamburgerMenu({ open, onClose, buttonRef }: Props) {
   const [render, setRender] = useState(open);
   const MotionLink = motion.create(Link);
 
-  const hasAnimated = useRef(false);
+  //const hasAnimated = useRef(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   const router = useRouter();
