@@ -327,7 +327,8 @@ export default function Consultant() {
           <img
             key={index}
             src={item.image}
-            alt={item.title}
+            alt={`${item.title} consulting services in Saudi Arabia`}
+            loading="lazy"
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700
             ${index === activeIndex ? "opacity-100" : "opacity-0"}`}
           />
@@ -342,13 +343,16 @@ export default function Consultant() {
           Confidence Beyond the Investment
         </h2>
 
-        <div className="flex justify-center gap-6 text-xm leading-snug">
+        <div className="flex justify-center gap-6 text-xm leading-snug" role="tablist">
 
           <button
             onClick={() => {
             setActiveTab("western");
             setActiveIndex(0);
             }}
+            role="tab"
+            aria-selected={activeTab === "western"}
+            aria-controls="western-panel"
             className={`pb-1 border-b transition ${
             activeTab === "western"
             ? "border-green-400 text-green-400"
@@ -363,6 +367,9 @@ export default function Consultant() {
             setActiveTab("asian");
             setActiveIndex(0);
             }}
+            role="tab"
+            aria-selected={activeTab === "asian"}
+            aria-controls="asian-panel"
             className={`pb-1 border-b transition ${
             activeTab === "asian"
             ? "border-green-400 text-green-400"
@@ -425,7 +432,6 @@ export default function Consultant() {
 
             </div>
 
-            {/* md:block */}
             <div className="hidden lg:block h-px bg-white/20 w-full mt-6" />
 
           </div>
@@ -466,6 +472,9 @@ export default function Consultant() {
                 setActiveTab("western");
                 setActiveIndex(0);
                 }}
+                role="tab"
+                aria-selected={activeTab === "western"}
+                aria-controls="western-panel"
                 className={`pb-1 border-b transition ${
                 activeTab === "western"
                 ? "border-green-400 text-green-400"
@@ -480,6 +489,9 @@ export default function Consultant() {
                 setActiveTab("asian");
                 setActiveIndex(0);
                 }}
+                role="tab"
+                aria-selected={activeTab === "asian"}
+                aria-controls="asian-panel"
                 className={`pb-1 border-b transition ${
                 activeTab === "asian"
                 ? "border-green-400 text-green-400"
