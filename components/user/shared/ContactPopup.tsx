@@ -5,6 +5,7 @@ import { X } from "lucide-react";
 import { getServicesMenu } from "@/lib/api/public/services.api";
 import Select from "../ui/Select";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 type SubServiceItem = {
   _id: string;
@@ -30,12 +31,14 @@ export default function ContactPopup({
 
   const [services, setServices] = useState<ServiceItem[]>([]);
   const [sending, setSending] = useState(false);
-  const [loading, setLoading] = useState(false);
+  //const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [service, setService] = useState("");
   const [city, setCity] = useState("");
+  const [serviceName, setServiceName] = useState("");
+  const [agreed, setAgreed] = useState(false);
 
   const serviceOptions = services.map((service) => ({
     label: service.title,
@@ -73,7 +76,7 @@ export default function ContactPopup({
 
     const loadData = async () => {
       try {
-        setLoading(true);
+        //setLoading(true);
 
 
         const servicesRes = await getServicesMenu();
@@ -84,9 +87,7 @@ export default function ContactPopup({
 
       } catch (err) {
         console.error("Failed loading contact data");
-      } finally {
-        setLoading(false);
-      }
+      } 
     };
 
     loadData();
@@ -97,10 +98,15 @@ export default function ContactPopup({
 
     e?.preventDefault();
 
-    if (!name || !phone || !email) {
-      toast.error("Please fill all required fields");
-      return;
-    }
+if (!name || !phone || !email || !serviceName || !city) {
+  toast.error("Please fill all required fields");
+  return;
+}
+
+if (!agreed) {
+  toast.error("Please accept the Privacy Policy");
+  return;
+}
 
     try {
       setSending(true);
@@ -118,12 +124,14 @@ export default function ContactPopup({
             phone,
             email,
             service,
+            serviceName,
             city,
           }),
         }
       );
 
-      console.log("Response status:", res.status);
+
+      // console.log("Response status:", res.status);
 
       if (!res.ok) throw new Error();
 
@@ -237,8 +245,15 @@ export default function ContactPopup({
               <Select
                 options={serviceOptions}
                 placeholder="Select a service"
-                className="mb-5"
-                onChange={(value => (setService(value)))}
+                onChange={(value) => {
+                  setService(value);
+
+                  const selected = services
+                    .flatMap((s) => s.subServices)
+                    .find((s) => s._id === value);
+
+                  setServiceName(selected?.title || "");
+                }}
               />
 
             </div>
@@ -265,12 +280,19 @@ export default function ContactPopup({
 
             {/* Checkbox */}
             <div className="flex items-center gap-3 mb-8">
-              <input type="checkbox" className="w-4 h-4 rounded" />
-              <p className="text-xs text-gray-600">
+              <input
+                type="checkbox"
+                checked={agreed}
+                onChange={(e) => setAgreed(e.target.checked)}
+                className="w-4 h-4 rounded"
+              />           <p className="text-xs text-gray-600">
                 I agree with the{" "}
-                <span className="text-gray-900 underline cursor-pointer">
+                <Link
+                  href="/privacy-policy"
+                  className="text-gray-900 underline hover:text-green-700"
+                >
                   Privacy Policy
-                </span>
+                </Link>
               </p>
             </div>
 

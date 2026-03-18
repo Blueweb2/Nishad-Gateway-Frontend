@@ -43,7 +43,7 @@ export default function HeroSection({ content }: Props) {
                 whileInView={{ x: 0, opacity: 1 }}
                 viewport={{ once: true, amount: 0.4 }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
-                className="rich-text text-5xl md:text-6xl font-semibold leading-none mb-6 mt-5 text-white"
+                className="rich-text-light text-5xl md:text-6xl font-semibold leading-none mb-6 mt-5 text-white"
                 dangerouslySetInnerHTML={{
                   __html: content.heading?.trim()
                     ? content.heading
@@ -56,7 +56,7 @@ export default function HeroSection({ content }: Props) {
                 whileInView={{ x: 0, opacity: 1 }}
                 viewport={{ once: true, amount: 0.4 }}
                 transition={{ duration: 0.9, ease: "easeIn" }}
-                className="rich-text text-lg md:text-xl text-white/90 max-w-xl leading-none"
+                className="rich-text-light text-lg md:text-xl text-white/90 max-w-xl leading-none"
                 dangerouslySetInnerHTML={{
                   __html: content.subheading?.trim()
                     ? content.subheading

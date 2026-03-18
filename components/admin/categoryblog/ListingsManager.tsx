@@ -408,7 +408,7 @@ export default function ListingsManager() {
                         }
                     />
 
-                    <input
+                    {/* <input
                         placeholder="Price Range (eg: $$)"
                         className="w-full p-2 rounded bg-black border border-white/20 text-white"
                         value={form.priceRange}
@@ -429,7 +429,7 @@ export default function ListingsManager() {
                                 rating: e.target.value === "" ? "" : Number(e.target.value),
                             })
                         }
-                    />
+                    /> */}
 
                     <div className="grid grid-cols-2 gap-4">
 

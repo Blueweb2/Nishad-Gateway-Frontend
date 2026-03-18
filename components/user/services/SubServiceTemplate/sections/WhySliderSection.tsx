@@ -213,7 +213,7 @@ export default function WhySliderSection({
               initial={{y:200, opacity:0}}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 1, ease: "easeOut" }}
-              className="text-gray-500 leading-relaxed max-w-sm h-[165px] lg:h-[170px] mt-3 flex items-start lg:items-end rich-text lg:pr-20"
+              className="text-gray-500 leading-relaxed max-w-sm h-[165px] lg:h-[170px] mt-3 flex items-start lg:items-end rich-text-light lg:pr-20"
               dangerouslySetInnerHTML={{ __html: current?.description || "" }}
             />
 

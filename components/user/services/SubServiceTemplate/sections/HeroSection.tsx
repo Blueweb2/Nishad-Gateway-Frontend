@@ -78,7 +78,7 @@ export default function HeroSection({
                 initial={{ x: 200, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
-                className="mt-10 max-w-[430px] text-white/75 text-sm md:text-base leading-relaxed rich-text"
+                className="mt-10 max-w-[430px] text-white/75 text-sm md:text-base leading-relaxed rich-text-light"
                 dangerouslySetInnerHTML={{ __html: heroDescription }}
               />
             )}

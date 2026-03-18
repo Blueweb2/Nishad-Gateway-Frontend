@@ -74,7 +74,7 @@ export default function EntityTypesSliderSection({
             
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="
-              rich-text
+              rich-text-light
               text-sm sm:text-base md:text-lg
               text-gray-500
               leading-relaxed
@@ -190,7 +190,7 @@ export default function EntityTypesSliderSection({
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: 30 }}
                           transition={{ duration: 0.4, ease: "easeOut" }}
-                          className="mt-4 md:mt-5 lg:mt-6 text-xs md:text-sm text-gray-600 leading-relaxed rich-text"
+                          className="mt-4 md:mt-5 lg:mt-6 text-xs md:text-sm text-gray-600 leading-relaxed rich-text-light"
                           dangerouslySetInnerHTML={{ __html: slide.description || "" }}
                         />
                       )}

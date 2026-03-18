@@ -109,7 +109,7 @@ export default function FutureOutlookSection({ content }: Props) {
               whileInView={{ x: 0, opacity: 1 }}
               viewport={{ once: true, amount: 0.4 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="text-gray-600 text-sm sm:text-base leading-relaxed rich-text max-w-none lg:flex 
+              className="text-gray-600 text-sm sm:text-base leading-relaxed rich-text-light max-w-none lg:flex 
               lg:items-end h-[200px] lg:h-[90px]"
               dangerouslySetInnerHTML={{
                 __html: slide.description || "",

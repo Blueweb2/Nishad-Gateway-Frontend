@@ -62,7 +62,7 @@ export default function InvestmentHighlightsSection({
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <div
-              className="rich-text text-lg text-gray-500 leading-relaxed max-w-xl"
+              className="rich-text-light text-lg text-gray-500 leading-relaxed max-w-xl"
               dangerouslySetInnerHTML={{
                __html:
   description?.trim()
@@ -184,7 +184,7 @@ export default function InvestmentHighlightsSection({
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: 30 }}
                           transition={{ duration: 0.4, ease: "easeOut" }}
-                          className="mt-4 rich-text md:mt-5 lg:mt-6 text-xs md:text-sm text-gray-600 leading-relaxed"
+                          className="mt-4 rich-text-light md:mt-5 lg:mt-6 text-xs md:text-sm text-gray-600 leading-relaxed"
                           dangerouslySetInnerHTML={{ __html: slide.subText }}
                         />
                       )}

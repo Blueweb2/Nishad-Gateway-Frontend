@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
+import { Mail, MapPin, Phone, Star } from "lucide-react";
 
 type Listing = {
   _id: string;
@@ -122,134 +123,135 @@ export default function CategoryPage() {
 
       {/* Listings */}
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+<div className="grid md:grid-cols-2 lg:grid-cols-3">
 
-        {listings.map((listing) => (
+  {listings.map((listing) => {
 
-          <div
-            key={listing._id}
-            className="space-y-4"
-          >
+    const ratingValue = listing.rating ?? 0;
 
-            {/* Image */}
+    return (
+      <div
+        key={listing._id}
+        className="bg-white p-5  border border-gray-100 hover: transition space-y-4"
+      >
 
-            {listing.coverImage && (
-
-              <div className="flex justify-center">
-
-                <div className="relative w-[180px] h-[220px] rounded-[90px] overflow-hidden">
-
-                  <Image
-                    src={listing.coverImage}
-                    alt={listing.title}
-                    fill
-                    className="object-cover"
-                  />
-
-                </div>
-
-              </div>
-
-            )}
-
-            {/* Title */}
-
-            <div className="text-center space-y-2">
-
-              <h3 className="text-xl font-semibold">
-                {listing.title}
-              </h3>
-
-              {listing.isFeatured && (
-                <span className="text-xs bg-yellow-400 px-2 py-1 rounded">
-                  Featured
-                </span>
-              )}
-
+        {/* Image */}
+        {listing.coverImage && (
+          <div className="flex justify-center">
+            <div className="relative w-[200px] h-[280px] rounded-[160px] overflow-hidden">
+              <Image
+                src={listing.coverImage}
+                alt={listing.title}
+                fill
+                className="object-cover"
+              />
             </div>
-
-            {/* Description */}
-
-            {listing.description && (
-              <p className="text-sm text-gray-600 text-center">
-                {listing.description}
-              </p>
-            )}
-
-            {/* Info */}
-
-            <div className="text-sm text-gray-500 space-y-1 text-center">
-
-              {listing.orderInfo && (
-                <p>
-                  <b>Order:</b> {listing.orderInfo}
-                </p>
-              )}
-
-              {listing.openingHours && (
-                <p>
-                  <b>Opening hours:</b> {listing.openingHours}
-                </p>
-              )}
-
-              {listing.locationLabel && (
-                <p>
-                  📍 {listing.locationLabel}
-                </p>
-              )}
-
-              {listing.address && (
-                <p>
-                  📍 {listing.address}
-                </p>
-              )}
-
-              {listing.phone && (
-                <p>
-                  📞 {listing.phone}
-                </p>
-              )}
-
-              {listing.email && (
-                <p>
-                  ✉ {listing.email}
-                </p>
-              )}
-
-              {listing.website && (
-                <a
-                  href={
-                    listing.website.startsWith("http")
-                      ? listing.website
-                      : `https://${listing.website}`
-                  }
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-green-600 hover:underline"
-                >
-                  {listing.website}
-                </a>
-              )}
-
-              {listing.rating && (
-                <p>
-                  ⭐ {listing.rating} / 5
-                </p>
-              )}
-
-              {listing.priceRange && (
-                <p>
-                  Price: {listing.priceRange}
-                </p>
-              )}
-
-            </div>
-
           </div>
+        )}
 
-        ))}
+        {/* Title */}
+        <div className="text-center">
+          <h3 className="text-lg font-semibold text-gray-900">
+            {listing.title}
+          </h3>
+        </div>
+
+        {/* Description */}
+        {listing.description && (
+          <div
+            className="text-sm text-gray-600 text-center rich-text-light line-clamp-3"
+            dangerouslySetInnerHTML={{ __html: listing.description }}
+          />
+        )}
+
+        {/* Rating + Price */}
+        {/* <div className="flex justify-center items-center gap-3">
+
+          {listing.rating !== null && listing.rating !== undefined && (
+            <div className="flex items-center gap-1">
+              {[1, 2, 3, 4, 5].map((i) => (
+                <Star
+                  key={i}
+                  size={14}
+                  className={
+                    i <= Math.round(ratingValue)
+                      ? "text-yellow-400 fill-yellow-400"
+                      : "text-gray-300"
+                  }
+                />
+              ))}
+              <span className="text-xs text-gray-600 ml-1">
+                {ratingValue.toFixed(1)}
+              </span>
+            </div>
+          )}
+
+          {listing.priceRange && (
+            <span className="text-xs bg-gray-100 px-2 py-0.5 rounded">
+              {listing.priceRange}
+            </span>
+          )}
+
+        </div> */}
+
+        {/* Info */}
+        <div className="text-sm text-gray-500 space-y-2">
+
+          {listing.locationLabel && (
+            <p className="flex items-center gap-2 justify-center">
+              <MapPin size={14} className="text-gray-400" />
+              {listing.locationLabel}
+            </p>
+          )}
+
+          {listing.address && (
+            <p className="flex items-center gap-2 justify-center">
+              <MapPin size={14} className="text-gray-400" />
+              {listing.address}
+            </p>
+          )}
+
+          {listing.phone && (
+            <a
+              href={`tel:${listing.phone}`}
+              className="flex items-center gap-2 justify-center hover:text-black"
+            >
+              <Phone size={14} className="text-gray-400" />
+              {listing.phone}
+            </a>
+          )}
+
+          {listing.email && (
+            <a
+              href={`mailto:${listing.email}`}
+              className="flex items-center gap-2 justify-center hover:text-black"
+            >
+              <Mail size={14} className="text-gray-400" />
+              {listing.email}
+            </a>
+          )}
+
+          {listing.website && (
+            <a
+              href={
+                listing.website.startsWith("http")
+                  ? listing.website
+                  : `https://${listing.website}`
+              }
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block text-center text-green-600 hover:underline"
+            >
+              {listing.website}
+            </a>
+          )}
+
+        </div>
 
       </div>
+    );
+  })}
+</div>
 
     </div>
   );
