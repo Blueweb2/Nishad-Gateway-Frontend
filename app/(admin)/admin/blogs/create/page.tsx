@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
 import toast from "react-hot-toast";
-import { UploadCloud, Trash2 } from "lucide-react";
 import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
 import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 import RichTextEditor from "@/components/admin/common/RichTextEditor";

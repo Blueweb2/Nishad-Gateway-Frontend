@@ -16,32 +16,50 @@ export default function AdminDashboardPage() {
     totalBlogs: 0,
     totalServices: 0,
   });
+[
+  adminAxios.get("/blogs"),
+  adminAxios.get("/services"),
+];
 
-  useEffect(() => {
-    const fetchDashboardStats = async () => {
-      try {
-        setLoading(true);
 
-        const [blogsRes, servicesRes] = await Promise.all([
-          adminAxios.get("/blogs"),
-          adminAxios.get("/services"),
-        ]);
+useEffect(() => {
+  const fetchDashboardStats = async () => {
+    try {
+      setLoading(true);
 
-        setStats({
-          totalBlogs: blogsRes.data?.blogs?.length || 0,
-          totalServices: servicesRes.data?.services?.length || 0,
-        });
-      } catch (error: any) {
-        toast.error(
-          error?.response?.data?.message || "Failed to load dashboard"
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
+      const [blogsRes, servicesRes] = await Promise.all([
+        adminAxios.get("/blogs"),
+        adminAxios.get("/services"),
+      ]);
 
-    fetchDashboardStats();
-  }, []);
+      console.log("BLOGS:", blogsRes.data);
+      console.log("SERVICES:", servicesRes.data);
+
+      setStats({
+        totalBlogs:
+          blogsRes.data?.blogs?.length ||
+          blogsRes.data?.data?.length ||
+          blogsRes.data?.length ||
+          0,
+
+        totalServices:
+          servicesRes.data?.services?.length ||
+          servicesRes.data?.data?.length ||
+          servicesRes.data?.length ||
+          0,
+      });
+
+    } catch (error: any) {
+      toast.error(
+        error?.response?.data?.message || "Failed to load dashboard"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchDashboardStats();
+}, []);
 
   return (
     <div>
