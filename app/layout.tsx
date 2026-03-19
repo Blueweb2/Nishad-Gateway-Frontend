@@ -17,6 +17,13 @@ export const metadata: Metadata = {
   description:
     "Consulting services for business setup, investment, and expansion in Saudi Arabia.",
 
+  keywords: [
+    "Saudi Arabia business setup",
+    "KSA investment",
+    "Riyadh business consulting",
+    "company formation Saudi Arabia",
+  ],
+
   openGraph: {
     title: "Gateway to Saudi Arabia",
     description:
@@ -31,6 +38,14 @@ export const metadata: Metadata = {
       },
     ],
     type: "website",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Gateway to Saudi Arabia",
+    description:
+      "Consulting services for business setup and expansion in Saudi Arabia.",
+    images: ["/riyadhhero.webp"],
   },
 };
 export default function RootLayout({

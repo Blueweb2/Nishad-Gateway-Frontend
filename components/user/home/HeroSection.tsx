@@ -11,7 +11,7 @@ export default function HeroSection() {
       <motion.div
         initial={{ scale: 1.1 }}
         animate={{ scale: 1 }}
-        transition={{ duration: 6, ease: "easeOut" }}
+        transition={{ duration: 3, ease: "easeOut" }}
         className="absolute inset-0"
       >
         <Image
@@ -20,7 +20,7 @@ export default function HeroSection() {
           fill
           priority
           className="object-cover"
-          sizes="100vw"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1200px"
           title="Business and services in Riyadh, Saudi Arabia"
         />
       </motion.div>

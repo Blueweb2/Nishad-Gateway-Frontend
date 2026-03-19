@@ -271,7 +271,7 @@ export default function BusinessGrowth() {
 
             <div className="hidden lg:block absolute left-0 right-0 top-1/2 h-px bg-gray-200 lg:mt-16" />
 
-            <div className="lg:absolute lg:top-1/2 lg:-translate-y-full lg:pb-6 w-full lg:w-[75%] lg:mt-16">
+            <div className="lg:absolute lg:top-1/2 lg:-translate-y-full lg:pb-6 w-full lg:mt-16">
               <FadeUpScroll delay={0.4} key={activeIndex + "desc"}>
                 <p className="text-gray-500 leading-relaxed h-[205px] lg:h-auto max-w-md mx-auto lg:mx-0 description-text">
                   {activeSlide.description}
