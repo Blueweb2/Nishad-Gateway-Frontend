@@ -169,10 +169,10 @@ export default function CaseStudies() {
                     >
                       <Image
                         src={slide.src}
-                        alt="Case Study"
+                        alt={`Case study image of ${slide.title}`}
                         fill
                         className="object-cover"
-                        priority={index === 0}
+                        loading="lazy"
                       />
                     </div>
 
@@ -186,6 +186,8 @@ export default function CaseStudies() {
             <a 
               href="/ksa-expansion-cost-calculator"
               className="hidden lg:block mt-8 text-sm text-green-600 underline underline-offset-4 hover:text-green-700 transition"
+              aria-label="Calculate your Saudi Arabia expansion cost using our cost calculator"
+              title="KSA Expansion Cost Calculator"
             >
               Calculate Your KSA Expansion Cost
             </a>
@@ -230,6 +232,8 @@ export default function CaseStudies() {
             <a 
               href="/ksa-expansion-cost-calculator"
               className="block lg:hidden mt-3 text-sm text-green-600 underline underline-offset-4 hover:text-green-700 transition"
+              aria-label="Calculate your Saudi Arabia expansion cost using our cost calculator"
+              title="KSA Expansion Cost Calculator"
             >
               Calculate Your KSA Expansion Cost
             </a>

@@ -4,21 +4,21 @@ import { motion } from "framer-motion";
 const values = [
   {
     title: "Saudi Market Expertise",
-    description: 'Deep knowledge of MISA licensing in Saudi Arabia (link → MISA License service page) and company formation in Saudi Arabia (link → Company Formation service page) ensures businesses enter the market with clarity and confidence.'
+    description: 'Deep knowledge of MISA licensing in Saudi Arabia and company formation in Saudi Arabia ensures businesses enter the market with clarity and confidence.'
   },
   {
     title:
       "Global Business Perspective",
-    description: 'Supporting entrepreneurs and investors worldwide looking to expand their business in Saudi Arabia (link → Market Entry Strategy service page) and access opportunities across the Middle East.'
+    description: 'Supporting entrepreneurs and investors worldwide looking to expand their business in Saudi Arabia and access opportunities across the Middle East.'
   },
   {
     title: "End-to-End Market Entry Support",
-    description: 'From Saudi Arabia business setup (link → Business Setup service page) and regulatory approvals (link → Government Approvals / Compliance service page) to operational launch and expansion, we guide companies through every stage of their Saudi journey.'
+    description: 'From Saudi Arabia business setup and regulatory approvals to operational launch and expansion, we guide companies through every stage of their Saudi journey.'
   },
   {
     title:
       "Integrity & Professional Excellence",
-    description: 'Delivering trusted advisory services built on Saudi business compliance and regulatory guidance (link → Compliance / Legal service page) to help companies operate confidently in the Kingdom.'
+    description: 'Delivering trusted advisory services built on Saudi business compliance and regulatory guidance to help companies operate confidently in the Kingdom.'
   },
 ];
 
@@ -42,7 +42,7 @@ export default function BrandValues() {
         <p className="mt-4 text-gray-500 max-w-xl mx-auto">
           Our work is guided by expertise, transparency, and a commitment to helping global businesses
           successfully establish and expand in Saudi Arabia’s evolving business landscape under Vision
-          2030 (link → Vision 2030 blog page).
+          2030.
         </p>
 
         {/* Cards */}

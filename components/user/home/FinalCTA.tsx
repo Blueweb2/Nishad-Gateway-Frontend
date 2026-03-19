@@ -22,9 +22,8 @@ export default function FinalCTA() {
               transition={{ duration: 1, ease: "easeOut" }}
               viewport={{ once: true }}
             >
-              Company Formation in Saudi Arabia Starts Here. Expert guidance
-              on business setup, foreign investment licensing, and ownership
-              structuring in KSA.
+              Start Your Business in Saudi Arabia
+              Expert guidance for business in Saudi Arabia, including company formation, foreign investment licensing, and ownership structuring in KSA.
             </motion.p>
           </div>
 
@@ -35,7 +34,8 @@ export default function FinalCTA() {
             {/* BACKGROUND IMAGE */}
             <Image
               src="/contact.webp"
-              alt="Saudi Arabia Desert"
+              alt="Desert landscape in Saudi Arabia representing business expansion environment"
+              loading="lazy"
               fill
               className="object-cover"
             />
@@ -50,7 +50,8 @@ export default function FinalCTA() {
               <div className="mb-10 lg:mb-14">
                 <Image
                   src="/logowhite.svg"
-                  alt="NishadVTA Logo"
+                  alt="NishadVTA - Business Expansion Services in Saudi Arabia"
+                  loading="lazy"
                   width={220}
                   height={120}
                 />
@@ -59,6 +60,8 @@ export default function FinalCTA() {
               {/* CTA BUTTON */}
               <Link
                 href="/ksa-expansion-cost-calculator"
+                aria-label="Calculate your Saudi Arabia expansion cost using our cost calculator"
+                title="KSA Expansion Cost Calculator"
                 className="
                   bg-green-600 hover:bg-green-700
                   text-white text-sm font-medium
@@ -89,22 +92,35 @@ export default function FinalCTA() {
 
           {/* LEFT */}
           <div className="sm:flex-1 text-center sm:text-left">
-            <a href="#" className="underline underline-offset-4">
+            <a 
+              href="/privacy-policy" 
+              className="underline underline-offset-4" 
+              aria-label="Read our privacy policy"
+              title="Privacy Policy"
+            >
               Privacy policy
             </a>
           </div>
 
           {/* CENTER */}
           <div className="sm:flex-1 flex justify-center gap-4">
-            <SocialIcon icon={<Send size={14} />} />
-            <SocialIcon icon={<Instagram size={14} />} />
-            <a
+
+            <SocialIcon
+              label="Contact us on Telegram"
+              icon={<Send size={14} />}
+            />
+
+            <SocialIcon
+              label="Visit our Instagram"
+              icon={<Instagram size={14} />}
+            />
+
+            <SocialIcon
               href="https://www.linkedin.com/in/nishad-abdu-rahiman-business-consultant"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <SocialIcon icon={<Linkedin size={14} />} />
-            </a>
+              label="Visit Nishad Abdu Rahiman's LinkedIn profile"
+              icon={<Linkedin size={14} />}
+            />
+
           </div>
 
           {/* RIGHT */}
@@ -120,18 +136,29 @@ export default function FinalCTA() {
 };
 
 /* ================= SOCIAL ICON ================= */
+type SocialIconProps = {
+  icon: React.ReactNode;
+  href?: string;
+  label: string;
+};
 
-function SocialIcon({ icon }: { icon: React.ReactNode }) {
+function SocialIcon({ icon, href, label }: SocialIconProps) {
   return (
-    <button
+    <a
+      href={href && href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={label}
+      title={label}
       className="
         w-8 h-8 rounded-full
         bg-white/10
         flex items-center justify-center
         hover:bg-white/20 transition
+        focus:outline-none focus:ring-2 focus:ring-white/50
       "
     >
-      {icon}
-    </button>
+      <span aria-hidden="true">{icon}</span>
+    </a>
   );
-};
+}
