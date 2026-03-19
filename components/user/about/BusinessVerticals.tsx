@@ -81,8 +81,8 @@ export default function BusinessVerticals() {
 
   const previousTitle =
     activeIndex === 0
-      ? verticals[verticals.length - 1].subtitle
-      : verticals[activeIndex - 1].subtitle;
+      ? verticals[verticals.length - 1].title
+      : verticals[activeIndex - 1].title;
 
 
   return (
@@ -152,11 +152,17 @@ export default function BusinessVerticals() {
         {/* RIGHT COLUMN */}
         <div className="flex flex-col justify-end items-center lg:items-end lg:h-[300px]">
 
+          <div className="hidden lg:block w-full h-full">
+            <p className="text-white/90 text-lg mb-4 max-w-xs">
+              {current.subtitle}
+            </p>
+          </div>
+
           <div className="flex flex-col lg:flex-row justify-between items-center lg:items-start w-full max-w-md lg:max-w-[28vw] lg:border-b lg:border-white/20 lg:pb-6">
 
             {/* ONLY SHOW IN MOBILE */}
-            <p className="lg:hidden text-white/40 text-lg mb-4 max-w-xs h-[60px] mt-5">
-              {previousTitle}
+            <p className="lg:hidden text-white/90 text-lg mb-4 max-w-xs h-[60px] mt-5">
+              {current.subtitle}
             </p>
 
             <ul className="grid grid-cols-2 lg:grid-cols-1 gap-y-3 gap-x-6 text-white/90 text-sm lg:text-[1vw] mb-6 lg:mb-0 h-[90px] lg:h-auto">
