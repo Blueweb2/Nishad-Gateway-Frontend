@@ -7,8 +7,7 @@ import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 import { getMinistryBySlug } from "@/lib/api/public/ministries.api";
 
 const BlockRenderer = dynamic(
-  () => import("@/components/user/ministries/blocks/BlockRenderer"),
-  { loading: () => <Loading /> }
+  () => import("@/components/user/ministries/blocks/BlockRenderer")
 );
 
 type Props = {
