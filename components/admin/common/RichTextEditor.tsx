@@ -8,6 +8,9 @@ import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
 import Dropcursor from "@tiptap/extension-dropcursor";
 import { Node, mergeAttributes } from "@tiptap/core";
+import BulletList from "@tiptap/extension-bullet-list";
+import OrderedList from "@tiptap/extension-ordered-list";
+import ListItem from "@tiptap/extension-list-item";
 
 import {
   Bold,
@@ -32,12 +35,16 @@ type Props = {
 };
 
 /* ================= CUSTOM IMAGE ================= */
-
 export const CustomImage = Node.create({
   name: "customImage",
 
   group: "block",
   draggable: true,
+  selectable: true,
+
+  content: "", // ✅ IMPORTANT (no children)
+
+  isolating: true, // ✅ VERY IMPORTANT (prevents list conflicts)
 
   addAttributes() {
     return {
@@ -69,10 +76,10 @@ export const CustomImage = Node.create({
 
       HTMLAttributes.caption
         ? [
-          "figcaption",
-          { class: "text-sm text-gray-400 mt-2" },
-          HTMLAttributes.caption,
-        ]
+            "figcaption",
+            { class: "text-sm text-gray-400 mt-2" },
+            HTMLAttributes.caption,
+          ]
         : "",
     ];
   },
@@ -85,13 +92,20 @@ export default function RichTextEditor({ value, onChange }: Props) {
   const [uploadingImage, setUploadingImage] = useState(false);
   const editor = useEditor({
     extensions: [
-      StarterKit.configure({
-        heading: { levels: [2, 3] },
-      }),
+       StarterKit.configure({
+    heading: { levels: [2, 3] },
+    bulletList: false,
+    orderedList: false,
+    listItem: false,
+  }),
 
-      Link.configure({
-        openOnClick: false,
-      }),
+  BulletList,
+  OrderedList,
+  ListItem,
+
+  Link.configure({
+    openOnClick: false,
+  }),
 
       CustomImage,
 
@@ -115,29 +129,31 @@ export default function RichTextEditor({ value, onChange }: Props) {
       },
 
       /* ✅ DRAG IMAGE */
-      handleDrop: (view, event) => {
-        const file = event.dataTransfer?.files?.[0];
-        if (!file || !file.type.startsWith("image/")) return false;
+     handleDrop: (view, event) => {
+  const file = event.dataTransfer?.files?.[0];
+  if (!file || !file.type.startsWith("image/")) return false;
 
-        setUploadingImage(true);
+  setUploadingImage(true);
 
-        uploadToCloudinarySigned(file, "nishad-gateway/editor")
-          .then((res) => {
-            const node = view.state.schema.nodes.customImage.create({
-              src: res.secure_url,
-            });
+  uploadToCloudinarySigned(file, "nishad-gateway/editor")
+    .then((res) => {
+      const node = view.state.schema.nodes.customImage.create({
+        src: res.secure_url,
+      });
 
-            view.dispatch(view.state.tr.replaceSelectionWith(node));
-          })
-          .catch(() => {
-            alert("Upload failed");
-          })
-          .finally(() => {
-            setUploadingImage(false);
-          });
+      const coords = view.posAtCoords({
+        left: event.clientX,
+        top: event.clientY,
+      });
 
-        return true;
-      },
+      if (!coords) return;
+
+      view.dispatch(view.state.tr.insert(coords.pos, node));
+    })
+    .finally(() => setUploadingImage(false));
+
+  return true;
+},
 
       /* ✅ PASTE IMAGE */
       handlePaste: (view, event) => {
