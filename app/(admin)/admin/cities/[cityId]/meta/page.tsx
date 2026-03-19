@@ -3,23 +3,32 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import Image from "next/image";
-import { UploadCloud, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 
-import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
-import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 import {
   getCityByIdClient,
   updateCityClient,
   deleteCityClient,
 } from "@/lib/api/admin/cityBlog.client";
 
+import ImagePicker from "@/components/admin/common/ImagePicker";
+
+/* ================= TYPES ================= */
+
 type CityForm = {
   cityName: string;
   citySlug: string;
+
+  /* IMAGE */
   cityImage: string;
+  cityImageAlt?: string;
+  cityImagePublicId?: string;
+
+  /* CONTENT */
   heading: string;
   description: string;
+
+  /* META */
   tag: string;
   order: number;
   isActive: boolean;
@@ -31,14 +40,20 @@ export default function CityMetaPage() {
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [uploading, setUploading] = useState(false);
+
+  /* ================= FORM STATE ================= */
 
   const [form, setForm] = useState<CityForm>({
     cityName: "",
     citySlug: "",
+
     cityImage: "",
+    cityImageAlt: "",
+    cityImagePublicId: "",
+
     heading: "",
     description: "",
+
     tag: "ARTICLE",
     order: 0,
     isActive: true,
@@ -48,7 +63,8 @@ export default function CityMetaPage() {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
 
-  /* ========================= FETCH CITY ========================= */
+  /* ================= FETCH CITY ================= */
+
   useEffect(() => {
     const fetchCity = async () => {
       try {
@@ -59,15 +75,20 @@ export default function CityMetaPage() {
         setForm({
           cityName: data.city?.cityName || "",
           citySlug: data.city?.citySlug || "",
+
           cityImage: data.city?.cityImage || "",
+          cityImageAlt: data.city?.cityImageAlt || "",
+          cityImagePublicId: data.city?.cityImagePublicId || "",
+
           heading: data.city?.heading || "",
           description: data.city?.description || "",
+
           tag: data.city?.tag || "ARTICLE",
           order: data.city?.order ?? 0,
           isActive: data.city?.isActive ?? true,
         });
       } catch (err: any) {
-        toast.error(err?.response?.data?.message || "Failed to load city");
+        toast.error(err?.message || "Failed to load city");
       } finally {
         setLoading(false);
       }
@@ -76,30 +97,8 @@ export default function CityMetaPage() {
     fetchCity();
   }, [cityId]);
 
-  /* ========================= IMAGE UPLOAD ========================= */
-  const handleUploadImage = async (file: File) => {
-    try {
-      setUploading(true);
+  /* ================= UPDATE ================= */
 
-      const uploaded = await uploadToCloudinarySigned(
-        file,
-        "nishad-gateway/cities"
-      );
-
-      handleChange(
-        "cityImage",
-        cloudinaryAutoWebp(uploaded.secure_url)
-      );
-
-      toast.success("Image uploaded");
-    } catch (err: any) {
-      toast.error(err?.message || "Upload failed");
-    } finally {
-      setUploading(false);
-    }
-  };
-
-  /* ========================= UPDATE CITY ========================= */
   const handleUpdate = async () => {
     try {
       if (!cityId) return toast.error("City ID missing");
@@ -115,16 +114,16 @@ export default function CityMetaPage() {
       });
 
       toast.success("City updated");
-
       router.push(`/admin/cities/${cityId}`);
     } catch (err: any) {
-      toast.error(err?.response?.data?.message || "Update failed");
+      toast.error(err?.message || "Update failed");
     } finally {
       setSaving(false);
     }
   };
 
-  /* ========================= DELETE CITY ========================= */
+  /* ================= DELETE ================= */
+
   const handleDelete = async () => {
     if (!confirm("Delete this city permanently?")) return;
 
@@ -136,7 +135,7 @@ export default function CityMetaPage() {
       toast.success("City deleted");
       router.push("/admin/cities");
     } catch (err: any) {
-      toast.error(err?.response?.data?.message || "Delete failed");
+      toast.error(err?.message || "Delete failed");
     }
   };
 
@@ -146,7 +145,7 @@ export default function CityMetaPage() {
 
   return (
     <div className="space-y-8">
-      {/* Header */}
+      {/* ================= HEADER ================= */}
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-3xl font-semibold text-white">
@@ -166,7 +165,7 @@ export default function CityMetaPage() {
         </button>
       </div>
 
-      {/* Form */}
+      {/* ================= FORM ================= */}
       <div className="rounded-2xl border border-white/10 bg-white/5 p-6 space-y-5">
 
         <Input
@@ -181,45 +180,33 @@ export default function CityMetaPage() {
           onChange={(v: string) => handleChange("citySlug", v)}
         />
 
-        {/* Image */}
+        {/* ================= IMAGE PICKER ================= */}
         <div>
           <p className="text-sm text-white/70 mb-2">City Image</p>
 
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex-1">
-              <input
-                value={form.cityImage}
-                onChange={(e) => handleChange("cityImage", e.target.value)}
-                className="w-full px-4 py-2 rounded-lg border border-white/10 bg-white/5 text-white text-sm"
-              />
-
-              <label className="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 cursor-pointer">
-                <UploadCloud className="w-4 h-4" />
-                {uploading ? "Uploading..." : "Upload Image"}
-                <input
-                  type="file"
-                  hidden
-                  onChange={(e) =>
-                    e.target.files && handleUploadImage(e.target.files[0])
+          <ImagePicker
+            value={
+              form.cityImage
+                ? {
+                    url: form.cityImage,
+                    alt: form.cityImageAlt,
+                    publicId: form.cityImagePublicId,
                   }
-                />
-              </label>
-            </div>
-
-            {form.cityImage && (
-              <div className="relative w-[220px] h-[140px] rounded-xl overflow-hidden border border-white/10">
-                <Image
-                  src={form.cityImage}
-                  alt="City"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            )}
-          </div>
+                : null
+            }
+            folder="nishad-gateway/cities"
+            onChange={(img) =>
+              setForm((prev) => ({
+                ...prev,
+                cityImage: img?.url || "",
+                cityImageAlt: img?.alt || "",
+                cityImagePublicId: img?.publicId || "",
+              }))
+            }
+          />
         </div>
 
-        {/* NEW FIELDS */}
+        {/* ================= CONTENT ================= */}
         <Textarea
           label="Heading"
           value={form.heading}
@@ -232,7 +219,7 @@ export default function CityMetaPage() {
           onChange={(v: string) => handleChange("description", v)}
         />
 
-        {/* Active Toggle */}
+        {/* ================= ACTIVE + SUBMIT ================= */}
         <div className="flex items-center justify-between">
           <label className="flex items-center gap-2 text-sm text-white/70">
             <input
@@ -256,7 +243,7 @@ export default function CityMetaPage() {
   );
 }
 
-/* ---------- inputs ---------- */
+/* ================= INPUTS ================= */
 
 function Input({ label, value, onChange }: any) {
   return (

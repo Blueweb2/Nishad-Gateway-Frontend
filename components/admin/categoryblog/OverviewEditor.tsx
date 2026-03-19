@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import toast from "react-hot-toast";
 import RichTextEditor from "../common/RichTextEditor";
-import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
+import ImagePicker from "../common/ImagePicker";
 
 export default function OverviewEditor() {
 
@@ -13,7 +13,6 @@ export default function OverviewEditor() {
 
     const [content, setContent] = useState("");
     const [coverImage, setCoverImage] = useState("");
-    const [uploading, setUploading] = useState(false);
     const [coverImagePublicId, setCoverImagePublicId] = useState("");
     const [coverImageAlt, setCoverImageAlt] = useState("");
 
@@ -52,34 +51,8 @@ export default function OverviewEditor() {
 
     }, [cityId, categoryId]);
 
-    /* -------------------------------------------------------
-       Upload Cover Image
-    ------------------------------------------------------- */
 
-    const handleImageUpload = async (e: any) => {
 
-        const file = e.target.files?.[0];
-        if (!file) return;
-
-        try {
-            setUploading(true);
-
-            const res = await uploadToCloudinarySigned(
-                file,
-                "nishad-gateway/cities/categories/overview"
-            );
-
-            setCoverImage(res.secure_url);
-            setCoverImagePublicId(res.public_id);
-
-            toast.success("Image uploaded");
-
-        } catch (err: any) {
-            toast.error(err.message || "Upload failed");
-        }
-
-        setUploading(false);
-    };
     /* -------------------------------------------------------
        Save Overview
     ------------------------------------------------------- */
@@ -148,61 +121,30 @@ export default function OverviewEditor() {
         <div className="space-y-6">
 
             {/* Cover Image Upload */}
+            <div className="space-y-3">
 
-        <div className="space-y-3">
+                <label className="text-sm font-medium text-white/80">
+                    Cover Image
+                </label>
 
-  {/* Label */}
-  <label className="text-sm font-medium text-white/80">
-    Cover Image
-  </label>
-
-  {/* Image Preview OR Empty State */}
-  {coverImage ? (
-    <div className="relative">
-      <img
-        src={coverImage}
-        alt={coverImageAlt || "Cover image"}
-        className="w-full h-64 object-cover rounded-lg border border-white/10"
-      />
-
-      <button
-        onClick={deleteImage}
-        className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded"
-      >
-        Delete
-      </button>
-    </div>
-  ) : (
-    <div className="w-full h-40 border border-dashed border-white/20 rounded-lg flex items-center justify-center text-white/40 text-sm">
-      No image uploaded
-    </div>
-  )}
-
-  {/* Alt Text */}
-  <input
-    placeholder="Cover Image Alt Text (SEO)"
-    className="w-full p-2 rounded bg-black border border-white/20 text-white"
-    value={coverImageAlt}
-    disabled={!coverImage}
-    onChange={(e) => setCoverImageAlt(e.target.value)}
-  />
-
-  {/* Upload */}
-  <input
-    type="file"
-    accept="image/*"
-    onChange={handleImageUpload}
-    className="text-sm text-white"
-  />
-
-  {/* Uploading State */}
-  {uploading && (
-    <p className="text-sm text-white/50">
-      Uploading image...
-    </p>
-  )}
-
-</div>
+                <ImagePicker
+                    value={
+                        coverImage
+                            ? {
+                                url: coverImage,
+                                alt: coverImageAlt,
+                                publicId: coverImagePublicId,
+                            }
+                            : null
+                    }
+                    folder="nishad-gateway/cities/categories/overview"
+                    onChange={(img) => {
+                        setCoverImage(img?.url || "");
+                        setCoverImageAlt(img?.alt || "");
+                        setCoverImagePublicId(img?.publicId || "");
+                    }}
+                />
+            </div>
 
             {/* Rich Text Editor */}
 

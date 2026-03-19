@@ -7,34 +7,61 @@ export const CITY_TAGS: CityTag[] = [
 ];
 
 /* ======================================================
-   Used for ADMIN FORM (Create / Edit)
+   IMAGE TYPE (NEW - reusable everywhere)
+====================================================== */
+export interface ImageField {
+  url: string;
+  alt?: string;
+  publicId?: string;
+}
+
+/* ======================================================
+   ADMIN FORM (Create / Edit)
 ====================================================== */
 
 export interface CityForm {
   cityName: string;
   citySlug: string;
+
+  /* IMAGE */
   cityImage: string;
+  cityImageAlt?: string;
+  cityImagePublicId?: string;
+
+  /* CONTENT */
   heading: string;
   description: string;
+
+  /* META */
   tag: CityTag;
   order: number;
   isActive: boolean;
 }
 
 /* ======================================================
-   Used for PUBLIC API / UI
+   PUBLIC API / UI
 ====================================================== */
 
 export interface City {
   _id: string;
+
   cityName: string;
   citySlug: string;
+
+  /* IMAGE */
   cityImage?: string;
+  cityImageAlt?: string;
+  cityImagePublicId?: string;
+
+  /* CONTENT */
   heading: string;
   description: string;
+
+  /* META */
   tag: CityTag;
   order: number;
   isActive: boolean;
+
   createdAt?: string;
   updatedAt?: string;
 }
