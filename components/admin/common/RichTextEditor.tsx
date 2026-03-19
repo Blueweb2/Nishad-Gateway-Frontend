@@ -258,6 +258,7 @@ export default function RichTextEditor({ value, onChange }: Props) {
     <div className="flex flex-wrap gap-2 p-3 border-b border-white/10">
 
       <button
+       type="button"
         disabled={uploadingImage}
         onClick={() => editor.chain().focus().toggleBold().run()}
         className={`${btn(editor.isActive("bold"))} ${uploadingImage && "opacity-40 cursor-not-allowed"}`}
@@ -266,6 +267,7 @@ export default function RichTextEditor({ value, onChange }: Props) {
       </button>
 
       <button
+       type="button"
         disabled={uploadingImage}
         onClick={() => editor.chain().focus().toggleItalic().run()}
         className={`${btn(editor.isActive("italic"))} ${uploadingImage && "opacity-40 cursor-not-allowed"}`}
@@ -274,6 +276,7 @@ export default function RichTextEditor({ value, onChange }: Props) {
       </button>
 
       <button
+       type="button"
         disabled={uploadingImage}
         onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
         className={`${btn(editor.isActive("heading", { level: 2 }))} ${uploadingImage && "opacity-40 cursor-not-allowed"}`}
@@ -282,6 +285,7 @@ export default function RichTextEditor({ value, onChange }: Props) {
       </button>
 
       <button
+       type="button"
         disabled={uploadingImage}
         onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
         className={`${btn(editor.isActive("heading", { level: 3 }))} ${uploadingImage && "opacity-40 cursor-not-allowed"}`}
@@ -290,6 +294,7 @@ export default function RichTextEditor({ value, onChange }: Props) {
       </button>
 
       <button
+       type="button"
         disabled={uploadingImage}
         onClick={() => editor.chain().focus().toggleBulletList().run()}
         className={`${btn(editor.isActive("bulletList"))} ${uploadingImage && "opacity-40 cursor-not-allowed"}`}
@@ -298,6 +303,7 @@ export default function RichTextEditor({ value, onChange }: Props) {
       </button>
 
       <button
+       type="button"
         disabled={uploadingImage}
         onClick={() => editor.chain().focus().toggleOrderedList().run()}
         className={`${btn(editor.isActive("orderedList"))} ${uploadingImage && "opacity-40 cursor-not-allowed"}`}
@@ -306,6 +312,7 @@ export default function RichTextEditor({ value, onChange }: Props) {
       </button>
 
       <button
+       type="button"
         disabled={uploadingImage}
         onClick={() => editor.chain().focus().toggleBlockquote().run()}
         className={`${btn(editor.isActive("blockquote"))} ${uploadingImage && "opacity-40 cursor-not-allowed"}`}
@@ -314,6 +321,7 @@ export default function RichTextEditor({ value, onChange }: Props) {
       </button>
 
       <button
+       type="button"
         disabled={uploadingImage}
         onClick={() => editor.chain().focus().toggleCodeBlock().run()}
         className={`${btn(editor.isActive("codeBlock"))} ${uploadingImage && "opacity-40 cursor-not-allowed"}`}
@@ -322,6 +330,7 @@ export default function RichTextEditor({ value, onChange }: Props) {
       </button>
 
       <button
+       type="button"
         disabled={uploadingImage}
         onClick={handleImageUpload}
         className={`${btn()} ${uploadingImage && "opacity-40 cursor-not-allowed"}`}
@@ -330,6 +339,7 @@ export default function RichTextEditor({ value, onChange }: Props) {
       </button>
 
       <button
+       type="button"
         disabled={uploadingImage}
         onClick={() => {
           const url = prompt("Enter URL");
@@ -341,6 +351,7 @@ export default function RichTextEditor({ value, onChange }: Props) {
       </button>
 
       <button
+       type="button"
         disabled={uploadingImage}
         onClick={() => editor.chain().focus().undo().run()}
         className={`${btn()} ${uploadingImage && "opacity-40 cursor-not-allowed"}`}
@@ -349,6 +360,7 @@ export default function RichTextEditor({ value, onChange }: Props) {
       </button>
 
       <button
+       type="button" 
         disabled={uploadingImage}
         onClick={() => editor.chain().focus().redo().run()}
         className={`${btn()} ${uploadingImage && "opacity-40 cursor-not-allowed"}`}
