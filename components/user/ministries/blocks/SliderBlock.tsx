@@ -27,7 +27,7 @@ export default function SliderBlock({ block }: Props) {
   if (!slides.length) return null;
 
   return (
-    <section className="relative pt-7 md:py-16 lg:py-20">
+    <section className="relative pt-7 md:py-16 lg:py-20 border-t border-gray-200">
 
       {/* CONTROLS */}
       <div className="absolute inset-x-0 top-[47%] -translate-y-1/2 z-20 hidden md:flex justify-between items-center px-4 md:px-6 max-w-7xl mx-auto">
@@ -58,7 +58,7 @@ export default function SliderBlock({ block }: Props) {
         <div className="space-y-4 text-center lg:text-left">
 
           {block.heading && (
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">
+            <h2 className="text-xl block lg:hidden sm:text-2xl md:text-3xl font-semibold">
               {block.heading}
             </h2>
           )}
@@ -70,7 +70,11 @@ export default function SliderBlock({ block }: Props) {
         </div>
 
         {/* CENTER SLIDER */}
-        <div className="flex justify-center">
+        <div className="flex justify-center items-center lg:flex-col">
+
+          <h2 className="hidden lg:block text-2xl md:text-3xl lg:text-4xl font-bold mb-10">
+            {block.heading}
+          </h2>
 
           <Swiper
             modules={[EffectFade]}
@@ -116,7 +120,7 @@ export default function SliderBlock({ block }: Props) {
       </div>
 
       {/* CTA */}
-      <div className="text-center mt-3 md:mt-12">
+      <div className="text-center mt-3 md:mt-12 lg:mt-3">
         <a
           href="#"
           className="text-green-600 underline text-sm hover:text-green-700"
