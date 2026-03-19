@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Parallax } from "swiper/modules";
+import { motion } from "framer-motion";
 import OvalArrow from "@/components/user/ui/OvalArrow";
 import FadeUpScroll from "../ui/FadeUpScroll";
 import "swiper/css/parallax";
@@ -111,9 +112,15 @@ export default function TeamSection() {
                     {activeSlide.title}
                   </h3>
                 </FadeUpScroll>
-                <p className="text-sm text-gray-500 mt-2 md:h-[40px] lg:h-auto">
+                <motion.p
+                  key={activeSlide.jobTitle}
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 1, ease: "easeOut" }}
+                  className="text-sm text-gray-500 mt-2 md:h-[40px] lg:h-auto"
+                >
                   {activeSlide.jobTitle}
-                </p>
+                </motion.p>
               </div>
             </div>
 
@@ -121,9 +128,15 @@ export default function TeamSection() {
             <div className="h-px bg-gray-300 w-full"></div>
 
             <div className="flex justify-center md:justify-start">
-              <p className="text-sm text-gray-600 leading-relaxed max-w-sm md:ml-10 h-[90px]">
+              <motion.p
+                key={activeSlide.description}
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, ease: "easeOut" }}
+                className="text-sm text-gray-600 leading-relaxed max-w-sm md:ml-10 h-[90px]"
+              >
                 {activeSlide.description}
-              </p>
+              </motion.p>
             </div>
 
           </div>
@@ -189,16 +202,28 @@ export default function TeamSection() {
 
             <div>
               <p className="text-xs text-gray-400">Work Experience:</p>
-              <p className="text-lg font-semibold mt-1">
+              <motion.p
+                key={activeSlide.experience}
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, ease: "easeOut" }}
+                className="text-lg font-semibold mt-1"
+              >
                 {activeSlide.experience}
-              </p>
+              </motion.p>
             </div>
 
             <div>
               <p className="text-xs text-gray-400">Country:</p>
-              <p className="text-lg font-semibold mt-1">
+              <motion.p
+                key={activeSlide.experience}
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, ease: "easeOut" }}
+                className="text-lg font-semibold mt-1"
+              >
                 {activeSlide.country}
-              </p>
+              </motion.p>
             </div>
 
             {/* Navigation Arrows */}

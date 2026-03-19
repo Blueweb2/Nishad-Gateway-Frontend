@@ -144,7 +144,7 @@ export default function CaseStudies() {
             <div className="hidden lg:flex flex-1 flex-col justify-center lg:justify-end">
 
               <FadeUpScroll delay={0.3} key={activeIndex}>
-                <h3 className="text-xl sm:text-2xl font-semibold text-[#287F7F] max-w-sm">
+                <h3 className="text-xl sm:text-2xl font-semibold text-[#287F7F] pr-40">
                   {activeSlide.title}
                 </h3>
               </FadeUpScroll>

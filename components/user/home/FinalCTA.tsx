@@ -22,9 +22,8 @@ export default function FinalCTA() {
               transition={{ duration: 1, ease: "easeOut" }}
               viewport={{ once: true }}
             >
-              Company Formation in Saudi Arabia Starts Here. Expert guidance
-              on business setup, foreign investment licensing, and ownership
-              structuring in KSA.
+              Start Your Business in Saudi Arabia
+              Expert guidance for business in Saudi Arabia, including company formation, foreign investment licensing, and ownership structuring in KSA.
             </motion.p>
           </div>
 
