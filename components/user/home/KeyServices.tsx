@@ -19,16 +19,36 @@ interface Sector {
 }
 
 export default function KeyServices() {
+
   const [sectors, setSectors] = useState<Sector[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getPublicSectors();
-      setSectors(data);
+
+      try {
+        setLoading(true)
+        const data = await getPublicSectors();
+        setSectors(data);
+      } catch (error) {
+        console.error("Failed to load services", error);
+      } finally {
+        setLoading(false)
+      }
+
     };
 
     fetchData();
   }, []);
+
+  // loading spinner
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-[300px]">
+        <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-300 border-t-black"></div>
+      </div>
+    );
+  };
 
   return (
     <section
@@ -51,7 +71,7 @@ export default function KeyServices() {
         <div 
           className="flex md:flex overflow-x-auto gap-6 lg:grid lg:grid-cols-4 xl:grid-cols-5 lg:overflow-visible hide-scrollbar"
         >
-          {sectors.map((sector) => (
+          {sectors.length > 0 ? sectors.map((sector) => (
             <div className="min-w-[260px] lg:min-w-0" key={sector._id}>
               <Card
                 key={sector._id}
@@ -61,7 +81,11 @@ export default function KeyServices() {
                 description={sector.excerpt}
               />
             </div>
-          ))}
+          )):
+            <div className="flex justify-center items-center text-white">
+              Failed to load services. Please try again.
+            </div>
+          }
         </div>
       </div>
     </section>
@@ -80,7 +104,11 @@ function Card({
   slug: string;
 }) {
   return (
-    <Link href={`/sectors/${slug}`}>
+    <Link 
+      href={`/sectors/${slug}`} 
+      aria-label={`Explore ${title} sector in Saudi Arabia`}
+      title={`${title} sector opportunities in Saudi Arabia`}
+    >
       <div
         className="
         group
@@ -100,9 +128,10 @@ function Card({
           {icon && (
             <Image
               src={icon}
-              alt={title}
+              alt={`${title} sector in Saudi Arabia`}
               width={50}
               height={50}
+              loading="lazy"
             />
           )}
 
@@ -138,14 +167,6 @@ function Card({
               lg:group-hover:translate-y-0
             "
           >
-              {/* text-white text-sm leading-[16px]
-
-    opacity-100 translate-y-0
-    lg:opacity-0 lg:translate-y-4
-
-    transition-all duration-300
-    lg:group-hover:opacity-100
-    lg:group-hover:translate-y-0 */}
             <p className="text-[14px] font-medium pb-2.5 uppercase">
               {title}
             </p>

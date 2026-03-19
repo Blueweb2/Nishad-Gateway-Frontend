@@ -1,5 +1,3 @@
-import { publicAxios } from "@/lib/http/publicAxios";
-
 /* ================= GET ALL ================= */
 
 export const getPublicSectors = async () => {
