@@ -203,7 +203,7 @@ export default function WhySaudi() {
                 <Image
                   priority={index === 0}
                   src={slides[index].image}
-                  alt={slides[index].title}
+                  alt={`${slides[index].title} for businesses in Saudi Arabia`}
                   width={130}
                   height={130}
                   className="object-contain"
@@ -245,7 +245,7 @@ export default function WhySaudi() {
 
           <img
             src="/why-saudi-arabia.svg"
-            alt="saudi arabia"
+            alt={`${slides[index].title} for businesses in Saudi Arabia`}
             className="w-full max-w-[380px] md:max-w-none mx-auto md:mx-0"
             loading="lazy"
           />

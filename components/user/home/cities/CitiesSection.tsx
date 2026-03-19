@@ -1,13 +1,21 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import { getCities } from "@/lib/api/public/city.api";
-import CitySlide, { City } from "./CitySlide";
-import OvalArrow from "@/components/user/ui/OvalArrow";
 import { motion, AnimatePresence } from "framer-motion";
+import { getCities } from "@/lib/api/public/city.api";
+import { City } from "./CitySlide";
+import OvalArrow from "@/components/user/ui/OvalArrow";
+
+const CitySlide = dynamic(() => import("./CitySlide"), {
+  loading: () => <p>Loading cities...</p>
+});
 
 export default function CitiesSection() {
+
   const [cities, setCities] = useState<City[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [isPaused, setIsPaused] = useState(false);
@@ -15,12 +23,18 @@ export default function CitiesSection() {
   // Fetch cities
   useEffect(() => {
     const fetchCities = async () => {
+
       try {
+        setLoading(true);
         const data = await getCities();
         setCities(data);
       } catch (error) {
         console.error("Failed to load cities", error);
+        setError(true);
+      } finally {
+        setLoading(false)
       }
+
     };
 
     fetchCities();
@@ -40,10 +54,21 @@ export default function CitiesSection() {
     return () => clearTimeout(timer);
   }, [index, total, isPaused]);
 
-  if (total === 0) {
+  // loading spinner
+  if (loading) {
     return (
       <div className="flex justify-center items-center h-[300px]">
         <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-300 border-t-black"></div>
+      </div>
+    );
+  }
+
+
+  // error message
+  if (error) {
+    return (
+      <div className="flex justify-center items-center text-red-500 h-[300px]">
+        Failed to load cities. Please try again.
       </div>
     );
   }
