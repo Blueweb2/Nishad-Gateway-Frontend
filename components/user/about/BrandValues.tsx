@@ -46,20 +46,20 @@ export default function BrandValues() {
         </p>
 
         {/* Cards */}
-        <div className="mt-16 flex gap-6 overflow-x-auto pb-4 scroll-smooth hide-scrollbar">
+        <div className="flex overflow-x-auto scroll-smooth hide-scrollbar md:overflow-visible md:grid md:grid-cols-2 lg:grid-cols-4 gap-4 pb-4 mt-16">
           {values.map((value, index) => (
             <motion.div
               key={index}
               whileHover={{ y: -6 }}
               transition={{ duration: 0.3 }}
-              className="group relative min-w-[300px] md:min-w-[340px] h-[320px] p-8 rounded-3xl text-left flex flex-col justify-between transition-all duration-300 cursor-pointer bg-white text-gray-800 shadow-sm hover:bg-[#0E6B63] hover:text-white hover:shadow-xl"
+              className="group relative min-w-[300px] md:min-w-0  p-8 rounded-3xl text-left flex flex-col transition-all duration-300 cursor-pointer bg-white text-gray-800 shadow-sm hover:bg-[#0E6B63] hover:text-white hover:shadow-xl"
             >
               {/* Text */}
-              <h3 className="text-[15px] md:text-[16px] font-semibold leading-snug line-clamp-2">
+              <h3 className="text-[15px] md:text-[16px] font-semibold leading-snug">
                 {value.title}
               </h3>
 
-              <p className="text-sm md:text-[15px] leading-relaxed mt-5 ">
+              <p className="text-sm md:text-[15px] leading-relaxed mt-5">
                 {value.description}
               </p>
             </motion.div>
