@@ -8,6 +8,7 @@ import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
 import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 import RichTextEditor from "@/components/admin/common/RichTextEditor";
 import MiniTextEditor from "@/components/admin/common/MiniTextEditor";
+import ImagePicker from "@/components/admin/common/ImagePicker";
 
 type BlogStatus = "draft" | "published";
 
@@ -112,146 +113,146 @@ export default function CreateBlogPage() {
   };
 
   /* ================= IMAGE UPLOAD ================= */
-  const handleCoverUpload = async (file: File) => {
-    if (!file.type.startsWith("image/")) {
-      toast.error("Only image files allowed");
+  // const handleCoverUpload = async (file: File) => {
+  //   if (!file.type.startsWith("image/")) {
+  //     toast.error("Only image files allowed");
+  //     return;
+  //   }
+
+  //   try {
+  //     setUploading(true);
+  //     toast.loading("Uploading...", { id: "upload" });
+
+  //     const uploaded = await uploadToCloudinarySigned(
+  //       file,
+  //       "nishad-gateway/blogs"
+  //     );
+
+  //     setCoverImage({
+  //       url: cloudinaryAutoWebp(uploaded.secure_url),
+  //       alt: title || "",
+  //       publicId: uploaded.public_id, // ✅ IMPORTANT
+  //     });
+
+  //     toast.success("Uploaded", { id: "upload" });
+  //   } catch {
+  //     toast.error("Upload failed", { id: "upload" });
+  //   } finally {
+  //     setUploading(false);
+  //   }
+  // };
+
+  // const handleCoverDelete = async () => {
+  //   if (!coverImage?.publicId) return;
+
+  //   try {
+  //     await fetch(`${API}/cloudinary/delete`, {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       credentials: "include",
+  //       body: JSON.stringify({
+  //         publicId: coverImage.publicId,
+  //       }),
+  //     });
+
+  //     setCoverImage(null);
+  //     toast.success("Cover image deleted");
+  //   } catch {
+  //     toast.error("Delete failed");
+  //   }
+  // };
+  /* ================= SUBMIT ================= */
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    /* ================= CLEAN EDITOR CONTENT ================= */
+    const cleanExcerpt =
+      !excerpt ||
+        excerpt === "<p></p>" ||
+        excerpt === "<p><br></p>"
+        ? ""
+        : excerpt;
+
+    /* ================= REQUIRED VALIDATION ================= */
+    if (!title || !slug || !coverImage?.url) {
+      toast.error("Title, slug and cover image are required.");
+      return;
+    }
+
+    /* ================= OPTIONAL BLOCK VALIDATION ================= */
+    // (Blocks are optional now — remove this if you want strict CMS)
+    // if (blocks.length === 0) {
+    //   toast.error("At least one content block is required.");
+    //   return;
+    // }
+
+    /* ================= TABLE VALIDATION ================= */
+    const invalidTable = blocks.some(
+      (b) =>
+        b.type === "table" &&
+        (b.headers.length === 0 || b.rows.length === 0)
+    );
+
+    if (invalidTable) {
+      toast.error("Tables must have at least 1 column and 1 row.");
+      return;
+    }
+
+    /* ================= GALLERY VALIDATION ================= */
+    const invalidGallery = blocks.some(
+      (b) =>
+        b.type === "gallery" &&
+        b.images.length === 0
+    );
+
+    if (invalidGallery) {
+      toast.error("Gallery block must contain at least one image.");
       return;
     }
 
     try {
-      setUploading(true);
-      toast.loading("Uploading...", { id: "upload" });
-
-      const uploaded = await uploadToCloudinarySigned(
-        file,
-        "nishad-gateway/blogs"
-      );
-
-      setCoverImage({
-        url: cloudinaryAutoWebp(uploaded.secure_url),
-        alt: title || "",
-        publicId: uploaded.public_id, // ✅ IMPORTANT
-      });
-
-      toast.success("Uploaded", { id: "upload" });
-    } catch {
-      toast.error("Upload failed", { id: "upload" });
-    } finally {
-      setUploading(false);
-    }
-  };
-
-  const handleCoverDelete = async () => {
-    if (!coverImage?.publicId) return;
-
-    try {
-      await fetch(`${API}/cloudinary/delete`, {
+      const res = await fetch(`${API}/blogs/admin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify({
-          publicId: coverImage.publicId,
+          title,
+          slug,
+          excerpt: cleanExcerpt, // ✅ cleaned & optional
+          status,
+
+          tags: tags
+            .split(",")
+            .map((t) => t.trim())
+            .filter(Boolean),
+
+          coverImage: {
+            url: coverImage.url,
+            alt: coverImage.alt || title,
+            publicId: coverImage.publicId,
+          },
+
+          metaTitle: metaTitle || title,
+          metaDescription: metaDescription || cleanExcerpt,
+
+          blocks: blocks.map((b) => ({
+            type: b.type,
+            data: b,
+          })),
         }),
       });
 
-      setCoverImage(null);
-      toast.success("Cover image deleted");
-    } catch {
-      toast.error("Delete failed");
+      if (!res.ok) throw new Error("Creation failed");
+
+      toast.success("Blog created!");
+      router.push("/admin/blogs");
+
+    } catch (err) {
+      console.error(err);
+      toast.error("Something went wrong");
     }
   };
-  /* ================= SUBMIT ================= */
-
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-
-  /* ================= CLEAN EDITOR CONTENT ================= */
-  const cleanExcerpt =
-    !excerpt ||
-    excerpt === "<p></p>" ||
-    excerpt === "<p><br></p>"
-      ? ""
-      : excerpt;
-
-  /* ================= REQUIRED VALIDATION ================= */
-  if (!title || !slug || !coverImage?.url) {
-    toast.error("Title, slug and cover image are required.");
-    return;
-  }
-
-  /* ================= OPTIONAL BLOCK VALIDATION ================= */
-  // (Blocks are optional now — remove this if you want strict CMS)
-  // if (blocks.length === 0) {
-  //   toast.error("At least one content block is required.");
-  //   return;
-  // }
-
-  /* ================= TABLE VALIDATION ================= */
-  const invalidTable = blocks.some(
-    (b) =>
-      b.type === "table" &&
-      (b.headers.length === 0 || b.rows.length === 0)
-  );
-
-  if (invalidTable) {
-    toast.error("Tables must have at least 1 column and 1 row.");
-    return;
-  }
-
-  /* ================= GALLERY VALIDATION ================= */
-  const invalidGallery = blocks.some(
-    (b) =>
-      b.type === "gallery" &&
-      b.images.length === 0
-  );
-
-  if (invalidGallery) {
-    toast.error("Gallery block must contain at least one image.");
-    return;
-  }
-
-  try {
-    const res = await fetch(`${API}/blogs/admin`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify({
-        title,
-        slug,
-        excerpt: cleanExcerpt, // ✅ cleaned & optional
-        status,
-
-        tags: tags
-          .split(",")
-          .map((t) => t.trim())
-          .filter(Boolean),
-
-        coverImage: {
-          url: coverImage.url,
-          alt: coverImage.alt || title,
-          publicId: coverImage.publicId,
-        },
-
-        metaTitle: metaTitle || title,
-        metaDescription: metaDescription || cleanExcerpt,
-
-        blocks: blocks.map((b) => ({
-          type: b.type,
-          data: b,
-        })),
-      }),
-    });
-
-    if (!res.ok) throw new Error("Creation failed");
-
-    toast.success("Blog created!");
-    router.push("/admin/blogs");
-
-  } catch (err) {
-    console.error(err);
-    toast.error("Something went wrong");
-  }
-};
 
   /* ================= UI ================= */
 
@@ -302,35 +303,19 @@ const handleSubmit = async (e: React.FormEvent) => {
 
         {/* COVER IMAGE */}
         <div>
-          <label className="block mb-2">Cover Image *</label>
+  
+          <div>
+            <label className="block mb-2">Cover Image *</label>
 
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) =>
-              e.target.files &&
-              handleCoverUpload(e.target.files[0])
-            }
-          />
+            <ImagePicker
+              value={coverImage}
+              folder="nishad-gateway/blogs"
+              onChange={setCoverImage}
+            />
+          </div>
 
-          {coverImage?.url && (
-            <div className="relative h-48 mt-4">
-              <Image
-                src={coverImage.url}
-                alt={coverImage.alt}
-                fill
-                className="object-cover rounded-lg"
-              />
 
-              <button
-                type="button"
-                onClick={handleCoverDelete}
-                className="absolute top-2 right-2 bg-red-600 text-white rounded-full p-1 text-xs"
-              >
-                ✕
-              </button>
-            </div>
-          )}
+
         </div>
 
         <Input
@@ -421,54 +406,16 @@ const handleSubmit = async (e: React.FormEvent) => {
                 <div className="space-y-4">
 
                   {/* Upload Button */}
-                  <label className="px-3 py-2 bg-emerald-600 text-white rounded text-sm cursor-pointer inline-block disabled:opacity-50">
-                    {galleryUploading ? "Uploading..." : "+ Upload Image"}
-                    <input
-                      type="file"
-                      accept="image/*"
-                      hidden
-                      disabled={galleryUploading}
-                      onChange={async (e) => {
-                        if (!e.target.files) return;
-
-                        const file = e.target.files[0];
-
-                        if (!file.type.startsWith("image/")) {
-                          toast.error("Only image files allowed");
-                          return;
-                        }
-
-                        try {
-                          setGalleryUploading(true);
-
-                          const uploaded = await uploadToCloudinarySigned(
-                            file,
-                            "nishad-gateway/blogs"
-                          );
-
-                          const newImages = [
-                            ...block.images,
-                            {
-                              url: cloudinaryAutoWebp(uploaded.secure_url),
-                              alt: "",
-                              publicId: uploaded.public_id,
-                            },
-                          ];
-
-                          updateBlock(i, {
-                            ...block,
-                            images: newImages,
-                          });
-
-                          toast.success("Image uploaded");
-                        } catch {
-                          toast.error("Upload failed");
-                        } finally {
-                          setGalleryUploading(false);
-                        }
-                      }}
-                    />
-                  </label>
+                  <ImagePicker
+                    value={null}
+                    folder="nishad-gateway/blogs"
+                    onChange={(img) => {
+                      updateBlock(i, {
+                        ...block,
+                        images: [...block.images, img],
+                      });
+                    }}
+                  />
 
                   {/* Image Grid */}
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
