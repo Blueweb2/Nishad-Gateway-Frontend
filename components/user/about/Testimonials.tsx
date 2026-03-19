@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Parallax } from "swiper/modules";
+import Link from "next/link";
 import OvalArrow from "@/components/user/ui/OvalArrow";
 
 import "swiper/css";
@@ -13,45 +14,39 @@ import FadeUpScroll from "../ui/FadeUpScroll";
 const slides = [
   {
     src: "/about/testimonials.webp",
-    title: "MAADEN",
+    title: "Manufacturing Sector – UAE Investor",
     description:
-      "MODON enables integrated industrial investment environments that support diversification and employment.",
-    link: "Browse Case Studies"
+      "Nishad and his team made our Saudi market entry smooth and structured. From MISA licensing to company formation, every step was handled professionally. Their expertise helped us establish operations in Riyadh much faster than expected."
   },
   {
     src: "/about/saudi-expansion.webp",
-    title: "MODON",
+    title: "Technology Company – India",
     description:
-      "Creating strong industrial ecosystems that foster investment, employment, and long-term development.",
-    link: "Explore Mining Projects"
+      "Entering Saudi Arabia felt complex initially, but Nishad provided clear guidance on market entry strategy and regulatory requirements. His insights helped us confidently launch our technology operations in the Kingdom."
   },
   {
     src: "/about/intro_section.webp",
-    title: "NEOM",
+    title: "Logistics Company – Singapore",
     description:
-      "NEOM is building a futuristic, sustainable region powered by innovation, advanced technology, and smart infrastructure.",
-    link: "View Industrial Developments"
+      "We were exploring expansion into Saudi Arabia and Nishad’s advisory helped us understand the logistics sector opportunities under Vision 2030. The process from licensing to office setup was extremely efficient."
   },
   {
     src: "/about/buisnessveriticals.jpg",
-    title: "ARAMCO",
+    title: "Industrial Investor – Europe",
     description:
-      "Aramco drives global energy solutions while investing in sustainable development and technological advancement.",
-    link: "Discover Future Cities"
+      "The support we received during our industrial company setup in Saudi Arabia was exceptional. Nishad understands both government regulations and investor expectations."
   },
   {
     src: "/about/aboutintro.webp",
-    title: "RED SEA GLOBAL",
+    title: "Retail & Hospitality Group – UK",
     description:
-      "Red Sea Global develops regenerative tourism destinations focused on environmental protection and luxury experiences.",
-    link: "Explore Energy Innovations"
+      "Our group expanded into Saudi Arabia’s growing hospitality market with Nishad’s strategic support. His team helped us with business planning, licensing, and operational setup."
   },
   {
     src: "/about/aboutHero.webp",
-    title: "SABIC",
+    title: "Consulting Firm – Qatar",
     description:
-      "SABIC is a global leader in diversified chemicals, delivering innovative material solutions for industries worldwide.",
-    link: "View Tourism Destinations"
+      "Nishad has deep expertise in Saudi market entry and investment structuring. His ability to simplify regulatory processes makes him a trusted advisor for companies entering the Kingdom."
   },
 ];
 
@@ -107,7 +102,7 @@ export default function CaseStudies() {
 
 
       {/* ================= MOBILE ARROWS ================= */}
-      <div className="lg:hidden absolute bottom-0 w-full mx-auto px-6">
+      <div className="lg:hidden absolute bottom-0 w-full mx-auto px-6 z-20">
         <div className="relative w-full py-4">
 
           <div className="pointer-events-auto flex items-center justify-between w-full">
@@ -138,7 +133,7 @@ export default function CaseStudies() {
           <div className="flex flex-col h-full lg:h-[300px] lg:justify-end text-center lg:text-left">
 
             <FadeUpScroll delay={0.1}>
-              <h2 className="text-2xl sm:text-3xl lg:text-[36px] font-bold leading-tight">
+              <h2 className="text-2xl sm:text-3xl lg:text-[36px] font-bold leading-tight lg:mt-[-140px]">
               Real <br className="hidden lg:block"/>
               Experiences <br />
               With Our <br className="hidden lg:block"/>
@@ -202,9 +197,14 @@ export default function CaseStudies() {
 
             </Swiper>
 
-            <button className="mt-8 text-sm text-green-600 underline underline-offset-4 hover:text-green-700 transition">
-            {activeSlide.link}
-            </button>
+            <Link
+              href="/ksa-expansion-cost-calculator"
+              aria-label="Calculate your business expansion cost in Saudi Arabia"
+              title="KSA Expansion Cost Calculator"
+              className="mt-8 text-sm text-green-600 underline underline-offset-4 hover:text-green-700 transition"
+            >
+              Calculate Your KSA Expansion Cost
+            </Link>
 
           </div>
 
@@ -215,13 +215,13 @@ export default function CaseStudies() {
             {/* MOBILE TITLE */}
             <div className="flex lg:hidden flex-col items-center">
               <FadeUpScroll delay={0.3} key={activeIndex}>
-              <h3 className="text-xl sm:text-2xl font-semibold text-[#287F7F]">
+              <h3 className="text-xl sm:text-2xl font-semibold text-[#287F7F] h-[60px] md:h-auto">
               {activeSlide.title}
               </h3>
               </FadeUpScroll>
             </div>
 
-            <p className="text-gray-500 leading-relaxed max-w-sm mt-3 lg:pr-20 lg:mt-10 h-[90px] md:h-auto">
+            <p className="text-gray-500 leading-relaxed max-w-sm mt-3 lg:pr-20 lg:mt-10 h-[150px] lg:h-auto">
               {activeSlide.description}
             </p>
 
