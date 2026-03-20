@@ -515,3 +515,20 @@ xl: 768px   // Fold / Tablet */
   --angle: 0deg;
   animation: borderFlow 3s linear infinite;
 }
+
+
+@keyframes fadeUpPolicy {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-up-policy {
+  opacity: 0;
+  animation: fadeUpPolicy 0.6s ease-out forwards;
+}

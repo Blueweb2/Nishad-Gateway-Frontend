@@ -53,7 +53,7 @@ export default function CitySlide({ city }: Props) {
           initial={{ opacity: 0, y: 60 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1 }}
-          className="text-center text-2xl sm:text-3xl lg:text-[38px] font-bold leading-tight mb-10 lg:mb-16"
+          className="text-center text-2xl sm:text-3xl lg:text-[38px] font-bold leading-tight mb-10 lg:mb-36"
         >
           Cities & Zones in Saudi Arabia
         </motion.h2>
