@@ -4,9 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
-import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
-import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 import { CityTag, CITY_TAGS, CityForm } from "@/lib/types/city";
+import ImagePicker from "@/components/admin/common/ImagePicker";
 
 /* ---------- slug helper ---------- */
 const slugify = (text: string) =>
@@ -26,15 +25,20 @@ export default function CreateCityPage() {
   }
 
   const [isSlugEdited, setIsSlugEdited] = useState(false);
-  const [uploading, setUploading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
+  /* ✅ FORM STATE */
   const [form, setForm] = useState<CityForm>({
     cityName: "",
     citySlug: "",
+
     cityImage: "",
+    cityImageAlt: "",
+    cityImagePublicId: "",
+
     heading: "",
     description: "",
+
     tag: "ARTICLE",
     order: 0,
     isActive: true,
@@ -54,30 +58,6 @@ export default function CreateCityPage() {
 
       return updated;
     });
-  };
-
-  /* ---------- image upload ---------- */
-  const handleImageUpload = async (file?: File) => {
-    if (!file) return;
-
-    try {
-      setUploading(true);
-
-      const uploaded = await uploadToCloudinarySigned(
-        file,
-        "nishad-gateway/cities"
-      );
-
-      const optimizedUrl = cloudinaryAutoWebp(uploaded.secure_url);
-
-      handleChange("cityImage", optimizedUrl);
-
-      toast.success("Image uploaded");
-    } catch (err: any) {
-      toast.error(err?.message || "Image upload failed");
-    } finally {
-      setUploading(false);
-    }
   };
 
   /* ---------- submit ---------- */
@@ -134,7 +114,7 @@ export default function CreateCityPage() {
         </h1>
 
         <p className="text-sm text-white/60 mt-2">
-          Create a new city to manage its blog, categories, and content.
+          Create a new city to manage its content.
         </p>
 
         <div className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-6 space-y-5">
@@ -166,46 +146,31 @@ export default function CreateCityPage() {
             </p>
           </div>
 
-          {/* Image */}
+          {/* ✅ IMAGE PICKER (FIXED) */}
           <div>
             <p className="text-sm text-white/70 mb-2">
               City Image
             </p>
 
-            {form.cityImage && (
-              <img
-                src={form.cityImage}
-                alt="City preview"
-                className="mb-3 w-full h-48 object-cover rounded-lg border border-white/10"
-              />
-            )}
-
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) =>
-                handleImageUpload(e.target.files?.[0])
+            <ImagePicker
+              value={
+                form.cityImage
+                  ? {
+                      url: form.cityImage,
+                      alt: form.cityImageAlt,
+                      publicId: form.cityImagePublicId,
+                    }
+                  : null
               }
-              disabled={uploading}
-              className="block w-full text-sm text-white/70
-              file:mr-4 file:py-2 file:px-4
-              file:rounded-lg file:border-0
-              file:text-sm file:font-semibold
-              file:bg-emerald-500 file:text-black
-              hover:file:bg-emerald-400"
-            />
-
-            {uploading && (
-              <p className="text-xs text-white/50 mt-2">
-                Uploading image...
-              </p>
-            )}
-
-            <Input
-              label="City Image URL"
-              value={form.cityImage}
-              onChange={(v) => handleChange("cityImage", v)}
-              placeholder="Cloudinary image URL"
+              folder="nishad-gateway/cities"
+              onChange={(img) =>
+                setForm((prev) => ({
+                  ...prev,
+                  cityImage: img?.url || "",
+                  cityImageAlt: img?.alt || "",
+                  cityImagePublicId: img?.publicId || "",
+                }))
+              }
             />
           </div>
 
@@ -224,7 +189,7 @@ export default function CreateCityPage() {
             onChange={(v) =>
               handleChange("description", v)
             }
-            placeholder="Jeddah is a major commercial center and gateway city..."
+            placeholder="City description..."
           />
 
           {/* Tag + Order */}
@@ -254,7 +219,6 @@ export default function CreateCityPage() {
               onChange={(v) =>
                 handleChange("order", Number(v))
               }
-              placeholder="0"
               type="number"
             />
           </div>
@@ -270,14 +234,17 @@ export default function CreateCityPage() {
                 }
                 className="mr-2"
               />
-              Active (visible on website)
+              Active
             </label>
 
             <button
               onClick={handleSubmit}
-              disabled={uploading || submitting}
-              className="px-5 py-2 rounded-lg bg-emerald-500 text-black text-sm font-semibold hover:bg-emerald-400 transition disabled:opacity-50"
+              disabled={submitting}
+              className="px-5 py-2 rounded-lg bg-emerald-500 text-black text-sm font-semibold hover:bg-emerald-400 transition disabled:opacity-50 flex items-center gap-2"
             >
+              {submitting && (
+                <span className="animate-spin h-4 w-4 border-2 border-black border-t-transparent rounded-full" />
+              )}
               {submitting ? "Saving..." : "Save City"}
             </button>
           </div>

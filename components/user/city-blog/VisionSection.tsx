@@ -66,7 +66,7 @@ export default function VisionSection({
 
           <div 
             ref={contentRef}
-            className="rich-text-light text-gray-300 leading-relaxed space-y-6"
+            className="rich-text text-gray-300 leading-relaxed space-y-6"
             dangerouslySetInnerHTML={{ __html: content || "" }}
           />
         </div>

@@ -8,13 +8,14 @@ export default function UserLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-white" >
+    <div className="min-h-screen flex flex-col bg-white">
       <Navbar />
 
-      {/* Navbar is fixed */}
-      <div>{children}</div>
+      {/* This is the fix */}
+      <main className="flex-1">
+        {children}
+      </main>
 
-      {/* Common footer CTA */}
       <FinalCTA />
     </div>
   );

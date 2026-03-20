@@ -8,7 +8,7 @@ export default function ContentBlock({ block }: Props) {
 
   return (
     <div
-      className="rich-text-light max-w-5xl mx-auto px-6"
+      className="rich-text-light max-w-6xl mx-auto px-6"
       dangerouslySetInnerHTML={{ __html: block.content }}
     />
   );

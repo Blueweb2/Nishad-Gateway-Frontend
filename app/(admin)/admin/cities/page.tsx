@@ -8,14 +8,27 @@ import { Search, PlusCircle, Trash2 } from "lucide-react";
 
 type City = {
   _id: string;
+
   cityName: string;
   citySlug: string;
+
+  /* ================= IMAGE ================= */
   cityImage: string;
+  cityImageAlt?: string;        // ✅ optional
+  cityImagePublicId?: string;   // ✅ optional
+
+  /* ================= CONTENT ================= */
   heading: string;
   description: string;
+
+  /* ================= META ================= */
   tag: "ARTICLE" | "FEATURED" | "TRENDING";
   order: number;
   isActive: boolean;
+
+  /* ================= SYSTEM ================= */
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export default function AdminCitiesPage() {

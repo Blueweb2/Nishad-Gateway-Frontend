@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import toast from "react-hot-toast";
-import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
 import MiniTextEditor from "../common/MiniTextEditor";
+import ImagePicker from "../common/ImagePicker";
 
 type ListingForm = {
     title: string;
@@ -68,7 +68,6 @@ export default function ListingsManager() {
     const [showForm, setShowForm] = useState(false);
     const [editingId, setEditingId] = useState<string | null>(null);
     const [form, setForm] = useState<ListingForm>(defaultForm);
-    const [uploading, setUploading] = useState(false);
 
     /* ================= FETCH LISTINGS ================= */
 
@@ -95,64 +94,9 @@ export default function ListingsManager() {
 
     /* ================= CLOUDINARY IMAGE UPLOAD ================= */
 
-    const uploadImage = async (e: any) => {
 
-        const file = e.target.files?.[0];
-        if (!file) return;
 
-        try {
 
-            setUploading(true);
-
-            const res = await uploadToCloudinarySigned(
-                file,
-                "nishad-gateway/cities/categories/listings"
-            );
-
-            setForm({
-                ...form,
-                coverImage: res.secure_url,
-                coverImagePublicId: res.public_id,
-            });
-
-            toast.success("Image uploaded");
-
-        } catch (err: any) {
-            toast.error(err.message || "Upload failed");
-        }
-
-        setUploading(false);
-    };
-
-    const deleteImage = async () => {
-
-        if (!form.coverImagePublicId) return;
-
-        try {
-
-            const res = await fetch(
-                `${API_URL}/admin/upload/${encodeURIComponent(form.coverImagePublicId)}`,
-                {
-                    method: "DELETE",
-                    credentials: "include",
-                }
-            );
-
-            if (!res.ok) throw new Error();
-
-            setForm({
-                ...form,
-                coverImage: "",
-                coverImagePublicId: "",
-            });
-
-            toast.success("Image removed");
-
-        } catch {
-            toast.error("Failed to delete image");
-        }
-
-    };
 
     /* ================= CREATE OR UPDATE ================= */
 
@@ -298,44 +242,32 @@ export default function ListingsManager() {
                     {/* Image Preview */}
 
 
-                    {form.coverImage && (
-                        <div className="relative">
+                    <div>
+                        <label className="block mb-2 text-white">Cover Image</label>
 
-                            <img
-                                src={form.coverImage}
-                                className="w-full h-48 object-cover rounded-lg"
-                            />
+                        <ImagePicker
+                            value={
+                                form.coverImage
+                                    ? {
+                                        url: form.coverImage,
+                                        alt: form.coverImageAlt,
+                                        publicId: form.coverImagePublicId,
+                                    }
+                                    : null
+                            }
+                            folder="nishad-gateway/cities/categories/listings"
+                            onChange={(img) =>
+                                setForm({
+                                    ...form,
+                                    coverImage: img?.url || "",
+                                    coverImageAlt: img?.alt || "",
+                                    coverImagePublicId: img?.publicId || "",
+                                })
+                            }
+                        />
+                    </div>
 
-                            <button
-                                onClick={deleteImage}
-                                className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded"
-                            >
-                                Delete
-                            </button>
-
-                        </div>
-                    )}
-
-                    {/* Upload */}
-
-                    <input
-                        type="file"
-                        accept="image/*"
-                        onChange={uploadImage}
-                        className="text-white text-sm"
-                    />
-                    <input
-                        placeholder="Image Alt Text (SEO)"
-                        className="w-full p-2 rounded bg-black border border-white/20 text-white"
-                        value={form.coverImageAlt || ""}
-                        onChange={(e) =>
-                            setForm({ ...form, coverImageAlt: e.target.value })
-                        }
-                    />
-
-                    {uploading && (
-                        <p className="text-white/60 text-sm">Uploading...</p>
-                    )}
+                  
 
                     {/* Inputs */}
 
@@ -349,7 +281,7 @@ export default function ListingsManager() {
                     <MiniTextEditor
                         value={form.description}
                         onChange={(val) => setForm({ ...form, description: val })}
-                        />
+                    />
 
                     <input
                         placeholder="Address"
@@ -530,10 +462,10 @@ export default function ListingsManager() {
 
                             <span
                                 className={`text-xs px-2 py-1 rounded mt-1 inline-block ${listing.status === "published"
-                                        ? "bg-green-500 text-black"
-                                        : listing.status === "draft"
-                                            ? "bg-gray-500 text-white"
-                                            : "bg-red-500 text-white"
+                                    ? "bg-green-500 text-black"
+                                    : listing.status === "draft"
+                                        ? "bg-gray-500 text-white"
+                                        : "bg-red-500 text-white"
                                     }`}
                             >
                                 {listing.status}
@@ -547,8 +479,8 @@ export default function ListingsManager() {
                         <button
                             onClick={() => toggleFeatured(listing._id)}
                             className={`text-xs px-3 py-1 rounded ${listing.isFeatured
-                                    ? "bg-yellow-500 text-black"
-                                    : "bg-white/10 text-white"
+                                ? "bg-yellow-500 text-black"
+                                : "bg-white/10 text-white"
                                 }`}
                         >
                             Featured

@@ -4,8 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
 import toast from "react-hot-toast";
-import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
-import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
+
 import RichTextEditor from "@/components/admin/common/RichTextEditor";
 import MiniTextEditor from "@/components/admin/common/MiniTextEditor";
 import ImagePicker from "@/components/admin/common/ImagePicker";

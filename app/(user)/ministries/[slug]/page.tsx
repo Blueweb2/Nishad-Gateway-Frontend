@@ -7,8 +7,7 @@ import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 import { getMinistryBySlug } from "@/lib/api/public/ministries.api";
 
 const BlockRenderer = dynamic(
-  () => import("@/components/user/ministries/blocks/BlockRenderer"),
-  { loading: () => <Loading /> }
+  () => import("@/components/user/ministries/blocks/BlockRenderer")
 );
 
 type Props = {
@@ -27,7 +26,7 @@ export default async function MinistryPage({ params }: Props) {
   return (
 
     <div className="max-w-8xl mx-auto  pt-28 " data-navbar="light">
-      <div className="max-w-5xl mx-auto px-6 space-y-10">
+      <div className="max-w-6xl mx-auto px-6 space-y-10">
         {/* Breadcrumb */}
         <div className="overflow-x-auto hide-scrollbar">
           <div className="flex items-center gap-2 text-sm text-gray-500 whitespace-nowrap hide-scrollbar">

@@ -8,9 +8,9 @@ import {
 } from "@/lib/api/admin/adminBlogs.api";
 import toast from "react-hot-toast";
 import Image from "next/image";
-import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
-import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
+
 import RichTextEditor from "@/components/admin/common/RichTextEditor";
+import ImagePicker from "@/components/admin/common/ImagePicker";
 
 type BlogStatus = "draft" | "published";
 
@@ -143,7 +143,7 @@ export default function EditBlogPage() {
         setStatus(blog.status);
         setMetaTitle(blog.metaTitle || "");
         setMetaDescription(blog.metaDescription || "");
-        setBlocks(blog.blocks.map((b) => b.data));
+        setBlocks(blog.blocks.map((b) => b.data)|| []);
       } catch (err: any) {
         setError(err.message);
       } finally {
@@ -176,59 +176,6 @@ export default function EditBlogPage() {
   const removeBlock = (index: number) => {
     setBlocks((prev) => prev.filter((_, i) => i !== index));
   };
-
-  const handleCoverUpload = async (file: File) => {
-    if (!file.type.startsWith("image/")) {
-      toast.error("Only image files allowed");
-      return;
-    }
-
-    try {
-      setUploading(true);
-      toast.loading("Uploading...", { id: "upload" });
-
-      const uploaded = await uploadToCloudinarySigned(
-        file,
-        "nishad-gateway/blogs"
-      );
-
-      setCoverImage({
-        url: cloudinaryAutoWebp(uploaded.secure_url),
-        alt: title || "",
-        publicId: uploaded.public_id, // ✅ IMPORTANT
-      });
-
-      toast.success("Uploaded", { id: "upload" });
-    } catch {
-      toast.error("Upload failed", { id: "upload" });
-    } finally {
-      setUploading(false);
-    }
-  };
-
-  const handleCoverDelete = async () => {
-    if (!coverImage?.publicId) {
-      setCoverImage(null);
-      return;
-    }
-
-    try {
-      await fetch(`${API}/cloudinary/delete`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({
-          publicId: coverImage.publicId,
-        }),
-      });
-
-      setCoverImage(null);
-      toast.success("Cover image deleted");
-    } catch {
-      toast.error("Delete failed");
-    }
-  };
-  /* ================= SUBMIT ================= */
 
 
   /* ================= SUBMIT ================= */
@@ -329,13 +276,13 @@ export default function EditBlogPage() {
         />
 
         {/* EXCERPT */}
-         <div>
-   
-             <RichTextEditor
-               value={excerpt}
-               onChange={(val: string) => setExcerpt(val)}
-             />
-           </div>
+        <div>
+
+          <RichTextEditor
+            value={excerpt}
+            onChange={(val: string) => setExcerpt(val)}
+          />
+        </div>
 
         {/* TAGS */}
         <Input
@@ -351,33 +298,11 @@ export default function EditBlogPage() {
         <div>
           <label className="block mb-2">Cover Image *</label>
 
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) =>
-              e.target.files &&
-              handleCoverUpload(e.target.files[0])
-            }
+          <ImagePicker
+            value={coverImage}
+            folder="nishad-gateway/blogs"
+            onChange={setCoverImage}
           />
-
-          {coverImage?.url && (
-            <div className="relative h-48 mt-4">
-              <Image
-                src={coverImage.url}
-                alt={coverImage.alt}
-                fill
-                className="object-cover rounded-lg"
-              />
-
-              <button
-                type="button"
-                onClick={handleCoverDelete}
-                className="absolute top-2 right-2 bg-red-600 text-white rounded-full p-1 text-xs"
-              >
-                ✕
-              </button>
-            </div>
-          )}
         </div>
 
         <Input
@@ -457,67 +382,29 @@ export default function EditBlogPage() {
                 </>
               )}
 
-                     {block.type === "paragraph" && (
-                       <RichTextEditor
-                         value={block.text}
-                         onChange={(val: string) =>
-                           updateBlock(i, { ...block, text: val })
-                         }
-                       />
-                     )}
+              {block.type === "paragraph" && (
+                <RichTextEditor
+                  value={block.text}
+                  onChange={(val: string) =>
+                    updateBlock(i, { ...block, text: val })
+                  }
+                />
+              )}
 
               {block.type === "gallery" && (
                 <div className="space-y-4">
 
                   {/* Upload Button */}
-                  <label className="px-3 py-2 bg-emerald-600 text-white rounded text-sm cursor-pointer inline-block disabled:opacity-50">
-                    {galleryUploading ? "Uploading..." : "+ Upload Image"}
-                    <input
-                      type="file"
-                      accept="image/*"
-                      hidden
-                      disabled={galleryUploading}
-                      onChange={async (e) => {
-                        if (!e.target.files) return;
-
-                        const file = e.target.files[0];
-
-                        if (!file.type.startsWith("image/")) {
-                          toast.error("Only image files allowed");
-                          return;
-                        }
-
-                        try {
-                          setGalleryUploading(true);
-
-                          const uploaded = await uploadToCloudinarySigned(
-                            file,
-                            "nishad-gateway/blogs"
-                          );
-
-                          const newImages = [
-                            ...block.images,
-                            {
-                              url: cloudinaryAutoWebp(uploaded.secure_url),
-                              alt: "",
-                              publicId: uploaded.public_id,
-                            },
-                          ];
-
-                          updateBlock(i, {
-                            ...block,
-                            images: newImages,
-                          });
-
-                          toast.success("Image uploaded");
-                        } catch {
-                          toast.error("Upload failed");
-                        } finally {
-                          setGalleryUploading(false);
-                        }
-                      }}
-                    />
-                  </label>
+            <ImagePicker
+  value={null}
+  folder="nishad-gateway/blogs"
+  onChange={(img) => {
+    updateBlock(i, {
+      ...block,
+      images: [...block.images, img],
+    });
+  }}
+/>
 
                   {/* Image Grid */}
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -851,7 +738,7 @@ export default function EditBlogPage() {
         <div className="pt-5">
           <button
             type="submit"
-            disabled={uploading || galleryUploading || loading}
+            disabled={loading}
             className="px-6 py-3 bg-emerald-500 disabled:opacity-50"
           >
             {loading ? "Updating..." : "Update Blog"}

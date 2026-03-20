@@ -56,7 +56,7 @@ export default function HeroSection({ content }: Props) {
                 whileInView={{ x: 0, opacity: 1 }}
                 viewport={{ once: true, amount: 0.4 }}
                 transition={{ duration: 0.9, ease: "easeIn" }}
-                className="rich-text-light text-lg md:text-xl text-white/90 max-w-xl leading-none"
+                className="rich-text text-lg md:text-xl text-white/90 max-w-xl leading-none"
                 dangerouslySetInnerHTML={{
                   __html: content.subheading?.trim()
                     ? content.subheading
