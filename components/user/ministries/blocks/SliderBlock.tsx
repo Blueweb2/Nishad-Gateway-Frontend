@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectFade } from "swiper/modules";
+import { motion } from "framer-motion";
 
 import "swiper/css";
 import "swiper/css/effect-fade";
@@ -58,14 +59,26 @@ export default function SliderBlock({ block }: Props) {
         <div className="space-y-4 text-center lg:text-left">
 
           {block.heading && (
-            <h2 className="text-xl block lg:hidden sm:text-2xl md:text-3xl font-semibold">
+            <motion.h2
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              viewport={{ once: true }}
+              className="text-xl block lg:hidden sm:text-2xl md:text-3xl font-semibold"
+            >
               {block.heading}
-            </h2>
+            </motion.h2>
           )}
 
-          <h3 className="text-lg sm:text-xl md:text-2xl text-[#287F7F] font-medium">
+          <motion.h3
+            key={activeSlide.title}
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="text-lg sm:text-xl md:text-2xl text-[#287F7F] font-medium"
+          >
             {activeSlide?.title}
-          </h3>
+          </motion.h3>
 
         </div>
 
@@ -110,9 +123,15 @@ export default function SliderBlock({ block }: Props) {
         <div className="space-y-4 text-center lg:text-left h-[90px] md:h-[10px] lg:h-auto lg:pr-9">
 
           {activeSlide?.description && (
-            <p className="text-gray-500 leading-relaxed text-sm md:text-base">
+            <motion.p
+              key={activeSlide.description}
+              initial={{ opacity: 0, y: 60 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, ease: "easeOut" }}
+              className="text-gray-500 leading-relaxed text-sm md:text-base"
+            >
               {activeSlide.description}
-            </p>
+            </motion.p>
           )}
 
         </div>

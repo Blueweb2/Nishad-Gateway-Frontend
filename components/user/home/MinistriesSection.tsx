@@ -6,6 +6,7 @@ import { Ministry } from "@/lib/types/ministry";
 export const revalidate = 60;
 
 export default async function MinistriesSection() {
+  
 let ministries: Ministry[] = [];
   try {
     ministries = await getMinistries();

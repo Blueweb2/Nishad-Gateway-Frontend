@@ -1,9 +1,21 @@
+import dynamic from "next/dynamic";
 import { MinistryBlock } from "@/lib/types/ministry";
 
-import ContentBlock from "./ContentBlock";
-import SliderBlock from "./SliderBlock";
-import CardsBlock from "./CardsBlock";
-import FAQBlock from "./FAQBlock";
+const ContentBlock = dynamic(() => import("./ContentBlock"), {
+  loading: () => <p>Loading ContentBlock</p>,
+});
+
+const SliderBlock = dynamic(() => import("./SliderBlock"), {
+  loading: () => <p>Loading SliderBlock</p>,
+});
+
+const CardsBlock = dynamic(() => import("./CardsBlock"), {
+  loading: () => <p>Loading CardsBlock</p>,
+});
+
+const FAQBlock = dynamic(() => import("./FAQBlock"), {
+  loading: () => <p>Loading FAQBlock</p>,
+});
 
 type Props = {
   block: MinistryBlock;

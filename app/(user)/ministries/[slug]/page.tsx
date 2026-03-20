@@ -7,7 +7,9 @@ import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 import { getMinistryBySlug } from "@/lib/api/public/ministries.api";
 
 const BlockRenderer = dynamic(
-  () => import("@/components/user/ministries/blocks/BlockRenderer")
+  () => import("@/components/user/ministries/blocks/BlockRenderer"),{
+    loading: () => <Loading/>,
+  }
 );
 
 type Props = {
@@ -62,7 +64,7 @@ export default async function MinistryPage({ params }: Props) {
               width={1400}
               height={600}
               className="w-full h-[320px] md:h-[420px] object-cover"
-              priority
+              loading="eager"
             />
 
             {/* Gradient for readability */}
@@ -88,6 +90,7 @@ export default async function MinistryPage({ params }: Props) {
                 <Image
                   src={cloudinaryAutoWebp(ministry.logo)}
                   alt={ministry.logoAlt || ministry.title}
+                  loading="lazy"
                   width={100}
                   height={100}
                   className="object-contain sm:h-[70px] md:h-[100px]"
