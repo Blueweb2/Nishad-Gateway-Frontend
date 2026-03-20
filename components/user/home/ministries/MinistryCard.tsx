@@ -69,7 +69,11 @@ export default function MinistryCard({ ministry }: { ministry: Ministry }) {
         <div className="mb-6 py-6">
           <Image
             src={cloudinaryAutoWebp(ministry.logo)}
-            alt={ministry.logoAlt || ministry.title}
+            alt={
+              ministry.logoAlt ||
+              `${ministry.title} official logo in Saudi Arabia`
+            }
+            loading="lazy"
             width={120}
             height={120}
           />
@@ -100,7 +104,9 @@ export default function MinistryCard({ ministry }: { ministry: Ministry }) {
       >
         <Link
           href={`/ministries/${ministry.slug}`}
-          prefetch
+          prefetch={false}
+          aria-label={`View details about ${ministry.title}`}
+          title={`View ${ministry.title}`}
           className="
             w-10 h-10 rounded-full
             border border-white/30

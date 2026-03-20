@@ -46,7 +46,8 @@ export default function BlogHeroCard({ blog }: Props) {
       <div className="relative w-[220px] h-[280px] mb-20 overflow-hidden rounded-[80px]">
         <Image
           src={blog.image}
-          alt={blog.title}
+          alt={blog.title || "Blog image"}
+          loading="lazy"
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
