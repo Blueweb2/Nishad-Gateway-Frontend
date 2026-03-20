@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { Image as ImageIcon } from "lucide-react";
 
 import {
   LayoutDashboard,
@@ -48,26 +49,26 @@ export default function AdminSidebar() {
     { name: "Blogs", href: "/admin/blogs", icon: FileText },
     { name: "Cities", href: "/admin/cities", icon: MapPin },
     { name: "Services", href: "/admin/services", icon: Briefcase },
-     { name: "Sectors", href: "/admin/sectors", icon: Building2  },
-     { name: "Ministries", href: "/admin/ministries", icon: Landmark },
-  ];
+    { name: "Sectors", href: "/admin/sectors", icon: Building2 },
+    { name: "Ministries", href: "/admin/ministries", icon: Landmark },
+{ name: "Media Library", href: "/admin/media", icon: ImageIcon },  ];
 
   const links =
     role === "superadmin"
       ? [
-          baseLinks[0],
-          {
-            name: "Manage Admins",
-            href: "/admin/manage-admins",
-            icon: Shield,
-          },
-          {
-            name: "Media Cleanup",
-            href: "/admin/media-cleanup",
-            icon: Trash2,
-          },
-          ...baseLinks.slice(1),
-        ]
+        baseLinks[0],
+        {
+          name: "Manage Admins",
+          href: "/admin/manage-admins",
+          icon: Shield,
+        },
+        {
+          name: "Media Cleanup",
+          href: "/admin/media-cleanup",
+          icon: Trash2,
+        },
+        ...baseLinks.slice(1),
+      ]
       : baseLinks;
 
   const handleLogout = async () => {
@@ -83,14 +84,14 @@ export default function AdminSidebar() {
   return (
     <aside className="w-[260px] bg-[#0b0f0b] border-r border-green-700/30 p-6 flex flex-col">
       <div className="mb-8">
-     <div className="text-xl font-bold text-green-400 flex items-center gap-2">
-  <img 
-    src="/coloredlogo.svg" 
-    alt="Logo"
-    className="h-12 w-auto"
-  />
+        <div className="text-xl font-bold text-green-400 flex items-center gap-2">
+          <img
+            src="/coloredlogo.svg"
+            alt="Logo"
+            className="h-12 w-auto"
+          />
 
-</div>
+        </div>
         {role && (
           <p className="text-xs text-green-500 mt-1">
             {role === "superadmin" ? "Super Admin" : "Admin"}
@@ -108,10 +109,9 @@ export default function AdminSidebar() {
               key={item.href}
               href={item.href}
               className={`flex items-center gap-3 px-4 py-3 rounded-lg transition
-                ${
-                  active
-                    ? "bg-green-600/20 border border-green-600 text-green-300"
-                    : "text-gray-300 hover:bg-green-600/10 hover:text-green-200"
+                ${active
+                  ? "bg-green-600/20 border border-green-600 text-green-300"
+                  : "text-gray-300 hover:bg-green-600/10 hover:text-green-200"
                 }`}
             >
               <Icon size={18} />
