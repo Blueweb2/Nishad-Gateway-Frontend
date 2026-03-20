@@ -35,15 +35,15 @@ export default function HeroSection({ content }: Props) {
           <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-black/20 to-black/10" />
 
           {/* Content */}
-          <div className="relative z-10 h-full flex items-center ">
-            <div className="mt-20 pl-4 pb-10 lg:pb-0 lg:pl-12 lg:mt-0">
+          <div className="relative z-10 h-full flex items-center">
+            <div className="mt-20 pl-4 pb-10 lg:pb-0 lg:pl-12 lg:mt-14">
 
               <motion.h1
                 initial={{ x: 120, opacity: 0 }}
                 whileInView={{ x: 0, opacity: 1 }}
                 viewport={{ once: true, amount: 0.4 }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
-                className="rich-text-light text-5xl md:text-6xl font-semibold leading-none mb-6 mt-5 text-white"
+                className="rich-text-light text-5xl md:text-6xl font-semibold leading-none mb-6 mt-5 text-white lg:w-[750px]"
                 dangerouslySetInnerHTML={{
                   __html: content.heading?.trim()
                     ? content.heading
