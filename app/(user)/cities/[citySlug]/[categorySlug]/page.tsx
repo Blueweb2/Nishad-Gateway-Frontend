@@ -127,8 +127,6 @@ export default function CategoryPage() {
 
   {listings.map((listing) => {
 
-    const ratingValue = listing.rating ?? 0;
-
     return (
       <div
         key={listing._id}
@@ -163,36 +161,6 @@ export default function CategoryPage() {
             dangerouslySetInnerHTML={{ __html: listing.description }}
           />
         )}
-
-        {/* Rating + Price */}
-        {/* <div className="flex justify-center items-center gap-3">
-
-          {listing.rating !== null && listing.rating !== undefined && (
-            <div className="flex items-center gap-1">
-              {[1, 2, 3, 4, 5].map((i) => (
-                <Star
-                  key={i}
-                  size={14}
-                  className={
-                    i <= Math.round(ratingValue)
-                      ? "text-yellow-400 fill-yellow-400"
-                      : "text-gray-300"
-                  }
-                />
-              ))}
-              <span className="text-xs text-gray-600 ml-1">
-                {ratingValue.toFixed(1)}
-              </span>
-            </div>
-          )}
-
-          {listing.priceRange && (
-            <span className="text-xs bg-gray-100 px-2 py-0.5 rounded">
-              {listing.priceRange}
-            </span>
-          )}
-
-        </div> */}
 
         {/* Info */}
         <div className="text-sm text-gray-500 space-y-2">
