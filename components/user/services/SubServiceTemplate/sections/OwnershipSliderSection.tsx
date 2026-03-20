@@ -180,7 +180,7 @@ export default function OwnershipSliderSection({
                   exit={{ opacity: 0, x: -100 }}
                   transition={{ duration: 0.5 }}
                   className="text-white/80 text-sm md:text-base lg:text-[1vw] leading-relaxed mb-6 h-[190px] 
-                  lg:h-[90px] lg:flex lg:items-end rich-text-light"
+                  lg:h-[90px] lg:flex lg:items-end rich-text"
                   dangerouslySetInnerHTML={{ __html: current.rightText || "" }}
                 />
               )}
