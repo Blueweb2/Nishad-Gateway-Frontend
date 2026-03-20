@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Link, Plus, X } from "lucide-react";
+import { Plus, X } from "lucide-react";
 
 export type FAQItem = {
   question: string;
