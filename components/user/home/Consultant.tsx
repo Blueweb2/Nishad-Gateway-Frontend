@@ -13,6 +13,7 @@ const contentData = {
       description:
         "Professional, relationship-driven, and fast-evolving, with a strong focus on results and Vision 2030 goals.",
       image: "/consultant/Professional-Work-Culture.jpg.jpeg",
+      link: "/blogs/work-culture-in-saudi-arabia",
     },
 
     {
@@ -20,6 +21,7 @@ const contentData = {
       description:
         "Modest and professional; expats enjoy flexibility while respecting local norms in public spaces.",
       image: "/buisnessgrowth/Dress-Code.webp",
+      link: "/blogs/dress-code-cultural-etiquette-in-saudi-arabia-1",
     },
 
     {
@@ -46,6 +48,7 @@ const contentData = {
         </>
       ),
       image: "/consultant/Social-Life.jpg",
+      link: "/insights/professional-work-culture",
     },
 
     {
@@ -79,6 +82,7 @@ const contentData = {
         </>
       ),
       image: "/buisnessgrowth/Housing.webp",
+      link: "/insights/professional-work-culture",
     },
 
     {
@@ -105,6 +109,7 @@ const contentData = {
         </>
       ),
       image: "/buisnessgrowth/Education.webp",
+      link: "/insights/professional-work-culture",
     },
 
     {
@@ -126,6 +131,7 @@ const contentData = {
         </>
       ),
       image: "/buisnessgrowth/Healthcare.webp",
+      link: "/blogs/healthcare-facilities-medical-services-in-saudi-arabia",
     },
 
     {
@@ -164,6 +170,7 @@ const contentData = {
         </>
       ),
       image: "/consultant/Banking.jpg",
+       link: "/blogs/banking-finance-digital-payments-in-saudi-arabia",
     },
   ],
 
@@ -193,6 +200,7 @@ const contentData = {
         </>
       ),
       image: "/consultant/employment-opportunities-across-key-sectors.jpg",
+      link: "/blogs/employment-opportunities-across-key-sectors-in-saudi-arabia",
     },
 
     {
@@ -213,6 +221,7 @@ const contentData = {
         </>
       ),
       image: "/consultant/Cost-of-Living-and-Community-Life.jpg",
+      link: "/blogs/cost-of-living-community-life-in-saudi-arabia",
     },
 
     {
@@ -246,6 +255,7 @@ const contentData = {
         </>
       ),
       image: "/consultant/community-networks-and-cultural-support.jpg",
+      link: "/insights/professional-work-culture",
     },
 
     {
@@ -265,6 +275,7 @@ const contentData = {
         </>
       ),
       image: "/consultant/Schoolsasian.jpg",
+      link: "/insights/professional-work-culture",
     },
 
     {
@@ -284,6 +295,7 @@ const contentData = {
         </>
       ),
       image: "/consultant/Food-and-Lifestyle.jpg",
+      link: "/blogs/food-culture-cuisine-daily-lifestyle-in-saudi-arabia",
     },
   ],
 };
@@ -347,34 +359,32 @@ export default function Consultant() {
 
           <button
             onClick={() => {
-            setActiveTab("western");
-            setActiveIndex(0);
+              setActiveTab("western");
+              setActiveIndex(0);
             }}
             role="tab"
             aria-selected={activeTab === "western"}
             aria-controls="western-panel"
-            className={`pb-1 border-b transition ${
-            activeTab === "western"
-            ? "border-green-400 text-green-400"
-            : "border-transparent text-white/50 hover:text-white"
-            }`}
+            className={`pb-1 border-b transition ${activeTab === "western"
+                ? "border-green-400 text-green-400"
+                : "border-transparent text-white/50 hover:text-white"
+              }`}
           >
             For Americans & Europeans
           </button>
 
           <button
             onClick={() => {
-            setActiveTab("asian");
-            setActiveIndex(0);
+              setActiveTab("asian");
+              setActiveIndex(0);
             }}
             role="tab"
             aria-selected={activeTab === "asian"}
             aria-controls="asian-panel"
-            className={`pb-1 border-b transition ${
-            activeTab === "asian"
-            ? "border-green-400 text-green-400"
-            : "border-transparent text-white/50 hover:text-white"
-            }`}
+            className={`pb-1 border-b transition ${activeTab === "asian"
+                ? "border-green-400 text-green-400"
+                : "border-transparent text-white/50 hover:text-white"
+              }`}
           >
             For Asians
           </button>
@@ -394,7 +404,7 @@ export default function Consultant() {
           {/* LEFT COLUMN */}
           <div className="hidden relative lg:flex flex-col text-center justify-end lg:text-left h-full">
 
-             <motion.h2
+            <motion.h2
               initial={{ opacity: 0, y: 60 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.2 }}
@@ -419,14 +429,14 @@ export default function Consultant() {
 
               <AnimatePresence mode="wait">
                 <motion.div
-                key={activeIndex}
-                initial={{ x: "100%", opacity: 0 }}
-                animate={{ x: "0%", opacity: 1 }}
-                exit={{ x: "-100%", opacity: 0 }}
-                transition={{ duration: 0.5 }}
-                className="absolute w-full text-white/40 text-lg leading-snug"
+                  key={activeIndex}
+                  initial={{ x: "100%", opacity: 0 }}
+                  animate={{ x: "0%", opacity: 1 }}
+                  exit={{ x: "-100%", opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="absolute w-full text-white/40 text-lg leading-snug"
                 >
-                {previousTitle}
+                  {previousTitle}
                 </motion.div>
               </AnimatePresence>
 
@@ -441,17 +451,17 @@ export default function Consultant() {
 
             <div className="relative flex items-center justify-center">
 
-            <div className="absolute w-[240px] h-[320px] sm:w-[280px] sm:h-[360px] md:w-[300px] md:h-[420px] lg:w-[26vw] lg:h-[32vw]
+              <div className="absolute w-[240px] h-[320px] sm:w-[280px] sm:h-[360px] md:w-[300px] md:h-[420px] lg:w-[26vw] lg:h-[32vw]
             bg-white/10 backdrop-blur-xxl border-white/10 rounded-[160px]" />
 
               <AnimatePresence mode="wait">
                 <motion.h3
-                key={activeIndex}
-                initial={{ opacity: 0, x: 100 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -100 }}
-                transition={{ duration: 0.5 }}
-                className="relative z-10 text-xl sm:text-2xl lg:text-[2.2vw] font-semibold text-center max-w-[240px] lg:max-w-[16vw] h-[70px] lg:h-auto"
+                  key={activeIndex}
+                  initial={{ opacity: 0, x: 100 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -100 }}
+                  transition={{ duration: 0.5 }}
+                  className="relative z-10 text-xl sm:text-2xl lg:text-[2.2vw] font-semibold text-center max-w-[240px] lg:max-w-[16vw] h-[70px] lg:h-auto"
                 >
                   {currentItem.title}
                 </motion.h3>
@@ -469,34 +479,32 @@ export default function Consultant() {
 
               <button
                 onClick={() => {
-                setActiveTab("western");
-                setActiveIndex(0);
+                  setActiveTab("western");
+                  setActiveIndex(0);
                 }}
                 role="tab"
                 aria-selected={activeTab === "western"}
                 aria-controls="western-panel"
-                className={`pb-1 border-b transition ${
-                activeTab === "western"
-                ? "border-green-400 text-green-400"
-                : "border-transparent text-white/50 hover:text-white"
-                }`}
+                className={`pb-1 border-b transition ${activeTab === "western"
+                    ? "border-green-400 text-green-400"
+                    : "border-transparent text-white/50 hover:text-white"
+                  }`}
               >
                 For Americans & Europeans
               </button>
 
               <button
                 onClick={() => {
-                setActiveTab("asian");
-                setActiveIndex(0);
+                  setActiveTab("asian");
+                  setActiveIndex(0);
                 }}
                 role="tab"
                 aria-selected={activeTab === "asian"}
                 aria-controls="asian-panel"
-                className={`pb-1 border-b transition ${
-                activeTab === "asian"
-                ? "border-green-400 text-green-400"
-                : "border-transparent text-white/50 hover:text-white"
-                }`}
+                className={`pb-1 border-b transition ${activeTab === "asian"
+                    ? "border-green-400 text-green-400"
+                    : "border-transparent text-white/50 hover:text-white"
+                  }`}
               >
                 For Asians
               </button>
@@ -505,20 +513,23 @@ export default function Consultant() {
 
             <AnimatePresence mode="wait">
               <motion.div
-              key={activeIndex}
-              initial={{ opacity: 0, x: 100 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -100 }}
-              transition={{ duration: 0.5 }}
-              className="text-white/80 text-sm md:text-base lg:text-[1vw] leading-relaxed mb-6 h-[175px] lg:h-auto"
+                key={activeIndex}
+                initial={{ opacity: 0, x: 100 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -100 }}
+                transition={{ duration: 0.5 }}
+                className="text-white/80 text-sm md:text-base lg:text-[1vw] leading-relaxed mb-6 h-[175px] lg:h-auto"
               >
                 {currentItem.description}
               </motion.div>
             </AnimatePresence>
 
-            <button className="text-sm md:text-base pb-10 lg:pb-0 underline underline-offset-4 ">
-               Read More
-            </button>
+            <Link
+              href={currentItem.link}
+              className="text-sm md:text-base pb-10 lg:pb-0 underline underline-offset-4 hover:text-green-400 transition"
+            >
+              Read More
+            </Link>
 
             <div className="hidden md:block h-px bg-white/20 w-full mt-5 mb-6" />
 
