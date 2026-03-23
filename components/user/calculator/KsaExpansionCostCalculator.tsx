@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useMemo,  useRef,  useState   } from "react";
+import { useMemo, useState   } from "react";
 import { Sparkles, ArrowRight } from "lucide-react";
 import toast from "react-hot-toast";
 import ContactPopup from "../shared/ContactPopup";
@@ -65,10 +65,9 @@ type ResultState = {
 
 export default function KsaExpansionCostCalculator() {
   const [loading, setLoading] = useState(false);
-const [showOtp, setShowOtp] = useState(false);
-const [otp, setOtp] = useState("");
-const [verifying, setVerifying] = useState(false);
-const [openContact, setOpenContact] = useState(false);
+  const [showOtp, setShowOtp] = useState(false);
+  const [verifying, setVerifying] = useState(false);
+  const [openContact, setOpenContact] = useState(false);
   const [form, setForm] = useState<FormState>({
     fullName: "",
     email: "",
@@ -82,9 +81,6 @@ const [openContact, setOpenContact] = useState(false);
     accountingSupport: true,
     vroSupport: true,
   });
-
-  const [result, setResult] = useState<ResultState | null>(null);
-  const resultRef = useRef<HTMLDivElement | null>(null);
 
 
   const investorTypes: InvestorType[] = useMemo(
@@ -386,9 +382,9 @@ async function generateReport() {
   return (
     <section className="w-full mt-20" data-navbar="light">
       {/* HERO */}
-     <div className="bg-gradient-to-b from-[#f7faf7] to-white border-b border-neutral-200">
+     <div className="bg-gradient-to-b from-[#f7faf7] to-white">
 
-        <div className="max-w-7xl mx-auto px-4 py-12">
+        <div className="max-w-7xl mx-auto px-4 py-5">
           <p className="text-sm text-neutral-600">Nishad Gateway • Saudi Arabia</p>
 
           <h1 className="text-3xl md:text-5xl font-semibold mt-2 text-neutral-900">
@@ -403,43 +399,11 @@ async function generateReport() {
       </div>
 
       {/* FORM CARD */}
-      <div className="max-w-7xl mx-auto px-4 py-10">
-        <div className="rounded-3xl border border-neutral-200 shadow-sm p-6 md:p-10 bg-white">
-          <div className="flex items-start justify-between gap-4">
-            <div>
-            
-              <h4 className="text-neutral-600 mt-1">
-                Fill the details below to get your estimated cost range.
-              </h4>
-            </div>
-
-            <button
-              className="p-2 rounded-full hover:bg-neutral-100 transition"
-              onClick={() => {
-                setForm({
-                  fullName: "",
-                  email: "",
-                  mobile: "",
-                  investorType: "",
-                  activity: "",
-                  city: "",
-                  timeline: "",
-                  visas: 0,
-                  bankSupport: false,
-                  accountingSupport: true,
-                  vroSupport: true,
-                });
-                setResult(null);
-              }}
-              aria-label="Reset form"
-              title="Reset"
-            >
-             
-            </button>
-          </div>
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="rounded-3xl border border-neutral-200 shadow-sm p-6 md:p-10 pt-0 bg-white">
 
           {/* Inputs */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-8 border-neutral-200">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-8 md:mt-0 border-neutral-200">
             <Input
               label="Full Name"
               placeholder="John Doe"
@@ -539,52 +503,54 @@ async function generateReport() {
             ) : (
               <>
              
-Calculate <ArrowRight className="w-5 h-5" />
+                Calculate <ArrowRight className="w-5 h-5" />
               </>
             )}
           </button>
-{showOtp && (
-<OTPModal
-  email={form.email}
-  onVerify={verifyOtp}
-  onClose={() => setShowOtp(false)}
-  verifying={verifying}
-/>
-)}    </div>
+          {showOtp && (
+          <OTPModal
+            email={form.email}
+            onVerify={verifyOtp}
+            onClose={() => setShowOtp(false)}
+            verifying={verifying}
+          />
+          )}    
+        </div>
 
        <FAQSection
-  title="Frequently Asked Questions"
-  imageUrl="/faqimg.jpg"
-  ctaTitle="Need clarity on your entity type?"
-  ctaButtonText="Talk to an Advisor"
-  onCtaClick={() => setOpenContact(true)}
-  items={[
-    {
-      question: "Can a foreigner own 100% of a company in Saudi Arabia?",
-      answer:
-        "Yes, foreign investors can own 100% in many sectors depending on activity and approvals.",
-    },
-    {
-      question: "Do I need to be in Saudi Arabia to register a company?",
-      answer:
-        "No. Company formation can usually be completed remotely through authorized representatives.",
-    },
-    {
-      question: "How long does company setup take?",
-      answer:
-        "Typically 2–4 weeks depending on activity and documentation.",
-    },
-    {
-      question: "Is a Saudi partner mandatory?",
-      answer:
-        "Not in most sectors. 100% foreign ownership is allowed in many activities.",
-    },
-  ]}
-/>
-<ContactPopup
-  open={openContact}
-  onClose={() => setOpenContact(false)}
-/>
+        title="Frequently Asked Questions"
+        imageUrl="/faqimg.jpg"
+        ctaTitle="Need clarity on your entity type?"
+        ctaButtonText="Talk to an Advisor"
+        onCtaClick={() => setOpenContact(true)}
+        items={[
+          {
+            question: "Can a foreigner own 100% of a company in Saudi Arabia?",
+            answer:
+              "Yes, foreign investors can own 100% in many sectors depending on activity and approvals.",
+          },
+          {
+            question: "Do I need to be in Saudi Arabia to register a company?",
+            answer:
+              "No. Company formation can usually be completed remotely through authorized representatives.",
+          },
+          {
+            question: "How long does company setup take?",
+            answer:
+              "Typically 2–4 weeks depending on activity and documentation.",
+          },
+          {
+            question: "Is a Saudi partner mandatory?",
+            answer:
+              "Not in most sectors. 100% foreign ownership is allowed in many activities.",
+          },
+        ]}
+      />
+ 
+      <ContactPopup
+        open={openContact}
+        onClose={() => setOpenContact(false)}
+      />
       </div>
     </section>
   );
@@ -635,18 +601,25 @@ function Select({
   return (
     <div className="flex flex-col gap-2">
       <label className="text-sm font-medium text-neutral-700">{label}</label>
-      <select
-        className="h-12 rounded-full border px-4 outline-none focus:ring-2 focus:ring-green-700/20 focus:border-green-700 bg-white"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      >
-        <option value="">{placeholder}</option>
-        {options.map((op) => (
-          <option key={op} value={op}>
-            {op}
-          </option>
-        ))}
-      </select>
+        <div className="relative">
+          <select
+            className="appearance-none h-12 w-full rounded-full border px-4 outline-none focus:ring-2 focus:ring-green-700/20 focus:border-green-700 bg-white"
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+          >
+            <option value="">{placeholder}</option>
+            {options.map((op) => (
+              <option key={op} value={op}>
+                {op}
+              </option>
+            ))}
+          </select>
+
+           {/* Custom Arrow */}
+          <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-gray-500">
+            ▼
+          </div>
+        </div> 
     </div>
   );
 }
@@ -671,22 +644,4 @@ function CheckItem({
       <span className="text-sm text-neutral-800">{label}</span>
     </label>
   );
-}
-
-function StatCard({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <div className="rounded-2xl border border-neutral-200 bg-white p-4">
-      <p className="text-xs text-neutral-500">{title}</p>
-      <div className="mt-1">{children}</div>
-    </div>
-  );
-}
-
-function FAQ({ q, a }: { q: string; a: string }) {
-  return (
-    <div className="rounded-2xl border border-neutral-200 p-5 bg-white">
-      <p className="font-semibold text-neutral-900">{q}</p>
-      <p className="text-neutral-600 mt-2">{a}</p>
-    </div>
-  );
-}
+};
