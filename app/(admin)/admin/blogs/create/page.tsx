@@ -74,6 +74,7 @@ export default function CreateBlogPage() {
   const [excerpt, setExcerpt] = useState("");
   const [tags, setTags] = useState("");
   const [status, setStatus] = useState<BlogStatus>("draft");
+  const [loading, setLoading] = useState(false);
 
 
 
@@ -164,6 +165,7 @@ export default function CreateBlogPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (loading) return;
 
     /* ================= CLEAN EDITOR CONTENT ================= */
     const cleanExcerpt =
@@ -747,12 +749,13 @@ export default function CreateBlogPage() {
 
 
         <div className="pt-5">
-          <button
-            disabled={uploading || galleryUploading}
-            className="px-6 py-3 bg-emerald-500 disabled:opacity-50"
-          >
-            Create Blog
-          </button>
+     <button
+  type="submit"
+  disabled={loading || uploading || galleryUploading}
+  className="px-6 py-3 bg-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed"
+>
+  {loading ? "Creating..." : "Create Blog"}
+</button>
         </div>
       </form>
     </main>
