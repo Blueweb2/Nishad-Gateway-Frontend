@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { useMemo,  useRef,  useState   } from "react";
 import { Sparkles, ArrowRight } from "lucide-react";
 import toast from "react-hot-toast";
+import ContactPopup from "../shared/ContactPopup";
 
 const FAQSection = dynamic(() => import("../shared/FAQSection"), {
   loading: () => <p>Loading FAQ...</p>,
@@ -67,6 +68,7 @@ export default function KsaExpansionCostCalculator() {
 const [showOtp, setShowOtp] = useState(false);
 const [otp, setOtp] = useState("");
 const [verifying, setVerifying] = useState(false);
+const [openContact, setOpenContact] = useState(false);
   const [form, setForm] = useState<FormState>({
     fullName: "",
     email: "",
@@ -555,7 +557,7 @@ Calculate <ArrowRight className="w-5 h-5" />
   imageUrl="/faqimg.jpg"
   ctaTitle="Need clarity on your entity type?"
   ctaButtonText="Talk to an Advisor"
-  onCtaClick={() => window.location.href = "/contact"}
+  onCtaClick={() => setOpenContact(true)}
   items={[
     {
       question: "Can a foreigner own 100% of a company in Saudi Arabia?",
@@ -578,6 +580,10 @@ Calculate <ArrowRight className="w-5 h-5" />
         "Not in most sectors. 100% foreign ownership is allowed in many activities.",
     },
   ]}
+/>
+<ContactPopup
+  open={openContact}
+  onClose={() => setOpenContact(false)}
 />
       </div>
     </section>

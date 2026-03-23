@@ -3,8 +3,11 @@
 import Link from "next/link";
 import { ArrowLeft, Linkedin } from "lucide-react";
 import { FaInstagram, FaWhatsapp, FaTelegramPlane } from "react-icons/fa";
+import { useState } from "react";
+import ContactPopup from "@/components/user/shared/ContactPopup";
 
 export default function ContactPage() {
+    const [openContact, setOpenContact] = useState(false);
     return (
         <main className="min-h-screen bg-white" data-navbar="light">
             {/* FULL WIDTH BACK ROW */}
@@ -87,12 +90,17 @@ export default function ContactPage() {
                             and setup — start with a conversation.
                         </p>
 
-                        <div className="mt-8 flex justify-end">
-                            <button className="px-7 py-3 rounded-full bg-green-700 text-white text-sm font-medium hover:bg-green-600 transition">
-                                Contact Us
-                            </button>
-                        </div>
+                        <button
+                            onClick={() => setOpenContact(true)}
+                            className="px-7 py-3 rounded-full bg-green-700 text-white text-sm font-medium hover:bg-green-600 transition"
+                        >
+                            Contact Us
+                        </button>
                     </div>
+                    <ContactPopup
+                        open={openContact}
+                        onClose={() => setOpenContact(false)}
+                    />
 
                     {/* Social Icons */}
 
