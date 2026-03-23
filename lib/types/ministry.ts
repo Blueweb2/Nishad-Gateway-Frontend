@@ -18,6 +18,7 @@ export type Ministry = {
 
   createdAt?: string;
   updatedAt?: string;
+  coverPublicId: string;
 };
 
 export type MinistryBlock =

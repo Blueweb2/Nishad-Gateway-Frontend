@@ -1,7 +1,6 @@
 "use client";
 
 import { Plus, Trash } from "lucide-react";
-import { useState } from "react";
 
 import type {
   CityBlogSection,
@@ -54,6 +53,7 @@ export default function InvestmentHighlightsEditor({
           mainImageAlt: "",
           title: "",
           subText: "",
+          subImage: "",
         }
       ],
     });
