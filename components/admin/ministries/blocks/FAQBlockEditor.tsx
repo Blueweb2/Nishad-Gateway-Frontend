@@ -1,16 +1,14 @@
 "use client";
 
-import { Plus, Trash2, Upload } from "lucide-react";
-import toast from "react-hot-toast";
-
-import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
-import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
+import { Plus, Trash2 } from "lucide-react";
 
 import {
   FAQBlock,
   MinistryBlock,
   FAQItem,
 } from "@/lib/types/ministry";
+
+import ImagePicker from "../common/ImagePicker";
 
 type Props = {
   block: FAQBlock;
@@ -28,58 +26,12 @@ export default function FAQBlockEditor({
 
   const updateBlock = (data: Partial<FAQBlock>) => {
     setBlocks((prev) =>
-      prev.map((b) => {
-        if (b.id === block.id && b.type === "faq") {
-          return { ...b, ...data };
-        }
-        return b;
-      })
+      prev.map((b) =>
+        b.id === block.id && b.type === "faq"
+          ? { ...b, ...data }
+          : b
+      )
     );
-  };
-
-  /* ---------------- IMAGE UPLOAD ---------------- */
-
-  const handleImageUpload = async (file: File) => {
-    try {
-      const upload = await uploadToCloudinarySigned(
-        file,
-        "nishad-gateway/ministries/faq"
-      );
-
-      updateBlock({
-        faqImage: upload.secure_url,
-        faqImagePublicId: upload.public_id,
-      });
-
-      toast.success("Image uploaded");
-    } catch {
-      toast.error("Upload failed");
-    }
-  };
-
-  const deleteImage = async () => {
-    if (!block.faqImagePublicId) return;
-
-    try {
-      await fetch("/api/delete-cloudinary", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          publicId: block.faqImagePublicId,
-        }),
-      });
-
-      updateBlock({
-        faqImage: "",
-        faqImagePublicId: "",
-      });
-
-      toast.success("Image deleted");
-    } catch {
-      toast.error("Delete failed");
-    }
   };
 
   /* ---------------- FAQ FUNCTIONS ---------------- */
@@ -114,65 +66,43 @@ export default function FAQBlockEditor({
         FAQ Block
       </h3>
 
-      {/* FAQ IMAGE */}
-      <div className="space-y-3">
+      {/* ================= IMAGE PICKER ================= */}
+      <div className="space-y-2">
+        <p className="text-sm text-white/60">FAQ Image</p>
 
-        <label className="text-sm text-gray-400">
-          FAQ Image
-        </label>
-
-        <div className="flex items-center gap-4">
-
-          {block.faqImage && (
-            <img
-              src={cloudinaryAutoWebp(block.faqImage)}
-              alt={block.faqImageAlt || "FAQ image"}
-              className="w-32 h-20 object-cover rounded-lg border border-green-700/20"
-            />
-          )}
-
-          <label className="flex items-center gap-2 px-4 py-2 border border-green-700/40 rounded-lg cursor-pointer hover:bg-green-900/20">
-            <Upload size={16} />
-            Upload Image
-
-            <input
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                if (file) handleImageUpload(file);
-              }}
-            />
-          </label>
-
-          {block.faqImage && (
-            <button
-              onClick={deleteImage}
-              className="flex items-center gap-2 text-red-400 text-sm"
-            >
-              <Trash2 size={14} />
-              Delete
-            </button>
-          )}
-
-        </div>
-
-        {/* ALT TEXT */}
-        <input
-          type="text"
-          placeholder="Image Alt Text"
-          value={block.faqImageAlt || ""}
-          onChange={(e) =>
-            updateBlock({ faqImageAlt: e.target.value })
+        <ImagePicker
+          folder="nishad-gateway/ministries/faq"
+          value={
+            block.faqImage
+              ? {
+                  url: block.faqImage,
+                  alt: block.faqImageAlt || "",
+                  publicId: block.faqImagePublicId,
+                }
+              : null
           }
-          className="input w-full"
+          onChange={(val) => {
+            updateBlock({
+              faqImage: val?.url ?? "",
+              faqImagePublicId: val?.publicId ?? undefined,
+              faqImageAlt:
+                val?.alt || "FAQ illustration",
+            });
+          }}
         />
 
+        <p className="text-[10px] text-white/40">
+          Add alt text for SEO & accessibility
+        </p>
+
+        {!block.faqImageAlt && block.faqImage && (
+          <p className="text-xs text-yellow-400">
+            ⚠️ Missing alt text
+          </p>
+        )}
       </div>
 
-      {/* FAQ LIST */}
-
+      {/* ================= FAQ LIST ================= */}
       {faqs.map((faq, index) => (
         <div
           key={index}
@@ -199,6 +129,7 @@ export default function FAQBlockEditor({
           />
 
           <button
+            type="button"
             onClick={() => removeFAQ(index)}
             className="flex items-center gap-2 text-red-400 text-sm"
           >
@@ -209,7 +140,9 @@ export default function FAQBlockEditor({
         </div>
       ))}
 
+      {/* Add FAQ */}
       <button
+        type="button"
         onClick={addFAQ}
         className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg text-sm"
       >

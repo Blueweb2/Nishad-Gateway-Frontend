@@ -27,7 +27,8 @@ export type HeroSectionContent = {
   heading: string;
   subheading: string;
   backgroundImage: string;
-  backgroundImagePublicId?: string;   // ✅ ADD THIS
+  backgroundImagePublicId?: string;   
+  backgroundImageAlt?: string;
   ctaText: string;
   ctaLink?: string;
 };
@@ -46,6 +47,7 @@ export type VisionSectionContent = {
   heading: string;
   content: string;
   imageUrl: string;
+  imageAlt?: string;
   imagePublicId?: string;
 };
 
@@ -58,10 +60,12 @@ export type InvestmentHighlightsContent = {
 
   cards: {
     mainImage: string;
-    mainImagePublicId?: string;  // ✅ ADD
+    mainImagePublicId?: string; 
+    mainImageAlt?: string;
+// subImageAlt?: string; // ✅ ADD
 
-    subImage: string;
-    subImagePublicId?: string;   // ✅ ADD
+//     subImage: string;
+//     subImagePublicId?: string;   // ✅ ADD
 
     title: string;
     subText: string;
@@ -94,6 +98,7 @@ export type InfrastructureSectionContent = {
 
   slides: {
     imageUrl: string;
+     imageAlt?: string; 
     imagePublicId?: string;
     title: string;
     text: string;
@@ -126,6 +131,7 @@ export type FoodGuideSectionContent = {
     items: {
       imageUrl: string;
       imagePublicId?: string;
+      imageAlt?: string; 
       title: string;
       description: string;
       link: string;
@@ -143,6 +149,7 @@ export type TransportationGuideSectionContent = {
 
     backgroundImage: string;
     backgroundImagePublicId?: string;
+    backgroundImageAlt?: string;
 
     title: string; // "Highways connect across KSA"
     link: string;  // detail blog page link
@@ -156,6 +163,7 @@ export type ExpandableSnapshotSectionContent = {
   cards: {
     imageUrl: string;
     imagePublicId?: string;
+    imageAlt?: string;
     caption: string;
   }[];
 };
@@ -173,6 +181,7 @@ export type FutureOutlookSectionContent = {
     description: string;
     imageUrl: string;
     imagePublicId?: string;
+    imageAlt?: string;
     ctaText: string;
     ctaLink: string;
   }[];

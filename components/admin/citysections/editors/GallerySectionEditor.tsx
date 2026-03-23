@@ -1,14 +1,13 @@
 "use client";
 
-import Image from "next/image";
-import { UploadCloud, Trash2 } from "lucide-react";
-import { useState } from "react";
-import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
-import toast from "react-hot-toast";
+import { Plus, Trash2 } from "lucide-react";
+import ImagePicker from "../../common/ImagePicker";
+
 
 type ImageItem = {
   url: string;
-  caption?: string;
+  publicId?: string;
+  alt?: string;
 };
 
 type Props = {
@@ -22,96 +21,88 @@ export default function GallerySectionEditor({
   content,
   onChange,
 }: Props) {
-  const [uploading, setUploading] = useState(false);
-
   const images = content.images || [];
 
-  const addImage = async (file: File) => {
-    try {
-      setUploading(true);
-
-      const uploaded = await uploadToCloudinarySigned(
-        file,
-        "city-blog/gallery"
-      );
-
-      onChange({
-        images: [
-          ...images,
-          { url: uploaded.secure_url, caption: "" },
-        ],
-      });
-
-      toast.success("Image uploaded");
-    } catch {
-      toast.error("Upload failed");
-    } finally {
-      setUploading(false);
-    }
+  /* ================= ADD IMAGE ================= */
+  const addImage = () => {
+    onChange({
+      images: [
+        ...images,
+        {
+          url: "",
+          publicId: undefined,
+          alt: "",
+        },
+      ],
+    });
   };
 
-  const updateCaption = (index: number, caption: string) => {
+  /* ================= UPDATE IMAGE ================= */
+  const updateImage = (index: number, value: any) => {
     const updated = [...images];
-    updated[index].caption = caption;
+
+    updated[index] = {
+      url: value?.url ?? "",
+      publicId: value?.publicId ?? undefined,
+      alt: value?.alt ?? "",
+    };
 
     onChange({ images: updated });
   };
 
+  /* ================= REMOVE IMAGE ================= */
   const removeImage = (index: number) => {
-    const updated = images.filter((_, i) => i !== index);
-    onChange({ images: updated });
+    onChange({
+      images: images.filter((_, i) => i !== index),
+    });
   };
 
   return (
     <div className="space-y-6">
 
-      {/* Upload */}
-      <label className="flex items-center justify-center h-32 border border-dashed border-white/20 rounded-lg cursor-pointer">
-        <UploadCloud size={18} />
+      {/* ================= ADD BUTTON ================= */}
+      <div className="flex justify-end">
+        <button
+          onClick={addImage}
+          className="flex items-center gap-2 px-4 py-2 text-sm bg-white/10 rounded-lg text-white hover:bg-white/20 transition"
+        >
+          <Plus size={14} /> Add Image
+        </button>
+      </div>
 
-        <span className="ml-2 text-sm text-white/60">
-          {uploading ? "Uploading..." : "Upload Image"}
-        </span>
-
-        <input
-          hidden
-          type="file"
-          accept="image/*"
-          onChange={(e) =>
-            e.target.files &&
-            addImage(e.target.files[0])
-          }
-        />
-      </label>
-
-      {/* Images */}
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+      {/* ================= IMAGES ================= */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {images.map((img, index) => (
           <div
             key={index}
-            className="space-y-2"
+            className="space-y-3 p-4 rounded-xl bg-black/30 border border-white/10"
           >
-            <div className="relative h-32 rounded-lg overflow-hidden">
-              <Image
-                src={img.url}
-                alt="gallery"
-                fill
-                className="object-cover"
-              />
-            </div>
-
-            <input
-              value={img.caption || ""}
-              placeholder="Caption"
-              onChange={(e) =>
-                updateCaption(index, e.target.value)
+            {/* IMAGE PICKER */}
+            <ImagePicker
+              folder="nishad-gateway/cities/gallery"
+              value={
+                img.url
+                  ? {
+                      url: img.url,
+                      alt: img.alt || "",
+                      publicId: img.publicId,
+                    }
+                  : null
               }
-              className="w-full px-2 py-1 text-sm bg-white/5 border border-white/10 rounded"
+              onChange={(val) => updateImage(index, val)}
             />
 
+            {/* ALT WARNING */}
+            {!img.alt && img.url && (
+              <p className="text-xs text-yellow-400">
+                ⚠️ Missing alt text (important for SEO)
+              </p>
+            )}
+
+            {/* REMOVE BUTTON */}
             <button
               onClick={() => removeImage(index)}
-              className="text-red-400 text-xs flex items-center gap-1"
+              className="text-red-400 text-xs flex items-center gap-1 hover:text-red-300"
             >
               <Trash2 size={12} />
               Remove
@@ -119,7 +110,6 @@ export default function GallerySectionEditor({
           </div>
         ))}
       </div>
-
     </div>
   );
 }

@@ -1,16 +1,14 @@
 "use client";
 
-import Image from "next/image";
-import { UploadCloud } from "lucide-react";
-import { useState } from "react";
-import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
-import toast from "react-hot-toast";
+import ImagePicker from "../../common/ImagePicker";
 
 type Props = {
   content: {
     title: string;
     subtitle: string;
     image: string;
+    imagePublicId?: string;
+    imageAlt?: string;
   };
   onChange: (content: any) => void;
 };
@@ -19,7 +17,6 @@ export default function HeroSectionEditor({
   content,
   onChange,
 }: Props) {
-  const [uploading, setUploading] = useState(false);
 
   const update = (key: string, value: any) => {
     onChange({
@@ -28,29 +25,10 @@ export default function HeroSectionEditor({
     });
   };
 
-  const handleUpload = async (file: File) => {
-    try {
-      setUploading(true);
-
-      const uploaded = await uploadToCloudinarySigned(
-        file,
-        "city-blog/hero"
-      );
-
-      update("image", uploaded.secure_url);
-
-      toast.success("Image uploaded");
-    } catch {
-      toast.error("Upload failed");
-    } finally {
-      setUploading(false);
-    }
-  };
-
   return (
     <div className="space-y-6">
 
-      {/* TITLE */}
+      {/* ================= TITLE ================= */}
       <div>
         <label className="text-sm text-white/70">
           Title
@@ -65,7 +43,7 @@ export default function HeroSectionEditor({
         />
       </div>
 
-      {/* SUBTITLE */}
+      {/* ================= SUBTITLE ================= */}
       <div>
         <label className="text-sm text-white/70">
           Subtitle
@@ -81,39 +59,41 @@ export default function HeroSectionEditor({
         />
       </div>
 
-      {/* IMAGE */}
-      <div>
-        <label className="text-sm text-white/70">
+      {/* ================= IMAGE ================= */}
+      <div className="space-y-2">
+        <p className="text-sm text-white/70">
           Hero Image
-        </label>
+        </p>
 
-        <label className="flex items-center justify-center h-32 border border-dashed border-white/20 rounded-lg cursor-pointer mt-2">
-          <UploadCloud size={18} />
+        <ImagePicker
+          folder="nishad-gateway/cities/hero"
+          value={
+            content.image
+              ? {
+                  url: content.image,
+                  alt: content.imageAlt || "",
+                  publicId: content.imagePublicId,
+                }
+              : null
+          }
+          onChange={(val) => {
+            onChange({
+              ...content,
+              image: val?.url ?? "",
+              imagePublicId: val?.publicId ?? undefined,
+              imageAlt:
+                val?.alt ||
+                content.title ||
+                "Hero image",
+            });
+          }}
+        />
 
-          <span className="ml-2 text-sm text-white/60">
-            {uploading ? "Uploading..." : "Upload Image"}
-          </span>
-
-          <input
-            hidden
-            type="file"
-            accept="image/*"
-            onChange={(e) =>
-              e.target.files &&
-              handleUpload(e.target.files[0])
-            }
-          />
-        </label>
-
-        {content.image && (
-          <div className="relative h-52 mt-4 rounded-lg overflow-hidden">
-            <Image
-              src={content.image}
-              alt="hero"
-              fill
-              className="object-cover"
-            />
-          </div>
+        {/* ALT WARNING */}
+        {!content.imageAlt && content.image && (
+          <p className="text-xs text-yellow-400">
+            ⚠️ Missing alt text (important for SEO)
+          </p>
         )}
       </div>
 

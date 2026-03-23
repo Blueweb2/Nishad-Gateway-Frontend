@@ -1,8 +1,6 @@
 "use client";
 
-import toast from "react-hot-toast";
-import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
-import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
+import ImagePicker from "../common/ImagePicker";
 
 interface FAQItem {
   question: string;
@@ -13,12 +11,14 @@ interface Props {
   data: {
     items: FAQItem[];
     imageUrl?: string;
+    imagePublicId?: string;
     imageAlt?: string;
   };
   onChange: (data: any) => void;
 }
 
 export default function FAQBlockEditor({ data, onChange }: Props) {
+
   /* ================= ITEM UPDATE ================= */
   const updateItem = (index: number, updatedItem: FAQItem) => {
     const updated = [...data.items];
@@ -59,28 +59,6 @@ export default function FAQBlockEditor({ data, onChange }: Props) {
       updated[index + 1],
     ];
     onChange({ ...data, items: updated });
-  };
-
-  /* ================= IMAGE UPLOAD ================= */
-  const handleImageUpload = async (file: File) => {
-    try {
-      const uploaded = await uploadToCloudinarySigned(
-        file,
-        "nishad-gateway/cities/snapshot"
-      );
-
-      const imageUrl = cloudinaryAutoWebp(uploaded.secure_url);
-
-      onChange({
-        ...data,
-        imageUrl,
-        imageAlt: "FAQ Image",
-      });
-
-      toast.success("FAQ image uploaded");
-    } catch {
-      toast.error("Upload failed");
-    }
   };
 
   return (
@@ -148,6 +126,7 @@ export default function FAQBlockEditor({ data, onChange }: Props) {
         </div>
       ))}
 
+      {/* ADD FAQ */}
       <button
         onClick={addItem}
         className="bg-blue-600 px-4 py-2 rounded text-white"
@@ -156,27 +135,39 @@ export default function FAQBlockEditor({ data, onChange }: Props) {
       </button>
 
       {/* ================= IMAGE ================= */}
-      <div className="space-y-3">
+      <div className="space-y-2">
         <label className="text-sm text-gray-400">
           FAQ Section Image
         </label>
 
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => {
-            const file = e.target.files?.[0];
-            if (file) handleImageUpload(file);
+        <ImagePicker
+          folder="nishad-gateway/cities/snapshot"
+          value={
+            data.imageUrl
+              ? {
+                  url: data.imageUrl,
+                  alt: data.imageAlt || "",
+                  publicId: data.imagePublicId,
+                }
+              : null
+          }
+          onChange={(val) => {
+            onChange({
+              ...data,
+              imageUrl: val?.url ?? "",
+              imagePublicId: val?.publicId ?? undefined,
+              imageAlt:
+                val?.alt ||
+                "FAQ section image",
+            });
           }}
-          className="w-full"
         />
 
-        {data.imageUrl && (
-          <img
-            src={data.imageUrl}
-            className="h-40 rounded object-cover"
-            alt=""
-          />
+        {/* ALT WARNING */}
+        {!data.imageAlt && data.imageUrl && (
+          <p className="text-xs text-yellow-400">
+            ⚠️ Missing alt text
+          </p>
         )}
       </div>
     </div>

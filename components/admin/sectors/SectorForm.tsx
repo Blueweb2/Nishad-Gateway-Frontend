@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
 
 import {
   createSectorAdmin,
   updateSectorAdmin,
 } from "@/lib/api/admin/sectors.api";
+
+import ImagePicker from "@/components/admin/common/ImagePicker";
 
 interface Props {
   initialData?: any;
@@ -19,19 +20,18 @@ export default function SectorForm({
   isEdit = false,
 }: Props) {
   const [loading, setLoading] = useState(false);
-//   Upload State
-  const [imageUploading, setImageUploading] = useState(false);
 
   const [form, setForm] = useState({
     title: initialData?.title || "",
     excerpt: initialData?.excerpt || "",
     order: initialData?.order || 0,
     status: initialData?.status || "draft",
- coverImage: {
-  url: initialData?.coverImage?.url || "",
-  alt: initialData?.coverImage?.alt || "",
-  publicId: initialData?.coverImage?.publicId || "",
-},
+
+    coverImage: {
+      url: initialData?.coverImage?.url || "",
+      alt: initialData?.coverImage?.alt || "",
+      publicId: initialData?.coverImage?.publicId || "",
+    },
 
     metaTitle: initialData?.metaTitle || "",
     metaDescription: initialData?.metaDescription || "",
@@ -42,6 +42,8 @@ export default function SectorForm({
     blocks: initialData?.blocks || [],
   });
 
+  /* ================= CHANGE ================= */
+
   const handleChange = (e: any) => {
     const { name, value } = e.target;
 
@@ -50,41 +52,8 @@ export default function SectorForm({
       [name]: value,
     }));
   };
-// Upload Handler
-const handleCoverUpload = async (file: File) => {
-  try {
-    // ✅ 1. Validate BEFORE upload
-    if (!file.type.includes("svg")) {
-      toast.error("Only SVG icons allowed");
-      return;
-    }
 
-    
-
-    setImageUploading(true);
-
-    const result = await uploadToCloudinarySigned(
-      file,
-      "nishad-gateway/subservices/icons",
-    );
-    
-
-    setForm((prev) => ({
-      ...prev,
-      coverImage: {
-        ...prev.coverImage,
-        url: result.secure_url,
-        publicId: result.public_id,
-      },
-    }));
-
-    toast.success("Image uploaded successfully");
-  } catch (error: any) {
-    toast.error(error.message || "Upload failed");
-  } finally {
-    setImageUploading(false);
-  }
-};
+  /* ================= SUBMIT ================= */
 
   const handleSubmit = async () => {
     try {
@@ -93,7 +62,9 @@ const handleCoverUpload = async (file: File) => {
       const payload = {
         ...form,
         metaKeywords: form.metaKeywords
-          ? form.metaKeywords.split(",").map((k: string) => k.trim())
+          ? form.metaKeywords
+              .split(",")
+              .map((k: string) => k.trim())
           : [],
       };
 
@@ -154,55 +125,50 @@ const handleCoverUpload = async (file: File) => {
         <option value="published">Published</option>
       </select>
 
-      {/* COVER IMAGE */}
-  <div>
-  <label className="block text-sm mb-2">
-    Cover Image(icon)
-  </label>
+      {/* ================= COVER IMAGE ================= */}
+      <div className="space-y-2">
+        <label className="text-sm text-gray-400">
+          Cover Image (Icon)
+        </label>
 
-  <input
-    type="file"
-    accept=".svg"
-    onChange={(e) => {
-      if (e.target.files) {
-        handleCoverUpload(e.target.files[0]);
-      }
-    }}
-    className="w-full p-3 rounded bg-[#111] border border-gray-700"
-  />
+        <ImagePicker
+          folder="nishad-gateway/subservices/icons"
+          value={
+            form.coverImage.url
+              ? {
+                  url: form.coverImage.url,
+                  alt: form.coverImage.alt,
+                  publicId: form.coverImage.publicId,
+                }
+              : null
+          }
+          onChange={(val) => {
+            if (!val?.url) return;
 
-  {imageUploading && (
-    <p className="text-xs text-gray-400 mt-2">
-      Uploading image...
-    </p>
-  )}
+            setForm((prev) => ({
+              ...prev,
+              coverImage: {
+                url: val.url,
+                publicId: val.publicId,
+                alt:
+                  val.alt ||
+                  prev.title ||
+                  "Sector icon",
+              },
+            }));
+          }}
+        />
 
-  {form.coverImage.url && (
-    <img
-      src={form.coverImage.url}
-      className="mt-4 h-20 w-20 object-contain"
-      alt="Preview"
-    />
-  )}
-</div>
+        {/* ALT WARNING */}
+        {!form.coverImage.alt &&
+          form.coverImage.url && (
+            <p className="text-xs text-yellow-400">
+              ⚠️ Missing alt text
+            </p>
+          )}
+      </div>
 
-      <input
-        type="text"
-        placeholder="Cover Image Alt"
-        value={form.coverImage.alt}
-        onChange={(e) =>
-          setForm((prev) => ({
-            ...prev,
-            coverImage: {
-              ...prev.coverImage,
-              alt: e.target.value,
-            },
-          }))
-        }
-        className="w-full p-3 rounded bg-[#111] border border-gray-700"
-      />
-
-      {/* SEO SECTION */}
+      {/* ================= SEO ================= */}
       <div className="border-t border-gray-700 pt-6">
         <h3 className="text-lg font-semibold mb-4">
           SEO Settings
