@@ -1,10 +1,17 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useMemo,  useRef,  useState   } from "react";
-import { X, Sparkles, ArrowRight } from "lucide-react";
+import { Sparkles, ArrowRight } from "lucide-react";
 import toast from "react-hot-toast";
-import FAQSection from "../shared/FAQSection";
-import OTPModal from "./OTPModal";
+
+const FAQSection = dynamic(() => import("../shared/FAQSection"), {
+  loading: () => <p>Loading FAQ...</p>,
+});
+
+const OTPModal = dynamic(() => import("./OTPModal"), {
+  loading: () => <p>Loading...</p>,
+});
 
 
 type InvestorType = "Individual" | "Company" | "Startup" | "Investor";

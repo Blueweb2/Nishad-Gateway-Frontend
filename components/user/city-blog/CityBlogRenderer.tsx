@@ -7,7 +7,6 @@ import type {
   BusinessSetupOptionsContent,
   InfrastructureSectionContent,
   LandmarksSectionContent,
-  FoodGuideSectionContent,
   TransportationGuideSectionContent,
    ExpandableSnapshotSectionContent,
    FutureOutlookSectionContent,
@@ -20,7 +19,6 @@ import InvestmentHighlightsSection from "./InvestmentHighlightsSection";
 import BusinessSetupOptionsSection from "./BusinessSetupOptionsSection";
 import InfrastructureSection from "./InfrastructureSection";
 import LandmarksSection from "./LandmarksSection";
-import FoodGuideSection from "./FoodGuideSection";
 import TransportationGuideSection from "./TransportationGuideSection";
 import ExpandableSnapshotSection from "./ExpandableSnapshotSection";
 import FutureOutlookSection from "./FutureOutlookSection";
@@ -131,18 +129,6 @@ export default function CityBlogRenderer({
                 />
               );
             }
-
-            // case "FOOD_GUIDE": {
-            //   const content =
-            //     section.content as FoodGuideSectionContent;
-
-            //   return (
-            //     <FoodGuideSection
-            //       key={section.id}
-            //       content={content}
-            //     />
-            //   );
-            // }
 
             case "TRANSPORTATION_GUIDE": {
               const content =
