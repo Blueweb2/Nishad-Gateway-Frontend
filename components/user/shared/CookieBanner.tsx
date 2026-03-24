@@ -28,8 +28,14 @@ export default function CookieBanner() {
         <p className="text-sm text-gray-700 mb-4">
           We use <span className="underline">cookies</span> to improve your
           experience.{" "}
-          <Link href="/privacy-policy" className="underline text-green-700">
-            Learn more
+          
+          {/* ✅ FIXED LINK */}
+          <Link
+            href="/privacy-policy"
+            className="underline text-green-700"
+            aria-label="Read our Privacy Policy"
+          >
+            Read our Privacy Policy
           </Link>
         </p>
 
