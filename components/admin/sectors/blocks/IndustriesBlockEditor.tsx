@@ -1,8 +1,6 @@
 "use client";
 
-import toast from "react-hot-toast";
-import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
-import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
+import ImagePicker from "../common/ImagePicker";
 
 interface Props {
   data: any;
@@ -27,6 +25,7 @@ export default function IndustriesBlockEditor({ data, onChange }: Props) {
           description: "",
           image: "",
           imagePublicId: "",
+          imageAlt: "",
         },
       ],
     });
@@ -57,34 +56,13 @@ export default function IndustriesBlockEditor({ data, onChange }: Props) {
     onChange({ ...data, items: updated });
   };
 
-  const handleImageUpload = async (file: File, index: number) => {
-    try {
-      const uploaded = await uploadToCloudinarySigned(
-        file,
-        "nishad-gateway/subservices"
-      );
-
-      const imageUrl = cloudinaryAutoWebp(uploaded.secure_url);
-
-      updateItem(index, {
-        ...data.items[index],
-        image: imageUrl,
-        imagePublicId: uploaded.public_id,
-      });
-
-      toast.success("Image uploaded");
-    } catch {
-      toast.error("Upload failed");
-    }
-  };
-
   return (
     <div className="space-y-6 border border-gray-700 p-6 rounded-lg">
 
       {/* Section Title */}
       <input
         placeholder="Section Title"
-        value={data.title}
+        value={data.title || ""}
         onChange={(e) =>
           onChange({ ...data, title: e.target.value })
         }
@@ -94,7 +72,7 @@ export default function IndustriesBlockEditor({ data, onChange }: Props) {
       {/* Section Description */}
       <textarea
         placeholder="Section Description"
-        value={data.description}
+        value={data.description || ""}
         onChange={(e) =>
           onChange({ ...data, description: e.target.value })
         }
@@ -105,14 +83,14 @@ export default function IndustriesBlockEditor({ data, onChange }: Props) {
       {data.items.map((item: any, index: number) => (
         <div
           key={index}
-          className="border border-gray-600 p-4 rounded space-y-3 relative bg-[#0f0f0f]"
+          className="border border-gray-600 p-4 rounded space-y-3 bg-[#0f0f0f]"
         >
-          {/* Card Counter */}
+          {/* Counter */}
           <div className="text-xs text-gray-400">
             Card {index + 1} of {data.items.length}
           </div>
 
-          {/* Move Buttons */}
+          {/* Controls */}
           <div className="flex gap-2 text-xs">
             <button
               onClick={() => moveItemUp(index)}
@@ -136,9 +114,10 @@ export default function IndustriesBlockEditor({ data, onChange }: Props) {
             </button>
           </div>
 
+          {/* Title */}
           <input
             placeholder="Card Title"
-            value={item.title}
+            value={item.title || ""}
             onChange={(e) =>
               updateItem(index, {
                 ...item,
@@ -148,9 +127,10 @@ export default function IndustriesBlockEditor({ data, onChange }: Props) {
             className="w-full p-2 bg-[#111] border border-gray-700 rounded"
           />
 
+          {/* Description */}
           <textarea
             placeholder="Card Description"
-            value={item.description}
+            value={item.description || ""}
             onChange={(e) =>
               updateItem(index, {
                 ...item,
@@ -160,32 +140,52 @@ export default function IndustriesBlockEditor({ data, onChange }: Props) {
             className="w-full p-2 bg-[#111] border border-gray-700 rounded"
           />
 
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              if (file) handleImageUpload(file, index);
-            }}
-            className="w-full"
-          />
+          {/* ✅ IMAGE PICKER */}
+          <div className="space-y-2">
+            <p className="text-xs text-white/60">Card Image</p>
 
-          {item.image && (
-            <img
-              src={item.image}
-              className="h-32 rounded object-cover"
-              alt=""
+            <ImagePicker
+              folder="nishad-gateway/subservices"
+              value={
+                item.image
+                  ? {
+                      url: item.image,
+                      alt: item.imageAlt || "",
+                      publicId: item.imagePublicId,
+                    }
+                  : null
+              }
+              onChange={(val) => {
+                updateItem(index, {
+                  ...item,
+                  image: val?.url ?? "",
+                  imagePublicId: val?.publicId ?? "",
+                  imageAlt:
+                    val?.alt ||
+                    item.title ||
+                    "Industry image",
+                });
+              }}
             />
-          )}
+
+            {/* ALT WARNING */}
+            {!item.imageAlt && item.image && (
+              <p className="text-xs text-yellow-400">
+                ⚠️ Missing alt text
+              </p>
+            )}
+          </div>
         </div>
       ))}
 
+      {/* Add Button */}
       <button
         onClick={addItem}
         className="bg-blue-600 px-4 py-2 rounded text-white"
       >
         + Add Card
       </button>
+
     </div>
   );
 }

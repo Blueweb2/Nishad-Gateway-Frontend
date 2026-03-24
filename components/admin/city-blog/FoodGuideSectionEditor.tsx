@@ -1,8 +1,7 @@
 "use client";
 
-import { Plus, Trash2, UploadCloud } from "lucide-react";
-import Image from "next/image";
-import toast from "react-hot-toast";
+import { Plus, Trash2 } from "lucide-react";
+
 import { useState, useMemo } from "react";
 
 import type {
@@ -10,9 +9,8 @@ import type {
   FoodGuideSectionContent,
 } from "@/lib/types/city-blog";
 
-import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
-import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
 import RichTextEditor from "../common/RichTextEditor";
+import ImagePicker from "../common/ImagePicker";
 
 type Props = {
   section: CityBlogSection<"FOOD_GUIDE">;
@@ -35,12 +33,9 @@ export default function FoodGuideSectionEditor({
       ...f,
       items: f.items || [],
     }));
-  }, [content.filters]);
+  }, [content]);
 
-  const [uploading, setUploading] = useState<{
-    filterIndex: number;
-    itemIndex: number;
-  } | null>(null);
+
 
   const updateContent = (newContent: FoodGuideSectionContent) => {
     onChange({ ...section, content: newContent });
@@ -81,91 +76,53 @@ export default function FoodGuideSectionEditor({
       {
         imageUrl: "",
         imagePublicId: undefined,
+        imageAlt: "",
         title: "",
         description: "",
         link: "",
-      },
+      }
     ];
 
     updateContent({ ...content, filters: updated });
   };
 
-  const updateItem = (
-    filterIndex: number,
-    itemIndex: number,
-    updates: any
-  ) => {
-    const updated = [...safeFilters];
-    const items = [...updated[filterIndex].items];
+  const updateItem = (filterIndex: number, itemIndex: number, updates: any) => {
+    updateContent({
+      ...content,
+      filters: safeFilters.map((f, fi) => {
+        if (fi !== filterIndex) return f;
 
-    items[itemIndex] = {
-      ...items[itemIndex],
-      ...updates,
-    };
-
-    updated[filterIndex].items = items;
-
-    updateContent({ ...content, filters: updated });
+        return {
+          ...f,
+          items: f.items.map((item, ii) =>
+            ii === itemIndex ? { ...item, ...updates } : item
+          ),
+        };
+      }),
+    });
   };
 
-  const removeItem = (filterIndex: number, itemIndex: number) => {
-    const updated = [...safeFilters];
+const removeItem = (filterIndex: number, itemIndex: number) => {
+  updateContent({
+    ...content,
+    filters: safeFilters.map((f, fi) => {
+      if (fi !== filterIndex) return f;
 
-    updated[filterIndex].items =
-      updated[filterIndex].items.filter((_, i) => i !== itemIndex);
-
-    updateContent({ ...content, filters: updated });
-  };
+      return {
+        ...f,
+        items: f.items.filter((_, i) => i !== itemIndex),
+      };
+    }),
+  });
+};
 
   /* =====================================================
      IMAGE UPLOAD
   ====================================================== */
 
-  const handleImageUpload = async (
-    file: File,
-    filterIndex: number,
-    itemIndex: number
-  ) => {
-    if (!file.type.startsWith("image/")) {
-      toast.error("Only image files allowed");
-      return;
-    }
 
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error("Image must be less than 5MB");
-      return;
-    }
 
-    try {
-      setUploading({ filterIndex, itemIndex });
-      toast.loading("Uploading...", { id: "food-upload" });
 
-      const uploaded = await uploadToCloudinarySigned(
-        file,
-        "nishad-gateway/cities/food-guide"
-      );
-
-      const imageUrl = cloudinaryAutoWebp(uploaded.secure_url);
-
-      updateItem(filterIndex, itemIndex, {
-        imageUrl,
-        imagePublicId: uploaded.public_id,
-      });
-
-      toast.success("Uploaded", { id: "food-upload" });
-    } catch {
-      toast.error("Upload failed", { id: "food-upload" });
-    } finally {
-      setUploading(null);
-    }
-  };
-
-  const removeImage = (filterIndex: number, itemIndex: number) => {
-    updateItem(filterIndex, itemIndex, {
-      imageUrl: "",
-      imagePublicId: undefined,
-    });
-  };
 
   /* =====================================================
      UI
@@ -228,15 +185,12 @@ export default function FoodGuideSectionEditor({
             </div>
 
             {filter.items.map((item, itemIndex) => {
-              const isUploading =
-                uploading?.filterIndex === filterIndex &&
-                uploading?.itemIndex === itemIndex;
+
 
               return (
                 <div
                   key={itemIndex}
-                  className="bg-black/40 p-4 rounded-xl border border-white/10 space-y-4"
-                >
+                  className="bg-black/40 p-4 rounded-xl border border-white/10 space-y-4 hover:border-white/20 transition"                >
                   <div className="flex justify-between items-center">
                     <span className="text-white/60 text-xs">
                       Item {itemIndex + 1}
@@ -263,18 +217,18 @@ export default function FoodGuideSectionEditor({
                     className="w-full px-3 py-2 rounded bg-black/30 border border-white/10 text-white"
                   />
 
-               <div className="space-y-2">
-  <p className="text-white/60 text-xs">Description</p>
+                  <div className="space-y-2">
+                    <p className="text-white/60 text-xs">Description</p>
 
-  <RichTextEditor
-    value={item.description || ""}
-    onChange={(val) =>
-      updateItem(filterIndex, itemIndex, {
-        description: val,
-      })
-    }
-  />
-</div>
+                    <RichTextEditor
+                      value={item.description || ""}
+                      onChange={(val) =>
+                        updateItem(filterIndex, itemIndex, {
+                          description: val,
+                        })
+                      }
+                    />
+                  </div>
 
 
                   <input
@@ -289,47 +243,33 @@ export default function FoodGuideSectionEditor({
                   />
 
                   {/* IMAGE UPLOAD */}
-                  <label className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded text-sm text-white cursor-pointer">
-                    <UploadCloud size={14} />
-                    {isUploading ? "Uploading..." : "Upload Image"}
+                  <div className="space-y-2">
+                    <p className="text-white/60 text-xs">Image</p>
 
-                    <input
-                      type="file"
-                      hidden
-                      accept="image/*"
-                      disabled={isUploading}
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file)
-                          handleImageUpload(
-                            file,
-                            filterIndex,
-                            itemIndex
-                          );
-                        e.target.value = "";
+                    <ImagePicker
+                      folder="nishad-gateway/cities/food-guide"
+                      value={
+                        item.imageUrl
+                          ? {
+                            url: item.imageUrl,
+                            alt: item.imageAlt || "",
+                            publicId: item.imagePublicId,
+                          }
+                          : null
+                      }
+                      onChange={(val) => {
+                        updateItem(filterIndex, itemIndex, {
+                          imageUrl: val?.url ?? "",
+                          imagePublicId: val?.publicId ?? undefined,
+                          imageAlt: val?.alt || item.title || "Food image",
+                        });
                       }}
                     />
-                  </label>
+                    <p className="text-[10px] text-white/40">
+  Add alt text for SEO & accessibility
+</p>
 
-                  {item.imageUrl && (
-                    <div className="relative mt-3 w-full h-40 rounded overflow-hidden border border-white/10">
-                      <Image
-                        src={item.imageUrl}
-                        alt="preview"
-                        fill
-                        className="object-cover"
-                      />
-
-                      <button
-                        onClick={() =>
-                          removeImage(filterIndex, itemIndex)
-                        }
-                        className="absolute top-2 right-2 bg-black/70 p-2 rounded-full"
-                      >
-                        <Trash2 size={14} />
-                      </button>
-                    </div>
-                  )}
+                  </div>
                 </div>
               );
             })}

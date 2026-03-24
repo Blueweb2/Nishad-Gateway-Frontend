@@ -1,16 +1,14 @@
 "use client";
 
-import { Trash2, Plus, Upload } from "lucide-react";
-import toast from "react-hot-toast";
-
-import { uploadToCloudinarySigned } from "@/lib/cloudinarySignedUpload";
-import { cloudinaryAutoWebp } from "@/lib/utils/cloudinary";
+import { Trash2, Plus } from "lucide-react";
 
 import {
   SliderBlock,
   SlideItem,
   MinistryBlock,
 } from "@/lib/types/ministry";
+
+import ImagePicker from "../common/ImagePicker";
 
 type Props = {
   block: SliderBlock;
@@ -35,12 +33,12 @@ export default function SliderBlockEditor({
   };
 
   const updateHeading = (value: string) => {
-  setBlocks((prev) =>
-    prev.map((b) =>
-      b.id === block.id ? { ...b, heading: value } : b
-    )
-  );
-};
+    setBlocks((prev) =>
+      prev.map((b) =>
+        b.id === block.id ? { ...b, heading: value } : b
+      )
+    );
+  };
 
   const addSlide = () => {
     updateSlides([
@@ -49,7 +47,7 @@ export default function SliderBlockEditor({
         title: "",
         description: "",
         image: "",
-        imagePublicId: "",
+        imagePublicId: undefined,
         alt: "",
       },
     ]);
@@ -69,49 +67,6 @@ export default function SliderBlockEditor({
     updateSlides(updated);
   };
 
-  const handleImageUpload = async (file: File, index: number) => {
-    try {
-      const upload = await uploadToCloudinarySigned(
-        file,
-        "nishad-gateway/ministries/slides"
-      );
-
-      const updated = [...slides];
-      updated[index].image = upload.secure_url;
-      updated[index].imagePublicId = upload.public_id;
-
-      updateSlides(updated);
-
-      toast.success("Image uploaded");
-    } catch {
-      toast.error("Upload failed");
-    }
-  };
-
-  const deleteImage = async (index: number) => {
-    const publicId = slides[index].imagePublicId;
-
-    try {
-      await fetch("/api/delete-cloudinary", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ publicId }),
-      });
-
-      const updated = [...slides];
-      updated[index].image = "";
-      updated[index].imagePublicId = "";
-
-      updateSlides(updated);
-
-      toast.success("Image deleted");
-    } catch {
-      toast.error("Failed to delete image");
-    }
-  };
-
   return (
     <div className="border border-green-700/30 rounded-xl p-6 space-y-6 bg-[#0b0f0b]">
 
@@ -119,31 +74,29 @@ export default function SliderBlockEditor({
         Slider Block
       </h3>
 
-          {/* Slider Heading */}
-    <div className="space-y-1">
-      <label className="text-xs text-green-400">
-        Slider Heading
-      </label>
+      {/* ================= HEADING ================= */}
+      <div className="space-y-1">
+        <label className="text-xs text-green-400">
+          Slider Heading
+        </label>
 
-      <input
-        type="text"
-        placeholder="Enter section heading"
-        value={block.heading || ""}
-        onChange={(e) => updateHeading(e.target.value)}
-        className="input w-full"
-      />
-    </div>
+        <input
+          type="text"
+          placeholder="Enter section heading"
+          value={block.heading || ""}
+          onChange={(e) => updateHeading(e.target.value)}
+          className="input w-full"
+        />
+      </div>
 
-
+      {/* ================= SLIDES ================= */}
       {slides.map((slide, index) => (
         <div
           key={index}
           className="border border-green-700/20 rounded-lg p-5 bg-[#0f150f] space-y-4"
         >
 
-
-
-          {/* Slide Header */}
+          {/* Header */}
           <div className="flex justify-between items-center">
             <span className="text-sm text-green-400 font-medium">
               Slide {index + 1}
@@ -181,56 +134,48 @@ export default function SliderBlockEditor({
             className="input w-full"
           />
 
-          {/* Alt + Upload */}
-          <div className="grid md:grid-cols-2 gap-4">
+          {/* ================= IMAGE PICKER ================= */}
+          <div className="space-y-2">
+            <p className="text-sm text-white/60">Slide Image</p>
 
-            <input
-              type="text"
-              placeholder="Image Alt Text"
-              value={slide.alt || ""}
-              onChange={(e) =>
-                updateField(index, "alt", e.target.value)
+            <ImagePicker
+              folder="nishad-gateway/ministries/slides"
+              value={
+                slide.image
+                  ? {
+                      url: slide.image,
+                      alt: slide.alt || "",
+                      publicId: slide.imagePublicId,
+                    }
+                  : null
               }
-              className="input"
+              onChange={(val) => {
+                const updated = [...slides];
+
+                updated[index] = {
+                  ...updated[index],
+                  image: val?.url ?? "",
+                  imagePublicId: val?.publicId ?? undefined,
+                  alt:
+                    val?.alt ||
+                    slide.title ||
+                    "Slider image",
+                };
+
+                updateSlides(updated);
+              }}
             />
 
-            <label className="flex items-center justify-center gap-2 border border-green-700/40 rounded-lg cursor-pointer py-2 hover:bg-green-900/20">
-              <Upload size={16} />
-              Upload Image
-              <input
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) handleImageUpload(file, index);
-                }}
-              />
-            </label>
+            <p className="text-[10px] text-white/40">
+              Add alt text for SEO & accessibility
+            </p>
 
+            {!slide.alt && slide.image && (
+              <p className="text-xs text-yellow-400">
+                ⚠️ Missing alt text
+              </p>
+            )}
           </div>
-
-          {/* Preview */}
-          {slide.image && (
-            <div className="flex items-center gap-4">
-
-              <img
-                src={cloudinaryAutoWebp(slide.image)}
-                alt={slide.alt || slide.title || "Slide image"}
-                className="w-32 h-20 object-cover rounded-lg border border-green-700/20"
-              />
-
-              <button
-                type="button"
-                onClick={() => deleteImage(index)}
-                className="flex items-center gap-2 text-red-400 text-sm"
-              >
-                <Trash2 size={14} />
-                Delete Image
-              </button>
-
-            </div>
-          )}
 
         </div>
       ))}
