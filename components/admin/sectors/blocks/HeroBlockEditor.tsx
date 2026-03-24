@@ -1,6 +1,6 @@
 "use client";
 
-import ImagePicker from "../common/ImagePicker";
+import ImagePicker from "../../common/ImagePicker";
 
 interface Props {
   data: any;

@@ -8,7 +8,7 @@ import {
   MinistryBlock,
 } from "@/lib/types/ministry";
 
-import ImagePicker from "../common/ImagePicker";
+import ImagePicker from "../../common/ImagePicker";
 
 type Props = {
   block: SliderBlock;

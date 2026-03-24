@@ -69,6 +69,7 @@ export type InvestmentHighlightsContent = {
 
     title: string;
     subText: string;
+    subImage: string;
   }[];
 };
 
