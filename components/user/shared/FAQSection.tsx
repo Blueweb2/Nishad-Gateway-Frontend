@@ -52,26 +52,13 @@ export default function FAQSection({
                   Contact Us
                 </p>
 
-                {/* <div className="flex items-center justify-between  border">
-                  <h4 className="text-xl font-semibold text-neutral-900 leading-snug border">
-                    {ctaTitle}
-                  </h4>
-
-<<<<<<< HEAD
-                  {ctaButtonText && (
-                    <button className="bg-[#0E7C2F] hover:bg-[#0b6a27] text-white text-sm font-medium px-6 py-2.5 rounded-full transition-all duration-300 shadow-sm hover:shadow-md border">
-                      Talk to an Advisor
-                    </button>
-                  )}
-                </div> */}
-
                 <div className="flex flex-col lg:flex-row items-center justify-between">
                   <h4 className="text-xl text-center lg:text-left font-semibold text-neutral-900 leading-snug">
                     {ctaTitle}
                   </h4>
 
                   {ctaButtonText && (
-                    <button className="whitespace-nowrap bg-[#0E7C2F] hover:bg-[#0b6a27] text-white text-sm font-medium px-6 py-2.5 rounded-full transition-all duration-300 shadow-sm hover:shadow-md mt-3 lg:mt-0">
+                    <button onClick={onCtaClick} className="whitespace-nowrap bg-[#0E7C2F] hover:bg-[#0b6a27] text-white text-sm font-medium px-6 py-2.5 rounded-full transition-all duration-300 shadow-sm hover:shadow-md mt-3 lg:mt-0">
                       Talk to an Advisor
                     </button>
                   )}
@@ -80,21 +67,6 @@ export default function FAQSection({
             )}
           </div>
         )}
-=======
-          {ctaButtonText && (
-<button
-  onClick={onCtaClick}
-  className="bg-[#0E7C2F] hover:bg-[#0b6a27] text-white text-sm font-medium px-6 py-2.5 rounded-full transition-all duration-300 shadow-sm hover:shadow-md"
->
-  {ctaButtonText  || "Talk to an Advisor"}
-</button>
-          )}
-        </div>
-      </div>
-    )}
-  </div>
-)}
->>>>>>> 145159f38650b34046e7af4aabf364482b62b022
 
         {/* RIGHT FAQ */}
         <div>
