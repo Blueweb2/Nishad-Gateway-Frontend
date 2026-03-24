@@ -82,7 +82,7 @@ const contentData = {
         </>
       ),
       image: "/buisnessgrowth/Housing.webp",
-      link: "/insights/professional-work-culture",
+      link: "/blogs/housing-options-expat-communities-in-saudi-arabia",
     },
 
     {
@@ -109,7 +109,7 @@ const contentData = {
         </>
       ),
       image: "/buisnessgrowth/Education.webp",
-      link: "/insights/professional-work-culture",
+      link: "/blogs/international-education-schools-in-saudi-arabia",
     },
 
     {
@@ -275,7 +275,7 @@ const contentData = {
         </>
       ),
       image: "/consultant/Schoolsasian.jpg",
-      link: "/insights/professional-work-culture",
+      link: "/blogs/schools-curriculum-options-in-saudi-arabia",
     },
 
     {

@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { useMemo, useState   } from "react";
 import { Sparkles, ArrowRight } from "lucide-react";
 import toast from "react-hot-toast";
+import ContactPopup from "../shared/ContactPopup";
 
 const FAQSection = dynamic(() => import("../shared/FAQSection"), {
   loading: () => <p>Loading FAQ...</p>,
@@ -64,8 +65,15 @@ type ResultState = {
 
 export default function KsaExpansionCostCalculator() {
   const [loading, setLoading] = useState(false);
+<<<<<<< HEAD
   const [showOtp, setShowOtp] = useState(false);
   const [verifying, setVerifying] = useState(false);
+=======
+const [showOtp, setShowOtp] = useState(false);
+const [otp, setOtp] = useState("");
+const [verifying, setVerifying] = useState(false);
+const [openContact, setOpenContact] = useState(false);
+>>>>>>> 145159f38650b34046e7af4aabf364482b62b022
   const [form, setForm] = useState<FormState>({
     fullName: "",
     email: "",
@@ -519,6 +527,7 @@ async function generateReport() {
         </div>
 
        <FAQSection
+<<<<<<< HEAD
         title="Frequently Asked Questions"
         imageUrl="/faqimg.jpg"
         ctaTitle="Need clarity on your entity type?"
@@ -547,6 +556,40 @@ async function generateReport() {
           },
         ]}
       />
+=======
+  title="Frequently Asked Questions"
+  imageUrl="/faqimg.jpg"
+  ctaTitle="Need clarity on your entity type?"
+  ctaButtonText="Talk to an Advisor"
+  onCtaClick={() => setOpenContact(true)}
+  items={[
+    {
+      question: "Can a foreigner own 100% of a company in Saudi Arabia?",
+      answer:
+        "Yes, foreign investors can own 100% in many sectors depending on activity and approvals.",
+    },
+    {
+      question: "Do I need to be in Saudi Arabia to register a company?",
+      answer:
+        "No. Company formation can usually be completed remotely through authorized representatives.",
+    },
+    {
+      question: "How long does company setup take?",
+      answer:
+        "Typically 2–4 weeks depending on activity and documentation.",
+    },
+    {
+      question: "Is a Saudi partner mandatory?",
+      answer:
+        "Not in most sectors. 100% foreign ownership is allowed in many activities.",
+    },
+  ]}
+/>
+<ContactPopup
+  open={openContact}
+  onClose={() => setOpenContact(false)}
+/>
+>>>>>>> 145159f38650b34046e7af4aabf364482b62b022
       </div>
     </section>
   );

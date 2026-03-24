@@ -57,6 +57,7 @@ export default function FAQSection({
                     {ctaTitle}
                   </h4>
 
+<<<<<<< HEAD
                   {ctaButtonText && (
                     <button className="bg-[#0E7C2F] hover:bg-[#0b6a27] text-white text-sm font-medium px-6 py-2.5 rounded-full transition-all duration-300 shadow-sm hover:shadow-md border">
                       Talk to an Advisor
@@ -79,6 +80,21 @@ export default function FAQSection({
             )}
           </div>
         )}
+=======
+          {ctaButtonText && (
+<button
+  onClick={onCtaClick}
+  className="bg-[#0E7C2F] hover:bg-[#0b6a27] text-white text-sm font-medium px-6 py-2.5 rounded-full transition-all duration-300 shadow-sm hover:shadow-md"
+>
+  {ctaButtonText  || "Talk to an Advisor"}
+</button>
+          )}
+        </div>
+      </div>
+    )}
+  </div>
+)}
+>>>>>>> 145159f38650b34046e7af4aabf364482b62b022
 
         {/* RIGHT FAQ */}
         <div>
