@@ -255,7 +255,7 @@ const contentData = {
         </>
       ),
       image: "/consultant/community-networks-and-cultural-support.jpg",
-      link: "/insights/professional-work-culture",
+      link: "/blogs/community-networks-cultural-support-in-saudi-arabia",
     },
 
     {
