@@ -40,30 +40,9 @@ type FormState = {
   accountingSupport: boolean;
   vroSupport: boolean;
 };
-type CostBreakdownItem = {
-  label: string;
-  min: number;
-  max: number;
-};
-
-
-type ResultState = {
-  min: number;
-  max: number;
-  timelineText: string;
-  recommendedSetup: string;
-  suggestedCity: string;
-  includes: string[];
-  extraAddons: string[];
-  notes: string[];
-  breakdown: CostBreakdownItem[];
-  reportId: string;
-  reportDate: string;
-};
-
-
 
 export default function KsaExpansionCostCalculator() {
+
   const [loading, setLoading] = useState(false);
   const [showOtp, setShowOtp] = useState(false);
   const [verifying, setVerifying] = useState(false);
@@ -100,16 +79,6 @@ export default function KsaExpansionCostCalculator() {
     ],
     []
   );
-// breakdown array
-
-  const breakdown = [
-  { label: "Company registration & licensing", min: 12000, max: 18000 },
-  { label: "Documentation & compliance support", min: 3000, max: 6000 },
-  { label: "Visa processing (per visa)", min: 3500 * form.visas, max: 5500 * form.visas },
-  { label: "Bank setup support", min: form.bankSupport ? 2500 : 0, max: form.bankSupport ? 4500 : 0 },
-  { label: "Accounting package", min: form.accountingSupport ? 1500 : 0, max: form.accountingSupport ? 3500 : 0 },
-  { label: "VRO support", min: form.vroSupport ? 4000 : 0, max: form.vroSupport ? 7000 : 0 },
-];
 
   const cities: CityType[] = useMemo(
     () => ["Riyadh", "Jeddah", "Dammam", "Khobar"],
@@ -121,151 +90,6 @@ export default function KsaExpansionCostCalculator() {
     []
   );
 
-  // ---------- simple hybrid estimation (rules) ----------
-function calculateEstimate(): ResultState {
-  let baseMin = 18000;
-  let baseMax = 28000;
-
-  // activity multiplier
-  const activityBoost: Record<ActivityType, number> = {
-    "IT / Software": 1.15,
-    Trading: 1.25,
-    Consulting: 1.1,
-    Restaurant: 1.35,
-    Construction: 1.4,
-    Logistics: 1.3,
-    Healthcare: 1.5,
-  };
-
-  if (form.activity) {
-    baseMin *= activityBoost[form.activity];
-    baseMax *= activityBoost[form.activity];
-  }
-
-  // city adjustment
-  const cityBoost: Record<CityType, number> = {
-    Riyadh: 1.15,
-    Jeddah: 1.1,
-    Dammam: 1.05,
-    Khobar: 1.05,
-  };
-
-  if (form.city) {
-    baseMin *= cityBoost[form.city];
-    baseMax *= cityBoost[form.city];
-  }
-
-  // timeline adjustment
-  let timelineText = "3–4 weeks";
-  if (form.timeline === "Urgent (1-2 weeks)") {
-    baseMin *= 1.15;
-    baseMax *= 1.25;
-    timelineText = "7–14 working days";
-  } else if (form.timeline === "Flexible (1-2 months)") {
-    baseMin *= 0.95;
-    baseMax *= 1.0;
-    timelineText = "4–8 weeks";
-  }
-
-  // visas cost
-  const visaCostPerVisaMin = 3500;
-  const visaCostPerVisaMax = 5500;
-  baseMin += form.visas * visaCostPerVisaMin;
-  baseMax += form.visas * visaCostPerVisaMax;
-
-  // add-ons
-  if (form.bankSupport) {
-    baseMin += 2500;
-    baseMax += 4500;
-  }
-  if (form.accountingSupport) {
-    baseMin += 1500;
-    baseMax += 3500;
-  }
-  if (form.vroSupport) {
-    baseMin += 4000;
-    baseMax += 7000;
-  }
-
-  // recommended setup
-  const recommendedSetup =
-    form.investorType === "Startup"
-      ? "LLC (Startup Friendly Setup)"
-      : form.investorType === "Company"
-      ? "LLC (Foreign Company Expansion)"
-      : "LLC (Standard Business Setup)";
-
-  // AI notes
-  const notes: string[] = [];
-
-  if (form.activity) {
-    notes.push(
-      `Because you selected “${form.activity}”, your licensing and compliance requirements may affect the final cost.`
-    );
-  }
-
-  if (form.city) {
-    notes.push(
-      `Your preferred city “${form.city}” influences operational and setup support cost based on local requirements.`
-    );
-  }
-
-  if (form.visas > 0) {
-    notes.push(
-      `You selected ${form.visas} visa(s) for Year 1, which adds visa & residency processing cost.`
-    );
-  }
-
-  if (form.timeline) {
-    notes.push(`Your timeline preference is “${form.timeline}”.`);
-  }
-
-  notes.push(
-    "This estimate is an approximate range. Final cost may vary based on approvals and documentation."
-  );
-
-  // includes + addons
-  const includes = [
-    "Company registration",
-    "Documentation support",
-    "Initial compliance guidance",
-  ];
-
-  const extraAddons: string[] = [];
-  if (form.vroSupport) extraAddons.push("VRO support");
-  if (form.accountingSupport) extraAddons.push("Accounting package");
-  if (form.bankSupport) extraAddons.push("Bank setup support");
-
-
-  const now = new Date();
-const reportDate = now.toLocaleDateString("en-GB", {
-  day: "2-digit",
-  month: "short",
-  year: "numeric",
-});
-
-const reportId = `NG-${now.getFullYear()}-${Math.floor(
-  100000 + Math.random() * 900000
-)}`;
-
-  // final return
-  return {
-  min: Math.round(baseMin),
-  max: Math.round(baseMax),
-  timelineText,
-  recommendedSetup,
-  suggestedCity: form.city || "Riyadh",
-  includes,
-  extraAddons,
-  notes,
-  breakdown,
-  reportId,
-  reportDate,
-};
-
-}
-
-
   function validateForm() {
     if (!form.fullName.trim()) return "Please enter your full name";
     if (!form.email.trim()) return "Please enter your email";
@@ -276,108 +100,107 @@ const reportId = `NG-${now.getFullYear()}-${Math.floor(
     if (!form.timeline) return "Please select timeline preference";
     return null;
   }
-async function onCalculate() {
-  console.log("Calculate clicked");
-  const err = validateForm();
 
-  if (err) {
-    toast.error(err);
-    return;
-  }
+  async function onCalculate() {
+    console.log("Calculate clicked");
+    const err = validateForm();
 
-  try {
-    setLoading(true);
-
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/calculator/send-otp`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-     body: JSON.stringify({
-          email: form.email,
-        }),
-      }
-    );
-
-    if (!res.ok) throw new Error("OTP failed");
-
-    setShowOtp(true);
-
-    toast.success("OTP sent to your email");
-  } catch (err) {
-    toast.error("Failed to send OTP");
-  } finally {
-    setLoading(false);
-  }
-}
-async function verifyOtp(code: string) {
-  try {
-
-    setVerifying(true);
-
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/calculator/verify-otp`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: form.email,
-          otp: code,
-        }),
-      }
-    );
-
-    const data = await res.json();
-
-    if (!data.verified) {
-      toast.error("Invalid OTP");
+    if (err) {
+      toast.error(err);
       return;
     }
 
-    toast.success("OTP verified");
+    try {
+      setLoading(true);
 
-    await generateReport();
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/calculator/send-otp`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+      body: JSON.stringify({
+            email: form.email,
+          }),
+        }
+      );
 
-  } catch {
-    toast.error("OTP verification failed");
-  } finally {
-    setVerifying(false);
-  }
-}
+      if (!res.ok) throw new Error("OTP failed");
 
-async function generateReport() {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/calculator/generate-report`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form),
-      }
-    );
+      setShowOtp(true);
 
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.error);
+      toast.success("OTP sent to your email");
+    } catch (err) {
+      toast.error("Failed to send OTP");
+    } finally {
+      setLoading(false);
     }
-
-    toast.success("Your AI expansion report has been sent to your email!");
-
-    setShowOtp(false);
-
-  } catch (err: any) {
-    toast.error(err.message || "Report generation failed");
   }
-}
 
+  async function verifyOtp(code: string) {
+    try {
 
-  
+      setVerifying(true);
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/calculator/verify-otp`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: form.email,
+            otp: code,
+          }),
+        }
+      );
+
+      const data = await res.json();
+
+      if (!data.verified) {
+        toast.error("Invalid OTP");
+        return;
+      }
+
+      toast.success("OTP verified");
+
+      await generateReport();
+
+    } catch {
+      toast.error("OTP verification failed");
+    } finally {
+      setVerifying(false);
+    }
+  }
+
+  async function generateReport() {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/calculator/generate-report`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(form),
+        }
+      );
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error);
+      }
+
+      toast.success("Your AI expansion report has been sent to your email!");
+
+      setShowOtp(false);
+
+    } catch (err: any) {
+      toast.error(err.message || "Report generation failed");
+    }
+  }
 
   return (
     <section className="w-full mt-20" data-navbar="light">
