@@ -1,5 +1,3 @@
-"use client";
-
 import CityCard from "./CityCard";
 
 export default function CitiesGrid({ cities }: any) {
