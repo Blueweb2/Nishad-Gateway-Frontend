@@ -48,7 +48,7 @@ const contentData = {
         </>
       ),
       image: "/consultant/Social-Life.jpg",
-      link: "/insights/professional-work-culture",
+      link: "/blogs/social-life-entertainment-lifestyle-in-saudi-arabia",
     },
 
     {
