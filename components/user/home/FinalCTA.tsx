@@ -15,7 +15,7 @@ export default function FinalCTA() {
         <div className="max-w-[1320px] w-full flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-0">
 
           {/* LEFT TEXT */}
-          <div className="lg:w-[280px] text-white leading-relaxed text-center lg:text-right lg:pr-5">
+          <div className="lg:w-[289px] text-white leading-relaxed text-center lg:text-right lg:pr-5">
             <motion.p
               initial={{ x: -150, opacity: 0 }}
               whileInView={{ x: 0, opacity: 1 }}
@@ -65,7 +65,7 @@ export default function FinalCTA() {
                 className="
                   bg-green-600 hover:bg-green-700
                   text-white text-sm font-medium
-                  px-8 py-3
+                  px-6 py-3 mt-12
                   rounded-full
                   transition
                   inline-block
