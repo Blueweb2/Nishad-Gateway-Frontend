@@ -254,7 +254,7 @@ export default async function SingleBlogPage({
 
       {/* COVER IMAGE */}
       <div className="flex items-center justify-center">
-        <div className="relative h-[450px] w-[1000px] rounded-2xl overflow-hidden mb-12">
+        <div className="relative h-[450px] w-[1200px] rounded-2xl overflow-hidden mb-12">
           <Image
             src={coverImageUrl}
             alt={
